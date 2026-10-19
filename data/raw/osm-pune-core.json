@@ -1,0 +1,7759 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-18T19:06:29Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+    {
+      "type": "node",
+      "id": 675628669,
+      "lat": 18.5230742,
+      "lon": 73.8896575,
+      "tags": {
+        "historic": "memorial",
+        "name": "National War Memorial Southern Command",
+        "wikidata": "Q6979343",
+        "wikimedia_commons": "Category:National War Memorial Southern Command",
+        "wikipedia": "en:National War Memorial Southern Command"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2081486313,
+      "lat": 18.4972669,
+      "lon": 73.8468291,
+      "tags": {
+        "name": "Parvati Museum",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2081486315,
+      "lat": 18.4977735,
+      "lon": 73.8471143,
+      "tags": {
+        "name": "Parvati",
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2165009895,
+      "lat": 18.3651456,
+      "lon": 73.7552242,
+      "tags": {
+        "castle_type": "fortress",
+        "historic": "castle",
+        "name": "Sinhagad Fort",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2181434123,
+      "lat": 18.5017029,
+      "lon": 73.8533493,
+      "tags": {
+        "historic": "memorial"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2273608806,
+      "lat": 18.5019805,
+      "lon": 73.8150555,
+      "tags": {
+        "artwork_type": "statue",
+        "historic": "memorial",
+        "material": "stone",
+        "memorial": "statue",
+        "name": "Maharshi Dhondo Keshav Karve",
+        "name:mr": "महर्षी धोंडो केशव कर्वे",
+        "tourism": "artwork"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2289294092,
+      "lat": 18.5190304,
+      "lon": 73.8572406,
+      "tags": {
+        "amenity": "place_of_worship",
+        "check_date": "2026-03-12",
+        "name": "Kasba Ganpati",
+        "name:mr": "कसबा गणपती",
+        "religion": "hindu",
+        "wikidata": "Q6374068",
+        "wikimedia_commons": "Category:Kasba Ganpati temple",
+        "wikipedia": "en:Kasba Ganapati"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2296727259,
+      "lat": 18.5119368,
+      "lon": 73.8537136,
+      "tags": {
+        "alt_name": "Ganesh Vasudev Joshi",
+        "historic": "memorial",
+        "name": "Sarvajanik Kaka"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2307730354,
+      "lat": 18.5300088,
+      "lon": 73.8320743,
+      "tags": {
+        "leisure": "garden",
+        "name": "Rajas Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2455119457,
+      "lat": 18.5014117,
+      "lon": 73.822364,
+      "tags": {
+        "alt_name": "Joshi Railway museum",
+        "check_date": "2024-04-14",
+        "museum": "railway",
+        "name": "Joshi's Museum of Miniature Railways",
+        "name:en": "Joshi's Museum of Miniature Railways",
+        "name:mr": "जोशी रेल्वे संग्रहालय",
+        "opening_hours": "Mo-We,Fr 09:00-13:00,13:30-17:00; Th 09:00-13:00; Sa 09:00-16:00,17:00-20:00; Su 17:00-20:00",
+        "operator:type": "private",
+        "phone": "02025435378",
+        "tourism": "museum",
+        "website": "https://www.minirailways.com/",
+        "wheelchair": "no",
+        "wikidata": "Q15229762",
+        "wikipedia": "en:Joshi's Museum of Miniature Railway"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2605766982,
+      "lat": 18.5975831,
+      "lon": 73.7092332,
+      "tags": {
+        "leisure": "park",
+        "name": "Infosys Cricket Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2618478633,
+      "lat": 18.5013633,
+      "lon": 73.8541743,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Jamnalal Bajaj",
+        "name:mr": "जमनालाल बजाज"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2618478634,
+      "lat": 18.5016195,
+      "lon": 73.8542012,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Lokashahir Annabhau Sathe",
+        "name:mr": "लोकशाहीर अण्णाभाऊ साठे"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2694748954,
+      "lat": 18.5225267,
+      "lon": 73.8482223,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Rani Laxmibai",
+        "name:mr": "राणी लक्ष्मीबाई",
+        "wikidata": "Q659396",
+        "wikipedia": "fr:Statue équestre"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2940513804,
+      "lat": 18.5053539,
+      "lon": 73.853572,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Vasantdada Patil",
+        "name:mr": "वसंतदादा पाटील"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2966334799,
+      "lat": 18.5088409,
+      "lon": 73.8982144,
+      "tags": {
+        "amenity": "place_of_worship",
+        "denomination": "roman_catholic",
+        "name": "St. Patrick's Cathedral",
+        "religion": "christian",
+        "wikidata": "Q7595055",
+        "wikimedia_commons": "Category:St. Patrick's Cathedral, Pune",
+        "wikipedia": "en:St. Patrick's Cathedral, Pune"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3386030400,
+      "lat": 18.5172576,
+      "lon": 73.8353667,
+      "tags": {
+        "historic": "aircraft",
+        "name": "HAL Marut",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3495323618,
+      "lat": 18.4993132,
+      "lon": 73.8520975,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Vedacharya Phatak Guruji",
+        "name:mr": "वेदाचार्य फाटक गुरुजी"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3547594671,
+      "lat": 18.4441312,
+      "lon": 73.8008065,
+      "tags": {
+        "leisure": "park",
+        "name": "Pul Deshpande Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3721058066,
+      "lat": 18.3625613,
+      "lon": 73.7538176,
+      "tags": {
+        "historic": "yes",
+        "name": "Kalyan Gate",
+        "name:hi": "कल्याण दरवाजा",
+        "name:mr": "कल्याण दरवाजा",
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3721058067,
+      "lat": 18.3655651,
+      "lon": 73.7592159,
+      "tags": {
+        "historic": "yes",
+        "name": "Pune Gate",
+        "name:hi": "पुणे दरवाजा",
+        "name:mr": "पुणे दरवाजा",
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3740998863,
+      "lat": 18.4656426,
+      "lon": 73.8176244,
+      "tags": {
+        "leisure": "park",
+        "name": "Sinhagad Vikas Udyan",
+        "operator": "Pune Mahanagar Palika"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3836998960,
+      "lat": 18.5156688,
+      "lon": 73.8556093,
+      "tags": {
+        "amenity": "place_of_worship",
+        "name": "Belbag Mandir",
+        "name:mr": "बेलबाग मंदिर",
+        "religion": "hindu",
+        "wikidata": "Q98801445"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3837531769,
+      "lat": 18.5260723,
+      "lon": 73.8506498,
+      "tags": {
+        "historic": "memorial",
+        "inscription": "समाजसेवक कृष्णराव गांगुर्डे (१९१४ - १९८६) येथे राहात होते १९५६ - १९८६",
+        "memorial": "blue_plaque",
+        "name": "Krushnarao Gangurde",
+        "name:mr": "कृष्णराव गांगुर्डे"
+      }
+    },
+    {
+      "type": "node",
+      "id": 3997118331,
+      "lat": 18.5442399,
+      "lon": 73.7740402,
+      "tags": {
+        "historic": "monument",
+        "name": "Buddha Statue"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4336624350,
+      "lat": 18.4610659,
+      "lon": 73.7590824,
+      "tags": {
+        "historic": "monument",
+        "name": "Ashoka Pillar"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4520393592,
+      "lat": 18.554245,
+      "lon": 73.8257917,
+      "tags": {
+        "amenity": "post_box",
+        "historic": "monument"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4576745891,
+      "lat": 18.5486329,
+      "lon": 73.9283126,
+      "tags": {
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 4828100522,
+      "lat": 18.5117914,
+      "lon": 73.9010628,
+      "tags": {
+        "name:en": "Dr Ashok Sharaf Open Hardware",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5112319421,
+      "lat": 18.5157952,
+      "lon": 73.8488653,
+      "tags": {
+        "check_date": "2026-03-12",
+        "name:en": "Lokmanya Tilak Museum",
+        "name:fr": "Musée Lokmanya Tilak",
+        "opening_hours": "Mo-Su 10:00-13:00, 15:00-18:00",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5302827827,
+      "lat": 18.439561,
+      "lon": 73.8955819,
+      "tags": {
+        "name:en": "Yeolewadi येवले वाडी",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5316062222,
+      "lat": 18.4971198,
+      "lon": 73.8592205,
+      "tags": {
+        "name:en": "Kubera Estate",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5316103021,
+      "lat": 18.6856726,
+      "lon": 73.7880961,
+      "tags": {
+        "name:en": "Classic frp works",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5316606921,
+      "lat": 18.652594,
+      "lon": 73.7901101,
+      "tags": {
+        "addr:street": "R. D. Aga Marg",
+        "name:en": "Link Composites",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5682056653,
+      "lat": 18.5170485,
+      "lon": 73.8607572,
+      "tags": {
+        "leisure": "park",
+        "name": "NG park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 5795521366,
+      "lat": 18.4919917,
+      "lon": 73.8236524,
+      "tags": {
+        "addr:housenumber": "47",
+        "addr:place": "Natraj Society",
+        "name": "Yash Laxmi Numismatic Museum",
+        "opening_hours": "Tu-Su 17:00-20:00",
+        "phone": "094235 76607",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6042498903,
+      "lat": 18.5561744,
+      "lon": 73.8181145,
+      "tags": {
+        "historic": "monument"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6120665683,
+      "lat": 18.6598634,
+      "lon": 73.7715654,
+      "tags": {
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6168664140,
+      "lat": 18.528384,
+      "lon": 73.8853627,
+      "tags": {
+        "historic": "memorial",
+        "name": "Seafarers Memorial",
+        "name:mr": "नाविक स्मारक"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6168664141,
+      "lat": 18.5283217,
+      "lon": 73.8841322,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "bust",
+        "name": "General Arunkumar Vaidya",
+        "name:mr": "जनरल अरुणकुमार वैद्य"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6188016299,
+      "lat": 18.5184425,
+      "lon": 73.8792224,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Dr. Babasaheb Ambedkar",
+        "name:mr": "डॉ. बाबासाहेब आंबेडकर"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6232524005,
+      "lat": 18.5282471,
+      "lon": 73.7454257,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411021",
+        "addr:street": "Off Mumbai - Bangalore Highway, Near Oxford Golf Resort, Near Nyati Equatorial Bawdhan",
+        "description": "Adventure Park with camping and many adventure activities like rappelling, mountain biking, zorbing, archery etc. . Includes a amazing Dog park, with a dog pool, a jungle gym and agility tracks.",
+        "dog": "yes",
+        "email": "360degreeadventure@gmail.com",
+        "leisure": "park",
+        "name": "360 Degree Adventure",
+        "opening_hours": "24/7",
+        "operator": "Dharamshi",
+        "phone": "+91 77963 60360",
+        "website": "https://www.360degreeadventure.com/"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6250078444,
+      "lat": 18.5356145,
+      "lon": 73.8379985,
+      "tags": {
+        "historic": "memorial",
+        "name": "Hutatma Chaphekar Bandhu Memorial",
+        "name:mr": "हुतात्मा चाफेकर बंधू स्मारक"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6271990684,
+      "lat": 18.5326991,
+      "lon": 73.8343631,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "bust",
+        "name": "Pramod Mahale",
+        "name:mr": "प्रमोद महाले"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6536531694,
+      "lat": 18.503586,
+      "lon": 73.8724918,
+      "tags": {
+        "leisure": "park",
+        "name": "Sambhaji Bagve Paryavaran Jagruti Udyan",
+        "operator": "Pune Municipal Corporation"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6577541380,
+      "lat": 18.4579934,
+      "lon": 73.7846333,
+      "tags": {
+        "access": "private",
+        "fee": "no",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Asawari Garden and Club house"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6577626483,
+      "lat": 18.4547556,
+      "lon": 73.7849037,
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411041",
+        "addr:street": "Nanded City Road",
+        "dog": "yes",
+        "leisure": "park",
+        "name": "Nanded City Eco Park",
+        "opening_hours": "Mo-Su 06:00-19:00",
+        "operator": "Nanded City",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6578682912,
+      "lat": 18.4594258,
+      "lon": 73.7865079,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Tanaji Malusare Putla"
+      }
+    },
+    {
+      "type": "node",
+      "id": 6917411981,
+      "lat": 18.3773169,
+      "lon": 73.7688583,
+      "tags": {
+        "name": "Sinhagad Valley",
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7169206205,
+      "lat": 18.4153987,
+      "lon": 73.9055864,
+      "tags": {
+        "name": "Bhopdeo Ghat Viewpoint",
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7195582110,
+      "lat": 18.411923,
+      "lon": 74.049734,
+      "tags": {
+        "historic": "fort",
+        "name": "Malhargad Fort"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7463300091,
+      "lat": 18.4833505,
+      "lon": 73.9339518,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411028",
+        "addr:street": "Ganga Village",
+        "leisure": "park",
+        "name": "Ganga Village Garden",
+        "opening_hours": "24/7",
+        "opening_hours:covid19": "restricted",
+        "operator": "Ganga Village"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7554173093,
+      "lat": 18.5429541,
+      "lon": 73.8138883,
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411008",
+        "addr:street": "NCL Colony Road",
+        "leisure": "park",
+        "name": "Nandanvan",
+        "opening_hours": "24/7",
+        "opening_hours:covid19": "off",
+        "operator": "Ncl colony"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7843127856,
+      "lat": 18.6655203,
+      "lon": 73.795644,
+      "tags": {
+        "leisure": "park",
+        "name": "Chinchwad Bus stop"
+      }
+    },
+    {
+      "type": "node",
+      "id": 7944584962,
+      "lat": 18.5206664,
+      "lon": 73.8472146,
+      "tags": {
+        "construction": "freestanding",
+        "leisure": "park",
+        "name": "Sambhaji Park",
+        "name:etymology:wikidata": "Q2737041",
+        "operator": "Pune Municipal Corporation"
+      }
+    },
+    {
+      "type": "node",
+      "id": 8325054563,
+      "lat": 18.5574091,
+      "lon": 73.8901621,
+      "tags": {
+        "historic": "memorial",
+        "inscription": "Manu's spot",
+        "memorial": "plaque"
+      }
+    },
+    {
+      "type": "node",
+      "id": 8353850906,
+      "lat": 18.4822044,
+      "lon": 73.8855796,
+      "tags": {
+        "description": "It is a play ground",
+        "leisure": "park",
+        "name": "College play ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 8793785199,
+      "lat": 18.700417,
+      "lon": 73.798068,
+      "tags": {
+        "leisure": "park",
+        "name": "Proposed Deer Safari Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9055379286,
+      "lat": 18.5211477,
+      "lon": 73.872096,
+      "tags": {
+        "leisure": "park",
+        "name": "J J Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9128875182,
+      "lat": 18.5221277,
+      "lon": 73.8632105,
+      "tags": {
+        "leisure": "park",
+        "name": "Green Park",
+        "opening_hours": "Mo-Fr 06:00-18:00",
+        "opening_hours:covid19": "restricted"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9410693627,
+      "lat": 18.4440589,
+      "lon": 73.8617934,
+      "tags": {
+        "leisure": "park",
+        "name": "Katraj Talao"
+      }
+    },
+    {
+      "type": "node",
+      "id": 9782324528,
+      "lat": 18.6009118,
+      "lon": 73.9618178,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "Gat 1475",
+        "addr:postcode": "412207",
+        "addr:street": "Pune Pet Park Road",
+        "leisure": "park",
+        "name": "Pune Pet Park",
+        "opening_hours": "24/7",
+        "operator": "Derek"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10003453036,
+      "lat": 18.4158485,
+      "lon": 74.0064916,
+      "tags": {
+        "name": "Statue",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10006321158,
+      "lat": 18.417591,
+      "lon": 73.9069641,
+      "tags": {
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10171128086,
+      "lat": 18.5259779,
+      "lon": 73.8838753,
+      "tags": {
+        "leisure": "park",
+        "name": "asd"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172907163,
+      "lat": 18.5658173,
+      "lon": 73.8251021,
+      "tags": {
+        "leisure": "park",
+        "name": "botanical garden",
+        "operator": "govt."
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172907609,
+      "lat": 18.354553,
+      "lon": 74.0251132,
+      "tags": {
+        "leisure": "park",
+        "name": "Waghire college Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975727,
+      "lat": 18.6250119,
+      "lon": 73.8304125,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975729,
+      "lat": 18.6446911,
+      "lon": 73.8311628,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975730,
+      "lat": 18.6421157,
+      "lon": 73.8337535,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975731,
+      "lat": 18.6430144,
+      "lon": 73.8350559,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975732,
+      "lat": 18.6493188,
+      "lon": 73.8310071,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975733,
+      "lat": 18.647736,
+      "lon": 73.8332863,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975734,
+      "lat": 18.6452143,
+      "lon": 73.8489721,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975735,
+      "lat": 18.6443021,
+      "lon": 73.8487314,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975736,
+      "lat": 18.6434705,
+      "lon": 73.8494534,
+      "tags": {
+        "leisure": "park",
+        "name": "Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172975743,
+      "lat": 18.606122,
+      "lon": 73.7986305,
+      "tags": {
+        "addr:city": "PUNE",
+        "addr:district": "HAVELI",
+        "addr:postcode": "411017",
+        "addr:street": "WAGHERE COLONY NO.4",
+        "leisure": "park",
+        "name": "PCMC park",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979840,
+      "lat": 18.5007845,
+      "lon": 73.8320257,
+      "tags": {
+        "leisure": "park",
+        "name": "Sports Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979846,
+      "lat": 18.5032073,
+      "lon": 73.8531065,
+      "tags": {
+        "leisure": "park",
+        "name": "Sanas Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979847,
+      "lat": 18.482271,
+      "lon": 73.848057,
+      "tags": {
+        "leisure": "park",
+        "name": "Taljai Cricket Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979848,
+      "lat": 18.486374,
+      "lon": 73.8489154,
+      "tags": {
+        "leisure": "park",
+        "name": "LR Shinde School Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979850,
+      "lat": 18.4921728,
+      "lon": 73.84458,
+      "tags": {
+        "leisure": "park",
+        "name": "Shahu College Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979851,
+      "lat": 18.5054856,
+      "lon": 73.860934,
+      "tags": {
+        "leisure": "park",
+        "name": "St. Hildas Schoole Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979852,
+      "lat": 18.5058172,
+      "lon": 73.8604136,
+      "tags": {
+        "leisure": "park",
+        "name": "Epiphany School Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979853,
+      "lat": 18.5072436,
+      "lon": 73.860316,
+      "tags": {
+        "leisure": "park",
+        "name": "Talaee Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979854,
+      "lat": 18.5020235,
+      "lon": 73.8774389,
+      "tags": {
+        "leisure": "park",
+        "name": "Golibar Maidan"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172979855,
+      "lat": 18.5013368,
+      "lon": 73.8786432,
+      "tags": {
+        "leisure": "park",
+        "name": "Open Ground for various Utilities"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172982143,
+      "lat": 18.5528425,
+      "lon": 73.8245844,
+      "tags": {
+        "leisure": "park",
+        "name": "alice garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10172983020,
+      "lat": 18.3528165,
+      "lon": 74.0305254,
+      "tags": {
+        "leisure": "park",
+        "name": "farm Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10211442987,
+      "lat": 18.6341065,
+      "lon": 73.8062875,
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411089",
+        "leisure": "park",
+        "name": "rocket park",
+        "opening_hours": "Mo-Fr 09:00-17:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10211451429,
+      "lat": 18.632048,
+      "lon": 73.8153195,
+      "tags": {
+        "leisure": "park",
+        "name": "South park",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10213674830,
+      "lat": 18.6606723,
+      "lon": 73.8084373,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411019",
+        "addr:street": "Spine Road",
+        "leisure": "park",
+        "name": "Shani Ground",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10219123489,
+      "lat": 18.5837528,
+      "lon": 74.0027207,
+      "tags": {
+        "leisure": "park",
+        "name": "IVY PARK"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10246145086,
+      "lat": 18.5255098,
+      "lon": 73.8677267,
+      "tags": {
+        "historic": "monument"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10313010698,
+      "lat": 18.6367389,
+      "lon": 73.8431325,
+      "tags": {
+        "addr:city": "pune",
+        "addr:housenumber": "sector 2 ig",
+        "addr:postcode": "411039",
+        "addr:street": "Raj wada",
+        "description": "good garden for all of us best place for old people",
+        "dog": "yes",
+        "leisure": "park",
+        "name": "Nana nani park",
+        "opening_hours": "Mo-Su 10:00-22:00",
+        "operator": "Unknown",
+        "phone": "9764612287",
+        "smoking": "no",
+        "source": "local knowledge;streetlevel imagery;gps;survey"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10316607574,
+      "lat": 18.50149,
+      "lon": 73.813757,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "289, Kothrud, Near Shivaji Statue, Lane, Kothrud Bus Stand Rd",
+        "addr:postcode": "411038",
+        "addr:street": "Shivaji Putala",
+        "building": "yes",
+        "check_date": "2026-03-15",
+        "name": "Sujit Aquariums",
+        "tourism": "aquarium"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10536394544,
+      "lat": 18.6461714,
+      "lon": 73.7559837,
+      "tags": {
+        "addr:city": "Ravet, Pune",
+        "addr:postcode": "412101",
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10536397493,
+      "lat": 18.4900591,
+      "lon": 73.8471412,
+      "tags": {
+        "leisure": "park",
+        "name": "Phulora Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10537819256,
+      "lat": 18.7400031,
+      "lon": 73.6744318,
+      "tags": {
+        "leisure": "park",
+        "name": "yashwant nagar garden",
+        "opening_hours": "24/7",
+        "operator": "nikhil bhagat"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10538846885,
+      "lat": 18.6397185,
+      "lon": 73.7556758,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:street": "Ravet - Walhekarwadi Road",
+        "leisure": "park",
+        "name": "Football Turf",
+        "opening_hours": "Mo-Su 08:00-22:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10578845675,
+      "lat": 18.5031294,
+      "lon": 73.7607312,
+      "tags": {
+        "historic": "monument",
+        "inscription": "पुणे महानगरपालिका आपले सहर्ष  स्वागत करीत आहे",
+        "name": "Pune Border Pillar"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10586160605,
+      "lat": 18.6546356,
+      "lon": 73.7689274,
+      "tags": {
+        "addr:postcode": "411044",
+        "addr:street": "Rajamata Jijau Marg",
+        "leisure": "park",
+        "name": "mauli garden",
+        "opening_hours": "Mo-Su 09:00-22:05",
+        "source": "Pimpri Chihcwad"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10595672710,
+      "lat": 18.6501076,
+      "lon": 73.7641159,
+      "tags": {
+        "leisure": "park",
+        "name": "society front park",
+        "opening_hours": "Mo-Fr 08:00-18:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10599872704,
+      "lat": 18.582114,
+      "lon": 73.7339725,
+      "tags": {
+        "addr:city": "Hijawadi, Pune",
+        "addr:housenumber": "HPJM+QJP",
+        "addr:postcode": "411057",
+        "addr:street": "phase 1, rajiv gandhi infotech park",
+        "leisure": "park",
+        "name": "Sargam Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10610496310,
+      "lat": 18.5651683,
+      "lon": 73.8764952,
+      "tags": {
+        "leisure": "garden",
+        "name": "Palm Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10716056743,
+      "lat": 18.6191107,
+      "lon": 73.8622953,
+      "tags": {
+        "access": "yes",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "Gangotri Park Garden",
+        "operator": "Pimpri Chinchwad Municipal Corporation",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10716121306,
+      "lat": 18.5903662,
+      "lon": 73.7367459,
+      "tags": {
+        "leisure": "garden",
+        "name": "Mhatoba garden",
+        "name:mr": "म्हातोबा उद्यान"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10723371028,
+      "lat": 18.6038321,
+      "lon": 73.8205102,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411061",
+        "addr:street": "Kasarwadi-Pimple Gurav Road",
+        "leisure": "park",
+        "name": "Royal Lawns",
+        "opening_hours": "Mo-Su 09:00-24:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10725744317,
+      "lat": 18.6047723,
+      "lon": 73.8223263,
+      "tags": {
+        "addr:street": "JR3C+XW3, Pimple Gurav Rd, Shastri Nagar, Kasarwadi, Pimpri-Chinchwad, Maharashtra 411034",
+        "leisure": "park",
+        "name": "G2 LAWNS"
+      }
+    },
+    {
+      "type": "node",
+      "id": 10796851872,
+      "lat": 18.5014087,
+      "lon": 73.9452503,
+      "tags": {
+        "leisure": "park",
+        "name": "Park Sadhana Society"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11059336854,
+      "lat": 18.6394806,
+      "lon": 73.7915023,
+      "tags": {
+        "access": "private",
+        "garden:type": "garden",
+        "leisure": "garden",
+        "name": "Chinchwad railway station",
+        "operator": "chinchwad Railway station",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11308954141,
+      "lat": 18.6284687,
+      "lon": 73.7808347,
+      "tags": {
+        "access": "yes",
+        "historic": "monument",
+        "inscription": "Shopping Place",
+        "name": "Reliance Mall"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11422184455,
+      "lat": 18.455777,
+      "lon": 73.8545207,
+      "tags": {
+        "leisure": "park",
+        "name": "bharti school ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11428471741,
+      "lat": 18.4550407,
+      "lon": 73.855322,
+      "tags": {
+        "leisure": "park",
+        "name": "Bharti campus"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11511112732,
+      "lat": 18.6515138,
+      "lon": 73.7715689,
+      "tags": {
+        "access": "yes",
+        "addr:city": "Nigdi",
+        "addr:district": "Pune",
+        "addr:postcode": "411044",
+        "addr:street": "Pradhikaran",
+        "leisure": "park",
+        "name": "Sant tukaram garden",
+        "natural": "tree",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527112780,
+      "lat": 18.5309331,
+      "lon": 73.9356578,
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:street": "Mundhwa Road",
+        "leisure": "park",
+        "name": "Lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "Lonkar",
+        "operator:type": "lonkar"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527131529,
+      "lat": 18.5330184,
+      "lon": 73.9274012,
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:housenumber": "mundhwa",
+        "addr:street": "Mundhwa Road",
+        "leisure": "park",
+        "name": "lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "lonkar",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527145475,
+      "lat": 18.5323878,
+      "lon": 73.9277874,
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:housenumber": "mundhwa",
+        "addr:street": "Mundhwa Road",
+        "dog": "no",
+        "leisure": "park",
+        "name": "lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "lonkar",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527149030,
+      "lat": 18.530165,
+      "lon": 73.9360506,
+      "tags": {
+        "addr:street": "Mundhwa Road",
+        "leisure": "park",
+        "name": "lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "lonkar",
+        "operator:type": "lonkar"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527152418,
+      "lat": 18.5153835,
+      "lon": 73.935795,
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:housenumber": "123",
+        "addr:postcode": "007",
+        "addr:street": "roaD",
+        "leisure": "park",
+        "name": "pink park",
+        "opening_hours": "Mo-Su 10:00-22:00",
+        "operator": "girija"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527156958,
+      "lat": 18.543552,
+      "lon": 73.9399663,
+      "tags": {
+        "access": "yes",
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:street": "mundhwa",
+        "leisure": "park",
+        "name": "lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "lonkar",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11527158738,
+      "lat": 18.5312393,
+      "lon": 73.9162682,
+      "tags": {
+        "access": "yes",
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:street": "Mundhwa Road",
+        "leisure": "park",
+        "name": "lonkar",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "lonkae",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11533156814,
+      "lat": 18.6015032,
+      "lon": 73.9049198,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "near martheophilus school",
+        "addr:postcode": "411015",
+        "addr:street": "dhanori porwal road",
+        "description": "This is open garden",
+        "leisure": "park",
+        "name": "Open garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11553176774,
+      "lat": 18.614477,
+      "lon": 73.7806005,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "plaque"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11578985505,
+      "lat": 18.5781497,
+      "lon": 73.7380116,
+      "tags": {
+        "leisure": "park",
+        "name": "T-9 Ground"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11610747750,
+      "lat": 18.5117357,
+      "lon": 73.8512506,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411030",
+        "addr:street": "Vasantrao Limaye Path",
+        "description": "Chafekar bandhu was excerised here in this area this is very old talim and such power of spritual and man mind and health",
+        "leisure": "park",
+        "name": "Vaze Talim",
+        "opening_hours": "Mo-Su 06:00-21:00",
+        "operator": "Private and paid service",
+        "operator:type": "private",
+        "source": "local knowledge"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11622396278,
+      "lat": 18.5248526,
+      "lon": 73.8766831,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Sadhu Vaswani Statue",
+        "name:en": "Sadhu Vaswani Statue",
+        "name:mr": "साधू वासवानी पुतळा",
+        "subject:wikidata": "Q3634783",
+        "subject:wikipedia": "en:Sadhu Vaswani",
+        "wikimedia_commons": "File:Saadhu_Vaswaani.JPG"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11622396279,
+      "lat": 18.5237206,
+      "lon": 73.8828849,
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Sam Manekshaw Statue",
+        "name:en": "Sam Manekshaw Statue",
+        "subject:wikidata": "Q558194",
+        "subject:wikipedia": "en:Sam Manekshaw",
+        "wikimedia_commons": "File:Sam_Manekshaw's_statue_in_Pune_Cantonment.jpg"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11697561020,
+      "lat": 18.6461792,
+      "lon": 73.8421212,
+      "tags": {
+        "leisure": "park",
+        "name": "District Centre PCNTDA"
+      }
+    },
+    {
+      "type": "node",
+      "id": 11697569676,
+      "lat": 18.6453728,
+      "lon": 73.8449056,
+      "tags": {
+        "leisure": "park",
+        "name": "PCNTDA Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12039066569,
+      "lat": 18.4842783,
+      "lon": 73.8470923,
+      "tags": {
+        "addr:housenumber": "234",
+        "addr:postcode": "411009",
+        "addr:street": "Taljai Road",
+        "name": "Taljai Watch Tower",
+        "name:en": "Taljai Watch Tower",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12149418277,
+      "lat": 18.5421064,
+      "lon": 73.6819878,
+      "tags": {
+        "tourism": "viewpoint"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12301663618,
+      "lat": 18.5598737,
+      "lon": 73.8151486,
+      "tags": {
+        "leisure": "park",
+        "name": "Children’s Traffic Park",
+        "name:en": "Children’s Traffic Park",
+        "name:mr": "वाहतूक उद्यान",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12317626571,
+      "lat": 18.748594,
+      "lon": 73.6744216,
+      "tags": {
+        "name": "Sunset Point",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12364230148,
+      "lat": 18.6696627,
+      "lon": 73.7923741,
+      "tags": {
+        "access": "yes",
+        "addr:city": "pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "25",
+        "addr:postcode": "412114",
+        "addr:street": "Spine Road",
+        "leisure": "park",
+        "name": "Mhetre Park",
+        "opening_hours": "Mo-Su 05:00-09:00a.m. 04:00-09:00 p.m.",
+        "operator": "Public",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12595038329,
+      "lat": 18.6676247,
+      "lon": 73.7341769,
+      "tags": {
+        "leisure": "park",
+        "name": "Deshmukh Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 12595563193,
+      "lat": 18.6601895,
+      "lon": 73.7310226,
+      "tags": {
+        "leisure": "park",
+        "name": "kiwale circle"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13052236486,
+      "lat": 18.4947355,
+      "lon": 73.8371904,
+      "tags": {
+        "addr:district": "Pune",
+        "leisure": "park",
+        "name": "P. L. Deshpande Kalagram"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13131132379,
+      "lat": 18.5997033,
+      "lon": 73.8123649,
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pune",
+        "addr:postcode": "411027",
+        "addr:street": "Sudarshan nagar",
+        "leisure": "park",
+        "name": "8 to 80 Park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13161637308,
+      "lat": 18.5611458,
+      "lon": 73.8964095,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "Maharastra co-operation Housing Society, Yerwad,Pune",
+        "addr:postcode": "411006",
+        "leisure": "park",
+        "name": "Lumbini Garden",
+        "operator": "corporation",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13232581731,
+      "lat": 18.5279973,
+      "lon": 73.8163816,
+      "tags": {
+        "leisure": "park",
+        "name": "Sunset Point"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13266321010,
+      "lat": 18.5681592,
+      "lon": 73.7198341,
+      "tags": {
+        "leisure": "park",
+        "name": "Auris Tower D, Sensorium"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13333054987,
+      "lat": 18.5191567,
+      "lon": 73.8731254,
+      "tags": {
+        "leisure": "park",
+        "name": "Nehru Park",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13347262449,
+      "lat": 18.5089024,
+      "lon": 73.8967511,
+      "tags": {
+        "addr:city": "PUNE",
+        "addr:district": "taluka",
+        "addr:housenumber": "1",
+        "addr:postcode": "411040",
+        "addr:street": "Solapur Road",
+        "email": "rim9876@gmail.com",
+        "fax": "098776424",
+        "leisure": "park",
+        "name": "aminah park",
+        "opening_hours": "Mo-Su 09:00-21:00",
+        "operator": "aminah",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13347272453,
+      "lat": 18.6161692,
+      "lon": 73.8299525,
+      "tags": {
+        "leisure": "park",
+        "name": "nehru park",
+        "opening_hours": "Mo-Su 10:00-22:00"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13380892967,
+      "lat": 18.7187257,
+      "lon": 73.6805274,
+      "tags": {
+        "addr:city": "Talegaon Dabhade",
+        "addr:postcode": "410506",
+        "addr:street": "panchavati colony",
+        "leisure": "park",
+        "name": "Nana Nani park"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13629451330,
+      "lat": 18.5900636,
+      "lon": 73.8898032,
+      "tags": {
+        "leisure": "garden",
+        "name": "Hansraj Anand Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13644336704,
+      "lat": 18.5800756,
+      "lon": 73.8933951,
+      "tags": {
+        "leisure": "park",
+        "name": "Pargati Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13665153824,
+      "lat": 18.5229963,
+      "lon": 73.8907093,
+      "tags": {
+        "historic": "memorial",
+        "name": "War Memorial"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13672036384,
+      "lat": 18.5021939,
+      "lon": 73.837797,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411030",
+        "addr:street": "Dattawadi Road",
+        "leisure": "park",
+        "name": "Madar Teresa Garden"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13805714808,
+      "lat": 18.573321,
+      "lon": 73.7707934,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:street": "Lane Number 7",
+        "name": "RK Laxman museum",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 13974009675,
+      "lat": 18.5804475,
+      "lon": 73.8207722,
+      "tags": {
+        "addr:city": "Pimpri-Chinchwad",
+        "addr:district": "Pune",
+        "addr:postcode": "411027",
+        "addr:street": "Krishna Nagar Road Number 2",
+        "leisure": "park",
+        "name": "Narmada Garden",
+        "opening_hours": "24/7"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14049318378,
+      "lat": 18.4536882,
+      "lon": 73.8136012,
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "Lane No. B-20",
+        "addr:postcode": "411041",
+        "addr:street": "Ganesh Nabhangan Society Road",
+        "leisure": "park",
+        "name": "Raykar Udyaan"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14051477577,
+      "lat": 18.4502012,
+      "lon": 73.8106012,
+      "tags": {
+        "leisure": "park",
+        "name": "raj sport",
+        "operator": "laygude",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14070189246,
+      "lat": 18.5525784,
+      "lon": 73.9014878,
+      "tags": {
+        "name": "Mahatma Gandhi Museum",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14138748126,
+      "lat": 18.5236936,
+      "lon": 73.7307905,
+      "tags": {
+        "leisure": "park",
+        "name": "Plaza"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14138754944,
+      "lat": 18.5237052,
+      "lon": 73.7307943,
+      "tags": {
+        "leisure": "park",
+        "name": "Plaza"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14168701482,
+      "lat": 18.4998432,
+      "lon": 73.9240536,
+      "tags": {
+        "addr:city": "Indiana",
+        "addr:district": "smiths",
+        "addr:housenumber": "233",
+        "addr:postcode": "45344",
+        "addr:street": "sesame street",
+        "leisure": "park",
+        "name": "Eden park",
+        "opening_hours": "7:30am TO 9:30pm"
+      }
+    },
+    {
+      "type": "node",
+      "id": 14268390502,
+      "lat": 18.5343567,
+      "lon": 73.8996542,
+      "tags": {
+        "name": "Mystery Rooms , Kp , Lane number 7",
+        "tourism": "theme_park",
+        "website": "http://mysteryrooms.in"
+      }
+    },
+    {
+      "type": "way",
+      "id": 25956269,
+      "center": {
+        "lat": 18.5392589,
+        "lon": 73.905196
+      },
+      "tags": {
+        "layer": "-1",
+        "leisure": "park",
+        "name": "ABC Farms"
+      }
+    },
+    {
+      "type": "way",
+      "id": 28217451,
+      "center": {
+        "lat": 18.5364244,
+        "lon": 73.8914253
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Osho Teerth Park",
+        "opening_hours": "Mo-Su 06:00-09:00, 15:00-18:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 52768095,
+      "center": {
+        "lat": 18.514136,
+        "lon": 73.900914
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Sopan Baug"
+      }
+    },
+    {
+      "type": "way",
+      "id": 53153289,
+      "center": {
+        "lat": 18.5118234,
+        "lon": 73.886386
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Muredha Nala Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 53154871,
+      "center": {
+        "lat": 18.5131816,
+        "lon": 73.8974658
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Empress Botanical Garden",
+        "name:etymology:wikidata": "Q5579597",
+        "wikidata": "Q97487028",
+        "wikimedia_commons": "Category:Empress Garden Pune"
+      }
+    },
+    {
+      "type": "way",
+      "id": 53272975,
+      "center": {
+        "lat": 18.5008294,
+        "lon": 73.8528092
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:housenumber": "swargate",
+        "addr:postcode": "411009",
+        "addr:street": "road",
+        "leisure": "park",
+        "name": "Sarasbaug",
+        "name:mr": "सारसबाग",
+        "opening_hours": "Mo-Sa 07:00-21:00",
+        "tourism": "attraction",
+        "wikidata": "Q7423180",
+        "wikimedia_commons": "Category:Sarasbaug",
+        "wikipedia": "en:Sarasbaug"
+      }
+    },
+    {
+      "type": "way",
+      "id": 53350109,
+      "center": {
+        "lat": 18.4916295,
+        "lon": 73.8972726
+      },
+      "tags": {
+        "name": "Shinde Chhatri",
+        "name:mr": "शिंदे छत्री",
+        "tourism": "attraction",
+        "wikidata": "Q7497295",
+        "wikimedia_commons": "Category:Shinde Chhatri",
+        "wikipedia": "en:Shinde Chhatri"
+      }
+    },
+    {
+      "type": "way",
+      "id": 53371442,
+      "center": {
+        "lat": 18.5256569,
+        "lon": 73.8959817
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "3"
+      }
+    },
+    {
+      "type": "way",
+      "id": 54937943,
+      "center": {
+        "lat": 18.4536001,
+        "lon": 73.861624
+      },
+      "tags": {
+        "intermittent": "no",
+        "leisure": "park",
+        "name": "Katraj Lake",
+        "name:mr": "कात्रज तलाव",
+        "natural": "water",
+        "water": "lake"
+      }
+    },
+    {
+      "type": "way",
+      "id": 60980977,
+      "center": {
+        "lat": 18.4953567,
+        "lon": 73.8117572
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vamanrao Dahanukar Udyan",
+        "name:mr": "वामनराव डहाणूकर उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 60986757,
+      "center": {
+        "lat": 18.5542531,
+        "lon": 73.8649743
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rajiv Gandhi Park",
+        "name:etymology:wikidata": "Q4593"
+      }
+    },
+    {
+      "type": "way",
+      "id": 67168944,
+      "center": {
+        "lat": 18.5193581,
+        "lon": 73.8746044
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411001",
+        "addr:street": "Wellesly Road",
+        "amenity": "place_of_worship",
+        "building": "yes",
+        "check_date": "2026-03-12",
+        "name": "Ohel David Synagogue",
+        "religion": "jewish",
+        "wikidata": "Q7080652"
+      }
+    },
+    {
+      "type": "way",
+      "id": 86918631,
+      "center": {
+        "lat": 18.5411066,
+        "lon": 73.77451
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Kirti Gardens"
+      }
+    },
+    {
+      "type": "way",
+      "id": 86919015,
+      "center": {
+        "lat": 18.5389603,
+        "lon": 73.8010692
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "DRDO Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 87218843,
+      "center": {
+        "lat": 18.5148924,
+        "lon": 73.926317
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Aditi Garden",
+        "name:mr": "अदिती उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 92000559,
+      "center": {
+        "lat": 18.5466359,
+        "lon": 73.777797
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vardhayani Society Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 106358086,
+      "center": {
+        "lat": 18.5131643,
+        "lon": 73.879644
+      },
+      "tags": {
+        "access": "yes",
+        "charge": "5 rupees",
+        "leisure": "garden",
+        "name": "Rani Lakshmibai Udyan",
+        "name:mr": "राणी लक्ष्मीबाई उद्यान",
+        "payment:cash": "yes",
+        "time": "7:00 am to 9:00 pm"
+      }
+    },
+    {
+      "type": "way",
+      "id": 108557629,
+      "center": {
+        "lat": 18.5324843,
+        "lon": 73.8781401
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ramabai Ambedkar Udyan",
+        "name:etymology:wikidata": "Q19812241",
+        "name:mr": "रमाबाई आंबेडकर उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 109714189,
+      "center": {
+        "lat": 18.4875511,
+        "lon": 73.8476299
+      },
+      "tags": {
+        "alt_name": "Jayantrao Tilak Rose Garden",
+        "designation": "Rose Garden",
+        "leisure": "park",
+        "name": "Rose Garden",
+        "name:mr": "गुलाब उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 120009678,
+      "center": {
+        "lat": 18.4597352,
+        "lon": 73.8802891
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Swami Vivekanad Udyaan",
+        "name:etymology:wikidata": "Q47478"
+      }
+    },
+    {
+      "type": "way",
+      "id": 121807061,
+      "center": {
+        "lat": 18.5611797,
+        "lon": 73.8964247
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411006",
+        "addr:street": "Near MH society, Nagpur Chawl Road, Yerwada",
+        "leisure": "park",
+        "name": "Lumbini Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 126392859,
+      "center": {
+        "lat": 18.3646594,
+        "lon": 73.7567027
+      },
+      "tags": {
+        "access": "yes",
+        "alt_name": "Sinhagarh Fort",
+        "castle_type": "fortress",
+        "historic": "castle",
+        "name": "Sinhagad Fort",
+        "name:hi": "सिंहगड किला",
+        "name:mr": "सिंहगड किल्ला"
+      }
+    },
+    {
+      "type": "way",
+      "id": 149110265,
+      "center": {
+        "lat": 18.5323825,
+        "lon": 73.8386358
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Shivajinagar",
+        "addr:housenumber": "GRJQ+W49",
+        "addr:postcode": "411016",
+        "addr:street": "Harikrishna Mandir Path",
+        "leisure": "park",
+        "name": "Chittranjan Vatika",
+        "name:mr": "चित्तरंजन वाटिका",
+        "opening_hours": "Mo-Su 06:00-11:00, 16:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 149110279,
+      "center": {
+        "lat": 18.5236923,
+        "lon": 73.8337877
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411016",
+        "addr:street": "Senapati Bapat Rd, Shivaji Nagar",
+        "leisure": "park",
+        "name": "Symbi Hill",
+        "operator": "Symbiosis University",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 149955071,
+      "center": {
+        "lat": 18.5545986,
+        "lon": 73.9661128
+      },
+      "tags": {
+        "name": "Choki Dani",
+        "tourism": "theme_park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 152331477,
+      "center": {
+        "lat": 18.5663939,
+        "lon": 73.9162371
+      },
+      "tags": {
+        "designation": "Joggers Park",
+        "leisure": "park",
+        "name": "Joggers Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 152333025,
+      "center": {
+        "lat": 18.5653857,
+        "lon": 73.9102813
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "Viman Nagar",
+        "addr:postcode": "411014",
+        "addr:street": "Viman Nagar Road",
+        "leisure": "park",
+        "name": "Udaan Biodiversity Park",
+        "name:mr": "उडान बायोडायव्हर्सिटी पार्क"
+      }
+    },
+    {
+      "type": "way",
+      "id": 158148700,
+      "center": {
+        "lat": 18.5997663,
+        "lon": 73.786986
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCMC Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 158879223,
+      "center": {
+        "lat": 18.437373,
+        "lon": 73.7505251
+      },
+      "tags": {
+        "name": "Peacock bay",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "way",
+      "id": 174274776,
+      "center": {
+        "lat": 18.5000197,
+        "lon": 73.8297995
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shyama Prasad Mukherjee Udyan",
+        "name:etymology:wikidata": "Q3344992",
+        "name:mr": "श्यामा प्रसाद मुखर्जी उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 176331809,
+      "center": {
+        "lat": 18.4169197,
+        "lon": 73.7747754
+      },
+      "tags": {
+        "name": "Wildernest Country Homes",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "way",
+      "id": 180659329,
+      "center": {
+        "lat": 18.5174823,
+        "lon": 73.8776479
+      },
+      "tags": {
+        "designation": "J.J Garden",
+        "leisure": "park",
+        "name": "J.J Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197472160,
+      "center": {
+        "lat": 18.594581,
+        "lon": 73.7959857
+      },
+      "tags": {
+        "addr:city": "Pimple Saudagar",
+        "addr:street": "Roseland Residency Road",
+        "leisure": "park",
+        "name": "PCMC Park",
+        "name:mr": "मनपा उद्यान",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "proposed": "park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954178,
+      "center": {
+        "lat": 18.4933297,
+        "lon": 73.8273212
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Major Tathawade Udyan",
+        "name:etymology:wikidata": "Q39045956",
+        "name:mr": "मेजर ताथवडे उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954182,
+      "center": {
+        "lat": 18.49727,
+        "lon": 73.8467924
+      },
+      "tags": {
+        "name": "Parvati",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954183,
+      "center": {
+        "lat": 18.5013401,
+        "lon": 73.8515349
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Peshve Udyan",
+        "name:mr": "पेशवे उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954184,
+      "center": {
+        "lat": 18.498212,
+        "lon": 73.8164611
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pandit Jeetendra Abhisheki Udyan",
+        "name:etymology:wikidata": "Q6203251",
+        "name:mr": "पंडित जीतेंद्र अभिषेकी उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954185,
+      "center": {
+        "lat": 18.4926759,
+        "lon": 73.8370038
+      },
+      "tags": {
+        "alt_name": "Pune-Okayama Friendship Park",
+        "alt_name:mr": "पुणे-ओकायामा मैत्री उद्यान",
+        "leisure": "park",
+        "name": "P L Deshpande Garden",
+        "name:etymology:wikidata": "Q3595161",
+        "name:mr": "पु. ल. देशपांडे उद्यान",
+        "opening_hours": "Mo-Su 06:00-10:30, 16:00-20:00",
+        "wikidata": "Q14474083",
+        "wikimedia_commons": "Category:Pu La Deshpande Garden",
+        "wikipedia": "en:Pune-Okayama Friendship Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 197954186,
+      "center": {
+        "lat": 18.5036292,
+        "lon": 73.8126383
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Tatyasaheb Thorat Udyan",
+        "operator": "Pune Municipal Corporation"
+      }
+    },
+    {
+      "type": "way",
+      "id": 199261924,
+      "center": {
+        "lat": 18.5205613,
+        "lon": 73.8471253
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Sambhaji Udyan",
+        "name:etymology:wikidata": "Q2737041",
+        "name:mr": "संभाजी उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 208180364,
+      "center": {
+        "lat": 18.5236663,
+        "lon": 73.840739
+      },
+      "tags": {
+        "access": "yes",
+        "garden:type": "public",
+        "leisure": "garden",
+        "name": "Fergusson College Botanical Garden",
+        "opening_hours": "24/7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 208958215,
+      "center": {
+        "lat": 18.5063032,
+        "lon": 73.8332994
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Raja Mantri Udyan",
+        "name:mr": "राजा मंत्री उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 208958216,
+      "center": {
+        "lat": 18.5043187,
+        "lon": 73.8403288
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Sachin Tendulkar Jogging Park",
+        "name:etymology:wikidata": "Q9488",
+        "name:mr": "सचिन तेंडुलकर जॉगिंग पार्क"
+      }
+    },
+    {
+      "type": "way",
+      "id": 210604941,
+      "center": {
+        "lat": 18.4752958,
+        "lon": 73.854281
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Kakasaheb Gadgil Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 210605039,
+      "center": {
+        "lat": 18.4836636,
+        "lon": 73.855671
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Walvekar Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 210718055,
+      "center": {
+        "lat": 18.5050655,
+        "lon": 73.8514752
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vijayanagar Colony Udyan",
+        "name:mr": "विजयानगर कॉलनी उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 213842797,
+      "center": {
+        "lat": 18.4872063,
+        "lon": 73.8747838
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:housenumber": "Opp to chintamani ganesh mandir",
+        "addr:postcode": "411037",
+        "addr:street": "market yard",
+        "leisure": "park",
+        "name": "Bhimale garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 214161056,
+      "center": {
+        "lat": 18.5120606,
+        "lon": 73.8424555
+      },
+      "tags": {
+        "historic": "memorial",
+        "name": "Nanasaheb Peshwe Samadhi",
+        "name:mr": "नानासाहेब पेशवे समाधी"
+      }
+    },
+    {
+      "type": "way",
+      "id": 214161057,
+      "center": {
+        "lat": 18.5130397,
+        "lon": 73.8409338
+      },
+      "tags": {
+        "historic": "memorial",
+        "name": "Savarkar Memorial",
+        "name:mr": "सावरकर स्मारक"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215535662,
+      "center": {
+        "lat": 18.5186426,
+        "lon": 73.8478053
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "V. D. Vartak Udyan",
+        "name:mr": "वा. द. वर्तक उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215732323,
+      "center": {
+        "lat": 18.539893,
+        "lon": 73.8347264
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Yashwant Nagar Society"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215732324,
+      "center": {
+        "lat": 18.5242235,
+        "lon": 73.8257162
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "237",
+        "addr:postcode": "411016",
+        "addr:street": "Balshastri Jambhekar Marg",
+        "dog": "leashed",
+        "leisure": "park",
+        "name": "Midori park",
+        "natural": "grassland",
+        "opening_hours": "Mo-Su 08:00-22:00",
+        "operator": "Lodha builders",
+        "operator:type": "private",
+        "smoking": "no",
+        "surface": "grass"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215804388,
+      "center": {
+        "lat": 18.5456506,
+        "lon": 73.8522117
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Kamalnayan Bajaj Udyan",
+        "name:mr": "कमलनयन बजाज उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215998826,
+      "center": {
+        "lat": 18.5524853,
+        "lon": 73.901537
+      },
+      "tags": {
+        "area": "yes",
+        "fee": "yes",
+        "name": "Aga Khan Palace",
+        "name:en": "Aga Khan Palace",
+        "name:mr": "आगा खान पॅलेस",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "way",
+      "id": 215998839,
+      "center": {
+        "lat": 18.5523605,
+        "lon": 73.9014477
+      },
+      "tags": {
+        "building": "yes",
+        "castle_type": "palace",
+        "historic": "castle",
+        "name": "Aga Khan Palace",
+        "name:en": "Aga Khan Palace",
+        "wikidata": "Q2344976",
+        "wikimedia_commons": "Category:Aga Khan Palace",
+        "wikipedia": "en:Aga Khan Palace"
+      }
+    },
+    {
+      "type": "way",
+      "id": 216815537,
+      "center": {
+        "lat": 18.5114443,
+        "lon": 73.8154942
+      },
+      "tags": {
+        "alt_name": "Rambaug Colony Park",
+        "leisure": "park",
+        "name": "D. V. Bal Udyan",
+        "name:mr": "दि. वि. बाळ उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217271037,
+      "center": {
+        "lat": 18.5187252,
+        "lon": 73.8566644
+      },
+      "tags": {
+        "name": "Lal Mahal",
+        "name:en": "Lal Mahal",
+        "name:mr": "लाल महाल",
+        "tourism": "attraction"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217271099,
+      "center": {
+        "lat": 18.5187255,
+        "lon": 73.8568786
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Jijamata Udyan",
+        "name:mr": "जिजामाता उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217278888,
+      "center": {
+        "lat": 18.5270984,
+        "lon": 73.8323727
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shri Samarth Ramdas Udyan",
+        "name:mr": "श्री समर्थ रामदास उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217295652,
+      "center": {
+        "lat": 18.4930306,
+        "lon": 73.85374
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411009",
+        "leisure": "park",
+        "name": "Yashwantrao Chavan Udyan Seven Wonders",
+        "name:en": "Seven Wonders Dream Park",
+        "name:etymology:wikidata": "Q1764541",
+        "name:mr": "यशवंतराव चव्हाण उद्यान",
+        "opening_hours": "Mo-Su 06:00-10:00 16:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217295654,
+      "center": {
+        "lat": 18.4836125,
+        "lon": 73.8510134
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Adhyapak Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217302730,
+      "center": {
+        "lat": 18.4931782,
+        "lon": 73.8659992
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pujari Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217318332,
+      "center": {
+        "lat": 18.5023297,
+        "lon": 73.8676108
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Kalmadi Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217631172,
+      "center": {
+        "lat": 18.4930933,
+        "lon": 73.998642
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "412307",
+        "addr:street": "Solapur Road",
+        "contact:email": "manaliresortpune@gmail.com",
+        "name": "Manali Resort and Banquet",
+        "phone": "+91 926 010 0500;+91 937 107 3020;+91 988 198 0007",
+        "tourism": "theme_park",
+        "website": "https://www.manaliresortpune.com"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217659258,
+      "center": {
+        "lat": 18.5146832,
+        "lon": 73.9307089
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Magarpatta Circle"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217736672,
+      "center": {
+        "lat": 18.494315,
+        "lon": 73.9061161
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "park",
+        "name": "SRPF Group 1, Ground 442",
+        "operator": "Maharashtra State Reserve Police Forces",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 217773610,
+      "center": {
+        "lat": 18.5081955,
+        "lon": 73.8532058
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411030",
+        "addr:street": "C. V. Joshi Marg",
+        "leisure": "park",
+        "name": "Maharana Pratap Udyan",
+        "name:etymology:wikidata": "Q2722956",
+        "name:mr": "महाराणा प्रताप उद्यान",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218078554,
+      "center": {
+        "lat": 18.5236343,
+        "lon": 73.8451834
+      },
+      "tags": {
+        "name": "Mahatma Phule Vastu Sangrahalaya",
+        "name:etymology:wikidata": "Q314394",
+        "name:mr": "महात्मा फुले वस्तू संग्रहालय",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218078556,
+      "center": {
+        "lat": 18.527045,
+        "lon": 73.8500789
+      },
+      "tags": {
+        "historic": "archaeological_site",
+        "name": "Pataleshwar",
+        "name:mr": "पाताळेश्वर",
+        "tourism": "attraction",
+        "wikidata": "Q7144204",
+        "wikimedia_commons": "Category:Pataleshwar",
+        "wikipedia": "en:Pataleshwar"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218691426,
+      "center": {
+        "lat": 18.5621564,
+        "lon": 73.8102042
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Marutrao Gayakwad Udyan",
+        "name:mr": "मारुतराव गायकवाड उद्यान",
+        "opening_hours": "06:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218691432,
+      "center": {
+        "lat": 18.5501942,
+        "lon": 73.9029017
+      },
+      "tags": {
+        "dog": "no",
+        "leisure": "park",
+        "name": "Kalyani Nagar Joggers Park",
+        "name:en": "Kalyani Nagar Joggers Park",
+        "opening_hours": "Mo-Su 06:00-11:00,16:00-20:00",
+        "operator": "Pune Municipal Corporation",
+        "smoking": "no",
+        "wheelchair": "yes"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218691434,
+      "center": {
+        "lat": 18.5381797,
+        "lon": 73.897971
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Damodar Wagaskar Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218697382,
+      "center": {
+        "lat": 18.5021252,
+        "lon": 73.813473
+      },
+      "tags": {
+        "historic": "memorial",
+        "memorial": "statue",
+        "name": "Chhatrapati Shivaji Maharaj"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218834887,
+      "center": {
+        "lat": 18.4683962,
+        "lon": 73.8528096
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Hatti Chowk",
+        "wheelchair": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218859883,
+      "center": {
+        "lat": 18.5447507,
+        "lon": 73.8839125
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chima Udyan",
+        "name:mr": "चिमा उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218859886,
+      "center": {
+        "lat": 18.5015203,
+        "lon": 73.9275923
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ram Manohar Lohia Udyan",
+        "name:etymology:wikidata": "Q2759530",
+        "name:mr": "राम मनोहर लोहिया उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 218881240,
+      "center": {
+        "lat": 18.5020235,
+        "lon": 73.8622855
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shrimant Bhairavsingh Ghorpade Udyan",
+        "name:mr": "श्रीमंत भैरवसिंह घोरपडे उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 219767496,
+      "center": {
+        "lat": 18.5044744,
+        "lon": 73.8530783
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chhatrapati Shivaji Maharaj Udyan",
+        "name:etymology:wikidata": "Q239505",
+        "name:mr": "छत्रपती शिवाजी महाराज उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 220562525,
+      "center": {
+        "lat": 18.4773969,
+        "lon": 73.8966961
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:housenumber": "42",
+        "addr:street": "Lane NIBM road",
+        "leisure": "park",
+        "name": "Queen park",
+        "opening_hours": "Mo-Sa 08:00-20:00",
+        "opening_hours:covid19": "open 5 am to 7 pm",
+        "operator": "miss queen"
+      }
+    },
+    {
+      "type": "way",
+      "id": 220562868,
+      "center": {
+        "lat": 18.5024623,
+        "lon": 73.8541088
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Garware Balbhavan",
+        "name:mr": "गरवारे बालभवन"
+      }
+    },
+    {
+      "type": "way",
+      "id": 220562882,
+      "center": {
+        "lat": 18.4985652,
+        "lon": 73.8544261
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ramchandra Keshav Taware Udyan",
+        "name:mr": "रामचंद्र केशव तावरे उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 223673901,
+      "center": {
+        "lat": 18.486869,
+        "lon": 73.9460088
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Baludyan",
+        "name:en": "Shree Hanuman Seva Trust",
+        "note": "Children park, having slides, swings etc."
+      }
+    },
+    {
+      "type": "way",
+      "id": 227926125,
+      "center": {
+        "lat": 18.5304269,
+        "lon": 73.8312801
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Parimal Udyan",
+        "name:mr": "परिमल उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 232745958,
+      "center": {
+        "lat": 18.5142253,
+        "lon": 73.8169393
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shri Sant Jnaneshwar Udyan",
+        "name:etymology:wikidata": "Q1033695",
+        "name:mr": "श्री संत ज्ञानेश्वर उद्यान",
+        "opening_hours": "Mo-Su 06:00-10:00,16:30-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 232879052,
+      "center": {
+        "lat": 18.5106663,
+        "lon": 73.8495104
+      },
+      "tags": {
+        "building": "yes",
+        "name": "Bharat Itihas Sanshodhak Mandal",
+        "name:mr": "भारत इतिहास संशोधक मंडळ",
+        "tourism": "museum",
+        "wikidata": "Q3635786",
+        "wikipedia": "en:Bharat Itihas Sanshodhak Mandal"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236173670,
+      "center": {
+        "lat": 18.6523195,
+        "lon": 73.844217
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Moshi Traffic Park",
+        "name:mr": "मोशी ट्रॅफिक पार्क"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236186209,
+      "center": {
+        "lat": 18.6573822,
+        "lon": 73.8084992
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bahirwade Ground Park",
+        "surface": "ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236186210,
+      "center": {
+        "lat": 18.6547054,
+        "lon": 73.8093056
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chhatrapati Shahu Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236237497,
+      "center": {
+        "lat": 18.6574336,
+        "lon": 73.8017609
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bird Valley Park",
+        "name:mr": "बर्ड व्हॅली उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236237555,
+      "center": {
+        "lat": 18.6588396,
+        "lon": 73.8046979
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PIMPRI CHINCHWAD KRIDA PARK"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236258512,
+      "center": {
+        "lat": 18.66451,
+        "lon": 73.771401
+      },
+      "tags": {
+        "addr:city": "nigdi",
+        "addr:district": "pune",
+        "addr:housenumber": "22",
+        "addr:postcode": "411044",
+        "addr:street": "Bhakti Shakti Pmpml Terminal Road",
+        "leisure": "park",
+        "name": "Bhakti-Shakti Udyan",
+        "name:mr": "भक्ती-शक्ती उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236675857,
+      "center": {
+        "lat": 18.6657822,
+        "lon": 73.7632096
+      },
+      "tags": {
+        "name": "Appughar",
+        "name:mr": "अप्पूघर",
+        "tourism": "theme_park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 236834485,
+      "center": {
+        "lat": 18.4118699,
+        "lon": 74.0498893
+      },
+      "tags": {
+        "historic": "ruins"
+      }
+    },
+    {
+      "type": "way",
+      "id": 239840635,
+      "center": {
+        "lat": 18.583518,
+        "lon": 73.6937104
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Gangaramwadi Circle",
+        "name:en": "Gangaramwadi Circle",
+        "name:hi": "गंगारामवाडी सर्कल",
+        "name:mr": "गंगारामवाडी सर्कल"
+      }
+    },
+    {
+      "type": "way",
+      "id": 239840636,
+      "center": {
+        "lat": 18.5860298,
+        "lon": 73.7336987
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Infosys Circle Phase 1 Hinjawadi",
+        "name:mr": "इन्फोसिस वर्तुळ"
+      }
+    },
+    {
+      "type": "way",
+      "id": 239840637,
+      "center": {
+        "lat": 18.5776071,
+        "lon": 73.688182
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Megapolis Circle",
+        "name:en": "Megapolis Circle",
+        "name:hi": "मेगापोलिस सर्कल",
+        "name:mr": "मेगापोलिस सर्कल"
+      }
+    },
+    {
+      "type": "way",
+      "id": 242682772,
+      "center": {
+        "lat": 18.6182376,
+        "lon": 73.818529
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "BD Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 242682774,
+      "center": {
+        "lat": 18.6181216,
+        "lon": 73.8198118
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vallabh Bhai Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 242682775,
+      "center": {
+        "lat": 18.6224178,
+        "lon": 73.8172445
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Sant Tukaram Park",
+        "name:etymology:wikidata": "Q468361"
+      }
+    },
+    {
+      "type": "way",
+      "id": 244024634,
+      "center": {
+        "lat": 18.6159947,
+        "lon": 73.8024417
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pimpri",
+        "addr:housenumber": "ashok theatre street,pimpri colony",
+        "addr:postcode": "411017",
+        "addr:street": "ashok theatre street",
+        "leisure": "park",
+        "name": "Hemu Kalani Udyan",
+        "opening_hours": "Mo-Sa 08:00-20:00",
+        "operator": "government",
+        "operator:type": "government_facility-public"
+      }
+    },
+    {
+      "type": "way",
+      "id": 244386572,
+      "center": {
+        "lat": 18.5728109,
+        "lon": 73.8240893
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shivaji Park",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 246996059,
+      "center": {
+        "lat": 18.5921918,
+        "lon": 73.8175747
+      },
+      "tags": {
+        "addr:city": "Pimpri-Chinchwad",
+        "addr:postcode": "411061",
+        "addr:street": "Pimple Gurav Road",
+        "leisure": "park",
+        "name": "Pimple Gurav Dinosaur Park",
+        "name:mr": "डायनासोर उद्यान",
+        "opening_hours": "Mo-Su 05:00-20:30",
+        "operator": "Pimpri-Chinchwad Municipal Corporation",
+        "tourism": "theme_park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 247009988,
+      "center": {
+        "lat": 18.5360903,
+        "lon": 73.833135
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pankunwar Firodiya Udyan",
+        "name:mr": "पानकुंवर फिरोदिया उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 248446112,
+      "center": {
+        "lat": 18.5964692,
+        "lon": 73.8201538
+      },
+      "tags": {
+        "addr:street": "HRWC+W4M, Shastri Nagar, Kasarwadi, Pimpri-Chinchwad, Maharashtra 411034",
+        "leisure": "park",
+        "name": "Sitangan Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 250302787,
+      "center": {
+        "lat": 18.5722502,
+        "lon": 73.7945789
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:neighbourhood": "Pimple Nilakh",
+        "addr:postcode": "411027",
+        "leisure": "park",
+        "name": "Pimple Nilakh Park",
+        "name:mr": "पिंपळे निळख उद्यान",
+        "operator": "Pimpri-chinchwad Municipal Corporation (PCMC)"
+      }
+    },
+    {
+      "type": "way",
+      "id": 253984586,
+      "center": {
+        "lat": 18.6074699,
+        "lon": 73.7679162
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Laxmibai Barne Udyan",
+        "name:mr": "लक्ष्मीबाई बारणे उद्यान",
+        "opening_hours": "05:00-10:00,16:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 256431160,
+      "center": {
+        "lat": 18.5185907,
+        "lon": 73.9398788
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Amanora Bowl"
+      }
+    },
+    {
+      "type": "way",
+      "id": 256444969,
+      "center": {
+        "lat": 18.46552,
+        "lon": 73.8692331
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ambedkar Park",
+        "name:etymology:wikidata": "Q231690"
+      }
+    },
+    {
+      "type": "way",
+      "id": 257752108,
+      "center": {
+        "lat": 18.5797209,
+        "lon": 73.8943979
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 258099111,
+      "center": {
+        "lat": 18.5811881,
+        "lon": 73.8829503
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Anand Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 258099112,
+      "center": {
+        "lat": 18.5859546,
+        "lon": 73.8875517
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Gokul Nagar Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 259865798,
+      "center": {
+        "lat": 18.5094747,
+        "lon": 73.8030333
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vrunda-Kerur garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 259865842,
+      "center": {
+        "lat": 18.5096762,
+        "lon": 73.801749
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rajpath Society ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 259866051,
+      "center": {
+        "lat": 18.5104445,
+        "lon": 73.8013864
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shikshaknagar ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 263825711,
+      "center": {
+        "lat": 18.4964129,
+        "lon": 73.876908
+      },
+      "tags": {
+        "addr:district": "Pune",
+        "addr:postcode": "411037",
+        "addr:street": "Irawati Karve Marg",
+        "leisure": "park",
+        "name": "Gool Poonawala Udyan",
+        "name:mr": "गूल पूनावाला उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 264281528,
+      "center": {
+        "lat": 18.5107618,
+        "lon": 73.8545094
+      },
+      "tags": {
+        "building": "commercial",
+        "name": "Raja Dinkar Kelkar Museum",
+        "name:mr": "राजा दिनकर केळकर संग्रहालय",
+        "tourism": "museum",
+        "wikidata": "Q1134736",
+        "wikimedia_commons": "Category:Raja Dinkar Kelkar Museum",
+        "wikipedia": "en:Raja Dinkar Kelkar Museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 265152062,
+      "center": {
+        "lat": 18.5176124,
+        "lon": 73.920541
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "BHO"
+      }
+    },
+    {
+      "type": "way",
+      "id": 269501567,
+      "center": {
+        "lat": 18.5263767,
+        "lon": 73.8499965
+      },
+      "tags": {
+        "amenity": "place_of_worship",
+        "building": "temple",
+        "name": "Jangli Maharaj Mandir",
+        "name:mr": "जंगली महाराज मंदिर",
+        "religion": "hindu",
+        "wikidata": "Q98801468",
+        "wikimedia_commons": "Category:Jangli Maharaj Temple"
+      }
+    },
+    {
+      "type": "way",
+      "id": 279403633,
+      "center": {
+        "lat": 18.4917215,
+        "lon": 73.8506912
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vasantrao Bagul Udyan",
+        "name:mr": "वसंतराव बागुल उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 281835450,
+      "center": {
+        "lat": 18.5189628,
+        "lon": 73.9280393
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "66",
+        "addr:postcode": "41128",
+        "addr:street": "circle",
+        "leisure": "park",
+        "name": "SYLVINIA",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 281883248,
+      "center": {
+        "lat": 18.5658282,
+        "lon": 73.8250879
+      },
+      "tags": {
+        "garden:type": "botanical",
+        "leisure": "garden",
+        "name": "Botanical Garden",
+        "name:mr": "बॉटनीकल गार्डन"
+      }
+    },
+    {
+      "type": "way",
+      "id": 281883249,
+      "center": {
+        "lat": 18.5692677,
+        "lon": 73.832692
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chhatrapati Shivaji Maharaj Udyan",
+        "name:etymology:wikidata": "Q239505",
+        "name:mr": "छत्रपती शिवाजी महाराज उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 282054945,
+      "center": {
+        "lat": 18.5207534,
+        "lon": 73.8534501
+      },
+      "tags": {
+        "amenity": "place_of_worship",
+        "check_date": "2026-03-12",
+        "name": "Amruteshwar Mandir",
+        "name:mr": "अमृतेश्वर मंदिर",
+        "religion": "hindu",
+        "wikidata": "Q98801443",
+        "wikimedia_commons": "Category:Amruteshwar Temple Complex, Pune"
+      }
+    },
+    {
+      "type": "way",
+      "id": 282102067,
+      "center": {
+        "lat": 18.5208607,
+        "lon": 73.868041
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "414",
+        "addr:postcode": "411001",
+        "addr:street": "Gadge Maharaj Road",
+        "leisure": "park",
+        "name": "Chhatrapati Shahu Udyan",
+        "name:etymology:wikidata": "Q3633171",
+        "name:mr": "छत्रपती शाहू उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 282961089,
+      "center": {
+        "lat": 18.5172297,
+        "lon": 73.8465584
+      },
+      "tags": {
+        "amenity": "place_of_worship",
+        "check_date": "2026-03-12",
+        "name": "Ashtabhuja Mandir",
+        "name:mr": "अष्टभुजा मंदिर",
+        "religion": "hindu",
+        "wikidata": "Q98802419",
+        "wikimedia_commons": "Category:Ashtabhuja Durga Temple"
+      }
+    },
+    {
+      "type": "way",
+      "id": 285606039,
+      "center": {
+        "lat": 18.4987212,
+        "lon": 73.899446
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411040",
+        "addr:street": "Late Vitthalrao Namdeo Shivarkar Road",
+        "leisure": "park",
+        "name": "Vitthalrao Shivarkar Udyan",
+        "name:mr": "विठ्ठलराव शिवरकर उद्यान",
+        "opening_hours": "Mo-Su 06:00-11:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 289375531,
+      "center": {
+        "lat": 18.5031471,
+        "lon": 73.8739344
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rohidas Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 290390068,
+      "center": {
+        "lat": 18.5317281,
+        "lon": 73.8454956
+      },
+      "tags": {
+        "building": "yes",
+        "name": "Sawai Gandharva Smarak",
+        "name:mr": "सवाई गंधर्व स्मारक",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 291939305,
+      "center": {
+        "lat": 18.5506464,
+        "lon": 73.8801457
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Indraprasth Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 292610072,
+      "center": {
+        "lat": 18.5333868,
+        "lon": 73.8959774
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shahu Modak Udyan",
+        "name:mr": "शाहू मोडक उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 295672810,
+      "center": {
+        "lat": 18.4988424,
+        "lon": 73.8747152
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vairage Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 324170007,
+      "center": {
+        "lat": 18.4914816,
+        "lon": 73.8317172
+      },
+      "tags": {
+        "addr:city": "PUNE",
+        "addr:postcode": "411019",
+        "addr:street": "Sinhagad Road",
+        "leisure": "park",
+        "name": "Nana Nani park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 331478719,
+      "center": {
+        "lat": 18.5242655,
+        "lon": 73.8299959
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411016",
+        "addr:street": "Senapati Bapat Marg",
+        "building": "museum",
+        "contact:facebook": "https://www.facebook.com/SymbiosisSocietysDrBabasahebAmbedkarMuseumMemorial/",
+        "contact:instagram": "https://www.instagram.com/ambedkarmuseum/",
+        "contact:youtube": "https://www.youtube.com/@symbiosissocietysdr.babasa2926/",
+        "email": "ambedkarmuseum@symbiosis.ac.in",
+        "fax": "+91 20 2566 7109",
+        "museum": "history",
+        "name": "Dr. Babasaheb Ambedkar Museum",
+        "name:etymology:wikidata": "Q231690",
+        "name:mr": "डॉ. बाबासाहेब आंबेडकर संग्रहालय",
+        "phone": "+91 20 2592 5370;+91 20 2565 9909",
+        "tourism": "museum",
+        "website": "https://symbiosis-ambedkarmemorial.org/"
+      }
+    },
+    {
+      "type": "way",
+      "id": 331532100,
+      "center": {
+        "lat": 18.5021403,
+        "lon": 73.8377894
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411030",
+        "addr:street": "Dattawadi Road",
+        "leisure": "park",
+        "name": "Madar Teresa Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 331532105,
+      "center": {
+        "lat": 18.5305499,
+        "lon": 73.8278305
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Prakash Narayan Bahirat Udyan",
+        "name:mr": "प्रकाश नारायण बहिरट उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 331532107,
+      "center": {
+        "lat": 18.5264706,
+        "lon": 73.8247943
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shakuntala Nikam Udyan",
+        "name:mr": "शकुंतला निकम उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 344063818,
+      "center": {
+        "lat": 18.5049944,
+        "lon": 73.8125796
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nilu Phule Udyan",
+        "name:etymology:wikidata": "Q455343",
+        "name:mr": "निळू फुले उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 352446011,
+      "center": {
+        "lat": 18.4720951,
+        "lon": 73.8898601
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359295773,
+      "center": {
+        "lat": 18.6656867,
+        "lon": 73.7252713
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "pune",
+        "addr:housenumber": "654321",
+        "addr:postcode": "654321",
+        "addr:street": "Gahunje - Mukai Chowk Kiwale Road",
+        "dog": "leashed",
+        "leisure": "park",
+        "name": "def park",
+        "opening_hours": "sunrise-sunset",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359687254,
+      "center": {
+        "lat": 18.5671425,
+        "lon": 73.8110627
+      },
+      "tags": {
+        "amenity": "place_of_worship",
+        "building": "yes",
+        "name": "Aundh Vitthal Mandir",
+        "religion": "hindu",
+        "wikidata": "Q98802423",
+        "wikimedia_commons": "Category:Aundh Vitthal Temple"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359814369,
+      "center": {
+        "lat": 18.540233,
+        "lon": 73.8632112
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "maharastra",
+        "addr:housenumber": "sangamwadi",
+        "addr:postcode": "411001",
+        "addr:street": "Sangamwadi Road",
+        "leisure": "park",
+        "mobile": "9623899592",
+        "name": "janvi parking lot",
+        "opening_hours": "24/7",
+        "operator": "janvi thombare",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359814491,
+      "center": {
+        "lat": 18.5378157,
+        "lon": 73.8632344
+      },
+      "tags": {
+        "access": "private",
+        "addr:city": "Pune",
+        "addr:district": "maharastra",
+        "addr:housenumber": "sangamwadi",
+        "addr:postcode": "411001",
+        "addr:street": "27",
+        "leisure": "park",
+        "mobile": "98230123458",
+        "name": "mayuri miss ki parking",
+        "opening_hours": "24/7",
+        "operator": "mayuri parihar",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359913248,
+      "center": {
+        "lat": 18.5032346,
+        "lon": 73.8735391
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "14",
+        "addr:postcode": "411001",
+        "addr:street": "Hidayatullah Path",
+        "leisure": "park",
+        "name": "Khan Park",
+        "opening_hours": "24/7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 359962272,
+      "center": {
+        "lat": 18.5389291,
+        "lon": 73.8060875
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "100 NCL Innovation Park,",
+        "addr:postcode": "411008",
+        "addr:street": "Dr. Homi Bhabha Road",
+        "leisure": "park",
+        "name": "100 NCL Innovation Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 361132495,
+      "center": {
+        "lat": 18.5919407,
+        "lon": 73.7807759
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "ज्ञानज्योती सावित्रीबाई फुले उद्यान",
+        "name:en": "Jnanajyoti Savitribai Phule Udyan",
+        "name:mr": "ज्ञानज्योती सावित्रीबाई फुले उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 367059899,
+      "center": {
+        "lat": 18.5801738,
+        "lon": 73.8933739
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pragati Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 380417660,
+      "center": {
+        "lat": 18.526954,
+        "lon": 73.8743753
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Jayprakash Narayan Udyan",
+        "name:etymology:wikidata": "Q734509",
+        "name:mr": "जयप्रकाश नारायण उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 395898751,
+      "center": {
+        "lat": 18.5364833,
+        "lon": 73.7886091
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411021",
+        "addr:street": "Sutarwadi Road",
+        "leisure": "park",
+        "name": "Pashan Lake Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 446814398,
+      "center": {
+        "lat": 18.6646215,
+        "lon": 73.7677626
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCNTDA Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 446832336,
+      "center": {
+        "lat": 18.6542618,
+        "lon": 73.7665375
+      },
+      "tags": {
+        "addr:city": "gokhalenagar pune",
+        "addr:housenumber": "grjc+vp5",
+        "addr:postcode": "411016",
+        "addr:street": "niljyoti society",
+        "leisure": "park",
+        "name": "Shri Sant Gajanan Maharaj Garden",
+        "name:etymology:wikidata": "Q3630688",
+        "opening_hours": "17:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 447361695,
+      "center": {
+        "lat": 18.5534945,
+        "lon": 73.8694608
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Children Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 447665802,
+      "center": {
+        "lat": 18.5557229,
+        "lon": 73.8766737
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "MAHARASHTA",
+        "addr:postcode": "411006",
+        "addr:street": "Near Ram Society",
+        "leisure": "park",
+        "name": "Shahid Huttatma Garden",
+        "opening_hours": "Mo-Su 06:00-19:00",
+        "operator": "Sapkal Sir",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 447665807,
+      "center": {
+        "lat": 18.5535116,
+        "lon": 73.8690843
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Children Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 448097838,
+      "center": {
+        "lat": 18.6256118,
+        "lon": 73.8308533
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411034",
+        "addr:street": "Nehrunagar Road",
+        "leisure": "park",
+        "name": "PCMC Park",
+        "opening_hours": "Mo-Fr 08:00-17:00",
+        "operator": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 448097850,
+      "center": {
+        "lat": 18.6200958,
+        "lon": 73.8406851
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Annabhau Udyan",
+        "name:etymology:wikidata": "Q55759",
+        "name:mr": "अण्णाभाऊ उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 448099209,
+      "center": {
+        "lat": 18.6250265,
+        "lon": 73.8488091
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bhosari Sahal Kendra Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 448099210,
+      "center": {
+        "lat": 18.6247414,
+        "lon": 73.848427
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bhosarigoan Lake Running Track"
+      }
+    },
+    {
+      "type": "way",
+      "id": 462026418,
+      "center": {
+        "lat": 18.5497859,
+        "lon": 73.917268
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Raje Chhatrapati Shivaji Garden",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469320325,
+      "center": {
+        "lat": 18.5096961,
+        "lon": 73.9266108
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "grevillea park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469322847,
+      "center": {
+        "lat": 18.5111511,
+        "lon": 73.9273805
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Magarpatta City School Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469323826,
+      "center": {
+        "lat": 18.5096639,
+        "lon": 73.9272658
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "club house"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469355609,
+      "center": {
+        "lat": 18.4815408,
+        "lon": 74.025341
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "sai baba park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469641091,
+      "center": {
+        "lat": 18.4862388,
+        "lon": 74.0280172
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "shala"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469641336,
+      "center": {
+        "lat": 18.4910981,
+        "lon": 74.0264909
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "MIT"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469642387,
+      "center": {
+        "lat": 18.4433147,
+        "lon": 74.0180883
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "ramdara"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469648515,
+      "center": {
+        "lat": 18.5108362,
+        "lon": 73.7777605
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411021",
+        "addr:street": "LMD Chowk",
+        "leisure": "park",
+        "name": "LMD park",
+        "opening_hours": "Mo-Su 10:00AM-9:00pm"
+      }
+    },
+    {
+      "type": "way",
+      "id": 469810388,
+      "center": {
+        "lat": 18.5177667,
+        "lon": 73.9436755
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Amanora"
+      }
+    },
+    {
+      "type": "way",
+      "id": 470109423,
+      "center": {
+        "lat": 18.5049275,
+        "lon": 73.9306108
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "bhosale garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 470706758,
+      "center": {
+        "lat": 18.5187109,
+        "lon": 73.9250787
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "trillium"
+      }
+    },
+    {
+      "type": "way",
+      "id": 470854436,
+      "center": {
+        "lat": 18.4826138,
+        "lon": 74.024142
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "shive mandir"
+      }
+    },
+    {
+      "type": "way",
+      "id": 473833192,
+      "center": {
+        "lat": 18.7404854,
+        "lon": 73.6770884
+      },
+      "tags": {
+        "addr:postcode": "410506",
+        "building:levels": "3",
+        "leisure": "park",
+        "name": "Sarswati Marathi Medium School"
+      }
+    },
+    {
+      "type": "way",
+      "id": 488357561,
+      "center": {
+        "lat": 18.5301686,
+        "lon": 73.8518394
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Thube Park",
+        "opening_hours": "6:30am to 11:30pm"
+      }
+    },
+    {
+      "type": "way",
+      "id": 494498097,
+      "center": {
+        "lat": 18.5462329,
+        "lon": 73.8820068
+      },
+      "tags": {
+        "description": "It have walking plaza,Gym equipments, and a park at top.",
+        "leaf_cycle": "evergreen",
+        "leaf_type": "mixed",
+        "leisure": "park",
+        "name": "Tarkeshwar Mandir Hill"
+      }
+    },
+    {
+      "type": "way",
+      "id": 494577377,
+      "center": {
+        "lat": 18.5584717,
+        "lon": 73.9206932
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PMC Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 511226311,
+      "center": {
+        "lat": 18.5601506,
+        "lon": 73.8067807
+      },
+      "tags": {
+        "description": "Children's / Jogging Park",
+        "landuse": "recreation_ground",
+        "leisure": "park",
+        "name": "Ram Laxman Children's Park",
+        "natural": "grass"
+      }
+    },
+    {
+      "type": "way",
+      "id": 511315413,
+      "center": {
+        "lat": 18.4545017,
+        "lon": 73.8652752
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ganga Osian Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 511316197,
+      "center": {
+        "lat": 18.4524173,
+        "lon": 73.8650379
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rajas Society Playground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 527740102,
+      "center": {
+        "lat": 18.5689878,
+        "lon": 73.8810191
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Valmiki udyan",
+        "name:etymology:wikidata": "Q715607"
+      }
+    },
+    {
+      "type": "way",
+      "id": 527740913,
+      "center": {
+        "lat": 18.5588048,
+        "lon": 73.8790659
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mahatma Phule Udyan",
+        "name:etymology:wikidata": "Q314394"
+      }
+    },
+    {
+      "type": "way",
+      "id": 527746888,
+      "center": {
+        "lat": 18.5381281,
+        "lon": 73.8996233
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Meera Nagar Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 532470092,
+      "center": {
+        "lat": 18.5416233,
+        "lon": 73.8842489
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bund Garden",
+        "name:mr": "बंडगार्डन",
+        "wikidata": "Q4997473",
+        "wikimedia_commons": "Category:Bund Garden, Pune",
+        "wikipedia": "en:Bund Garden, Pune"
+      }
+    },
+    {
+      "type": "way",
+      "id": 534249602,
+      "center": {
+        "lat": 18.5719675,
+        "lon": 73.8839359
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Dreams residency Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 534249608,
+      "center": {
+        "lat": 18.5712413,
+        "lon": 73.8835308
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Uttam Townscape Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 540959311,
+      "center": {
+        "lat": 18.5971939,
+        "lon": 73.7914403
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pimple Saudagar Linear Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 540959800,
+      "center": {
+        "lat": 18.5970596,
+        "lon": 73.7932435
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pimple Saudagar Linear Gardens"
+      }
+    },
+    {
+      "type": "way",
+      "id": 540960896,
+      "center": {
+        "lat": 18.5972729,
+        "lon": 73.7951688
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pimple Saudagaur Linear Gardens"
+      }
+    },
+    {
+      "type": "way",
+      "id": 540969265,
+      "center": {
+        "lat": 18.5973818,
+        "lon": 73.7914024
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Deepmala Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 540969993,
+      "center": {
+        "lat": 18.5886914,
+        "lon": 73.760573
+      },
+      "tags": {
+        "alt_name": "Savatamali Udyan",
+        "alt_name:mr": "सावतामाळी उद्यान",
+        "leisure": "park",
+        "name": "Shri Sant Savatamali Udyan Wakad",
+        "name:etymology:wikidata": "Q7427962",
+        "name:mr": "श्री संत सावतामाळी उद्यान वाकड"
+      }
+    },
+    {
+      "type": "way",
+      "id": 544169744,
+      "center": {
+        "lat": 18.6613134,
+        "lon": 73.799409
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411019",
+        "addr:street": "Shambhaji Nagar",
+        "addr:unit": "Chinchwad",
+        "description": "Inside is the famous Snake Park Zoo",
+        "leisure": "park",
+        "name": "Nisargakavi Bahinabai Chaudhary Zoo"
+      }
+    },
+    {
+      "type": "way",
+      "id": 544175336,
+      "center": {
+        "lat": 18.6619091,
+        "lon": 73.7952902
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411019",
+        "addr:street": "Shambhaji Nagar",
+        "addr:unit": "Chinchwad",
+        "description": "A Beautiful Park With Holy Sai Baba Mandir And a Big Hall In the centre ",
+        "leisure": "park",
+        "name": "Sambhaji Nagar Garden",
+        "wheelchair": "limited"
+      }
+    },
+    {
+      "type": "way",
+      "id": 544363019,
+      "center": {
+        "lat": 18.6634873,
+        "lon": 73.7850786
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 546499118,
+      "center": {
+        "lat": 18.6467127,
+        "lon": 73.7746001
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "pune",
+        "addr:postcode": "411044",
+        "addr:state": "Maharashtra",
+        "addr:street": "Krantisinha Nana Patil Road",
+        "dog": "no",
+        "leisure": "park",
+        "loc_name": "Dnyaneshwar Garden",
+        "name": "Sant Dnyaneshwar Park",
+        "name:etymology:wikidata": "Q1033695",
+        "opening_hours": "Mo-Sa 08:00-20:00",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 546998920,
+      "center": {
+        "lat": 18.6515749,
+        "lon": 73.7715811
+      },
+      "tags": {
+        "description": "Sant Tukaram Park, Near Sambhaji Chowk.",
+        "leisure": "park",
+        "name": "Sant Tukaram Park",
+        "name:etymology:wikidata": "Q468361",
+        "name:mr": "संत तुकाराम उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 548181490,
+      "center": {
+        "lat": 18.6422926,
+        "lon": 73.7755182
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Giriraj Housing Society Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 551263998,
+      "center": {
+        "lat": 18.5248201,
+        "lon": 73.871468
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Dr Ambedkar Udyan",
+        "name:etymology:wikidata": "Q231690",
+        "source": "local knowledge"
+      }
+    },
+    {
+      "type": "way",
+      "id": 552180017,
+      "center": {
+        "lat": 18.5584846,
+        "lon": 73.9207134
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PMC Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 552182837,
+      "center": {
+        "lat": 18.4621895,
+        "lon": 73.8895592
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Exercise Field"
+      }
+    },
+    {
+      "type": "way",
+      "id": 552184037,
+      "center": {
+        "lat": 18.460084,
+        "lon": 73.888727
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bal Udyaan Kondhwa"
+      }
+    },
+    {
+      "type": "way",
+      "id": 552184616,
+      "center": {
+        "lat": 18.4600401,
+        "lon": 73.8912054
+      },
+      "tags": {
+        "landuse": "greenfield",
+        "leisure": "park",
+        "name": "Empty Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 553573316,
+      "center": {
+        "lat": 18.4544432,
+        "lon": 73.8898293
+      },
+      "tags": {
+        "landuse": "recreation_ground",
+        "leisure": "park",
+        "name": "Local Cricket Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 554884170,
+      "center": {
+        "lat": 18.5982869,
+        "lon": 73.8044388
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Linear Garden, Pimple Saudagar"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556074002,
+      "center": {
+        "lat": 18.5455808,
+        "lon": 73.7979816
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Gram Sankruti Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556161065,
+      "center": {
+        "lat": 18.4803285,
+        "lon": 73.9019557
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:street": "Narayan Annaji Shinde Road",
+        "brand:website": "https://www.pmc.gov.in/en/b/all-garden-list",
+        "leisure": "park",
+        "name": "Anusaya Lonkar park Wanworie",
+        "official_name:en": "Late Anusaya Sadba Lonkar Garden",
+        "official_name:mr": "कै. अनुसया सादबा लोणकर उद्यान",
+        "opening_hours": "Mo-Su 06:00-11:00,16:00-21:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556263430,
+      "center": {
+        "lat": 18.4440849,
+        "lon": 73.8625817
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Katraj Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556266921,
+      "center": {
+        "lat": 18.4466682,
+        "lon": 73.8626756
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556267499,
+      "center": {
+        "lat": 18.4535489,
+        "lon": 73.8796999
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nana Nani park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556291439,
+      "center": {
+        "lat": 18.5907273,
+        "lon": 73.8906964
+      },
+      "tags": {
+        "description": "near by street \"Gokul Nagar\"",
+        "leisure": "park",
+        "name": "Dhaneshwar Ground",
+        "postal_code": "411015"
+      }
+    },
+    {
+      "type": "way",
+      "id": 556291717,
+      "center": {
+        "lat": 18.5899431,
+        "lon": 73.8897039
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "pune",
+        "addr:housenumber": "15",
+        "addr:postcode": "411015",
+        "addr:street": "Dhanori Road",
+        "description": "near by street \"Gokul Nagar\"",
+        "leisure": "park",
+        "name": "Hansraj anand garden",
+        "opening_hours": "4pm-8pm",
+        "postal_code": "411015"
+      }
+    },
+    {
+      "type": "way",
+      "id": 567377443,
+      "center": {
+        "lat": 18.6534267,
+        "lon": 73.7734511
+      },
+      "tags": {
+        "description": "Sadgurumata Amrutanand Devi Children Park Near Bhel Chowk",
+        "leisure": "park",
+        "name": "Amrutanand Devi Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 583489587,
+      "center": {
+        "lat": 18.6145318,
+        "lon": 73.7801202
+      },
+      "tags": {
+        "addr:place": "Thergaav",
+        "leisure": "park",
+        "name": "BapujiBuwa Udyan",
+        "name:en": "BapujiBuwa Udyan",
+        "name:mr": "बापूजीबुवा उद्यान",
+        "opening_hours": "05:00-10:00,16:00-20:00",
+        "operator": "PCMC"
+      }
+    },
+    {
+      "type": "way",
+      "id": 583490311,
+      "center": {
+        "lat": 18.6179693,
+        "lon": 73.7992599
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "pimpri",
+        "addr:postcode": "411017",
+        "addr:street": "near kalewadi bridge",
+        "leisure": "park",
+        "name": "Sadhu Vaswani Garden",
+        "name:etymology:wikidata": "Q3634783",
+        "opening_hours": "sunrise-sunset",
+        "operator": "public",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "way",
+      "id": 583492440,
+      "center": {
+        "lat": 18.6271718,
+        "lon": 73.8086173
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Kharalai Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 588507948,
+      "center": {
+        "lat": 18.5431951,
+        "lon": 73.9257769
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shri Bhairavnath Udayan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 604035033,
+      "center": {
+        "lat": 18.4763443,
+        "lon": 73.8569601
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Swami Vivekananda Udyan",
+        "name:etymology:wikidata": "Q47478"
+      }
+    },
+    {
+      "type": "way",
+      "id": 610772662,
+      "center": {
+        "lat": 18.610107,
+        "lon": 73.7974241
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Haribhau Seth Dinaji Vaghere Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 610775462,
+      "center": {
+        "lat": 18.616211,
+        "lon": 73.7656161
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shivaji Park",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 612519160,
+      "center": {
+        "lat": 18.6070457,
+        "lon": 73.7958175
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Jay Sitaram Udyan Rahatani Gaon"
+      }
+    },
+    {
+      "type": "way",
+      "id": 615493187,
+      "center": {
+        "lat": 18.621739,
+        "lon": 73.7893793
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Jyotiba Udyan Kalewadi",
+        "name:mr": "ज्योतिबा उद्यान काळेवाडी"
+      }
+    },
+    {
+      "type": "way",
+      "id": 615777854,
+      "center": {
+        "lat": 18.5569721,
+        "lon": 73.7721795
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vithoba Balaji Murkute Udyan",
+        "name:en": "Vithoba Balaji Murkute Udyan",
+        "name:mr": "विठोबा बाळाजी मुरकुटे उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 625946309,
+      "center": {
+        "lat": 18.6323161,
+        "lon": 73.7879661
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shridharnagar Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 625947563,
+      "center": {
+        "lat": 18.6274175,
+        "lon": 73.7785798
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "पिंपरी चिंचवड महानगरपालिका प्राण्यांची बाग",
+        "name:en": "PCMC Animal Garden",
+        "name:mr": "पिंपरी चिंचवड महानगरपालिका प्राण्यांची बाग",
+        "opening_hours": "Mo-Su 09:00-21:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 625948083,
+      "center": {
+        "lat": 18.6343093,
+        "lon": 73.7903962
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Jijabai Gawade Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 629205482,
+      "center": {
+        "lat": 18.4601688,
+        "lon": 73.8660823
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mahavir Swami Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 629208593,
+      "center": {
+        "lat": 18.4499237,
+        "lon": 73.8631852
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pragati Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 629209789,
+      "center": {
+        "lat": 18.4739055,
+        "lon": 73.8956383
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "park",
+        "name": "Kausarbaug Garden",
+        "opening_hours": "Mo-Su 06:00-24:00",
+        "operator": "Pune Municipal"
+      }
+    },
+    {
+      "type": "way",
+      "id": 629210414,
+      "center": {
+        "lat": 18.4846738,
+        "lon": 73.8985307
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shahid Ashok Kamthe Garden",
+        "name:etymology:wikidata": "Q4805748"
+      }
+    },
+    {
+      "type": "way",
+      "id": 629222197,
+      "center": {
+        "lat": 18.4895057,
+        "lon": 73.8720024
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Ekta Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630456832,
+      "center": {
+        "lat": 18.4964437,
+        "lon": 73.7960273
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mahatma Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630465172,
+      "center": {
+        "lat": 18.6041849,
+        "lon": 73.7697999
+      },
+      "tags": {
+        "alt_name": "Ombale Udyan;Ombale park",
+        "alt_name:mr": "ओंबाळे उद्यान;शहीद तुकाराम ओंबाळे उद्यान",
+        "leisure": "park",
+        "name": "Hutatma Tukaram Ombale Park",
+        "name:en": "Hutatma Tukaram Ombale Park",
+        "name:etymology:wikidata": "Q154658",
+        "name:mr": "हुतात्मा तुकाराम ओंबाळे उद्यान",
+        "opening_hours": "05:00-10:00,16:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630465992,
+      "center": {
+        "lat": 18.6241874,
+        "lon": 73.7691459
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Theragon Boat Club Park",
+        "name:mr": "थेरगाव बोट क्लब उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630475100,
+      "center": {
+        "lat": 18.5690684,
+        "lon": 73.8135813
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chatrapathi Shivaji Garden",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630476468,
+      "center": {
+        "lat": 18.6333998,
+        "lon": 73.7912741
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bhaguji Golandhe Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630477572,
+      "center": {
+        "lat": 18.4938324,
+        "lon": 73.8709609
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Haji Rasulbhai Pansare Bal Udhyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630478560,
+      "center": {
+        "lat": 18.4928132,
+        "lon": 73.8630828
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Aruna Asaffali Garden",
+        "name:etymology:wikidata": "Q467207"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630481762,
+      "center": {
+        "lat": 18.4863203,
+        "lon": 73.8523768
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Butterfly Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630482334,
+      "center": {
+        "lat": 18.4871801,
+        "lon": 73.8549732
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shankarrao Kaware Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630486383,
+      "center": {
+        "lat": 18.6277037,
+        "lon": 73.7863066
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Savitri Bhai Phule Udyan",
+        "name:etymology:wikidata": "Q2645692"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630487876,
+      "center": {
+        "lat": 18.6443136,
+        "lon": 73.7933695
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shankar Shetty Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630490488,
+      "center": {
+        "lat": 18.6394466,
+        "lon": 73.7803876
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411033",
+        "addr:street": "premlok park colony",
+        "leisure": "park",
+        "name": "Premlok Garden",
+        "opening_hours": "Mo-Su 06:00-24:00",
+        "operator": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630499040,
+      "center": {
+        "lat": 18.6338594,
+        "lon": 73.8170303
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Indira Gandhi Udyan",
+        "name:etymology:wikidata": "Q1149"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630499629,
+      "center": {
+        "lat": 18.6254967,
+        "lon": 73.8192808
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "APJ Abdul Kalam Garden",
+        "name:etymology:wikidata": "Q9513"
+      }
+    },
+    {
+      "type": "way",
+      "id": 630501920,
+      "center": {
+        "lat": 18.634266,
+        "lon": 73.8060289
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rock Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 631742591,
+      "center": {
+        "lat": 18.5410047,
+        "lon": 73.8533028
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Madhavrao Scindia Garden",
+        "name:etymology:wikidata": "Q1854649"
+      }
+    },
+    {
+      "type": "way",
+      "id": 631745271,
+      "center": {
+        "lat": 18.5044981,
+        "lon": 73.8930697
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Surabhi Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 631747389,
+      "center": {
+        "lat": 18.5112636,
+        "lon": 73.8639142
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Swami Samarth Park",
+        "name:etymology:wikidata": "Q7230699"
+      }
+    },
+    {
+      "type": "way",
+      "id": 638203025,
+      "center": {
+        "lat": 18.5866172,
+        "lon": 73.6968002
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Quadron Garden1"
+      }
+    },
+    {
+      "type": "way",
+      "id": 638203026,
+      "center": {
+        "lat": 18.5861215,
+        "lon": 73.6969297
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Quadron Garden 2"
+      }
+    },
+    {
+      "type": "way",
+      "id": 638203286,
+      "center": {
+        "lat": 18.5860098,
+        "lon": 73.6960282
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "."
+      }
+    },
+    {
+      "type": "way",
+      "id": 638203561,
+      "center": {
+        "lat": 18.5872784,
+        "lon": 73.6960557
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "."
+      }
+    },
+    {
+      "type": "way",
+      "id": 639220731,
+      "center": {
+        "lat": 18.5230181,
+        "lon": 73.8141795
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Cricket Field"
+      }
+    },
+    {
+      "type": "way",
+      "id": 653244339,
+      "center": {
+        "lat": 18.6082712,
+        "lon": 73.90725
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nyati Evita Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 653744081,
+      "center": {
+        "lat": 18.6328457,
+        "lon": 73.7917022
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Garden Golande"
+      }
+    },
+    {
+      "type": "way",
+      "id": 654269688,
+      "center": {
+        "lat": 18.5563662,
+        "lon": 73.8048967
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Anand Udyan",
+        "name:mr": "आनंद उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 660432949,
+      "center": {
+        "lat": 18.5062432,
+        "lon": 73.8066472
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Late Sachin Agre udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 662462503,
+      "center": {
+        "lat": 18.5362121,
+        "lon": 73.8756671
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Sadhvi Savitribai Phule Udyan",
+        "name:etymology:wikidata": "Q2645692",
+        "name:mr": "साध्वी सावित्रीबाई फुले उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 666653482,
+      "center": {
+        "lat": 18.6469991,
+        "lon": 73.7681174
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCMC Adventure Park",
+        "operator": "PCNTDA"
+      }
+    },
+    {
+      "type": "way",
+      "id": 666869574,
+      "center": {
+        "lat": 18.6547333,
+        "lon": 73.7688328
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mauli Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 676746906,
+      "center": {
+        "lat": 18.5491599,
+        "lon": 73.7911655
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Varadshree Children Playground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 677802261,
+      "center": {
+        "lat": 18.5741948,
+        "lon": 73.7686138
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411045",
+        "addr:street": "Moze College Road",
+        "leisure": "park",
+        "name": "Moze College Open park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680667577,
+      "center": {
+        "lat": 18.6305533,
+        "lon": 73.7822465
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "kai.Sau.Parvatibai Vitthalrao Chinchwade Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680668410,
+      "center": {
+        "lat": 18.6259289,
+        "lon": 73.7784209
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "मोरया गोसावी मैदान",
+        "name:en": "Morya Gosavi Playground",
+        "name:mr": "मोरया गोसावी मैदान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680668411,
+      "center": {
+        "lat": 18.6242037,
+        "lon": 73.7805614
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vastad Balasaheb Gawade Jaltaran Talav Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680668413,
+      "center": {
+        "lat": 18.6394438,
+        "lon": 73.7915171
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chinchwad Railway Station Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680668414,
+      "center": {
+        "lat": 18.6420906,
+        "lon": 73.7886374
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Play Ground Park Near Queens Town"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680758283,
+      "center": {
+        "lat": 18.6314723,
+        "lon": 73.7789245
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mahanagar Palika Garden",
+        "opening_hours": "Mo-Sa 08:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 680758284,
+      "center": {
+        "lat": 18.6426565,
+        "lon": 73.7862392
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCMC Park",
+        "opening_hours": "24/7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 685362070,
+      "center": {
+        "lat": 18.4433862,
+        "lon": 73.8954389
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Sinhgad Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 685362649,
+      "center": {
+        "lat": 18.4407351,
+        "lon": 73.8959775
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "SIBAR"
+      }
+    },
+    {
+      "type": "way",
+      "id": 692252521,
+      "center": {
+        "lat": 18.5411297,
+        "lon": 73.7948132
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pashan Akhada Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 694642948,
+      "center": {
+        "lat": 18.5741771,
+        "lon": 73.68061
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411057",
+        "addr:street": "Sangria Towers",
+        "leisure": "park",
+        "name": "Sangria Park",
+        "opening_hours": "24/7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 699408066,
+      "center": {
+        "lat": 18.5453544,
+        "lon": 73.9118893
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "CT Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 699408067,
+      "center": {
+        "lat": 18.5452672,
+        "lon": 73.9123034
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "CT Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 699408123,
+      "center": {
+        "lat": 18.5454355,
+        "lon": 73.9120686
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "CT Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 699409234,
+      "center": {
+        "lat": 18.4644731,
+        "lon": 73.8699912
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chhattrapati Sambhaji Raje Udyan",
+        "name:etymology:wikidata": "Q2737041"
+      }
+    },
+    {
+      "type": "way",
+      "id": 701028310,
+      "center": {
+        "lat": 18.6459015,
+        "lon": 73.7802594
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pandharkar Bal Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 701028311,
+      "center": {
+        "lat": 18.645789,
+        "lon": 73.780716
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Pandharkar Walking Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 701028312,
+      "center": {
+        "lat": 18.6461406,
+        "lon": 73.778821
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Gangai Bal Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 705226189,
+      "center": {
+        "lat": 18.5519153,
+        "lon": 73.8029375
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Green Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 715674642,
+      "center": {
+        "lat": 18.4963214,
+        "lon": 73.9527491
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shahid Hemant Karkare udyan",
+        "name:etymology:wikidata": "Q3595128",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 729363812,
+      "center": {
+        "lat": 18.4896973,
+        "lon": 73.8444882
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411009",
+        "addr:street": "Tulsibagwale colony,off Dashbhuja Ganapati Marg",
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 734375222,
+      "center": {
+        "lat": 18.6284501,
+        "lon": 73.7768935
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "पिंपरी चिंचवड महानगरपालिका केंद्रीय उद्यान",
+        "name:en": "PCMC Kendriya Udyan",
+        "name:mr": "पिंपरी चिंचवड महानगरपालिका केंद्रीय उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 734375223,
+      "center": {
+        "lat": 18.6347399,
+        "lon": 73.7766705
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "SKF Garden and Play Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 734375224,
+      "center": {
+        "lat": 18.6338849,
+        "lon": 73.7794913
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Late.Maral Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 734376074,
+      "center": {
+        "lat": 18.6293111,
+        "lon": 73.7900592
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Late.Gawade Oxygen Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737064579,
+      "center": {
+        "lat": 18.4763441,
+        "lon": 73.8879582
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "Lt.Popatrao (Anna) Lonkar Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737066478,
+      "center": {
+        "lat": 18.5956852,
+        "lon": 73.7088829
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "Garden Area SDB3"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737066878,
+      "center": {
+        "lat": 18.5984271,
+        "lon": 73.7091269
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "SDB Graden Area",
+        "operator": "Infosys"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737067040,
+      "center": {
+        "lat": 18.5863338,
+        "lon": 73.7349775
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "InfosysPhase 1 Garden",
+        "operator": "Infosys"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737071534,
+      "center": {
+        "lat": 18.4710188,
+        "lon": 73.9002573
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "Konark Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737078266,
+      "center": {
+        "lat": 18.4786448,
+        "lon": 73.9092808
+      },
+      "tags": {
+        "landuse": "forest",
+        "leaf_cycle": "evergreen",
+        "leaf_type": "mixed",
+        "leisure": "park",
+        "name": "AnandVan",
+        "opening_hours": "Mo-Su 5:00-12:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 737078821,
+      "center": {
+        "lat": 18.4755052,
+        "lon": 73.9179237
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Aashirwaad Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 738897343,
+      "center": {
+        "lat": 18.4658442,
+        "lon": 73.8845195
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Maulana Yunus Irshaad Park",
+        "operator": "Pune Municipal"
+      }
+    },
+    {
+      "type": "way",
+      "id": 744833209,
+      "center": {
+        "lat": 18.5046389,
+        "lon": 73.7407295
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "park",
+        "name": "Cascade Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 744833210,
+      "center": {
+        "lat": 18.5051971,
+        "lon": 73.7420572
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "park",
+        "name": "Cresent Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 788224218,
+      "center": {
+        "lat": 18.5969282,
+        "lon": 73.7186598
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Wipro Circle",
+        "name:en": "Wipro Circle",
+        "name:hi": "विप्रो सर्कल",
+        "name:mr": "विप्रो सर्कल"
+      }
+    },
+    {
+      "type": "way",
+      "id": 788224219,
+      "center": {
+        "lat": 18.5935169,
+        "lon": 73.7078943
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Infosys Circle",
+        "name:en": "Infosys Circle",
+        "name:hi": "इन्फोसिस सर्कल",
+        "name:mr": "इन्फोसिस सर्कल"
+      }
+    },
+    {
+      "type": "way",
+      "id": 789646301,
+      "center": {
+        "lat": 18.5945781,
+        "lon": 73.6899466
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Cognizant Circle"
+      }
+    },
+    {
+      "type": "way",
+      "id": 798336778,
+      "center": {
+        "lat": 18.4824438,
+        "lon": 73.8480607
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Taljai Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 823068911,
+      "center": {
+        "lat": 18.4119661,
+        "lon": 74.0495552
+      },
+      "tags": {
+        "access": "yes",
+        "building": "yes",
+        "historic": "fort",
+        "layer": "-1",
+        "name": "Malhargad"
+      }
+    },
+    {
+      "type": "way",
+      "id": 823484821,
+      "center": {
+        "lat": 18.6231386,
+        "lon": 73.8560764
+      },
+      "tags": {
+        "access": "yes",
+        "fee": "no",
+        "garden:type": "municipal",
+        "leisure": "park",
+        "name": "Sakhubai Gawali Garden",
+        "name:mr": "कै.सखुबाई गवळी उद्यान",
+        "operator": "Pimpri-Chinchwad Municipal Corporation",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 831244668,
+      "center": {
+        "lat": 18.5229896,
+        "lon": 73.9483004
+      },
+      "tags": {
+        "description": "Beautiful park",
+        "leisure": "park",
+        "name": "Amanora Victory Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 842055296,
+      "center": {
+        "lat": 18.6263052,
+        "lon": 73.7858829
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shivaji Udye Mandal ,Chinchwad"
+      }
+    },
+    {
+      "type": "way",
+      "id": 842055531,
+      "center": {
+        "lat": 18.6337072,
+        "lon": 73.7869734
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Wall Art park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 842055678,
+      "center": {
+        "lat": 18.6289316,
+        "lon": 73.7780491
+      },
+      "tags": {
+        "addr:housenumber": "411033",
+        "addr:street": "chinchwad gaon",
+        "leisure": "park",
+        "name": "Badminton Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 853207465,
+      "center": {
+        "lat": 18.4726695,
+        "lon": 73.8190247
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "Manik Baug",
+        "addr:postcode": "411051",
+        "addr:street": "Sinhagad Road",
+        "leisure": "park",
+        "name": "Kudale Patil Park",
+        "opening_hours": "Mo-Sa 08:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 859314061,
+      "center": {
+        "lat": 18.4879205,
+        "lon": 73.8982758
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housenumber": "23",
+        "addr:postcode": "411018",
+        "addr:street": "wanowrie",
+        "leisure": "park",
+        "name": "shivarkar garden",
+        "opening_hours": "Mo-Fr 08:00-17:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 863476893,
+      "center": {
+        "lat": 18.4907429,
+        "lon": 73.8627058
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "leisure": "park",
+        "name": "Babubhai Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 897489635,
+      "center": {
+        "lat": 18.5786217,
+        "lon": 73.7658718
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PMC Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 940925672,
+      "center": {
+        "lat": 18.5227813,
+        "lon": 73.8570969
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Vijaya Kailas Tikone Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 943908482,
+      "center": {
+        "lat": 18.661434,
+        "lon": 73.7067586
+      },
+      "tags": {
+        "access": "permissive",
+        "addr:city": "pune",
+        "addr:housenumber": "101,opera",
+        "charge": "80",
+        "description": "good garden",
+        "fee": "yes",
+        "garden:type": "private",
+        "leisure": "park",
+        "name": "belmondo gardenia",
+        "opening_hours": "sunrise-sunset",
+        "opening_hours:covid19": "Mo-Sa 09:00-19:00",
+        "payment:cash": "yes"
+      }
+    },
+    {
+      "type": "way",
+      "id": 962248754,
+      "center": {
+        "lat": 18.4817438,
+        "lon": 73.8561417
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Walvekar Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 966812587,
+      "center": {
+        "lat": 18.6317802,
+        "lon": 73.7909538
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "swami math park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 968342572,
+      "center": {
+        "lat": 18.4556729,
+        "lon": 73.8873996
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "Sharad Pawar Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 981035041,
+      "center": {
+        "lat": 18.6062802,
+        "lon": 73.9582929
+      },
+      "tags": {
+        "name": "Diamond Parks - Water, Adventure & Camping",
+        "tourism": "theme_park",
+        "website": "https://www.tripadvisor.com/Attraction_Review-g297654-d3211987-Reviews-Diamond_Parks_Water_Adventure_Camping-Pune_Pune_District_Maharashtra.html"
+      }
+    },
+    {
+      "type": "way",
+      "id": 987623646,
+      "center": {
+        "lat": 18.5195648,
+        "lon": 73.8807207
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "SS garden",
+        "opening_hours": "Mo-Sa 07:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 987625320,
+      "center": {
+        "lat": 18.5076333,
+        "lon": 73.7942302
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "DD Garden",
+        "opening_hours": "Mo-Su 08:00-22:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 987631088,
+      "center": {
+        "lat": 18.5742777,
+        "lon": 73.8244577
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "m k park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 995110742,
+      "center": {
+        "lat": 18.5525802,
+        "lon": 73.8273043
+      },
+      "tags": {
+        "access": "permit",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "Alice Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 996818278,
+      "center": {
+        "lat": 18.5440821,
+        "lon": 73.828364
+      },
+      "tags": {
+        "fee": "no",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "Chhatrapati Shivaji Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1030015753,
+      "center": {
+        "lat": 18.5169871,
+        "lon": 73.8348138
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411004",
+        "addr:street": "Dr. Ketkar Path",
+        "dog": "leashed",
+        "leisure": "park",
+        "name": "Kamala Nehru Park",
+        "name:etymology:wikidata": "Q3633365",
+        "opening_hours": "Mo-Su 07:00-10:00, 16:00-20:30",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1031596632,
+      "center": {
+        "lat": 18.519627,
+        "lon": 73.9215938
+      },
+      "tags": {
+        "access": "customers",
+        "description": "Marriage and party lawn",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "Laxmi Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1033411542,
+      "center": {
+        "lat": 18.5596652,
+        "lon": 73.8264198
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "IUCAA science garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1040257439,
+      "center": {
+        "lat": 18.526421,
+        "lon": 73.7897133
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:housenumber": "4446",
+        "addr:postcode": "411021",
+        "addr:street": "Pashan-Bavdhan Road",
+        "dog": "leashed",
+        "garden:type": "private",
+        "leisure": "park",
+        "mobile": "87779900668",
+        "name": "Necklace garden",
+        "opening_hours": "Mo-Su 08:00-22:00",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1041406486,
+      "center": {
+        "lat": 18.5127636,
+        "lon": 73.7750161
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "G. D. Madgulkar Udyan",
+        "name:etymology:wikidata": "Q882041",
+        "name:mr": "ग. दि. माडगूळकर उद्यान"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1049500160,
+      "center": {
+        "lat": 18.5632871,
+        "lon": 73.895821
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411006",
+        "addr:street": "Nagpur Chal",
+        "leisure": "park",
+        "name": "Gajraj Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1066691101,
+      "center": {
+        "lat": 18.5156302,
+        "lon": 73.9403943
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "play ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1088105792,
+      "center": {
+        "lat": 18.4483825,
+        "lon": 73.8807896
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Iskcon lawn"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1104627644,
+      "center": {
+        "lat": 18.5188008,
+        "lon": 73.7805021
+      },
+      "tags": {
+        "addr:city": "Bavdhan, Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411021",
+        "addr:street": "Pashan-Bavdhan Road",
+        "leisure": "park",
+        "name": "bavdhan walking area",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1109900437,
+      "center": {
+        "lat": 18.5662527,
+        "lon": 73.7904161
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:postcode": "411027",
+        "leisure": "park",
+        "name": "Shahid Ashok Kamte Garden",
+        "name:en": "Shahid Ashok Kamte Garden",
+        "name:mr": "शहीद अशोक कामटे उद्यान",
+        "opening_hours": "Mo-Su 05:00-10:00,16:00-20:00",
+        "operator": "PCMC",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1111954436,
+      "center": {
+        "lat": 18.5440821,
+        "lon": 73.828364
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Chhatrapati Shivaji Garden",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1117310804,
+      "center": {
+        "lat": 18.5870836,
+        "lon": 73.9934842
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Shri Ramchandra Prabhat Branch"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1117966493,
+      "center": {
+        "lat": 18.4965774,
+        "lon": 73.808726
+      },
+      "tags": {
+        "access": "yes",
+        "leisure": "garden",
+        "name": "Shivsenapramukh Balasaheb Thakrey Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1124367607,
+      "center": {
+        "lat": 18.5720419,
+        "lon": 73.7762563
+      },
+      "tags": {
+        "leisure": "garden",
+        "name": "G1"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1126467021,
+      "center": {
+        "lat": 18.5960403,
+        "lon": 73.785295
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "garden",
+        "name": "Five Gardens Housing Society Rose Garden",
+        "opening_hours": "24/7",
+        "operator": "Five Gardens Housing Society"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1128935984,
+      "center": {
+        "lat": 18.6461525,
+        "lon": 73.7560061
+      },
+      "tags": {
+        "addr:city": "Ravet, Pune",
+        "addr:postcode": "412101",
+        "addr:street": "d mart",
+        "leisure": "park",
+        "name": "Nana nani Park",
+        "opening_hours": "Mo-Su 08:00-22:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1145089204,
+      "center": {
+        "lat": 18.5193863,
+        "lon": 73.8553472
+      },
+      "tags": {
+        "historic": "fort",
+        "name": "Shaniwar Wada",
+        "name:en": "Shaniwarwada",
+        "name:mr": "शनिवार वाडा",
+        "wikidata": "Q1351060",
+        "wikimedia_commons": "Category:Shaniwar Wada",
+        "wikipedia": "en:Shaniwar Wada"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1148409038,
+      "center": {
+        "lat": 18.5187515,
+        "lon": 73.85596
+      },
+      "tags": {
+        "building": "yes",
+        "historic": "castle"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1153235075,
+      "center": {
+        "lat": 18.604356,
+        "lon": 73.8188787
+      },
+      "tags": {
+        "addr:street": "Nashik Phata Flyover, Kranti Nagar, Pimple Gurav, Pimpri-Chinchwad, Maharashtra 411061",
+        "leisure": "park",
+        "name": "Garve Lawns"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1153244934,
+      "center": {
+        "lat": 18.5977736,
+        "lon": 73.8179222
+      },
+      "tags": {
+        "addr:street": "HRX9+23F, Prabhat Nagar, Pimple Gurav, Pimpri-Chinchwad, Maharashtra 411061",
+        "leisure": "park",
+        "name": "Batturao Genuji Jagtap Garden (PCMC Garden)"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1154700911,
+      "center": {
+        "lat": 18.553662,
+        "lon": 73.8027676
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Nana Nani Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1158269265,
+      "center": {
+        "lat": 18.7359971,
+        "lon": 73.7141794
+      },
+      "tags": {
+        "historic": "fort",
+        "name": "Induri Fort"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1158422274,
+      "center": {
+        "lat": 18.4725132,
+        "lon": 73.8613905
+      },
+      "tags": {
+        "addr:city": "Bibvewadi, Pune- Maharashtra, India",
+        "addr:postcode": "411037",
+        "leisure": "park",
+        "name": "Navmitra Society Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1161996884,
+      "center": {
+        "lat": 18.6682592,
+        "lon": 73.8020531
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Swami Samarth Udyan",
+        "opening_hours": "Mo-Su 06:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1162006482,
+      "center": {
+        "lat": 18.6258096,
+        "lon": 73.8548231
+      },
+      "tags": {
+        "addr:city": "Bhosari",
+        "addr:postcode": "411039",
+        "addr:street": "Chakrapani Vasahat Road",
+        "leisure": "park",
+        "name": "PCMC Sports Complex",
+        "operator": "PCMC",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1167248544,
+      "center": {
+        "lat": 18.58239,
+        "lon": 73.8204426
+      },
+      "tags": {
+        "access": "private",
+        "leisure": "park",
+        "name": "PARK a12",
+        "operator": "VI",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1172947675,
+      "center": {
+        "lat": 18.5059737,
+        "lon": 73.7674221
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Bavdhan park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1174721433,
+      "center": {
+        "lat": 18.3953972,
+        "lon": 74.003473
+      },
+      "tags": {
+        "name": "Aai Museum",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1190800446,
+      "center": {
+        "lat": 18.6536666,
+        "lon": 73.7805676
+      },
+      "tags": {
+        "addr:city": "Akurdi, Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "Sukhwani Vihar",
+        "addr:postcode": "411035",
+        "addr:street": "Old Pune–Mumbai Highway",
+        "leisure": "park",
+        "name": "Sukhwani Vihar",
+        "opening_hours": "24/7",
+        "operator": "Sukhwani Vihar",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1190800447,
+      "center": {
+        "lat": 18.6532244,
+        "lon": 73.7805891
+      },
+      "tags": {
+        "addr:city": "Akurdi, Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "Sukhwani Vihar",
+        "addr:postcode": "411035",
+        "addr:street": "Old Pune–Mumbai Highway",
+        "leisure": "park",
+        "name": "Sukhwani Vihar",
+        "opening_hours": "24/7",
+        "operator": "Sukhwani Vihar",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1198820883,
+      "center": {
+        "lat": 18.5736081,
+        "lon": 73.7382707
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Garden and Meditation Area"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1207204846,
+      "center": {
+        "lat": 18.514634,
+        "lon": 73.8274536
+      },
+      "tags": {
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "San Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1245484128,
+      "center": {
+        "lat": 18.4744317,
+        "lon": 73.7944883
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Late. Mahadubuwa Shelar Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1245748432,
+      "center": {
+        "lat": 18.6515343,
+        "lon": 73.7715703
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Tukaram Udaan",
+        "opening_hours": "Mo-Su 08:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1246779487,
+      "center": {
+        "lat": 18.6635121,
+        "lon": 73.8016286
+      },
+      "tags": {
+        "addr:street": "Shambhaji Nagar",
+        "leisure": "park",
+        "name": "Shrimant Chatrapati Shivaji Park",
+        "name:etymology:wikidata": "Q239505"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1264727850,
+      "center": {
+        "lat": 18.4739651,
+        "lon": 73.8259897
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411051",
+        "description": "Has open Gym, Jogging track, and lawn along with benches.",
+        "dog": "yes",
+        "leisure": "park",
+        "name": "Tukaimata Jogging Track Garden",
+        "operator:type": "government"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1264728667,
+      "center": {
+        "lat": 18.4678532,
+        "lon": 73.820321
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411041",
+        "description": "It has kids play area, walking and jogging tracks, benches and Lawn.",
+        "dog": "yes",
+        "leisure": "park",
+        "name": "Shantabai Eknath Charwad Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271185407,
+      "center": {
+        "lat": 18.4564644,
+        "lon": 73.7864962
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Madhuvanti Gardan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271185575,
+      "center": {
+        "lat": 18.4561507,
+        "lon": 73.7855719
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Madhuvanti Gardan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271187867,
+      "center": {
+        "lat": 18.454926,
+        "lon": 73.7873258
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Sarang Society Gardan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271187868,
+      "center": {
+        "lat": 18.4546811,
+        "lon": 73.7863902
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Sarang Society Gardan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271767135,
+      "center": {
+        "lat": 18.7025956,
+        "lon": 73.6953439
+      },
+      "tags": {
+        "access": "permissive",
+        "leisure": "horse_riding",
+        "name": "Japalouppe",
+        "name:mr": "जपालूपे",
+        "tourism": "zoo",
+        "website": "https://japalouppe.com/",
+        "zoo": "petting_zoo"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1271903123,
+      "center": {
+        "lat": 18.5789358,
+        "lon": 73.9709738
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Rivaah Regency Co. Op. Housing Society Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1274371543,
+      "center": {
+        "lat": 18.666514,
+        "lon": 73.7898982
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Buddha vihar"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1285444311,
+      "center": {
+        "lat": 18.5860747,
+        "lon": 73.9875389
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "botanical",
+        "leisure": "garden",
+        "name": "Purvarang Complex Gardenery"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1287466074,
+      "center": {
+        "lat": 18.4576372,
+        "lon": 73.8335208
+      },
+      "tags": {
+        "access": "private",
+        "fee": "no",
+        "garden:type": "residential",
+        "leisure": "garden",
+        "name": "Nirman Aura Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1318964332,
+      "center": {
+        "lat": 18.5480881,
+        "lon": 73.8269207
+      },
+      "tags": {
+        "access": "private",
+        "fee": "no",
+        "garden:type": "private",
+        "leisure": "garden",
+        "name": "Garden of Department of Geography"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1318965007,
+      "center": {
+        "lat": 18.5484215,
+        "lon": 73.826962
+      },
+      "tags": {
+        "access": "private",
+        "garden:type": "private",
+        "leisure": "garden",
+        "name": "Geology Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1318966999,
+      "center": {
+        "lat": 18.5513635,
+        "lon": 73.7832504
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "hill",
+        "operator": "akshu",
+        "operator:type": "school"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1337637397,
+      "center": {
+        "lat": 18.6620529,
+        "lon": 73.7184036
+      },
+      "tags": {
+        "access": "private",
+        "addr:city": "kiwale",
+        "addr:district": "pimpri chinchwad",
+        "addr:postcode": "412101",
+        "addr:street": "symbiosis junior college",
+        "leisure": "park",
+        "name": "Football turf",
+        "opening_hours": "Mo-Fr 09:00-17:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1338247928,
+      "center": {
+        "lat": 18.5211824,
+        "lon": 73.7651612
+      },
+      "tags": {
+        "addr:city": "Bavdhan Budruk",
+        "addr:housenumber": "123",
+        "addr:postcode": "411021",
+        "addr:street": "FLAME University Path",
+        "leisure": "park",
+        "name": "Voilet",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1338248581,
+      "center": {
+        "lat": 18.5211913,
+        "lon": 73.7651612
+      },
+      "tags": {
+        "addr:city": "Bavdhan Budruk",
+        "addr:housenumber": "123",
+        "addr:postcode": "411021",
+        "addr:street": "FLAME University Path",
+        "leisure": "park",
+        "name": "Lily",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1338980174,
+      "center": {
+        "lat": 18.5097493,
+        "lon": 73.9061119
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:street": "Bhagwan Tatyasaheb Kawade Marg",
+        "leisure": "park",
+        "name": "Jaysingrao Ganpat Sasane Park",
+        "source": "survey"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1346107341,
+      "center": {
+        "lat": 18.5902561,
+        "lon": 73.8009245
+      },
+      "tags": {
+        "leisure": "park",
+        "mobile": "123456789",
+        "name": "private garden",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1346219361,
+      "center": {
+        "lat": 18.6647435,
+        "lon": 73.7784005
+      },
+      "tags": {
+        "addr:city": "Pune, Maharashtra.",
+        "addr:district": "haweli",
+        "addr:postcode": "411044",
+        "addr:street": "sainath nagar",
+        "leisure": "park",
+        "name": "anna bhau sathe udyan",
+        "opening_hours": "Mo-Su 06:00-22:00",
+        "operator": "sachin chikale",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1351188218,
+      "center": {
+        "lat": 18.5204724,
+        "lon": 73.7668139
+      },
+      "tags": {
+        "addr:city": "Bavdhan Budruk",
+        "addr:district": "Pune",
+        "addr:housenumber": "123",
+        "addr:postcode": "411021",
+        "addr:street": "Uttamnagar road",
+        "leisure": "park",
+        "name": "galaxy park",
+        "opening_hours": "Mo-Fr 08:00-17:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1351517548,
+      "center": {
+        "lat": 18.640558,
+        "lon": 73.7755978
+      },
+      "tags": {
+        "access": "private",
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411033",
+        "addr:street": "Bijlinagar Road, Premlok Park,Chinchwad.",
+        "leisure": "park",
+        "name": "SKF Football Turf Ground",
+        "opening_hours": "Mo-Su 08:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1351746346,
+      "center": {
+        "lat": 18.6700943,
+        "lon": 73.7105738
+      },
+      "tags": {
+        "access": "yes",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "aakash",
+        "timing": "5:00-12:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1354648562,
+      "center": {
+        "lat": 18.4838978,
+        "lon": 73.8848651
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "Maharashtra",
+        "addr:postcode": "411041",
+        "addr:street": "main road",
+        "leisure": "park",
+        "name": "mount carmel secondary schools public garden",
+        "opening_hours": "sunrise-sunset"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1356125372,
+      "center": {
+        "lat": 18.4504759,
+        "lon": 73.8548918
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "82/2",
+        "addr:postcode": "411047",
+        "addr:street": "Katraj",
+        "leisure": "park",
+        "name": "Play Area",
+        "opening_hours": "sunrise-sunset",
+        "operator": "Someone",
+        "operator:type": "business"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1364324779,
+      "center": {
+        "lat": 18.4567142,
+        "lon": 73.8369378
+      },
+      "tags": {
+        "museum": "history",
+        "name": "Shivsrushti Historical Theme Park Pune",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1386055155,
+      "center": {
+        "lat": 18.560863,
+        "lon": 73.9256739
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "M Bhaskar S Shinde Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1389838810,
+      "center": {
+        "lat": 18.5676251,
+        "lon": 73.7769023
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Pune",
+        "addr:housenumber": "128",
+        "fee": "no",
+        "leisure": "park",
+        "name": "H.B.P. Sopanrao Saykar Garden",
+        "opening_hours": "Mo-Su 06:00-11:00,16:00-21:00",
+        "operator": "PMC",
+        "operator:type": "government",
+        "start_date": "2018-12-12"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1415827329,
+      "center": {
+        "lat": 18.4683636,
+        "lon": 73.8656242
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Mahesh Park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1429959441,
+      "center": {
+        "lat": 18.6273749,
+        "lon": 73.817289
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "HA Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1445805680,
+      "center": {
+        "lat": 18.6360703,
+        "lon": 73.8010624
+      },
+      "tags": {
+        "access": "private",
+        "fee": "no",
+        "garden:type": "community",
+        "leisure": "garden",
+        "name": "Empire Square Community Area",
+        "surface": "grass"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1450182380,
+      "center": {
+        "lat": 18.5161408,
+        "lon": 73.7708941
+      },
+      "tags": {
+        "access": "yes",
+        "addr:city": "Bavdhan, Pune",
+        "addr:district": "Bavdhan",
+        "addr:postcode": "411021",
+        "addr:street": "Bavdhan Gaon Rd",
+        "leisure": "park",
+        "name": "Bavdhan public playground",
+        "opening_hours": "9 am to 7 pm IST"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1452595505,
+      "center": {
+        "lat": 18.5092318,
+        "lon": 73.7854111
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411038",
+        "addr:street": "Paud Road",
+        "leisure": "park",
+        "name": "Tej Garden",
+        "opening_hours": "Mo-Su 08:00-22:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1454582863,
+      "center": {
+        "lat": 18.6617897,
+        "lon": 73.7191773
+      },
+      "tags": {
+        "access": "private",
+        "addr:city": "pune",
+        "addr:district": "pimpri chinchwad",
+        "addr:postcode": "412101",
+        "addr:street": "Gahunje - Mukai Chowk Kiwale Road",
+        "leisure": "park",
+        "name": "play area",
+        "opening_hours": "Mo-Fr 08:00-17:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1458943419,
+      "center": {
+        "lat": 18.5489652,
+        "lon": 73.9149382
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "pune",
+        "addr:housenumber": "Kalyani Nagar, Wadgaon Sheri Road, Near Nyati Meadows Society",
+        "addr:postcode": "411014",
+        "leisure": "park",
+        "name": "Government  Basketball Court",
+        "opening_hours": "6 AM to 6 PM"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1458948649,
+      "center": {
+        "lat": 18.5418453,
+        "lon": 73.9231978
+      },
+      "tags": {
+        "addr:city": "Vadgansheri",
+        "addr:district": "Pune",
+        "addr:postcode": "411014",
+        "leisure": "park",
+        "name": "Wrestling  Ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1458970898,
+      "center": {
+        "lat": 18.7215167,
+        "lon": 73.6797915
+      },
+      "tags": {
+        "addr:city": "Talegaon Dabhade",
+        "addr:district": "Pune",
+        "addr:postcode": "410506",
+        "addr:street": "Kadolkar Colony",
+        "leisure": "park",
+        "name": "Lions Club",
+        "opening_hours": "Mo-Sa 08:00-20:00"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1459004876,
+      "center": {
+        "lat": 18.5508955,
+        "lon": 73.8304675
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "123",
+        "addr:postcode": "411007",
+        "addr:street": "street",
+        "dog": "leashed",
+        "leisure": "park",
+        "name": "orchid open garden",
+        "opening_hours": "sunrise-sunset",
+        "operator": "Orchid company",
+        "operator:type": "private",
+        "smoking": "no"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1459188502,
+      "center": {
+        "lat": 18.5388129,
+        "lon": 73.8634897
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "maharastra",
+        "addr:housenumber": "sangamwadi pune",
+        "addr:postcode": "411001",
+        "addr:street": "alfi road",
+        "leisure": "park",
+        "name": "yuvi parking",
+        "opening_hours": "24/7",
+        "operator": "yuvraj kolar",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1459492266,
+      "center": {
+        "lat": 18.555875,
+        "lon": 73.8435193
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "playground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1461828269,
+      "center": {
+        "lat": 18.4957495,
+        "lon": 73.8763694
+      },
+      "tags": {
+        "addr:district": "Pune",
+        "addr:postcode": "411037",
+        "addr:street": "Irawati Karve Marg",
+        "leisure": "park",
+        "name": "Bhimale Udyan"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1462572995,
+      "center": {
+        "lat": 18.56924,
+        "lon": 73.7212454
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Joyville Park",
+        "name:en": "Joyville Park",
+        "operator": "Joiville Housing Society",
+        "operator:type": "private"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1472052848,
+      "center": {
+        "lat": 18.469142,
+        "lon": 73.7997104
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:district": "warje",
+        "leisure": "park",
+        "name": "cricket ground",
+        "opening_hours": "sunrise-sunset",
+        "operator": "circket pratices",
+        "operator:type": "private_for_profit"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1472143922,
+      "center": {
+        "lat": 18.5238127,
+        "lon": 73.7766225
+      },
+      "tags": {
+        "addr:city": "Bavdhan, Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "bavdhan",
+        "addr:postcode": "411021",
+        "addr:street": "bavdhan",
+        "leisure": "park",
+        "name": "ground"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1472143941,
+      "center": {
+        "lat": 18.5242235,
+        "lon": 73.8257162
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Midori park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1472144300,
+      "center": {
+        "lat": 18.5239965,
+        "lon": 73.7744898
+      },
+      "tags": {
+        "addr:city": "Bavdhan, Pune",
+        "addr:district": "Pune",
+        "addr:housenumber": "bavdhan",
+        "addr:postcode": "411021",
+        "addr:street": "bavdhan",
+        "leisure": "park",
+        "name": "turf"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1487542659,
+      "center": {
+        "lat": 18.6648424,
+        "lon": 74.0381804
+      },
+      "tags": {
+        "building": "yes",
+        "name": "Dharmaveer Chhatrapati Sambhaji Maharaj Museum Vadhu Budruk",
+        "tourism": "museum"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1545028164,
+      "center": {
+        "lat": 18.6240382,
+        "lon": 73.8325664
+      },
+      "tags": {
+        "area": "yes",
+        "leisure": "park",
+        "name": "Mahasainik Industrial Estate"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1545031054,
+      "center": {
+        "lat": 18.617027,
+        "lon": 73.8459397
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCMC Bhosari Vamanrao Gavhane Patil Garden"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1545033750,
+      "center": {
+        "lat": 18.6174126,
+        "lon": 73.8430132
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Landewadi ,Bhosari Walking Track"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1545603614,
+      "center": {
+        "lat": 18.6452078,
+        "lon": 73.8449214
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "PCNTDA Park ,Spine Road ,BHOSARI"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1550970138,
+      "center": {
+        "lat": 18.4962591,
+        "lon": 73.8426596
+      },
+      "tags": {
+        "addr:city": "pune",
+        "addr:postcode": "411009",
+        "addr:street": "Janta Vasahat, Parvati Paytha, Pune, Maharashtra",
+        "leisure": "park",
+        "name": "Janta park",
+        "operator": "Lokande suraj",
+        "operator:type": "public"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 2861672,
+      "center": {
+        "lat": 18.5193863,
+        "lon": 73.8553472
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:housename": "Shaniwarwada",
+        "building": "yes",
+        "building:material": "stone",
+        "castle_type": "fortress",
+        "height": "12",
+        "historic": "castle",
+        "name": "Shaniwar Wada",
+        "name:en": "Shaniwar Wada",
+        "name:mr": "शनिवार वाडा",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 6922953,
+      "center": {
+        "lat": 18.5119146,
+        "lon": 73.778853
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Gangotri park",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 7812804,
+      "center": {
+        "lat": 18.6571091,
+        "lon": 73.7625648
+      },
+      "tags": {
+        "description": "Park at Ganesh Talav",
+        "leisure": "park",
+        "name": "Veer Savarkar Udyan",
+        "name:etymology:wikidata": "Q471040",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 12320169,
+      "center": {
+        "lat": 18.4529079,
+        "lon": 73.8618417
+      },
+      "tags": {
+        "leisure": "park",
+        "name": "Rajiv Gandhi Snake Park",
+        "name:etymology:wikidata": "Q4593",
+        "name:mr": "राजीव गांधी सर्पोद्यान",
+        "opening_hours": "Mo-Sa 08:00-18:00",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 15882577,
+      "center": {
+        "lat": 18.395467,
+        "lon": 74.0028458
+      },
+      "tags": {
+        "height": "12",
+        "historic": "castle",
+        "material": "stone",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 20628919,
+      "center": {
+        "lat": 18.5110622,
+        "lon": 73.7912158
+      },
+      "tags": {
+        "addr:city": "Pune",
+        "addr:district": "Pune",
+        "addr:postcode": "411038",
+        "addr:street": "Lane 3",
+        "leisure": "park",
+        "name": "Pandit Bhimsen Joshi Udyan",
+        "name:en": "Pandit Bhimsen Joshi Udyan",
+        "name:etymology:wikidata": "Q121077",
+        "name:etymology:wikipedia": "en:Bhimsen Joshi",
+        "name:hi": "पंडित भीमसेन जोशी उद्यान",
+        "name:mr": "पंडित भीमसेन जोशी उद्यान",
+        "type": "multipolygon"
+      }
+    }
+  ]
+}
