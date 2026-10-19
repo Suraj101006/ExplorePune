@@ -14,11 +14,13 @@ export async function GET() {
   const latencyMs = Date.now() - startTime;
 
   if (error) {
+    // Log internal error on server without leaking details publicly (S6)
+    console.error('Health check database query failure:', error.message);
     return NextResponse.json(
       {
         status: 'degraded',
         database: 'disconnected',
-        error: error.message,
+        error: 'Database connection check failed.',
         timestamp: new Date().toISOString(),
       },
       { status: 503 }

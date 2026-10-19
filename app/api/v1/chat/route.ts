@@ -7,8 +7,15 @@ const Schema = z.object({ message: z.string().min(1).max(500) });
 const STOP = new Set('the and for are what who how where when which with from that this have has can you tell about near any some give show please there their entry fee fees price prices ticket cost open opening hours timing timings visit visiting place places pune'.split(' '));
 
 export async function POST(req: NextRequest) {
-  if (process.env.CHAT_RATE_LIMIT_OFF !== '1' && isLimited(req, 'chat', 10, 3600_000)) {
-    return NextResponse.json({ reply: 'You have reached the hourly chat limit. Please try again later.' }, { status: 429, headers: { 'Retry-After': '900' } });
+  const isLimiterBypassed = process.env.NODE_ENV !== 'production' && process.env.CHAT_RATE_LIMIT_OFF === '1';
+  if (!isLimiterBypassed && isLimited(req, 'chat', 10, 3600_000)) {
+    return NextResponse.json(
+      {
+        reply: 'You have reached the hourly chat limit. Please try again later.',
+        error: { code: 'RATE_LIMITED', message: 'You have reached the hourly chat limit. Please try again later.' },
+      },
+      { status: 429, headers: { 'Retry-After': '900' } }
+    );
   }
   try {
     const parsed = Schema.safeParse(await req.json().catch(() => null));

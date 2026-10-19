@@ -2,7 +2,8 @@
 const hits = new Map<string, { n: number; t: number }>();
 
 export function isLimited(req: Request, bucket: string, max: number, windowMs: number): boolean {
-  const ip = (req.headers.get('x-forwarded-for') ?? 'unknown').split(',')[0].trim();
+  const forwarded = req.headers.get('x-forwarded-for');
+  const ip = (forwarded ? forwarded.split(',')[0].trim() : '') || 'unknown';
   const k = `${bucket}:${ip}`;
   const now = Date.now();
   if (hits.size > 5000) hits.clear();
@@ -13,4 +14,8 @@ export function isLimited(req: Request, bucket: string, max: number, windowMs: n
   }
   h.n++;
   return h.n > max;
+}
+
+export function resetRateLimits(): void {
+  hits.clear();
 }
