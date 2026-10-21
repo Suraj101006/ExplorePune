@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     // Fetch published places from Firestore
     const snap = await getDocs(
-      query(collection(db, 'places'), where('status', '==', 'published'), limit(100))
+      query(collection(db, 'places'), where('status', '==', 'published'), limit(150))
     );
     const allPlaces = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
 

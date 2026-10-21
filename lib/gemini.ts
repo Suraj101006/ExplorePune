@@ -82,8 +82,21 @@ export async function generateGeminiReply({
     return null;
   }
 
-  // Condensed catalog for fast, grounded RAG
-  const placesContext = allPlaces.slice(0, 35).map((p) => ({
+  // Condensed catalog with keyword-relevance sorting for fast, grounded RAG
+  const queryWords = message.toLowerCase().split(/\s+/).filter((w) => w.length > 2);
+  const relevantPlaces = [...allPlaces].sort((a, b) => {
+    const aMatch = queryWords.some(
+      (w) => a.name?.toLowerCase().includes(w) || a.name_mr?.toLowerCase().includes(w)
+    );
+    const bMatch = queryWords.some(
+      (w) => b.name?.toLowerCase().includes(w) || b.name_mr?.toLowerCase().includes(w)
+    );
+    if (aMatch && !bMatch) return -1;
+    if (!aMatch && bMatch) return 1;
+    return (b.popularity_score || 0) - (a.popularity_score || 0);
+  });
+
+  const placesContext = relevantPlaces.slice(0, 40).map((p) => ({
     name: p.name,
     name_mr: p.name_mr,
     category: p.category_slug || p.category,
@@ -100,7 +113,7 @@ export async function generateGeminiReply({
   const userPrompt = `${message}
 
 [Context Info: Language: ${targetLang}${userLocation ? ` | Live User Coordinates: ${userLocation.lat}, ${userLocation.lng}` : ''}]
-[Available Places Database Reference: ${JSON.stringify(placesContext.slice(0, 20))}]`;
+[Available Places Database Reference: ${JSON.stringify(placesContext.slice(0, 30))}]`;
 
   // Format multi-turn history for Gemini contents array
   const formattedContents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];

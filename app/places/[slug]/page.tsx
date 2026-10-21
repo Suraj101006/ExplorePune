@@ -11,6 +11,20 @@ const SLUG_ALIASES: Record<string, string> = {
   'koregaon-park': 'osho-teerth-park',
   'pu-la-deshpande-garden': 'okayama-friendship-garden',
   'pul-deshpande-garden': 'okayama-friendship-garden',
+  'phule-wada': 'mahatma-phule-wada',
+  'jyotirao-phule-wada': 'mahatma-phule-wada',
+  'omkareshwar': 'omkareshwar-temple',
+  'trishund-ganpati': 'trishund-ganpati-temple',
+  'balgandharva': 'balgandharva-ranga-mandir',
+  'bhor-rajwada': 'bhor-rajwada-palace',
+  'lenyadri': 'lenyadri-caves-ganpati',
+  'chitale-bandhu': 'chitale-bandhu-mithaiwale',
+  'sujata-mastani': 'sujata-mastani-heritage',
+  'kayani-bakery': 'kayani-bakery-camp',
+  'someshwar-temple': 'someshwar-temple-pashan',
+  'tambat-ali': 'tambat-ali-craft-quarter',
+  'jangli-maharaj': 'jangli-maharaj-temple',
+  'khunya-murlidhar': 'khunya-murlidhar-temple',
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

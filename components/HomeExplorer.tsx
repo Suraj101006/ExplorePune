@@ -52,7 +52,10 @@ const POPULAR_SEARCHES = [
   { label: 'Sinhagad Fort', labelMr: 'सिंहगड किल्ला', query: 'Sinhagad' },
   { label: 'Shaniwar Wada', labelMr: 'शनिवार वाडा', query: 'Shaniwar Wada' },
   { label: 'Dagdusheth Ganpati', labelMr: 'दगडूशेठ गणपती', query: 'Dagdusheth' },
+  { label: 'Phule Wada', labelMr: 'महात्मा फुले वाडा', query: 'Phule Wada' },
   { label: 'Aga Khan Palace', labelMr: 'आगाखान पॅलेस', query: 'Aga Khan Palace' },
+  { label: 'Omkareshwar Temple', labelMr: 'ओंकारेश्वर मंदिर', query: 'Omkareshwar' },
+  { label: 'Lenyadri Caves', labelMr: 'लेण्याद्री गणपती', query: 'Lenyadri' },
   { label: 'Khadakwasla Dam', labelMr: 'खडकवासला धरण', query: 'Khadakwasla' },
 ];
 
