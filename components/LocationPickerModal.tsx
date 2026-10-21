@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import {
   getStoredUserLocation,
+  setStoredUserLocation,
   setLocationFromLocality,
   searchPuneLocalities,
+  searchPuneLivePlaces,
   detectPreciseGps,
   PUNE_ALL_LOCALITIES,
   UserSavedLocation,
@@ -26,6 +28,8 @@ export default function LocationPickerModal({
   const { isMr } = useLanguage();
   const [currentLoc, setCurrentLoc] = useState<UserSavedLocation | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<PuneLocality[]>([]);
+  const [isSearchingLive, setIsSearchingLive] = useState(false);
   const [isDetectingGps, setIsDetectingGps] = useState(false);
   const [gpsMessage, setGpsMessage] = useState<{ text: string; isError?: boolean } | null>(null);
 
@@ -33,14 +37,68 @@ export default function LocationPickerModal({
     if (isOpen) {
       setCurrentLoc(getStoredUserLocation());
       setGpsMessage(null);
+      setSearchResults(searchPuneLocalities(''));
     }
   }, [isOpen]);
 
+  // Live address & locality search with debounce
+  useEffect(() => {
+    let cancelled = false;
+    const clean = searchQuery.trim();
+
+    if (!clean) {
+      setSearchResults(searchPuneLocalities(''));
+      setIsSearchingLive(false);
+      return;
+    }
+
+    // Immediate local match
+    setSearchResults(searchPuneLocalities(clean));
+
+    if (clean.length >= 3) {
+      setIsSearchingLive(true);
+      const timer = setTimeout(async () => {
+        try {
+          const live = await searchPuneLivePlaces(clean);
+          if (!cancelled) {
+            setSearchResults(live);
+          }
+        } finally {
+          if (!cancelled) setIsSearchingLive(false);
+        }
+      }, 350);
+
+      return () => {
+        cancelled = true;
+        clearTimeout(timer);
+      };
+    }
+  }, [searchQuery]);
+
   if (!isOpen) return null;
 
-  const filteredLocalities = searchPuneLocalities(searchQuery);
+  const filteredLocalities = searchResults;
 
   const handleSelectLocality = (loc: PuneLocality) => {
+    if (loc.id.startsWith('osm-')) {
+      const saved: UserSavedLocation = {
+        id: loc.id,
+        nameEn: loc.nameEn,
+        nameMr: loc.nameMr,
+        latitude: loc.latitude,
+        longitude: loc.longitude,
+        lat: loc.latitude,
+        lng: loc.longitude,
+        isGps: true,
+        timestamp: Date.now(),
+      };
+      setStoredUserLocation(saved);
+      setCurrentLoc(saved);
+      onLocationSelected?.(saved);
+      onClose();
+      return;
+    }
+
     const saved = setLocationFromLocality(loc.id);
     if (saved) {
       setCurrentLoc(saved);
@@ -63,15 +121,16 @@ export default function LocationPickerModal({
       if (res.isOutsidePune) {
         setGpsMessage({
           text: isMr
-            ? `⚠️ तुमचे GPS स्थान पुण्याच्या बाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) आढळले. अचूक स्थानिक बस व मेट्रो मार्गासाठी खालीलपैकी तुमचा पुणे परिसर निवडा.`
-            : `⚠️ GPS detected ${Math.round(res.distanceFromPuneKm || 0)} km outside Pune (IP/remote geolocation). For accurate city commute & distances, select your Pune area below.`,
+            ? `⚠️ तुमचे थेट स्थान पुण्याच्या बाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) आढळले. अचूक स्थानिक बस व मेट्रो मार्गासाठी खालीलपैकी तुमचा पुणे परिसर निवडा.`
+            : `⚠️ Detected ${Math.round(res.distanceFromPuneKm || 0)} km outside Pune (IP/remote geolocation). For city transit & distances, pick your starting Pune neighborhood below.`,
           isError: true,
         });
       } else {
+        const accuracyText = res.accuracyMeters ? ` (±${res.accuracyMeters}m)` : '';
         setGpsMessage({
           text: isMr
-            ? `✓ अचूक स्थान नोंदवले: ${res.location.nameMr}`
-            : `✓ Location locked: ${res.location.nameEn}`,
+            ? `✓ अचूक स्थान नोंदवले: ${res.location.nameMr}${accuracyText}`
+            : `✓ Location locked: ${res.location.nameEn}${accuracyText}`,
         });
         setTimeout(() => onClose(), 1200);
       }
@@ -260,11 +319,15 @@ export default function LocationPickerModal({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isMr ? 'पुण्यातील परिसर शोधा (उदा. कोथरूड, वाकड, बाणेर, कॅम्प...)' : 'Search Pune area (e.g. Kothrud, Baner, Wakad, Camp, Viman Nagar)...'}
+              placeholder={
+                isMr
+                  ? 'पुण्यातील कोणताही परिसर, रस्ता किंवा लँडमार्क शोधा…'
+                  : 'Search any Pune area, street or landmark (e.g. Kothrud, FC Road, Magarpatta)…'
+              }
               style={{
                 width: '100%',
                 boxSizing: 'border-box',
-                padding: '10px 14px 10px 36px',
+                padding: '10px 36px 10px 36px',
                 borderRadius: 10,
                 border: '1.5px solid #cbd5e1',
                 fontSize: 13,
@@ -273,6 +336,21 @@ export default function LocationPickerModal({
                 outline: 'none',
               }}
             />
+            {isSearchingLive && (
+              <span
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: 12,
+                  color: '#059669',
+                }}
+                title="Searching OpenStreetMap live..."
+              >
+                ⏳
+              </span>
+            )}
           </div>
 
           {/* Quick Popular Localities */}
@@ -307,11 +385,18 @@ export default function LocationPickerModal({
             </div>
           </div>
 
-          {/* Localities Directory List */}
+          {/* Localities & Live Places Directory List */}
           <div>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: 6 }}>
-              {isMr ? `सर्व परिसर (${filteredLocalities.length}):` : `All Pune Localities (${filteredLocalities.length}):`}
-            </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 11.5, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isMr ? `परिसर व ठिकाणे (${filteredLocalities.length}):` : `Areas & Landmarks (${filteredLocalities.length}):`}
+              </span>
+              {isSearchingLive && (
+                <span style={{ fontSize: 11, color: '#059669', fontWeight: 600 }}>
+                  🌐 {isMr ? 'थेट GPS शोधत आहे…' : 'Searching live map…'}
+                </span>
+              )}
+            </div>
             <div
               style={{
                 display: 'flex',
@@ -324,6 +409,7 @@ export default function LocationPickerModal({
             >
               {filteredLocalities.map((loc) => {
                 const isSelected = currentLoc?.id === loc.id;
+                const isLiveOsm = loc.id.startsWith('osm-');
                 return (
                   <button
                     key={loc.id}
@@ -334,24 +420,37 @@ export default function LocationPickerModal({
                       padding: '8px 12px',
                       borderRadius: 8,
                       border: isSelected ? '1.5px solid #10b981' : '1px solid #e2e8f0',
-                      background: isSelected ? '#f0fdf4' : '#f8fafc',
+                      background: isSelected ? '#f0fdf4' : isLiveOsm ? '#f8fafc' : '#f8fafc',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       transition: 'all 0.12s ease',
+                      gap: 8,
                     }}
                   >
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: '#1e293b' }}>
-                        {isMr ? loc.nameMr : loc.nameEn}
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {isLiveOsm ? '📍 ' : ''}{isMr ? loc.nameMr : loc.nameEn}
                       </div>
-                      <div style={{ fontSize: 11, color: '#64748b' }}>
-                        🚇 {isMr ? loc.popularTransitHubMr : loc.popularTransitHubEn}
+                      <div style={{ fontSize: 11, color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {isLiveOsm
+                          ? `🌐 GPS: ${loc.latitude.toFixed(4)}°, ${loc.longitude.toFixed(4)}°`
+                          : `🚇 ${isMr ? loc.popularTransitHubMr : loc.popularTransitHubEn}`}
                       </div>
                     </div>
-                    <span style={{ fontSize: 11, color: '#059669', fontWeight: 700 }}>
-                      {isSelected ? '✓ Active' : 'Select'}
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: isSelected ? '#059669' : '#475569',
+                        fontWeight: 700,
+                        flexShrink: 0,
+                        background: isLiveOsm ? '#ecfdf5' : 'transparent',
+                        padding: isLiveOsm ? '2px 6px' : '0',
+                        borderRadius: 4,
+                      }}
+                    >
+                      {isSelected ? '✓ Active' : isLiveOsm ? 'Live GPS' : 'Select'}
                     </span>
                   </button>
                 );
