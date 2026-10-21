@@ -64,7 +64,7 @@ export default function SavedPlacesDrawer() {
         title={isMr ? 'माझी आवडती ठिकाणे' : 'My Saved Places'}
       >
         <span>{saved.length > 0 ? '❤️' : '🤍'}</span>
-        <span>{isMr ? 'जतन केलेली' : 'Saved'}</span>
+        <span className="saved-chip-text">{isMr ? 'जतन केलेली' : 'Saved'}</span>
         {saved.length > 0 && (
           <span
             style={{

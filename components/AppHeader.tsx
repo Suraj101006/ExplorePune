@@ -87,8 +87,13 @@ export default function AppHeader() {
         {/* Global Utilities & Action Controls */}
         <div className="header-utilities">
           {/* Emergency Tourist Helpline Modal */}
-          <div className="nav-util-item hide-on-mobile-xs">
+          <div className="nav-util-item hide-on-mobile">
             <EmergencyHelplineModal />
+          </div>
+
+          {/* User Sign-In / Account & Logout */}
+          <div className="nav-util-item hide-on-mobile">
+            <AuthNav />
           </div>
 
           {/* Saved Places Wishlist Drawer */}
@@ -99,11 +104,6 @@ export default function AppHeader() {
           {/* Bilingual Language Switcher */}
           <div className="nav-util-item">
             <LanguageToggle />
-          </div>
-
-          {/* User Sign-In / Account & Logout */}
-          <div className="nav-util-item">
-            <AuthNav />
           </div>
 
           {/* Mobile Hamburger Toggle Button */}
