@@ -261,12 +261,6 @@ export default function IntroVideoOverlay() {
 
   return (
     <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `try{if(sessionStorage.getItem('${STORAGE_KEY}')==='true'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro-dismissed');}}catch(e){}`,
-        }}
-      />
-
       <div
         id="explore-pune-intro-overlay"
         className={`intro-overlay ${introState === 'fading' ? 'fading' : ''}`}
