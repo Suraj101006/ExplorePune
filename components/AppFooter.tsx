@@ -40,11 +40,7 @@ export default function AppFooter() {
             )}
           </p>
           <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--muted)' }}>
-            Map data ©{' '}
-            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>
-              OpenStreetMap
-            </a>{' '}
-            contributors (ODbL).
+            Maps powered by <strong style={{ color: 'var(--ink)' }}>Google Maps</strong> & Pune Transit Network.
           </p>
         </div>
 

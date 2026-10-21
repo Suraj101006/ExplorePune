@@ -30,7 +30,10 @@ export default function TransitRouteMap({
   const minLng = Math.min(origin.lng, destination.lng) - 0.02;
   const maxLng = Math.max(origin.lng, destination.lng) + 0.02;
 
-  const osmEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${minLng.toFixed(4)}%2C${minLat.toFixed(4)}%2C${maxLng.toFixed(4)}%2C${maxLat.toFixed(4)}&layer=mapnik&marker=${destination.lat.toFixed(4)}%2C${destination.lng.toFixed(4)}`;
+  const gmapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const googleMapsEmbedRouteUrl = gmapsApiKey
+    ? `https://www.google.com/maps/embed/v1/directions?key=${gmapsApiKey}&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&mode=transit`
+    : `https://maps.google.com/maps?saddr=${origin.lat},${origin.lng}&daddr=${destination.lat},${destination.lng}&dirflg=r&hl=${isMarathi ? 'mr' : 'en'}&output=embed`;
 
   const gmapsTransitUrl =
     transitInfo.gmapsTransitUrl ||
@@ -66,25 +69,30 @@ export default function TransitRouteMap({
           <span style={{ color: '#f87171' }}>🚩 {destination.name}</span>
         </div>
 
-        <div style={{ display: 'flex', gap: 12, fontSize: 12 }}>
+        <div style={{ display: 'flex', gap: 12, fontSize: 12, alignItems: 'center' }}>
           <span style={{ background: 'rgba(255,255,255,0.15)', padding: '2px 8px', borderRadius: 6 }}>
             ⏱️ ~{transitInfo.estimatedMinutes} {isMarathi ? 'मि.' : 'mins'}
           </span>
           <span style={{ background: '#059669', color: '#ffffff', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
             🎫 ₹{transitInfo.estimatedCostInr}
           </span>
+          <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 4, fontSize: 11, fontWeight: 700 }}>
+            🗺️ Google Maps
+          </span>
         </div>
       </div>
 
-      {/* Embedded OpenStreetMap Frame */}
-      <div style={{ width: '100%', height: 280, position: 'relative', background: '#f8fafc' }}>
+      {/* Live Google Maps Transit Route Frame */}
+      <div style={{ width: '100%', height: 320, position: 'relative', background: '#f8fafc' }}>
         <iframe
-          title={`Transit route from ${origin.name} to ${destination.name}`}
+          title={`Google Maps Transit route from ${origin.name} to ${destination.name}`}
           width="100%"
           height="100%"
           style={{ border: 0 }}
           loading="lazy"
-          src={osmEmbedUrl}
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          src={googleMapsEmbedRouteUrl}
         />
       </div>
 

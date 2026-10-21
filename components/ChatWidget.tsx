@@ -61,6 +61,8 @@ interface ChatMessage {
   transit?: TransitData;
   suggestions?: string[];
   time?: string;
+  isGemini?: boolean;
+  model?: string;
 }
 
 const DEFAULT_HINTS_EN = [
@@ -197,6 +199,8 @@ export default function ChatWidget() {
               : 'Could not fetch details. Please try again.'),
           places: data.places,
           transit: data.transit,
+          isGemini: data.isGemini,
+          model: data.model,
           suggestions:
             data.suggestions ||
             (isMr ? DEFAULT_HINTS_MR.slice(0, 3) : DEFAULT_HINTS_EN.slice(0, 3)),
@@ -372,9 +376,27 @@ export default function ChatWidget() {
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
                 }}
               >
-                {isMr ? 'एक्सप्लोर पुणे AI मार्गदर्शक' : 'Explore Pune AI Guide'}
+                <span>{isMr ? 'एक्सप्लोर पुणे AI मार्गदर्शक' : 'Explore Pune AI Guide'}</span>
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    color: '#ffffff',
+                    fontSize: 9.5,
+                    fontWeight: 800,
+                    padding: '1px 6px',
+                    borderRadius: '999px',
+                    letterSpacing: '0.04em',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.18)',
+                  }}
+                  title="Powered by Google Gemini AI"
+                >
+                  ✨ Gemini
+                </span>
               </div>
               <div
                 style={{
@@ -466,7 +488,28 @@ export default function ChatWidget() {
           <div className="chat-log" aria-live="polite">
             {log.map((m) => (
               <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <div className={`msg ${m.role}`}>{formatMarkdownLinks(m.text)}</div>
+                <div className={`msg ${m.role}`}>
+                  {formatMarkdownLinks(m.text)}
+                  {m.isGemini && (
+                    <div
+                      style={{
+                        marginTop: 6,
+                        paddingTop: 4,
+                        borderTop: '1px dashed rgba(6, 95, 70, 0.2)',
+                        fontSize: 10,
+                        fontWeight: 600,
+                        color: 'var(--primary)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        opacity: 0.85,
+                      }}
+                    >
+                      <span>✨</span>
+                      <span>Google Gemini AI</span>
+                    </div>
+                  )}
+                </div>
 
                 {/* Structured Public Transit Route Card */}
                 {m.transit && (

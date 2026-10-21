@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { isLimited } from '@/lib/rateLimit';
 import { getPublicTransitRoute, calculateDistanceKm, PUNE_COMMUTE_HUBS } from '@/lib/publicTransit';
+import { isGeminiConfigured, generateGeminiReply } from '@/lib/gemini';
 
 const Schema = z.object({
   message: z.string().min(1).max(500),
@@ -114,12 +115,38 @@ export async function POST(req: NextRequest) {
     const allPlaces = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
 
     // =========================================================================
-    // 1. NEAR ME / GPS LOCATION QUERY
+    // 0. GOOGLE GEMINI AI ASSISTANT (If API Key is configured)
     // =========================================================================
     const isNearMe =
       /(near\s*me|nearby|closest|near\s*my\s*location|around\s*here)/i.test(lowerMsg) ||
       /(माझ्याजवळ|जवळची|नजीक|येथील|माझ्या\s*परिसरात)/i.test(lowerMsg);
 
+    if (isGeminiConfigured() && !isNearMe) {
+      try {
+        const geminiRes = await generateGeminiReply({
+          message,
+          lang: requestedLang as 'en' | 'mr',
+          allPlaces,
+          userLocation,
+        });
+
+        if (geminiRes && geminiRes.reply) {
+          return NextResponse.json({
+            reply: geminiRes.reply,
+            places: geminiRes.places,
+            suggestions: geminiRes.suggestions,
+            isGemini: true,
+            model: geminiRes.model,
+          });
+        }
+      } catch (geminiErr) {
+        console.warn('Gemini chat generation fallback to local engine:', geminiErr);
+      }
+    }
+
+    // =========================================================================
+    // 1. NEAR ME / GPS LOCATION QUERY
+    // =========================================================================
     if (isNearMe) {
       if (userLocation && typeof userLocation.lat === 'number') {
         const sortedByDistance = [...allPlaces]
