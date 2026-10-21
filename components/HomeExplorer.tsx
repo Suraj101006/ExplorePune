@@ -541,17 +541,13 @@ export default function HomeExplorer({
 
       {/* Main Content & Place Grid */}
       <div className="wrap" id="explore-places">
-        {/* Category Filters */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
-          <h2 style={{ fontSize: '20px', margin: 0 }}>
-            {isMr ? 'विभागानुसार शोधा' : 'Browse by Category'}
-          </h2>
-          {totalCount > 0 && (
-            <span style={{ color: 'var(--muted)', fontSize: '14px', fontWeight: 600 }}>
+        {totalCount > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 12 }}>
+            <span style={{ color: 'var(--muted)', fontSize: '13.5px', fontWeight: 600 }}>
               {isMr ? `${totalCount} ठिकाणे उपलब्ध` : `Showing ${totalCount} places`}
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Circular Category Badge Navigation */}
         <nav
@@ -565,42 +561,6 @@ export default function HomeExplorer({
             marginBottom: 20,
           }}
         >
-          {/* Find Near Me GPS Button */}
-          <button
-            type="button"
-            onClick={handleNearMeClick}
-            className={`chip ${sortByNearMe ? 'active' : ''}`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '6px 14px',
-              borderRadius: '999px',
-              cursor: 'pointer',
-              background: sortByNearMe ? '#065f46' : '#ffffff',
-              color: sortByNearMe ? '#ffffff' : '#065f46',
-              border: '1.5px solid #065f46',
-              fontWeight: 700,
-              boxShadow: sortByNearMe ? '0 4px 12px rgba(6, 95, 70, 0.25)' : 'none',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <span>{isLocatingGps ? '⏳' : '📍'}</span>
-            <span>
-              {isLocatingGps
-                ? isMr
-                  ? 'स्थान शोधत आहे…'
-                  : 'Locating…'
-                : sortByNearMe
-                ? isMr
-                  ? '✓ अंतराप्रमाणे क्रम (काढा)'
-                  : '✓ Near Me Active (Reset)'
-                : isMr
-                ? 'माझ्या जवळची ठिकाणे (GPS)'
-                : 'Find Near Me (GPS)'}
-            </span>
-          </button>
-
           {/* Active Pune Locality Selector Button */}
           <button
             type="button"
