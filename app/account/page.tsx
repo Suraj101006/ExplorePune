@@ -1,94 +1,469 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
+import { updatePassword, signOut } from 'firebase/auth';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+} from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { useAuth } from '@/lib/useAuth';
 
-const STATUS: Record<string, string> = { pending: 'Waiting for review', published: 'Published', rejected: 'Not approved', removed: 'Removed' };
+const STATUS: Record<string, string> = {
+  pending: 'Waiting for review',
+  published: 'Published',
+  rejected: 'Not approved',
+  removed: 'Removed',
+};
 
 export default function AccountPage() {
+  const router = useRouter();
   const { user, ready } = useAuth();
   const [d, setD] = useState<any>(null);
-  const [msg, setMsg] = useState(''); const [err, setErr] = useState('');
+  const [msg, setMsg] = useState('');
+  const [err, setErr] = useState('');
   const [pw, setPw] = useState('');
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     if (!user) return;
-    const [p, f, v, b, r, bl] = await Promise.all([
-      supabase.from('profiles').select('display_name, bio, profile_visibility').eq('id', user.id).single(),
-      supabase.from('favorites').select('places(name, slug)').eq('user_id', user.id),
-      supabase.from('visits').select('id, visited_at, places(name, slug)').eq('user_id', user.id).order('visited_at', { ascending: false }),
-      supabase.from('user_milestones').select('earned_at, milestones(name, description)').eq('user_id', user.id),
-      supabase.from('reviews').select('id, rating, status, places(name, slug)').eq('user_id', user.id),
-      supabase.from('blogs').select('id, title, slug, status, is_draft').eq('author_id', user.id),
-    ]);
-    setD({ profile: p.data, favs: f.data ?? [], visits: v.data ?? [], badges: b.data ?? [], reviews: r.data ?? [], blogs: bl.data ?? [] });
-  }, [user]);
-  useEffect(() => { load(); }, [load]);
+    try {
+      // Load profile
+      const profileSnap = await getDoc(doc(db, 'profiles', user.uid));
+      const profile = profileSnap.exists() ? profileSnap.data() : null;
 
-  if (!ready) return <main className="wrap" style={{ paddingTop: 40 }}>Loading…</main>;
-  if (!user) return <main className="wrap" style={{ paddingTop: 40 }}><p className="note">Please <Link href="/login">sign in</Link> to see your account.</p></main>;
-  if (!d) return <main className="wrap" style={{ paddingTop: 40 }}>Loading your account…</main>;
+      // Load favorites
+      const favsSnap = await getDocs(
+        query(collection(db, 'favorites'), where('user_id', '==', user.uid))
+      );
+      const favs = favsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      // Load visits
+      const visitsSnap = await getDocs(
+        query(collection(db, 'visits'), where('user_id', '==', user.uid))
+      );
+      const visits = visitsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      // Load badges
+      const badgesSnap = await getDocs(
+        query(collection(db, 'user_milestones'), where('user_id', '==', user.uid))
+      );
+      const badgePromises = badgesSnap.docs.map(async (d) => {
+        const data = d.data();
+        const milestoneSnap = data.milestone_id
+          ? await getDoc(doc(db, 'milestones', data.milestone_id))
+          : null;
+        return { ...data, milestone: milestoneSnap?.exists() ? milestoneSnap.data() : null };
+      });
+      const badges = await Promise.all(badgePromises);
+
+      // Load reviews
+      const reviewsSnap = await getDocs(
+        query(collection(db, 'reviews'), where('user_id', '==', user.uid))
+      );
+      const reviews = reviewsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      // Load blogs
+      const blogsSnap = await getDocs(
+        query(collection(db, 'blogs'), where('author_id', '==', user.uid))
+      );
+      const blogs = blogsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+      setD({ profile, favs, visits, badges, reviews, blogs });
+    } catch (e) {
+      console.error('Error loading account:', e);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  if (!ready) {
+    return (
+      <main className="wrap" style={{ paddingTop: 60, textAlign: 'center' }}>
+        <p style={{ color: 'var(--muted)' }}>Loading account details…</p>
+      </main>
+    );
+  }
+
+  if (!user) {
+    return (
+      <main className="wrap" style={{ paddingTop: 60, maxWidth: 500 }}>
+        <div className="panel" style={{ textAlign: 'center', padding: '40px 24px' }}>
+          <span style={{ fontSize: 40, display: 'block', marginBottom: 12 }}>🔒</span>
+          <h2>Sign in Required</h2>
+          <p style={{ color: 'var(--muted)', margin: '0 0 20px' }}>
+            Please sign in to view your saved places, recorded visits, and blogs.
+          </p>
+          <Link href="/login" className="btn">
+            Sign In to Account
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  if (!d) {
+    return (
+      <main className="wrap" style={{ paddingTop: 60, textAlign: 'center' }}>
+        <p style={{ color: 'var(--muted)' }}>Loading your profile data…</p>
+      </main>
+    );
+  }
 
   async function saveProfile(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); const f = new FormData(e.currentTarget); setErr(''); setMsg('');
-    const { error } = await supabase.from('profiles').update({ display_name: String(f.get('n')), bio: String(f.get('b')) || null, profile_visibility: String(f.get('v')) }).eq('id', user!.id);
-    error ? setErr('Could not save: ' + error.message) : setMsg('Profile saved.');
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    setErr('');
+    setMsg('');
+    setBusy(true);
+    try {
+      await updateDoc(doc(db, 'profiles', user!.uid), {
+        display_name: String(f.get('n')),
+        bio: String(f.get('b')) || null,
+        profile_visibility: String(f.get('v')),
+        updated_at: new Date().toISOString(),
+      });
+      setMsg('✅ Profile updated successfully.');
+    } catch (error: any) {
+      setErr('Could not save: ' + (error?.message ?? 'unknown error'));
+    } finally {
+      setBusy(false);
+    }
   }
+
   async function changePw(e: React.FormEvent) {
-    e.preventDefault(); setErr(''); setMsg('');
-    const { error } = await supabase.auth.updateUser({ password: pw });
-    error ? setErr(error.message) : (setMsg('Password updated.'), setPw(''));
+    e.preventDefault();
+    setErr('');
+    setMsg('');
+    try {
+      await updatePassword(user!, pw);
+      setMsg('✅ Password updated successfully.');
+      setPw('');
+    } catch (error: any) {
+      setErr(error?.message ?? 'Could not change password.');
+    }
   }
-  async function removeVisit(id: string) { await supabase.from('visits').delete().eq('id', id); load(); }
-  async function del() {
-    if (!confirm('Delete your account and everything you posted? This cannot be undone.')) return;
-    const { data } = await supabase.auth.getSession();
-    const res = await fetch('/api/v1/account/delete', { method: 'POST', headers: { Authorization: `Bearer ${data.session?.access_token}` } });
-    if (res.ok) { await supabase.auth.signOut(); location.href = '/'; } else setErr((await res.json()).error?.message ?? 'Could not delete the account.');
+
+  async function removeVisit(id: string) {
+    await deleteDoc(doc(db, 'visits', id));
+    load();
   }
-  const one = (x: any) => (Array.isArray(x) ? x[0] : x);
+
+  async function removeFavorite(id: string) {
+    await deleteDoc(doc(db, 'favorites', id));
+    load();
+  }
 
   return (
-    <main className="wrap" style={{ paddingTop: 36, display: 'grid', gap: 20 }}>
-      <h1 style={{ margin: 0 }}>Your account</h1>
-      {err && <p className="note err" role="alert">{err}</p>}{msg && <p className="note" role="status">{msg}</p>}
-      <div className="two" style={{ gridTemplateColumns: '1fr 1fr' }}>
+    <main className="wrap" style={{ paddingTop: 40, paddingBottom: 60, display: 'grid', gap: 24 }}>
+      {/* Account Header */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
+        <div>
+          <div className="hero-pill">
+            <span>👤</span> Member Dashboard
+          </div>
+          <h1 style={{ fontSize: 32, margin: '6px 0 4px' }}>
+            {d.profile?.display_name || user.displayName || 'Pune Explorer'}
+          </h1>
+          <p style={{ color: 'var(--muted)', fontSize: 14, margin: 0 }}>
+            {user.email} • Member since {new Date(user.metadata.creationTime || '').toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+          </p>
+        </div>
+        <button
+          className="btn outline"
+          onClick={async () => {
+            await signOut(auth);
+            router.push('/');
+          }}
+        >
+          Sign Out
+        </button>
+      </div>
+
+      {err && <p className="note err" role="alert">{err}</p>}
+      {msg && <p className="note" role="status" style={{ background: 'var(--sage-bg)', color: 'var(--sage-ink)', borderColor: 'var(--sage-border)' }}>{msg}</p>}
+
+      {/* Profile & Password Cards */}
+      <div className="two" style={{ gridTemplateColumns: '1.2fr 1fr' }}>
         <form className="panel" onSubmit={saveProfile}>
-          <h2 style={{ marginTop: 0 }}>Profile</h2>
-          <div className="field"><label htmlFor="n">Display name</label><input id="n" name="n" defaultValue={d.profile?.display_name} minLength={2} maxLength={50} required /></div>
-          <div className="field"><label htmlFor="b">About you</label><input id="b" name="b" defaultValue={d.profile?.bio ?? ''} maxLength={500} /></div>
-          <div className="field"><label htmlFor="v">Who can see your profile</label><select id="v" name="v" defaultValue={d.profile?.profile_visibility}><option value="public">Everyone</option><option value="private">Only me</option></select></div>
-          <button className="btn">Save profile</button>
+          <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 16, borderBottom: '1px solid var(--line)', paddingBottom: 8 }}>
+            Edit Profile
+          </h2>
+          <div className="field">
+            <label htmlFor="n">Display Name</label>
+            <input
+              id="n"
+              name="n"
+              defaultValue={d.profile?.display_name ?? user.displayName ?? ''}
+              minLength={2}
+              maxLength={50}
+              required
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="b">Bio</label>
+            <input
+              id="b"
+              name="b"
+              defaultValue={d.profile?.bio ?? ''}
+              maxLength={500}
+              placeholder="e.g. History enthusiast, Sahyadri weekend trekker"
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="v">Profile Visibility</label>
+            <select id="v" name="v" defaultValue={d.profile?.profile_visibility ?? 'public'}>
+              <option value="public">Public (visible to community)</option>
+              <option value="private">Private (only visible to you)</option>
+            </select>
+          </div>
+          <button className="btn" disabled={busy}>
+            Save Profile
+          </button>
         </form>
+
         <form className="panel" onSubmit={changePw}>
-          <h2 style={{ marginTop: 0 }}>Password</h2>
-          <div className="field"><label htmlFor="pw">New password (8+ characters)</label><input id="pw" type="password" minLength={8} value={pw} onChange={(e) => setPw(e.target.value)} required autoComplete="new-password" /></div>
-          <button className="btn">Change password</button>
+          <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 16, borderBottom: '1px solid var(--line)', paddingBottom: 8 }}>
+            Security
+          </h2>
+          <div className="field">
+            <label htmlFor="pw">New Password (8+ characters)</label>
+            <input
+              id="pw"
+              type="password"
+              minLength={8}
+              value={pw}
+              onChange={(e) => setPw(e.target.value)}
+              required
+              autoComplete="new-password"
+              placeholder="••••••••"
+            />
+          </div>
+          <button className="btn outline">Update Password</button>
         </form>
       </div>
 
-      <section className="panel"><h2 style={{ marginTop: 0 }}>Badges</h2>
-        {d.badges.length === 0 ? <p style={{ margin: 0 }}>No badges yet. Mark a place as visited to earn your first one.</p> :
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>{d.badges.map((b: any, i: number) => <span key={i} className="tier verified" title={one(b.milestones)?.description}>{one(b.milestones)?.name}</span>)}</div>}
+      {/* Explorer Badges */}
+      <section className="panel">
+        <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 12 }}>
+          Sahyadri & Pune Badges ({d.badges.length})
+        </h2>
+        {d.badges.length === 0 ? (
+          <p style={{ color: 'var(--muted)', margin: 0, fontSize: 14 }}>
+            No badges unlocked yet. Mark a place as visited or write a blog to earn your first badge!
+          </p>
+        ) : (
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            {d.badges.map((b: any, i: number) => (
+              <span
+                key={i}
+                className="tier verified"
+                style={{ padding: '6px 14px', fontSize: 13 }}
+                title={b.milestone?.description}
+              >
+                🏆 {b.milestone?.name || 'Explorer'}
+              </span>
+            ))}
+          </div>
+        )}
       </section>
-      <section className="panel"><h2 style={{ marginTop: 0 }}>Saved places</h2>
-        {d.favs.length === 0 ? <p style={{ margin: 0 }}>Nothing saved yet. Use “Save” on any place page.</p> : <ul>{d.favs.map((f: any, i: number) => <li key={i}><Link href={`/places/${one(f.places)?.slug}`}>{one(f.places)?.name}</Link></li>)}</ul>}
+
+      {/* Saved Places */}
+      <section className="panel">
+        <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 14 }}>
+          Saved Places ({d.favs.length})
+        </h2>
+        {d.favs.length === 0 ? (
+          <p style={{ color: 'var(--muted)', margin: 0, fontSize: 14 }}>
+            Nothing saved yet. Click &quot;Save Place&quot; on any destination page to bookmark it here.
+          </p>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+            {d.favs.map((f: any, i: number) => (
+              <div
+                key={i}
+                style={{
+                  padding: '12px 16px',
+                  background: 'var(--bg)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--line)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Link
+                  href={`/places/${f.place_slug || f.place_id}`}
+                  style={{ fontWeight: 600, color: 'var(--ink)' }}
+                >
+                  📍 {f.place_name || f.place_slug || 'Place'}
+                </Link>
+                <button
+                  className="chip"
+                  style={{ padding: '2px 8px', fontSize: 11 }}
+                  onClick={() => removeFavorite(f.id)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
-      <section className="panel"><h2 style={{ marginTop: 0 }}>Places you’ve visited</h2>
-        {d.visits.length === 0 ? <p style={{ margin: 0 }}>No visits recorded yet.</p> : <ul>{d.visits.map((v: any) => <li key={v.id}><Link href={`/places/${one(v.places)?.slug}`}>{one(v.places)?.name}</Link>, {v.visited_at} <button className="chip" onClick={() => removeVisit(v.id)}>Remove</button></li>)}</ul>}
+
+      {/* Places Visited */}
+      <section className="panel">
+        <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 14 }}>
+          Places Visited ({d.visits.length})
+        </h2>
+        {d.visits.length === 0 ? (
+          <p style={{ color: 'var(--muted)', margin: 0, fontSize: 14 }}>
+            No visits recorded yet. When you visit a Pune attraction, mark &quot;I&apos;ve Been Here&quot;!
+          </p>
+        ) : (
+          <div style={{ display: 'grid', gap: 10 }}>
+            {d.visits.map((v: any) => (
+              <div
+                key={v.id}
+                style={{
+                  padding: '12px 16px',
+                  background: 'var(--bg)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--line)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 12,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {v.image_url && (
+                    <img
+                      src={v.image_url}
+                      alt={v.place_name || 'Proof'}
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 6,
+                        objectFit: 'cover',
+                        border: '1px solid var(--line)',
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <Link
+                        href={`/places/${v.place_slug || v.place_id}`}
+                        style={{ fontWeight: 700, color: 'var(--ink)' }}
+                      >
+                        🚩 {v.place_name || v.place_slug || 'Place'}
+                      </Link>
+                      <span
+                        style={{
+                          fontSize: 10.5,
+                          fontWeight: 700,
+                          padding: '1px 6px',
+                          borderRadius: 4,
+                          background: v.is_public ? '#ecfdf5' : '#f1f5f9',
+                          color: v.is_public ? '#065f46' : '#64748b',
+                          border: `1px solid ${v.is_public ? '#a7f3d0' : '#cbd5e1'}`,
+                        }}
+                      >
+                        {v.is_public ? '🌐 Public (Community)' : '🔒 Private (Only Me)'}
+                      </span>
+                    </div>
+                    <span style={{ color: 'var(--muted)', fontSize: 13, display: 'block', marginTop: 2 }}>
+                      Visited on {v.visited_at}
+                    </span>
+                    {v.notes && (
+                      <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--ink-secondary)' }}>
+                        Note: {v.notes}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <button
+                  className="chip"
+                  style={{ padding: '4px 10px', fontSize: 12 }}
+                  onClick={() => removeVisit(v.id)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
-      <section className="panel"><h2 style={{ marginTop: 0 }}>Your reviews</h2>
-        {d.reviews.length === 0 ? <p style={{ margin: 0 }}>You haven’t reviewed any place yet.</p> : <ul>{d.reviews.map((r: any) => <li key={r.id}><Link href={`/places/${one(r.places)?.slug}`}>{one(r.places)?.name}</Link>, {r.rating}/5, {STATUS[r.status]}</li>)}</ul>}
+
+      {/* Your Blogs */}
+      <section className="panel">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <h2 style={{ fontSize: 18, margin: 0 }}>Your Blogs & Stories ({d.blogs.length})</h2>
+          <Link className="btn" href="/blogs/new" style={{ padding: '6px 14px', fontSize: 13 }}>
+            Write New Blog
+          </Link>
+        </div>
+        {d.blogs.length === 0 ? (
+          <p style={{ color: 'var(--muted)', margin: 0, fontSize: 14 }}>
+            You haven&apos;t written any blog posts yet. Share your Pune memories with the world!
+          </p>
+        ) : (
+          <div style={{ display: 'grid', gap: 10 }}>
+            {d.blogs.map((b: any) => (
+              <div
+                key={b.id}
+                style={{
+                  padding: '12px 16px',
+                  background: 'var(--bg)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--line)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  {b.status === 'published' ? (
+                    <Link href={`/blogs/${b.slug}`} style={{ fontWeight: 700, color: 'var(--ink)' }}>
+                      {b.title}
+                    </Link>
+                  ) : (
+                    <span style={{ fontWeight: 700, color: 'var(--ink)' }}>{b.title}</span>
+                  )}
+                  <span style={{ marginLeft: 10, fontSize: 12 }} className={`tier ${b.status === 'published' ? 'verified' : ''}`}>
+                    {b.is_draft ? 'Draft' : STATUS[b.status] ?? b.status}
+                  </span>
+                </div>
+                {b.status === 'published' && (
+                  <Link href={`/blogs/${b.slug}`} className="chip" style={{ fontSize: 12 }}>
+                    View →
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
-      <section className="panel"><h2 style={{ marginTop: 0 }}>Your blogs</h2>
-        <p><Link className="btn" href="/blogs/new">Write a blog</Link></p>
-        <ul>{d.blogs.map((b: any) => <li key={b.id}>{b.status === 'published' ? <Link href={`/blogs/${b.slug}`}>{b.title}</Link> : b.title}, {b.is_draft ? 'Draft' : STATUS[b.status]}</li>)}</ul>
-      </section>
-      <p style={{ display: 'flex', gap: 10 }}>
-        <button className="chip" onClick={async () => { await supabase.auth.signOut(); location.href = '/'; }}>Sign out</button>
-        <button className="chip" onClick={del}>Delete my account</button>
-      </p>
     </main>
   );
 }

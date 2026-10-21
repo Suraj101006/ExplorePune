@@ -1,8 +1,9 @@
-export type TravelMode = 'walking' | 'cycling' | 'driving';
+export type TravelMode = 'walking' | 'cycling' | 'driving' | 'public_transit';
 
 export interface RouteCandidate {
   id: string;
   name: string;
+  name_mr?: string;
   slug: string;
   score: number;
   visitDurationMinutes: number;
@@ -11,6 +12,8 @@ export interface RouteCandidate {
   closesMinuteOfDay?: number;
   isHoursVerified: boolean;
   tier: 'listed' | 'enriched' | 'verified';
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface PlannerInput {
@@ -20,6 +23,7 @@ export interface PlannerInput {
   budgetPerPerson?: number;
   returnToStart: boolean;
   includeUnverified: boolean;
+  userLocName?: string;
 }
 
 export interface TravelEstimator {
@@ -29,11 +33,13 @@ export interface TravelEstimator {
 export interface ItineraryStop {
   placeId: string;
   placeName: string;
+  placeName_mr?: string;
   placeSlug: string;
   travelMinutes: number;
   visitMinutes: number;
   entryCost: number | null;
   tier: string;
+  transitDetails?: any;
 }
 
 export interface PlannerResult {
@@ -55,7 +61,7 @@ export function buildItinerary(
   const unknownCosts: string[] = [];
   const stops: ItineraryStop[] = [];
 
-  const bufferPerStop = input.mode === 'driving' ? 10 : 5;
+  const bufferPerStop = input.mode === 'driving' || input.mode === 'public_transit' ? 10 : 5;
   const timeLimit = Math.floor(input.availableMinutes * 0.9);
 
   const candidatePool = input.includeUnverified
@@ -129,6 +135,7 @@ export function buildItinerary(
     stops.push({
       placeId: candidate.id,
       placeName: candidate.name,
+      placeName_mr: candidate.name_mr,
       placeSlug: candidate.slug,
       travelMinutes: travel.durationMinutes,
       visitMinutes: candidate.visitDurationMinutes,

@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { User } from '@supabase/supabase-js';
-import { supabase } from './supabaseClient';
+import type { User } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from './firebase';
 
 export type Role = 'member' | 'moderator' | 'admin';
 
@@ -9,17 +11,43 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<Role | null>(null);
   const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    let on = true;
-    async function load(u: User | null) {
-      let r: Role | null = null;
-      if (u) { const { data } = await supabase.from('profiles').select('role').eq('id', u.id).maybeSingle(); r = (data?.role as Role) ?? 'member'; }
-      if (on) { setUser(u); setRole(r); setReady(true); }
-    }
-    supabase.auth.getSession().then(({ data }) => load(data.session?.user ?? null));
-    // defer: supabase calls must not run inside the auth callback itself
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { setTimeout(() => load(s?.user ?? null), 0); });
-    return () => { on = false; sub.subscription.unsubscribe(); };
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        // Fetch role from Firestore profiles collection
+        try {
+          const profileDoc = await getDoc(doc(db, 'profiles', firebaseUser.uid));
+          const r = profileDoc.exists() ? (profileDoc.data().role as Role) ?? 'member' : 'member';
+          setRole(r);
+        } catch {
+          setRole('member');
+        }
+      } else {
+        setUser(null);
+        setRole(null);
+      }
+      setReady(true);
+    });
+    return () => unsubscribe();
   }, []);
-  return { user, role, ready, isStaff: role === 'admin' || role === 'moderator', isAdmin: role === 'admin' };
+
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error('Logout error:', err);
+      throw err;
+    }
+  };
+
+  return {
+    user,
+    role,
+    ready,
+    isStaff: role === 'admin' || role === 'moderator',
+    isAdmin: role === 'admin',
+    logout,
+  };
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { isLimited, resetRateLimits } from '@/lib/rateLimit';
 import fs from 'node:fs';
 import path from 'node:path';

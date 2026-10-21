@@ -1,0 +1,18 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "PuneTRAIL",
+        "supportEmail": "suraj.dhok24@mmit.edu.in",
+        "authorizedRedirectUris": [
+          "https://punetrail.firebaseapp.com/__/auth/handler",
+          "http://localhost"
+        ]
+      }
+    }
+  }
+}

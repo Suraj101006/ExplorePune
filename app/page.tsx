@@ -1,78 +1,81 @@
-import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import HomeExplorer from '@/components/HomeExplorer';
 
 export const dynamic = 'force-dynamic';
-const PAGE = 24;
-const TIER: Record<string, string> = { verified: 'Verified', enriched: 'Details from public sources', listed: 'Hours and fees not verified' };
+const PAGE = 72;
 
-export default async function HomePage({ searchParams }: { searchParams: Promise<{ q?: string; cat?: string; page?: string }> }) {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; cat?: string; page?: string }>;
+}) {
   const sp = await searchParams;
   const cat = (sp.cat ?? '').replace(/[^a-z0-9-]/gi, '');
   const term = (sp.q ?? '').replace(/[^\p{L}\p{N}\s]/gu, '').trim().slice(0, 60);
   const pg = Math.max(1, parseInt(sp.page ?? '1') || 1);
 
-  const { data: cats } = await supabase.from('place_categories').select('name, slug').order('sort_order').order('name');
-  let q: any = supabase
-    .from('places')
-    .select(`id, name, name_mr, slug, data_tier, zone, place_categories${cat ? '!inner' : ''}(name, slug)`, { count: 'exact' })
-    .eq('status', 'published');
-  if (cat) q = q.eq('place_categories.slug', cat);
-  if (term) q = q.or(`name.ilike.%${term}%,name_mr.ilike.%${term}%`);
-  const { data, count, error } = await q.order('popularity_score', { ascending: false }).order('name').range((pg - 1) * PAGE, pg * PAGE - 1);
-  const places = (data ?? []) as any[];
-  const pages = Math.max(1, Math.ceil((count ?? 0) / PAGE));
-  const href = (p: number) => `/?${new URLSearchParams({ ...(term && { q: term }), ...(cat && { cat }), page: String(p) })}`;
+  // Fetch categories from Firestore
+  let cats: any[] = [];
+  try {
+    const catsSnap = await getDocs(collection(db, 'place_categories'));
+    cats = catsSnap.docs.map((doc) => doc.data());
+    cats.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || (a.name || '').localeCompare(b.name || ''));
+  } catch (err) {
+    console.error('Failed to load categories:', err);
+  }
+
+  // Fetch places and apply filters in memory
+  let allPlaces: any[] = [];
+  try {
+    const placesSnap = await getDocs(collection(db, 'places'));
+    allPlaces = placesSnap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as any) }));
+    allPlaces = allPlaces.filter((p) => p.status === 'published');
+
+    if (cat) {
+      allPlaces = allPlaces.filter((p) =>
+        p.place_categories?.some((c: any) => c.slug === cat) ||
+        p.category_slug === cat ||
+        p.category === cat
+      );
+    }
+
+    if (term) {
+      const lowerTerm = term.toLowerCase();
+      allPlaces = allPlaces.filter(
+        (p) =>
+          (p.name && p.name.toLowerCase().includes(lowerTerm)) ||
+          (p.name_mr && p.name_mr.toLowerCase().includes(lowerTerm)) ||
+          (p.description && p.description.toLowerCase().includes(lowerTerm))
+      );
+    }
+
+    // Sort by popularity_score desc then name asc
+    allPlaces.sort((a, b) => {
+      if ((b.popularity_score || 0) !== (a.popularity_score || 0)) {
+        return (b.popularity_score || 0) - (a.popularity_score || 0);
+      }
+      return (a.name || '').localeCompare(b.name || '');
+    });
+  } catch (err: any) {
+    console.error('Failed to load places:', err);
+  }
+
+  const count = allPlaces.length;
+  const pages = Math.max(1, Math.ceil(count / PAGE));
+  const places = allPlaces.slice((pg - 1) * PAGE, pg * PAGE);
 
   return (
     <main>
-      <section className="hero wrap">
-        <div>
-          <h1>Explore Pune</h1>
-          <p className="lede">Forts, wadas, temples, lakes and viewpoints, each with a plain note on how much we have checked.</p>
-          <form className="search" action="/" role="search">
-            <input name="q" defaultValue={term} placeholder="Search a place, in English or मराठी" aria-label="Search places" />
-            {cat && <input type="hidden" name="cat" value={cat} />}
-            <button className="btn">Search</button>
-          </form>
-          <Link className="btn clay" href="/planner">Plan my trip</Link>
-        </div>
-        <div className="hero-deva" aria-hidden="true">पुणे</div>
-      </section>
-
-      <div className="wrap">
-        <nav className="chips" aria-label="Categories">
-          <Link className="chip" href="/" aria-current={!cat}>All</Link>
-          {(cats ?? []).map((c) => <Link key={c.slug} className="chip" href={`/?cat=${c.slug}${term ? `&q=${encodeURIComponent(term)}` : ''}`} aria-current={cat === c.slug}>{c.name}</Link>)}
-        </nav>
-
-        {error && <p className="note err">We couldn’t load places right now. Please refresh in a minute.</p>}
-        {!error && places.length === 0 && (
-          <p className="note">No places match{term ? ` “${term}”` : ''}. <Link href="/">Clear filters</Link> or try a shorter name.</p>
-        )}
-        {!error && places.length > 0 && <p style={{ color: 'var(--muted)', margin: '0 0 12px' }}>{count} places</p>}
-
-        <section className="grid">
-          {places.map((p) => {
-            const c = Array.isArray(p.place_categories) ? p.place_categories[0] : p.place_categories;
-            return (
-              <Link key={p.id} href={`/places/${p.slug}`} className="card">
-                <span className="cat">{c?.name ?? 'Attraction'}{p.zone === 'day_trip' ? ', day trip' : ''}</span>
-                <h2>{p.name}</h2>
-                {p.name_mr && <p className="mr" lang="mr">{p.name_mr}</p>}
-                <span className={`tier ${p.data_tier}`}>{TIER[p.data_tier] ?? p.data_tier}</span>
-              </Link>
-            );
-          })}
-        </section>
-
-        {pages > 1 && (
-          <nav className="pager" aria-label="Pages">
-            {pg > 1 && <Link className="chip" href={href(pg - 1)}>Previous</Link>}
-            <span style={{ padding: '8px 0' }}>Page {pg} of {pages}</span>
-            {pg < pages && <Link className="chip" href={href(pg + 1)}>Next</Link>}
-          </nav>
-        )}
-      </div>
+      <HomeExplorer
+        places={places}
+        categories={cats}
+        currentCat={cat}
+        searchTerm={term}
+        page={pg}
+        totalPages={pages}
+        totalCount={count}
+      />
     </main>
   );
 }

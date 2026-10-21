@@ -1,9 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import * as maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-
 interface PlaceMapProps {
   latitude: number;
   longitude: number;
@@ -11,46 +7,63 @@ interface PlaceMapProps {
 }
 
 export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<maplibregl.Map | null>(null);
-
-  useEffect(() => {
-    if (!mapContainer.current || mapInstance.current) return;
-
-    const styleUrl =
-      process.env.NEXT_PUBLIC_MAP_STYLE_URL ||
-      'https://tiles.openfreemap.org/styles/liberty';
-
-    mapInstance.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: styleUrl,
-      center: [longitude, latitude],
-      zoom: 14,
-    });
-
-    mapInstance.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-    new maplibregl.Marker({ color: '#1F4D3A' })
-      .setLngLat([longitude, latitude])
-      .setPopup(new maplibregl.Popup({ offset: 25 }).setText(name))
-      .addTo(mapInstance.current);
-
-    return () => {
-      mapInstance.current?.remove();
-      mapInstance.current = null;
-    };
-  }, [latitude, longitude, name]);
+  const lat = latitude || 18.5204;
+  const lng = longitude || 73.8567;
+  const delta = 0.012;
+  const osmEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - delta}%2C${lat - delta}%2C${lng + delta}%2C${lat + delta}&layer=mapnik&marker=${lat}%2C${lng}`;
+  const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
   return (
-    <div
-      ref={mapContainer}
-      style={{
-        width: '100%',
-        height: '280px',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        border: '1px solid #e7e5e4',
-      }}
-    />
+    <div style={{ display: 'grid', gap: 12 }}>
+      {/* Interactive Map Embed */}
+      <div
+        style={{
+          width: '100%',
+          height: 320,
+          borderRadius: 12,
+          overflow: 'hidden',
+          border: '1px solid var(--line)',
+          background: '#f8fafc',
+          position: 'relative',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <iframe
+          title={`Map of ${name}`}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          loading="lazy"
+          src={osmEmbedUrl}
+        />
+      </div>
+
+      {/* Map Action Links */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 10,
+          fontSize: 13,
+        }}
+      >
+        <span style={{ color: 'var(--muted)' }}>
+          📍 GPS: <strong>{lat.toFixed(4)}° N, {lng.toFixed(4)}° E</strong>
+        </span>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <a
+            href={gmapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="btn"
+            style={{ padding: '6px 14px', fontSize: 12, borderRadius: 999 }}
+          >
+            🧭 Directions on Google Maps ↗
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
