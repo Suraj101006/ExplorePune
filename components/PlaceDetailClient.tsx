@@ -9,6 +9,7 @@ import Reviews from '@/components/Reviews';
 import PlaceMap from '@/components/PlaceMapWrapper';
 import CommunityGallery from '@/components/CommunityGallery';
 import TransitRouteMap from '@/components/TransitRouteMap';
+import LocationPickerModal from '@/components/LocationPickerModal';
 import {
   getPublicTransitRoute,
   TransitRouteInfo,
@@ -19,6 +20,7 @@ import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getPlaceVisitorGuidelines } from '@/lib/visitorGuidelines';
+import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -81,6 +83,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   );
   const [gpsError, setGpsError] = useState('');
   const [gpsNotice, setGpsNotice] = useState('');
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [activeGuidelineTab, setActiveGuidelineTab] = useState<'commute' | 'timing' | 'rules'>('commute');
   const [speaking, setSpeaking] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -88,6 +91,19 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
+
+  // Sync stored user location if available
+  useEffect(() => {
+    const loc = getStoredUserLocation();
+    if (loc) {
+      setUserCoords({ lat: loc.lat, lng: loc.lng });
+      setSelectedHubId(loc.id);
+      const name = isMr ? loc.nameMr : loc.nameEn;
+      setOriginName(name);
+      const computed = getPublicTransitRoute(loc.lat, loc.lng, place, name);
+      setLiveTransit(computed);
+    }
+  }, [place, isMr]);
 
   useEffect(() => {
     const sync = () => {
@@ -922,37 +938,59 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 </span>
               </label>
 
-              <button
-                type="button"
-                onClick={handleCalcGps}
-                disabled={gpsLoading}
-                className="btn outline"
-                style={{
-                  padding: '4px 10px',
-                  fontSize: 11.5,
-                  borderRadius: 999,
-                  background: selectedHubId === 'gps' ? '#ecfdf5' : '#ffffff',
-                  borderColor: selectedHubId === 'gps' ? '#10b981' : '#cbd5e1',
-                  color: selectedHubId === 'gps' ? '#047857' : '#334155',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                <span>{gpsLoading ? '⏳' : '📍'}</span>
-                <span>
-                  {gpsLoading
-                    ? isMr
-                      ? 'स्थान शोधत आहे…'
-                      : 'Locating…'
-                    : selectedHubId === 'gps'
-                    ? isMr
-                      ? '✓ थेट GPS निवडले'
-                      : '✓ Live GPS Active'
-                    : isMr
-                    ? 'माझे थेट GPS वापरा'
-                    : 'Use My Live GPS'}
-                </span>
-              </button>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsLocationModalOpen(true)}
+                  className="btn outline"
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: 11.5,
+                    borderRadius: 999,
+                    background: '#ffffff',
+                    borderColor: '#059669',
+                    color: '#065f46',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                  title={isMr ? 'पुण्यातील ३५+ परिसरांमधून थेट शोधा' : 'Search across 35+ Pune localities'}
+                >
+                  <span>📍</span>
+                  <span>{isMr ? 'सर्व ३५+ परिसर शोधा' : 'Search 35+ Localities'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCalcGps}
+                  disabled={gpsLoading}
+                  className="btn outline"
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: 11.5,
+                    borderRadius: 999,
+                    background: selectedHubId === 'gps' ? '#ecfdf5' : '#ffffff',
+                    borderColor: selectedHubId === 'gps' ? '#10b981' : '#cbd5e1',
+                    color: selectedHubId === 'gps' ? '#047857' : '#334155',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span>{gpsLoading ? '⏳' : '📍'}</span>
+                  <span>
+                    {gpsLoading
+                      ? isMr
+                        ? 'स्थान शोधत आहे…'
+                        : 'Locating…'
+                      : selectedHubId === 'gps'
+                      ? isMr
+                        ? '✓ थेट GPS निवडले'
+                        : '✓ Live GPS Active'
+                      : isMr
+                      ? 'माझे थेट GPS वापरा'
+                      : 'Use My Live GPS'}
+                  </span>
+                </button>
+              </div>
             </div>
 
             {/* GPS Live Notice Banner */}
@@ -1382,6 +1420,26 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         {/* Reviews Section */}
         <Reviews placeId={place.id} />
       </div>
+
+      {/* Global Location & GPS Picker Modal */}
+      <LocationPickerModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        onLocationSelected={(loc) => {
+          setSelectedHubId(loc.id);
+          const name = isMr ? loc.nameMr : loc.nameEn;
+          setOriginName(name);
+          setUserCoords({ lat: loc.lat, lng: loc.lng });
+          setGpsNotice(
+            isMr
+              ? `✓ निवडलेले स्थान: ${loc.nameMr}`
+              : `✓ Origin set to: ${loc.nameEn}`
+          );
+          setGpsError('');
+          const computed = getPublicTransitRoute(loc.lat, loc.lng, place, name);
+          setLiveTransit(computed);
+        }}
+      />
     </main>
   );
 }

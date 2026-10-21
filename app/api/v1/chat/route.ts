@@ -7,9 +7,18 @@ import { getPublicTransitRoute, calculateDistanceKm, PUNE_COMMUTE_HUBS } from '@
 import { isGeminiConfigured, generateGeminiReply } from '@/lib/gemini';
 
 const Schema = z.object({
-  message: z.string().min(1).max(500),
+  message: z.string().min(1).max(1000),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'model']),
+        text: z.string(),
+      })
+    )
+    .optional(),
   lang: z.enum(['en', 'mr']).default('en').optional(),
   userLocation: z.object({ lat: z.number(), lng: z.number() }).optional(),
+  apiKey: z.string().optional(),
 });
 
 function formatPlaceResponse(
@@ -100,8 +109,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { message, userLocation } = parsed.data;
+    const { message, userLocation, history, apiKey: bodyApiKey } = parsed.data;
     const lowerMsg = message.toLowerCase().trim();
+
+    // Support client-provided Gemini API key (from header or body)
+    const clientKey = req.headers.get('x-gemini-key') || bodyApiKey;
 
     // Detect Marathi script or intent
     const isDevanagari = /[\u0900-\u097F]/.test(message);
@@ -115,19 +127,21 @@ export async function POST(req: NextRequest) {
     const allPlaces = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }));
 
     // =========================================================================
-    // 0. GOOGLE GEMINI AI ASSISTANT (If API Key is configured)
+    // 0. GOOGLE GEMINI AI ASSISTANT (If API Key is configured on server or client)
     // =========================================================================
     const isNearMe =
       /(near\s*me|nearby|closest|near\s*my\s*location|around\s*here)/i.test(lowerMsg) ||
       /(माझ्याजवळ|जवळची|नजीक|येथील|माझ्या\s*परिसरात)/i.test(lowerMsg);
 
-    if (isGeminiConfigured() && !isNearMe) {
+    if ((isGeminiConfigured(clientKey) || clientKey) && !isNearMe) {
       try {
         const geminiRes = await generateGeminiReply({
           message,
+          history,
           lang: requestedLang as 'en' | 'mr',
           allPlaces,
           userLocation,
+          clientApiKey: clientKey,
         });
 
         if (geminiRes && geminiRes.reply) {
@@ -552,6 +566,39 @@ export async function POST(req: NextRequest) {
         suggestions: isMr
           ? ['सहल नियोजन उघडा', 'पुणे मेट्रो मार्गिका', 'सिंहगड किल्ला बस']
           : ['Open Trip Planner', 'Pune Metro routes', 'Sinhagad Fort bus'],
+      });
+    }
+
+    // Food, Gastronomy & Local Specialities
+    const isFood =
+      /(misal|food|eat|restaurant|hotel|bakarwadi|bakharwadi|mastani|chai|tea|poha|thali|lunch|dinner|breakfast|snack|taste)/i.test(
+        lowerMsg
+      ) ||
+      /(मिसळ|जेवण|खाद्य|नाश्ता|बाकरवडी|मस्तानी|चहा|पोहे|थाळी|हॉटेल|मिष्टान्न|खाद्यसंस्कृती)/i.test(
+        lowerMsg
+      );
+
+    if (isFood) {
+      return NextResponse.json({
+        reply: isMr
+          ? `🍽️ **पुण्याची अस्सल खाद्यसंस्कृती (Must-Try Food in Pune):**\n\n` +
+            `• **झणझणीत मिसळ पाव:** काटाकिर्र्र (कर्वे रस्ता), बेडेकर टी स्टॉल (नारायण पेठ), वैद्य उपहार गृह (बुधवार पेठ - सर्वात जुनी मिसळ).\n` +
+            `• **चितळे बंधू बाकरवडी:** बाजीराव रस्ता किंवा डेक्कन — गरमागरम बाकरवडी, आंबा बर्फी व श्रीखंड.\n` +
+            `• **सुजाता मस्तानी:** बाजीराव रस्ता / सदाशिव पेठ — प्रसिद्ध मँगो मस्तानी आईस्क्रीम शेक.\n` +
+            `• **एफसी रोड व डेक्कन कॅफे कल्चर:** कॅफे गुड लक (बन मस्का व इराणी चहा - सन १९३५), वैशाली व रुपाली (मसाला डोसा व फिल्टर कॉफी).\n` +
+            `• **सिंहगड पायथा/माथा:** अस्सल पिठलं-भाकरी, ठेचा, मटक्यातील ताक आणि कांदा भजी.`
+          : `🍽️ **Authentic Pune Food Trail (Must-Try Specialities):**\n\n` +
+            `• **Spicy Puneri Misal Pav:** Katakirrr (Karve Road), Bedekar Tea Stall (Narayan Peth), Vaidya Upahar Gruha (Budhwar Peth - Pune's oldest misal).\n` +
+            `• **Chitale Bandhu Bakarwadi:** Bajirao Road & Deccan — legendary crispy spiced bakarwadi, mango barfi & shrikhand.\n` +
+            `• **Sujata Mastani:** Bajirao Road / Sadashiv Peth — iconic Pune-origin thick mango milkshake topped with ice cream & dry fruits.\n` +
+            `• **FC Road & Deccan Cafe Legacy:** Cafe Goodluck (est. 1935 - famous Bun Maska & Irani Chai), Vaishali & Roopali (South Indian & filter coffee).\n` +
+            `• **Sinhagad Fort Foothills/Top:** Authentic hot Pitla-Bhakri, garlic thecha, matka curd/taak, and kanda bhaji.`,
+        places: allPlaces.filter((p) =>
+          ['shaniwar-wada', 'sinhagad-fort', 'lal-mahal'].includes(p.slug)
+        ),
+        suggestions: isMr
+          ? ['शनिवार वाड्याभोवती काय खावे?', 'सिंहगड बस मार्ग', 'पुणे १ दिवसाची सहल']
+          : ['Food near Shaniwar Wada', 'Bus to Sinhagad Fort', '1-day Pune plan'],
       });
     }
 

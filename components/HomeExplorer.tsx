@@ -9,10 +9,12 @@ import HeroWatermarkAnimation from '@/components/HeroWatermarkAnimation';
 import FeedbackSection from '@/components/FeedbackSection';
 import IntroVideoOverlay from '@/components/IntroVideoOverlay';
 import WeatherWidget from '@/components/WeatherWidget';
+import LocationPickerModal from '@/components/LocationPickerModal';
 import { calculateDistanceKm } from '@/lib/publicTransit';
 import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
+import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
 
 const TIER_MR: Record<string, string> = {
   verified: 'तपासलेले तपशील',
@@ -77,11 +79,33 @@ export default function HomeExplorer({
   const [searchInput, setSearchInput] = useState(searchTerm);
   const [showAll, setShowAll] = useState(Boolean(currentCat || searchTerm || page > 1));
   const [userGps, setUserGps] = useState<{ lat: number; lng: number } | null>(null);
+  const [savedLoc, setSavedLoc] = useState<UserSavedLocation | null>(null);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isLocatingGps, setIsLocatingGps] = useState(false);
   const [sortByNearMe, setSortByNearMe] = useState(false);
   const [gpsError, setGpsError] = useState('');
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Initial saved location sync
+    const loc = getStoredUserLocation();
+    if (loc) {
+      setSavedLoc(loc);
+      setUserGps({ lat: loc.lat, lng: loc.lng });
+    }
+
+    const handleLocChanged = (e: any) => {
+      const updated = e.detail || getStoredUserLocation();
+      if (updated) {
+        setSavedLoc(updated);
+        setUserGps({ lat: updated.lat, lng: updated.lng });
+      }
+    };
+
+    window.addEventListener('explore-pune-location-changed', handleLocChanged);
+    return () => window.removeEventListener('explore-pune-location-changed', handleLocChanged);
+  }, []);
 
   useEffect(() => {
     const syncSaved = () => {
@@ -119,43 +143,13 @@ export default function HomeExplorer({
       setSortByNearMe(false);
       return;
     }
-    if (userGps) {
+    if (userGps || savedLoc) {
       setSortByNearMe(true);
       setShowAll(true);
       return;
     }
-    if (typeof window === 'undefined' || !navigator.geolocation) {
-      alert(
-        isMr
-          ? 'आपल्या ब्राउझरमध्ये GPS सेवा उपलब्ध नाही.'
-          : 'Geolocation is not supported by your browser.'
-      );
-      return;
-    }
-
-    setIsLocatingGps(true);
-    setGpsError('');
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserGps({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setIsLocatingGps(false);
-        setSortByNearMe(true);
-        setShowAll(true);
-      },
-      (err) => {
-        setIsLocatingGps(false);
-        setGpsError(
-          err.code === err.PERMISSION_DENIED
-            ? isMr
-              ? 'कृपया ब्राउझरमध्ये लोकेशन परवानगी द्या.'
-              : 'Location permission was denied.'
-            : isMr
-            ? 'स्थान शोधता आले नाही.'
-            : 'Unable to detect location.'
-        );
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
-    );
+    // If no locality or GPS is set yet, open the location picker modal
+    setIsLocationModalOpen(true);
   };
 
   // Attach distance if GPS available
@@ -601,6 +595,39 @@ export default function HomeExplorer({
                 : isMr
                 ? 'माझ्या जवळची ठिकाणे (GPS)'
                 : 'Find Near Me (GPS)'}
+            </span>
+          </button>
+
+          {/* Active Pune Locality Selector Button */}
+          <button
+            type="button"
+            onClick={() => setIsLocationModalOpen(true)}
+            className="chip"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 14px',
+              borderRadius: '999px',
+              cursor: 'pointer',
+              background: savedLoc ? '#ecfdf5' : '#ffffff',
+              color: savedLoc ? '#065f46' : 'var(--ink)',
+              border: savedLoc ? '1.5px solid #10b981' : '1px solid var(--line)',
+              fontWeight: 700,
+              fontSize: '13px',
+              transition: 'all 0.15s ease',
+            }}
+            title={isMr ? 'पुणे परिसर बदला किंवा अचूक GPS वापरा' : 'Change locality or use smart GPS'}
+          >
+            <span>📍</span>
+            <span>
+              {savedLoc
+                ? isMr
+                  ? `${savedLoc.nameMr} (बदला)`
+                  : `${savedLoc.nameEn} (Change)`
+                : isMr
+                ? 'पुणे परिसर निवडा'
+                : 'Select Pune Locality'}
             </span>
           </button>
 
@@ -1064,6 +1091,18 @@ export default function HomeExplorer({
         {/* Community Feedback Section */}
         <FeedbackSection />
       </div>
+
+      {/* Global Location & GPS Modal */}
+      <LocationPickerModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        onLocationSelected={(loc) => {
+          setSavedLoc(loc);
+          setUserGps({ lat: loc.lat, lng: loc.lng });
+          setSortByNearMe(true);
+          setShowAll(true);
+        }}
+      />
     </>
   );
 }

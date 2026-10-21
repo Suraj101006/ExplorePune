@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
+import LocationPickerModal from '@/components/LocationPickerModal';
+import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
 
 interface PlaceSummary {
   id: string;
@@ -121,12 +123,48 @@ export default function ChatWidget() {
   const [hasDismissedTeaser, setHasDismissedTeaser] = useState(false);
   const [log, setLog] = useState<ChatMessage[]>([]);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [savedLoc, setSavedLoc] = useState<UserSavedLocation | null>(null);
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [locatingGps, setLocatingGps] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<Record<string, 'up' | 'down'>>({});
   const [expandedTransitSteps, setExpandedTransitSteps] = useState<Record<string, boolean>>({});
 
+  // Gemini API key support (stored in localStorage)
+  const [geminiKey, setGeminiKey] = useState<string>('');
+  const [showKeyModal, setShowKeyModal] = useState<boolean>(false);
+  const [keyInput, setKeyInput] = useState<string>('');
+  const [keyNotice, setKeyNotice] = useState<string>('');
+
   const endRef = useRef<HTMLDivElement>(null);
+
+  // Load stored location and Gemini API key
+  useEffect(() => {
+    const loc = getStoredUserLocation();
+    if (loc) {
+      setSavedLoc(loc);
+      setUserLocation({ lat: loc.lat, lng: loc.lng });
+    }
+
+    if (typeof window !== 'undefined') {
+      const storedKey = localStorage.getItem('explore-pune-gemini-key') || '';
+      if (storedKey) {
+        setGeminiKey(storedKey);
+        setKeyInput(storedKey);
+      }
+    }
+
+    const handleLocChanged = (e: any) => {
+      const updated = e.detail || getStoredUserLocation();
+      if (updated) {
+        setSavedLoc(updated);
+        setUserLocation({ lat: updated.lat, lng: updated.lng });
+      }
+    };
+
+    window.addEventListener('explore-pune-location-changed', handleLocChanged);
+    return () => window.removeEventListener('explore-pune-location-changed', handleLocChanged);
+  }, []);
 
   // Initialize welcome message when language changes
   useEffect(() => {
@@ -136,8 +174,8 @@ export default function ChatWidget() {
           id: 'welcome',
           role: 'bot',
           text: isMr
-            ? 'नमस्कार! 🙏 मी तुमचा एक्सप्लोर पुणे (Explore Pune) डिजिटल मार्गदर्शक आहे. पुण्यातील गड-किल्ले, वाडे, मंदिरे, सार्वजनिक वाहतूक (मेट्रो व बस), तिकीट दर किंवा सहलीबद्दल काहीही विचारा.'
-            : 'Namaste! 🙏 I am your Explore Pune guide. Ask me anything about forts, wadas, temples, Pune Metro & PMPML buses, tickets, or travel tips.',
+            ? 'नमस्कार! 🙏 मी तुमचा एक्सप्लोर पुणे (Explore Pune) डिजिटल मार्गदर्शक आहे. गुगल जेमिनी (Google Gemini AI) द्वारे समर्थित — पुण्यातील गड-किल्ले, वाडे, मंदिरे, सार्वजनिक वाहतूक (मेट्रो व बस), तिकीट दर किंवा सहलीबद्दल काहीही विचारा.'
+            : 'Namaste! 🙏 I am your Explore Pune guide, powered by Google Gemini AI. Ask me anything about forts, wadas, temples, Pune Metro & PMPML buses, tickets, or travel itineraries.',
           suggestions: isMr ? DEFAULT_HINTS_MR.slice(0, 4) : DEFAULT_HINTS_EN.slice(0, 4),
         },
       ]);
@@ -161,6 +199,23 @@ export default function ChatWidget() {
     }
   }, [log, busy, open]);
 
+  const handleSaveGeminiKey = () => {
+    const clean = keyInput.trim();
+    if (clean) {
+      localStorage.setItem('explore-pune-gemini-key', clean);
+      setGeminiKey(clean);
+      setKeyNotice(isMr ? '✓ जेमिनी की यशस्वीरित्या जोडली!' : '✓ Gemini API Key saved successfully!');
+    } else {
+      localStorage.removeItem('explore-pune-gemini-key');
+      setGeminiKey('');
+      setKeyNotice(isMr ? '✓ डीफॉल्ट सर्व्हर मोड सेट केला.' : '✓ Set to default server mode.');
+    }
+    setTimeout(() => {
+      setKeyNotice('');
+      setShowKeyModal(false);
+    }, 1200);
+  };
+
   async function send(text: string, locationOverride?: { lat: number; lng: number }) {
     const message = text.trim();
     if (!message || busy) return;
@@ -169,20 +224,38 @@ export default function ChatWidget() {
     setBusy(true);
     setShowTeaser(false);
 
-    const activeLoc = locationOverride || userLocation;
+    const activeLoc =
+      locationOverride ||
+      (savedLoc ? { lat: savedLoc.lat, lng: savedLoc.lng } : userLocation);
     const msgId = Date.now().toString();
 
     // Append user message
     setLog((prev) => [...prev, { id: `u-${msgId}`, role: 'me', text: message }]);
 
+    // Prepare multi-turn history (up to last 6 turns)
+    const historyPayload = log
+      .filter((m) => m.id !== 'welcome' && m.id !== 'cleared')
+      .map((m) => ({
+        role: m.role === 'me' ? ('user' as const) : ('model' as const),
+        text: m.text,
+      }))
+      .slice(-6);
+
     try {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (geminiKey) {
+        headers['x-gemini-key'] = geminiKey;
+      }
+
       const res = await fetch('/api/v1/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           message,
+          history: historyPayload,
           lang,
           userLocation: activeLoc || undefined,
+          apiKey: geminiKey || undefined,
         }),
       });
       const data = await res.json();
@@ -250,40 +323,14 @@ export default function ChatWidget() {
   }
 
   function handleShareLocation() {
-    if (typeof window === 'undefined' || !navigator.geolocation) {
-      alert(
-        isMr
-          ? 'आपल्या ब्राउझरमध्ये GPS सेवा उपलब्ध नाही.'
-          : 'Geolocation is not supported by your browser.'
-      );
+    if (savedLoc) {
+      const queryText = isMr
+        ? `${savedLoc.nameMr} परिसरावरून सर्वात जवळची पुणे पर्यटन स्थळे कोणती आहेत?`
+        : `What attractions are closest to my neighborhood (${savedLoc.nameEn})?`;
+      send(queryText, { lat: savedLoc.lat, lng: savedLoc.lng });
       return;
     }
-
-    setLocatingGps(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        setUserLocation(coords);
-        setLocatingGps(false);
-        const queryText = isMr
-          ? 'माझ्या सध्याच्या GPS स्थानावरून सर्वात जवळची ठिकाणे कोणती आहेत?'
-          : 'What attractions are closest to my live GPS location?';
-        send(queryText, coords);
-      },
-      (err) => {
-        setLocatingGps(false);
-        alert(
-          err.code === err.PERMISSION_DENIED
-            ? isMr
-              ? 'कृपया ब्राउझरमध्ये लोकेशन परवानगी द्या (Allow Location).'
-              : 'Location permission was denied. Please allow location access in your browser.'
-            : isMr
-            ? 'GPS स्थान शोधता आले नाही.'
-            : 'Unable to detect location. Please check GPS settings.'
-        );
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
-    );
+    setIsLocationModalOpen(true);
   }
 
   const hints = isMr ? DEFAULT_HINTS_MR : DEFAULT_HINTS_EN;
@@ -382,47 +429,102 @@ export default function ChatWidget() {
                 }}
               >
                 <span>{isMr ? 'एक्सप्लोर पुणे AI मार्गदर्शक' : 'Explore Pune AI Guide'}</span>
-                <span
+                <button
+                  type="button"
+                  onClick={() => setShowKeyModal(true)}
                   style={{
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    background: geminiKey
+                      ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                      : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                    border: 'none',
                     color: '#ffffff',
                     fontSize: 9.5,
                     fontWeight: 800,
-                    padding: '1px 6px',
+                    padding: '2px 7px',
                     borderRadius: '999px',
                     letterSpacing: '0.04em',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.18)',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 3,
                   }}
-                  title="Powered by Google Gemini AI"
+                  title={isMr ? 'गुगल जेमिनी AI सेटिंग्ज' : 'Configure Google Gemini AI Key'}
                 >
-                  ✨ Gemini
-                </span>
+                  <span>✨</span>
+                  <span>{geminiKey ? 'Gemini Active' : 'Gemini AI'}</span>
+                </button>
               </div>
               <div
                 style={{
                   fontSize: 11,
-                  opacity: 0.9,
+                  opacity: 0.95,
                   fontWeight: 400,
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6,
+                  marginTop: 2,
                 }}
               >
-                <span>{isMr ? 'मेट्रो, बस व पर्यटन सहाय्यक' : 'Live Transit & Travel Assistant'}</span>
-                {userLocation && (
-                  <span
-                    style={{
-                      background: 'rgba(255,255,255,0.25)',
-                      padding: '1px 6px',
-                      borderRadius: '999px',
-                      fontSize: 10,
-                    }}
-                  >
-                    📍 GPS Active
+                <button
+                  type="button"
+                  onClick={() => setIsLocationModalOpen(true)}
+                  style={{
+                    background: 'rgba(255,255,255,0.22)',
+                    border: '1px solid rgba(255,255,255,0.35)',
+                    color: '#ffffff',
+                    padding: '1px 8px',
+                    borderRadius: '999px',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                  title={isMr ? 'पुणे परिसर बदला किंवा अचूक GPS वापरा' : 'Change Pune locality or use smart GPS'}
+                >
+                  <span>📍</span>
+                  <span>
+                    {savedLoc
+                      ? isMr
+                        ? savedLoc.nameMr
+                        : savedLoc.nameEn
+                      : userLocation
+                      ? 'GPS'
+                      : isMr
+                      ? 'परिसर निवडा'
+                      : 'Choose Area'}
                   </span>
-                )}
+                  <span style={{ opacity: 0.8, fontSize: 9 }}>✏️</span>
+                </button>
+                <span style={{ opacity: 0.85, fontSize: 10.5 }}>
+                  {isMr ? 'मेट्रो, बस व पर्यटन' : 'Transit & Guide'}
+                </span>
               </div>
             </div>
+
+            {/* Configure Gemini Key */}
+            <button
+              onClick={() => setShowKeyModal(!showKeyModal)}
+              title={isMr ? 'जेमिनी AI की सेट करा' : 'Configure Gemini API Key'}
+              style={{
+                background: geminiKey ? '#059669' : 'rgba(255,255,255,0.2)',
+                border: 0,
+                color: '#fff',
+                padding: '4px 7px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: 10.5,
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 3,
+              }}
+            >
+              <span>🔑</span>
+              <span>{geminiKey ? 'Key ✓' : 'Key'}</span>
+            </button>
 
             {/* Expand / Minimize Window */}
             <button
@@ -483,6 +585,91 @@ export default function ChatWidget() {
               ✕
             </button>
           </div>
+
+          {/* Gemini AI Key Settings Overlay */}
+          {showKeyModal && (
+            <div
+              style={{
+                background: '#f8fafc',
+                borderBottom: '2px solid #10b981',
+                padding: '12px 14px',
+                color: '#0f172a',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <strong style={{ fontSize: 13, color: '#065f46', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span>✨</span> {isMr ? 'गुगल जेमिनी AI की (Google Gemini Key)' : 'Google Gemini AI Key'}
+                </strong>
+                <button
+                  type="button"
+                  onClick={() => setShowKeyModal(false)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#64748b' }}
+                >
+                  ✕
+                </button>
+              </div>
+              <p style={{ fontSize: 11.5, color: '#475569', margin: '0 0 8px', lineHeight: 1.4 }}>
+                {isMr
+                  ? 'अमर्याद व जलद AI संभाषणासाठी तुमची मोफत Google AI Studio API Key येथे पेस्ट करा (ती तुमच्या ब्राउझरमध्ये सुरक्षित सेव्ह राहील).'
+                  : 'For unlimited, instant Gemini conversations, paste your free Google AI Studio API Key below (stored securely in your local browser).'}
+              </p>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <input
+                  type="password"
+                  value={keyInput}
+                  onChange={(e) => setKeyInput(e.target.value)}
+                  placeholder={isMr ? 'उदा. AIzaSy...' : 'Paste AIzaSy... key'}
+                  style={{
+                    flex: 1,
+                    padding: '6px 10px',
+                    borderRadius: 6,
+                    border: '1px solid #cbd5e1',
+                    fontSize: 12,
+                    fontFamily: 'monospace',
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleSaveGeminiKey}
+                  className="btn"
+                  style={{ padding: '6px 12px', fontSize: 12 }}
+                >
+                  {isMr ? 'सेव्ह करा' : 'Save'}
+                </button>
+              </div>
+              {keyNotice && (
+                <div style={{ fontSize: 11.5, color: '#059669', fontWeight: 600, marginTop: 6 }}>
+                  {keyNotice}
+                </div>
+              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8, fontSize: 11 }}>
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#0284c7', fontWeight: 600, textDecoration: 'underline' }}
+                >
+                  🔑 {isMr ? 'मोफत जेमिनी की मिळवा (Google AI Studio)' : 'Get free Gemini API Key →'}
+                </a>
+                {geminiKey && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setKeyInput('');
+                      localStorage.removeItem('explore-pune-gemini-key');
+                      setGeminiKey('');
+                      setKeyNotice(isMr ? 'डीफॉल्ट मोड' : 'Reset to default');
+                      setTimeout(() => setKeyNotice(''), 1500);
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: 11, cursor: 'pointer' }}
+                  >
+                    {isMr ? 'काढून टाका' : 'Remove Key'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Messages Log */}
           <div className="chat-log" aria-live="polite">
@@ -1031,6 +1218,22 @@ export default function ChatWidget() {
           </form>
         </section>
       )}
+
+      {/* Global Location & GPS Picker Modal */}
+      <LocationPickerModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        onLocationSelected={(loc) => {
+          setSavedLoc(loc);
+          setUserLocation({ lat: loc.lat, lng: loc.lng });
+          send(
+            isMr
+              ? `${loc.nameMr} परिसरावरून सर्वात जवळची पुणे पर्यटन स्थळे कोणती आहेत?`
+              : `What attractions are closest to my neighborhood (${loc.nameEn})?`,
+            { lat: loc.lat, lng: loc.lng }
+          );
+        }}
+      />
     </>
   );
 }
