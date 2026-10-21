@@ -15,6 +15,7 @@ import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
+import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 
 const TIER_MR: Record<string, string> = {
   verified: 'तपासलेले तपशील',
@@ -89,6 +90,7 @@ export default function HomeExplorer({
   const [gpsError, setGpsError] = useState('');
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const [slideshowPlace, setSlideshowPlace] = useState<any | null>(null);
 
   useEffect(() => {
     // Initial saved location sync
@@ -782,12 +784,44 @@ export default function HomeExplorer({
                 return (
                   <article key={p.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
                     {/* Landmark Photo Banner with Free Wishlist & Audio Pronunciation Actions */}
-                    <div className="card-media" style={{ position: 'relative' }}>
+                    <div
+                      className="card-media"
+                      style={{ position: 'relative', cursor: 'pointer', overflow: 'hidden' }}
+                      onClick={() => setSlideshowPlace(p)}
+                      title={isMr ? `${p.name_mr || p.name} छायाचित्र स्लाइडशो उघडा` : `Click to view photo slideshow of ${p.name}`}
+                    >
                       <img
                         src={p.image_url || badgeImg}
                         alt={p.name}
                         loading="lazy"
+                        style={{ transition: 'transform 0.3s ease', display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                       />
+
+                      {/* Clickable Slideshow Trigger Badge */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 8,
+                          left: 8,
+                          zIndex: 2,
+                          background: 'rgba(15, 23, 42, 0.78)',
+                          backdropFilter: 'blur(6px)',
+                          color: '#ffffff',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          padding: '3px 8px',
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <span>📸</span>
+                        <span>{isMr ? 'स्लाइडशो पहा' : 'View Photos'}</span>
+                      </div>
 
                       {/* Free Audio Pronunciation Tool */}
                       <button
@@ -1105,6 +1139,13 @@ export default function HomeExplorer({
           setSortByNearMe(true);
           setShowAll(true);
         }}
+      />
+
+      {/* Interactive Landmark Photo Slideshow Modal */}
+      <PlacePhotoSlideshowModal
+        isOpen={Boolean(slideshowPlace)}
+        onClose={() => setSlideshowPlace(null)}
+        place={slideshowPlace}
       />
     </>
   );
