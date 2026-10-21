@@ -1,6 +1,6 @@
 /**
  * Explore Pune - Unified User Location & Locality Directory
- * Manages device GPS, IP boundary detection, and comprehensive 50+ Pune neighborhood coordinates.
+ * Manages 50+ Pune neighborhood coordinates and user-selected area.
  * Dispatches 'explore-pune-location-changed' events for instant cross-component synchronization.
  */
 
@@ -14,9 +14,6 @@ export interface UserSavedLocation {
   longitude: number;
   lat: number;
   lng: number;
-  isGps: boolean;
-  distanceFromPuneKm?: number;
-  accuracyRadiusMeters?: number;
   timestamp: number;
   addressDetails?: {
     suburb?: string;
@@ -25,14 +22,6 @@ export interface UserSavedLocation {
     postcode?: string;
     formattedAddress?: string;
   };
-}
-
-export interface ReverseGeocodeResult {
-  suburb?: string;
-  road?: string;
-  city?: string;
-  postcode?: string;
-  formattedAddress?: string;
 }
 
 export interface PuneLocality {
@@ -105,9 +94,6 @@ export const DEFAULT_PUNE_STATIC_LOCATION: UserSavedLocation = {
   longitude: 73.8567,
   lat: 18.5204,
   lng: 73.8567,
-  isGps: false,
-  distanceFromPuneKm: 0,
-  accuracyRadiusMeters: 5,
   timestamp: Date.now(),
   addressDetails: {
     suburb: 'Shaniwar Peth',
@@ -182,7 +168,6 @@ export function setLocationFromLocality(localityId: string): UserSavedLocation |
     longitude: loc.longitude,
     lat: loc.latitude,
     lng: loc.longitude,
-    isGps: false,
     timestamp: Date.now(),
   };
 
@@ -225,116 +210,7 @@ export function findClosestPuneLocality(lat: number, lng: number): { locality: P
 }
 
 /**
- * 1. Free Reverse Geocoding API via OpenStreetMap Nominatim with BigDataCloud fallback.
- * Resolves exact street, suburb, neighborhood, postal code, and city from coordinates with ZERO API key cost!
- */
-export async function fetchReverseGeocode(lat: number, lng: number): Promise<ReverseGeocodeResult | null> {
-  // Attempt OpenStreetMap Nominatim (high precision for Pune streets and suburbs)
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
-      {
-        headers: { 'User-Agent': 'ExplorePune-Guide/1.0 (https://punetrail.web.app)' },
-        signal: controller.signal,
-      }
-    );
-    clearTimeout(timeoutId);
-
-    if (res.ok) {
-      const data = await res.json();
-      const addr = data.address || {};
-      const suburb =
-        addr.suburb ||
-        addr.residential ||
-        addr.neighbourhood ||
-        addr.quarter ||
-        addr.village ||
-        addr.city_district;
-      const road = addr.road || addr.pedestrian || addr.footway;
-      const city = addr.city || addr.town || addr.county || addr.state_district || 'Pune';
-      const postcode = addr.postcode || '';
-
-      return {
-        suburb,
-        road,
-        city,
-        postcode,
-        formattedAddress: data.display_name,
-      };
-    }
-  } catch {
-    // Continue to fallback
-  }
-
-  // Fallback: BigDataCloud Free Client Reverse Geocoding API
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-    const res = await fetch(
-      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
-      { signal: controller.signal }
-    );
-    clearTimeout(timeoutId);
-
-    if (res.ok) {
-      const data = await res.json();
-      return {
-        suburb: data.locality || data.principalSubdivision,
-        city: data.city || 'Pune',
-        postcode: data.postcode || '',
-        formattedAddress: `${data.locality || ''}, ${data.city || ''}, ${data.principalSubdivision || ''}`.replace(/^, /, ''),
-      };
-    }
-  } catch {
-    // Graceful fallback
-  }
-
-  return null;
-}
-
-/**
- * 2. Free IP Geolocation Fallback
- * Used when device lacks GPS hardware or user denies browser location permission.
- */
-export async function fetchFreeIpGeolocation(): Promise<{
-  lat: number;
-  lng: number;
-  city: string;
-  region: string;
-  isp?: string;
-} | null> {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-    const res = await fetch('http://ip-api.com/json', { signal: controller.signal });
-    clearTimeout(timeoutId);
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data.status === 'success' && typeof data.lat === 'number') {
-        return {
-          lat: data.lat,
-          lng: data.lon,
-          city: data.city || 'Pune',
-          region: data.regionName || 'Maharashtra',
-          isp: data.isp,
-        };
-      }
-    }
-  } catch {
-    // Fallback
-  }
-
-  return null;
-}
-
-/**
- * 3. Search Pune landmarks & streets live using OpenStreetMap Nominatim bounded to Pune Metropolitan Area.
+ * Search Pune landmarks & streets using OpenStreetMap Nominatim bounded to Pune Metropolitan Area.
  */
 export async function searchPuneLivePlaces(query: string): Promise<PuneLocality[]> {
   const localResults = searchPuneLocalities(query);
@@ -381,145 +257,4 @@ export async function searchPuneLivePlaces(query: string): Promise<PuneLocality[
   }
 
   return localResults;
-}
-
-/**
- * Request device GPS with high accuracy attempt, live reverse geocoding, and Pune proximity detection.
- */
-export async function detectPreciseGps(): Promise<{
-  success: boolean;
-  location?: UserSavedLocation;
-  isOutsidePune?: boolean;
-  distanceFromPuneKm?: number;
-  accuracyMeters?: number;
-  reverseGeocode?: ReverseGeocodeResult | null;
-  error?: string;
-}> {
-  if (typeof window === 'undefined' || !navigator.geolocation) {
-    return { success: false, error: 'Geolocation is not supported by your browser.' };
-  }
-
-  return new Promise((resolve) => {
-    // Attempt high accuracy first with 5.5s timeout
-    const options: PositionOptions = {
-      enableHighAccuracy: true,
-      timeout: 5500,
-      maximumAge: 30000,
-    };
-
-    const handleSuccess = async (pos: GeolocationPosition) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      const accuracy = Math.round(pos.coords.accuracy);
-
-      const distFromPune = calculateDistanceKm(lat, lng, 18.5204, 73.8567);
-      const isOutsidePune = distFromPune > 35;
-
-      const closest = findClosestPuneLocality(lat, lng);
-
-      // Perform free reverse geocoding via Nominatim/BigDataCloud
-      const geoResult = await fetchReverseGeocode(lat, lng).catch(() => null);
-
-      let locationLabelEn = closest.locality.nameEn.split('/')[0].trim();
-      let locationLabelMr = closest.locality.nameMr.split('/')[0].trim();
-
-      if (geoResult?.suburb || geoResult?.road) {
-        const parts = [geoResult.road, geoResult.suburb].filter(Boolean);
-        locationLabelEn = parts.join(', ');
-        locationLabelMr = parts.join(', ');
-      }
-
-      // If coordinates are outside Pune (> 35km), gracefully auto-snap the navigation coordinates
-      // to Central Pune (18.5204, 73.8567) so transit, distance sorting, and trip planner work seamlessly!
-      const effectiveLat = isOutsidePune ? 18.5204 : lat;
-      const effectiveLng = isOutsidePune ? 73.8567 : lng;
-
-      const savedLoc: UserSavedLocation = {
-        id: isOutsidePune ? 'central-auto-snapped' : closest.locality.id,
-        nameEn: isOutsidePune
-          ? `Central Pune (Shaniwar Wada) [Auto-Snapped: ${geoResult?.city || 'Outside Pune'}]`
-          : `Live GPS: ${locationLabelEn}`,
-        nameMr: isOutsidePune
-          ? `मध्यवर्ती पुणे (शनिवार वाडा) [GPS: ${geoResult?.city || 'पुण्याबाहेर'}]`
-          : `थेट GPS: ${locationLabelMr}`,
-        latitude: effectiveLat,
-        longitude: effectiveLng,
-        lat: effectiveLat,
-        lng: effectiveLng,
-        isGps: !isOutsidePune,
-        distanceFromPuneKm: isOutsidePune ? distFromPune : 0,
-        accuracyRadiusMeters: accuracy,
-        timestamp: Date.now(),
-        addressDetails: isOutsidePune ? DEFAULT_PUNE_STATIC_LOCATION.addressDetails : geoResult || undefined,
-      };
-
-      setStoredUserLocation(savedLoc);
-
-      resolve({
-        success: true,
-        location: savedLoc,
-        isOutsidePune,
-        distanceFromPuneKm: distFromPune,
-        accuracyMeters: accuracy,
-        reverseGeocode: geoResult,
-      });
-    };
-
-    const handleFallback = () => {
-      // Fallback to coarse position with 6s timeout
-      navigator.geolocation.getCurrentPosition(
-        handleSuccess,
-        async (err) => {
-          // If GPS fails, try free IP Geolocation
-          const ipLoc = await fetchFreeIpGeolocation().catch(() => null);
-          if (ipLoc && typeof ipLoc.lat === 'number') {
-            const distFromPune = calculateDistanceKm(ipLoc.lat, ipLoc.lng, 18.5204, 73.8567);
-            const isOutside = distFromPune > 35;
-            const effectiveLat = isOutside ? 18.5204 : ipLoc.lat;
-            const effectiveLng = isOutside ? 73.8567 : ipLoc.lng;
-
-            const savedLoc: UserSavedLocation = {
-              id: isOutside ? 'central-ip-snapped' : findClosestPuneLocality(ipLoc.lat, ipLoc.lng).locality.id,
-              nameEn: isOutside
-                ? `Central Pune (Shaniwar Wada) [Network: ${ipLoc.city}]`
-                : `Network Location (${ipLoc.city})`,
-              nameMr: isOutside
-                ? `मध्यवर्ती पुणे (शनिवार वाडा) [नेटवर्क: ${ipLoc.city}]`
-                : `नेटवर्क स्थान (${ipLoc.city})`,
-              latitude: effectiveLat,
-              longitude: effectiveLng,
-              lat: effectiveLat,
-              lng: effectiveLng,
-              isGps: false,
-              distanceFromPuneKm: isOutside ? distFromPune : 0,
-              timestamp: Date.now(),
-              addressDetails: isOutside ? DEFAULT_PUNE_STATIC_LOCATION.addressDetails : undefined,
-            };
-
-            setStoredUserLocation(savedLoc);
-
-            resolve({
-              success: true,
-              location: savedLoc,
-              isOutsidePune: isOutside,
-              distanceFromPuneKm: distFromPune,
-            });
-            return;
-          }
-
-          // If both fail, smoothly fallback to workable static Central Pune
-          const staticLoc = setStaticPuneLocation();
-          resolve({
-            success: true,
-            location: staticLoc,
-            isOutsidePune: false,
-            distanceFromPuneKm: 0,
-          });
-        },
-        { enableHighAccuracy: false, timeout: 6000, maximumAge: 300000 }
-      );
-    };
-
-    navigator.geolocation.getCurrentPosition(handleSuccess, handleFallback, options);
-  });
 }

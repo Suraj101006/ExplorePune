@@ -76,14 +76,12 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const defaultTransit = getPublicTransitRoute(18.5204, 73.8567, place);
   const [liveTransit, setLiveTransit] = useState<TransitRouteInfo | null>(null);
-  const [gpsLoading, setGpsLoading] = useState(false);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedHubId, setSelectedHubId] = useState<string>('central');
   const [originName, setOriginName] = useState<string>(
     isMr ? 'मध्यवर्ती पुणे (मनपा/शनिवार वाडा)' : 'Central Pune (PMC Bhavan)'
   );
-  const [gpsError, setGpsError] = useState('');
-  const [gpsNotice, setGpsNotice] = useState('');
+  const [originNotice, setOriginNotice] = useState('');
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [activeGuidelineTab, setActiveGuidelineTab] = useState<'commute' | 'timing' | 'rules'>('commute');
   const [speaking, setSpeaking] = useState(false);
@@ -159,114 +157,9 @@ export default function PlaceDetailClient({ place }: { place: any }) {
     if (typeof window !== 'undefined') window.print();
   };
 
-  const handleCalcGps = () => {
-    if (typeof window === 'undefined' || !navigator.geolocation) {
-      setGpsError(
-        isMr
-          ? 'आपल्या ब्राउझरमध्ये GPS सेवा उपलब्ध नाही.'
-          : 'Geolocation is not supported by your browser.'
-      );
-      return;
-    }
-    setGpsLoading(true);
-    setGpsError('');
-    setGpsNotice('');
-
-    // Fast, non-hanging geolocation configuration
-    const geoOptions: PositionOptions = {
-      enableHighAccuracy: false,
-      timeout: 8000,
-      maximumAge: 300000,
-    };
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const userLat = pos.coords.latitude;
-        const userLng = pos.coords.longitude;
-        const coords = { lat: userLat, lng: userLng };
-        setUserCoords(coords);
-        setSelectedHubId('gps');
-
-        // Check geographic proximity to Pune center (18.5204, 73.8567)
-        const distFromPune = calculateDistanceKm(userLat, userLng, 18.5204, 73.8567);
-        const distToPlace =
-          place.latitude && place.longitude
-            ? calculateDistanceKm(userLat, userLng, place.latitude, place.longitude)
-            : distFromPune;
-
-        if (distFromPune > 45) {
-          // Coordinates are outside Pune Metropolitan Region (e.g. testing from Mumbai/desktop IP)
-          // Intelligently route from closest main arrival gateway to avoid broken long-distance walking steps
-          const gatewayHub =
-            PUNE_COMMUTE_HUBS.find((h) => h.id === 'pune-station') || PUNE_COMMUTE_HUBS[0];
-          const gatewayLabel = isMr ? 'पुणे स्टेशन (मुख्य प्रवेशद्वार)' : 'Pune Station (Gateway)';
-          const notice = isMr
-            ? `📍 तुमचे थेट स्थान पुण्याच्या बाहेर (${Math.round(distFromPune)} किमी) आढळले. ${primaryName} येथे जाण्यासाठी पुण्याच्या मुख्य प्रवेशद्वारावरून (पुणे स्टेशन) थेट मेट्रो व बस मार्ग तयार केला आहे.`
-            : `📍 Location detected ${Math.round(distFromPune)} km outside Pune. For visiting ${primaryName}, transit is routed from Pune's central gateway (${gatewayHub.nameEn}), plus highway travel options!`;
-          setGpsNotice(notice);
-          setOriginName(gatewayLabel);
-
-          const computed = getPublicTransitRoute(
-            gatewayHub.latitude,
-            gatewayHub.longitude,
-            place,
-            gatewayLabel
-          );
-          setLiveTransit(computed);
-        } else {
-          // User is inside Pune! Identify closest neighborhood
-          let closestHub = PUNE_COMMUTE_HUBS[0];
-          let minHubDist = 999;
-          for (const hub of PUNE_COMMUTE_HUBS) {
-            const d = calculateDistanceKm(userLat, userLng, hub.latitude, hub.longitude);
-            if (d < minHubDist) {
-              minHubDist = d;
-              closestHub = hub;
-            }
-          }
-
-          const localityName = isMr
-            ? closestHub.nameMr.split('/')[0]
-            : closestHub.nameEn.split('/')[0];
-          const gpsLabel = isMr
-            ? `माझे GPS स्थान (जवळ ${localityName} • ${distToPlace.toFixed(1)} किमी)`
-            : `My Live GPS (near ${localityName} • ${distToPlace.toFixed(1)} km away)`;
-          setOriginName(gpsLabel);
-          setGpsNotice(
-            isMr
-              ? `📍 थेट GPS सक्रिय: तुम्ही ${primaryName} पासून अंदाजे ${distToPlace.toFixed(1)} किमी अंतरावर आहात.`
-              : `📍 Live GPS Active: You are ~${distToPlace.toFixed(1)} km from ${primaryName}!`
-          );
-
-          const computed = getPublicTransitRoute(userLat, userLng, place, gpsLabel);
-          setLiveTransit(computed);
-        }
-        setGpsLoading(false);
-      },
-      (err) => {
-        setGpsLoading(false);
-        setGpsError(
-          err.code === err.PERMISSION_DENIED
-            ? isMr
-              ? 'कृपया ब्राउझरमध्ये लोकेशन परवानगी द्या (Allow Location).'
-              : 'Location permission was denied by browser.'
-            : isMr
-            ? 'स्थान शोधता आले नाही. कृपया खालील यादीतून तुमचा भाग निवडा.'
-            : 'Could not acquire precise GPS. Please pick your starting locality from the list below.'
-        );
-      },
-      geoOptions
-    );
-  };
-
   const handleSelectHub = (hubId: string) => {
     setSelectedHubId(hubId);
-    setGpsError('');
-    setGpsNotice('');
-    if (hubId === 'gps') {
-      handleCalcGps();
-      return;
-    }
+    setOriginNotice('');
     const hub = PUNE_COMMUTE_HUBS.find((h) => h.id === hubId);
     if (hub) {
       const coords = { lat: hub.latitude, lng: hub.longitude };
@@ -991,42 +884,11 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   <span>{isMr ? 'सर्व ३५+ परिसर शोधा' : 'Search 35+ Localities'}</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={handleCalcGps}
-                  disabled={gpsLoading}
-                  className="btn outline"
-                  style={{
-                    padding: '4px 10px',
-                    fontSize: 11.5,
-                    borderRadius: 999,
-                    background: selectedHubId === 'gps' ? '#ecfdf5' : '#ffffff',
-                    borderColor: selectedHubId === 'gps' ? '#10b981' : '#cbd5e1',
-                    color: selectedHubId === 'gps' ? '#047857' : '#334155',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <span>{gpsLoading ? '⏳' : '📍'}</span>
-                  <span>
-                    {gpsLoading
-                      ? isMr
-                        ? 'स्थान शोधत आहे…'
-                        : 'Locating…'
-                      : selectedHubId === 'gps'
-                      ? isMr
-                        ? '✓ थेट GPS निवडले'
-                        : '✓ Live GPS Active'
-                      : isMr
-                      ? 'माझे थेट GPS वापरा'
-                      : 'Use My Live GPS'}
-                  </span>
-                </button>
               </div>
             </div>
 
-            {/* GPS Live Notice Banner */}
-            {gpsNotice && (
+            {/* Locality Selected Notice */}
+            {originNotice && (
               <div
                 style={{
                   marginBottom: 12,
@@ -1043,29 +905,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 }}
               >
                 <span style={{ fontSize: 16 }}>📍</span>
-                <span>{gpsNotice}</span>
-              </div>
-            )}
-
-            {/* GPS Error Banner */}
-            {gpsError && (
-              <div
-                style={{
-                  marginBottom: 12,
-                  padding: '10px 14px',
-                  background: '#fef2f2',
-                  border: '1px solid #fecaca',
-                  borderRadius: 8,
-                  fontSize: 12.5,
-                  color: '#b91c1c',
-                  fontWeight: 600,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                <span style={{ fontSize: 16 }}>⚠️</span>
-                <span>{gpsError}</span>
+                <span>{originNotice}</span>
               </div>
             )}
 
@@ -1150,12 +990,6 @@ export default function PlaceDetailClient({ place }: { place: any }) {
               </select>
             </div>
           </div>
-
-          {gpsError && (
-            <div style={{ marginTop: 10, fontSize: 12, color: '#dc2626' }}>
-              ⚠️ {gpsError}
-            </div>
-          )}
 
           {/* Active Route Status Callout */}
           <div
@@ -1453,7 +1287,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         <Reviews placeId={place.id} />
       </div>
 
-      {/* Global Location & GPS Picker Modal */}
+      {/* Pune Locality Picker Modal */}
       <LocationPickerModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}
@@ -1462,12 +1296,11 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           const name = isMr ? loc.nameMr : loc.nameEn;
           setOriginName(name);
           setUserCoords({ lat: loc.lat, lng: loc.lng });
-          setGpsNotice(
+          setOriginNotice(
             isMr
               ? `✓ निवडलेले स्थान: ${loc.nameMr}`
               : `✓ Origin set to: ${loc.nameEn}`
           );
-          setGpsError('');
           const computed = getPublicTransitRoute(loc.lat, loc.lng, place, name);
           setLiveTransit(computed);
         }}

@@ -10,7 +10,6 @@ import {
   DEFAULT_PUNE_STATIC_LOCATION,
   searchPuneLocalities,
   searchPuneLivePlaces,
-  detectPreciseGps,
   PUNE_ALL_LOCALITIES,
   UserSavedLocation,
   PuneLocality,
@@ -32,13 +31,12 @@ export default function LocationPickerModal({
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<PuneLocality[]>([]);
   const [isSearchingLive, setIsSearchingLive] = useState(false);
-  const [isDetectingGps, setIsDetectingGps] = useState(false);
-  const [gpsMessage, setGpsMessage] = useState<{ text: string; isError?: boolean } | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setCurrentLoc(getStoredUserLocation());
-      setGpsMessage(null);
+      setCurrentLoc(getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION);
+      setFeedbackMessage(null);
       setSearchResults(searchPuneLocalities(''));
     }
   }, [isOpen]);
@@ -79,8 +77,6 @@ export default function LocationPickerModal({
 
   if (!isOpen) return null;
 
-  const filteredLocalities = searchResults;
-
   const handleSelectLocality = (loc: PuneLocality) => {
     if (loc.id.startsWith('osm-')) {
       const saved: UserSavedLocation = {
@@ -91,7 +87,6 @@ export default function LocationPickerModal({
         longitude: loc.longitude,
         lat: loc.latitude,
         lng: loc.longitude,
-        isGps: true,
         timestamp: Date.now(),
       };
       setStoredUserLocation(saved);
@@ -109,52 +104,16 @@ export default function LocationPickerModal({
     }
   };
 
-  const handleStaticClick = () => {
+  const handleSetCentralPune = () => {
     const saved = setStaticPuneLocation();
     setCurrentLoc(saved);
     onLocationSelected?.(saved);
-    setGpsMessage({
-      text: isMr
-        ? '✓ कार्यक्षम मध्यवर्ती पुणे स्थान (शनिवार वाडा - 18.5204, 73.8567) यशस्वीरीत्या निवडले!'
-        : '✓ Set to 100% Workable Static Pune Location: Central Pune (Shaniwar Wada - 18.5204, 73.8567)!',
-    });
-    setTimeout(() => onClose(), 900);
-  };
-
-  const handleGpsClick = async () => {
-    setIsDetectingGps(true);
-    setGpsMessage(null);
-
-    const res = await detectPreciseGps();
-    setIsDetectingGps(false);
-
-    if (res.success && res.location) {
-      setCurrentLoc(res.location);
-      onLocationSelected?.(res.location);
-
-      if (res.isOutsidePune) {
-        setGpsMessage({
-          text: isMr
-            ? `ℹ️ तुमचे डिव्हाइस नेटवर्क पुण्याच्या बाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) आढळले. अचूक मेट्रो व बस मार्गांसाठी मध्यवर्ती पुणे (शनिवार वाडा) हे स्थान स्वयंचलित सेट केले आहे!`
-            : `ℹ️ Remote location detected (${Math.round(res.distanceFromPuneKm || 0)} km from Pune). Auto-set to Central Pune (Shaniwar Wada) so all transit & distances work 100%!`,
-          isError: false,
-        });
-        setTimeout(() => onClose(), 1400);
-      } else {
-        const accuracyText = res.accuracyMeters ? ` (±${res.accuracyMeters}m)` : '';
-        setGpsMessage({
-          text: isMr
-            ? `✓ अचूक थेट स्थान नोंदवले: ${res.location.nameMr}${accuracyText}`
-            : `✓ Live GPS locked: ${res.location.nameEn}${accuracyText}`,
-        });
-        setTimeout(() => onClose(), 1200);
-      }
-    } else {
-      setGpsMessage({
-        text: res.error || (isMr ? 'स्थान शोधता आले नाही.' : 'Unable to acquire GPS.'),
-        isError: true,
-      });
-    }
+    setFeedbackMessage(
+      isMr
+        ? '✓ मध्यवर्ती पुणे (शनिवार वाडा) स्थान यशस्वीरीत्या निवडले!'
+        : '✓ Set to Central Pune (Shaniwar Wada) successfully!'
+    );
+    setTimeout(() => onClose(), 800);
   };
 
   return (
@@ -172,21 +131,21 @@ export default function LocationPickerModal({
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
+        animation: 'fadeIn 0.2s ease-out',
       }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      onClick={onClose}
     >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{
-          background: '#ffffff',
-          borderRadius: 18,
           width: '100%',
-          maxWidth: 540,
-          maxHeight: '90vh',
+          maxWidth: '560px',
+          maxHeight: '88vh',
+          background: '#ffffff',
+          borderRadius: '20px',
+          boxShadow: '0 24px 60px rgba(0, 0, 0, 0.25)',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: '0 20px 45px rgba(0,0,0,0.22)',
           overflow: 'hidden',
           animation: 'fadeIn 0.15s ease',
         }}
@@ -205,12 +164,12 @@ export default function LocationPickerModal({
           <div>
             <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span>📍</span>
-              <span>{isMr ? 'तुमचे अचूक स्थान निवडा' : 'Set Your Exact Location'}</span>
+              <span>{isMr ? 'तुमचा पुणे परिसर निवडा' : 'Select Your Pune Area'}</span>
             </h3>
             <p style={{ margin: '3px 0 0', fontSize: 12, color: '#64748b' }}>
               {isMr
-                ? 'नकाशा, मेट्रो, पीएमपीएमएल बसेस आणि जवळची ठिकाणे यानुसार अपडेट होतील'
-                : 'Distances, Metro & PMPML bus routes update from your exact home area'}
+                ? 'नकाशा, मेट्रो, पीएमपीएमएल बसेस आणि अंतर यानुसार मोजले जाईल'
+                : 'Distances, Metro & PMPML bus routes update from your chosen area'}
             </p>
           </div>
           <button
@@ -253,103 +212,68 @@ export default function LocationPickerModal({
             <span
               style={{
                 fontSize: 10.5,
-                background: currentLoc.isGps ? '#10b981' : '#047857',
+                background: '#047857',
                 color: '#fff',
                 padding: '2px 8px',
                 borderRadius: 999,
                 fontWeight: 700,
               }}
             >
-              {currentLoc.isGps ? (isMr ? 'थेट GPS' : 'GPS Device') : (isMr ? 'परिसर' : 'Locality')}
+              {isMr ? 'परिसर' : 'Locality'}
             </span>
           </div>
         )}
 
         {/* Body */}
         <div style={{ padding: '18px 22px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {/* Dual Location Strategy: Live Dynamic GPS vs 100% Workable Static Pune GPS */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 10 }}>
-            {/* 1. Dynamic GPS Button */}
-            <button
-              type="button"
-              onClick={handleGpsClick}
-              disabled={isDetectingGps}
-              style={{
-                padding: '12px 14px',
-                borderRadius: 12,
-                border: '1.5px solid #10b981',
-                background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
-                color: '#047857',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: isDetectingGps ? 'wait' : 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 4,
-                boxShadow: '0 2px 6px rgba(16, 185, 129, 0.12)',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span>{isDetectingGps ? '⏳' : '🎯'}</span>
-                <span>{isMr ? 'थेट डायनॅमिक GPS' : 'Live Dynamic GPS'}</span>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 500, color: '#059669' }}>
-                {isDetectingGps
-                  ? (isMr ? 'स्थान शोधत आहे…' : 'Locating device…')
-                  : (isMr ? 'ब्राउझर / फोन सेन्सर्स' : 'Browser / Phone Sensors')}
+          {/* Quick Default Button: Central Pune */}
+          <button
+            type="button"
+            onClick={handleSetCentralPune}
+            style={{
+              padding: '12px 16px',
+              borderRadius: 12,
+              border: '1.5px solid #3b82f6',
+              background: '#eff6ff',
+              color: '#1d4ed8',
+              textAlign: 'left',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <span style={{ fontSize: 24 }}>📍</span>
+            <div>
+              <strong style={{ display: 'block', fontSize: 14, color: '#1e40af' }}>
+                {isMr ? 'मध्यवर्ती पुणे (शनिवार वाडा)' : 'Central Pune (Shaniwar Wada)'}
+              </strong>
+              <span style={{ fontSize: 11.5, color: '#3b82f6' }}>
+                {isMr
+                  ? 'पुण्याचा मध्यवर्ती भाग • सर्व मेट्रो व बस मार्गांसाठी सर्वोत्तम'
+                  : 'Central Hub • Ideal for Metro & PMPML routes'}
               </span>
-            </button>
+            </div>
+          </button>
 
-            {/* 2. 100% Workable Static Pune Location */}
-            <button
-              type="button"
-              onClick={handleStaticClick}
-              style={{
-                padding: '12px 14px',
-                borderRadius: 12,
-                border: '1.5px solid #c2410c',
-                background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
-                color: '#9a3412',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 4,
-                boxShadow: '0 2px 6px rgba(194, 65, 12, 0.12)',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span>📍</span>
-                <span>{isMr ? 'कार्यक्षम स्टॅटिक GPS' : 'Workable Static GPS'}</span>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 500, color: '#c2410c' }}>
-                {isMr ? 'मध्यवर्ती शनिवार वाडा (अचूक)' : 'Central Pune (Shaniwar Wada)'}
-              </span>
-            </button>
-          </div>
-
-          {/* GPS Message */}
-          {gpsMessage && (
+          {/* Feedback Message */}
+          {feedbackMessage && (
             <div
               style={{
-                padding: '9px 12px',
+                padding: '8px 12px',
                 borderRadius: 8,
-                fontSize: 12,
+                fontSize: 12.5,
                 fontWeight: 600,
-                background: gpsMessage.isError ? '#fef2f2' : '#f0fdf4',
-                color: gpsMessage.isError ? '#b91c1c' : '#15803d',
-                border: `1px solid ${gpsMessage.isError ? '#fecaca' : '#bbf7d0'}`,
-                lineHeight: 1.45,
+                background: '#ecfdf5',
+                color: '#065f46',
+                border: '1px solid #a7f3d0',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
               }}
             >
-              {gpsMessage.text}
+              <span>{feedbackMessage}</span>
             </div>
           )}
 
@@ -358,11 +282,12 @@ export default function LocationPickerModal({
             <span
               style={{
                 position: 'absolute',
-                left: 12,
+                left: 14,
                 top: '50%',
                 transform: 'translateY(-50%)',
                 fontSize: 14,
                 color: '#94a3b8',
+                pointerEvents: 'none',
               }}
             >
               🔍
@@ -373,140 +298,121 @@ export default function LocationPickerModal({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={
                 isMr
-                  ? 'पुण्यातील कोणताही परिसर, रस्ता किंवा लँडमार्क शोधा…'
-                  : 'Search any Pune area, street or landmark (e.g. Kothrud, FC Road, Magarpatta)…'
+                  ? 'पुणे परिसर शोधा (उदा. कोथरूड, बाणेर, डेक्कन, हडपसर)...'
+                  : 'Search Pune locality (e.g. Kothrud, Baner, Deccan, Hadapsar)...'
               }
               style={{
                 width: '100%',
-                boxSizing: 'border-box',
-                padding: '10px 36px 10px 36px',
+                padding: '11px 14px 11px 40px',
                 borderRadius: 10,
                 border: '1.5px solid #cbd5e1',
-                fontSize: 13,
-                fontWeight: 600,
+                fontSize: 13.5,
                 color: '#0f172a',
                 outline: 'none',
+                boxSizing: 'border-box',
+                transition: 'border-color 0.15s ease',
               }}
             />
             {isSearchingLive && (
               <span
                 style={{
                   position: 'absolute',
-                  right: 12,
+                  right: 14,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  fontSize: 12,
-                  color: '#059669',
+                  fontSize: 11,
+                  color: '#64748b',
                 }}
-                title="Searching OpenStreetMap live..."
               >
-                ⏳
+                ⏳ {isMr ? 'शोधत आहे…' : 'Searching…'}
               </span>
             )}
           </div>
 
-          {/* Quick Popular Localities */}
+          {/* Localities List */}
           <div>
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: 8 }}>
-              {isMr ? 'लोकप्रिय मुख्य परिसर:' : 'Popular Pune Localities:'}
-            </span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {PUNE_ALL_LOCALITIES.slice(0, 12).map((loc) => {
-                const isSelected = currentLoc?.id === loc.id;
-                return (
-                  <button
-                    key={loc.id}
-                    type="button"
-                    onClick={() => handleSelectLocality(loc)}
-                    style={{
-                      border: isSelected ? '1.5px solid #059669' : '1px solid #cbd5e1',
-                      background: isSelected ? '#ecfdf5' : '#ffffff',
-                      color: isSelected ? '#065f46' : '#334155',
-                      fontWeight: isSelected ? 700 : 500,
-                      borderRadius: 999,
-                      padding: '4px 10px',
-                      fontSize: 12,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                    }}
-                  >
-                    {isMr ? loc.nameMr.split('/')[0].trim() : loc.nameEn.split('/')[0].trim()}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Localities & Live Places Directory List */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-              <span style={{ fontSize: 11.5, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                {isMr ? `परिसर व ठिकाणे (${filteredLocalities.length}):` : `Areas & Landmarks (${filteredLocalities.length}):`}
-              </span>
-              {isSearchingLive && (
-                <span style={{ fontSize: 11, color: '#059669', fontWeight: 600 }}>
-                  🌐 {isMr ? 'थेट GPS शोधत आहे…' : 'Searching live map…'}
-                </span>
-              )}
-            </div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
+                fontSize: 11,
+                fontWeight: 800,
+                color: '#64748b',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                marginBottom: 8,
+              }}
+            >
+              {searchQuery
+                ? isMr
+                  ? `शोध निकाल (${searchResults.length})`
+                  : `Search Results (${searchResults.length})`
+                : isMr
+                ? 'प्रमुख पुणे उपनगरे व भाग'
+                : 'Popular Pune Neighborhoods'}
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
                 gap: 6,
-                maxHeight: 220,
+                maxHeight: '320px',
                 overflowY: 'auto',
                 paddingRight: 4,
               }}
             >
-              {filteredLocalities.map((loc) => {
-                const isSelected = currentLoc?.id === loc.id;
-                const isLiveOsm = loc.id.startsWith('osm-');
-                return (
-                  <button
-                    key={loc.id}
-                    type="button"
-                    onClick={() => handleSelectLocality(loc)}
-                    style={{
-                      textAlign: 'left',
-                      padding: '8px 12px',
-                      borderRadius: 8,
-                      border: isSelected ? '1.5px solid #10b981' : '1px solid #e2e8f0',
-                      background: isSelected ? '#f0fdf4' : isLiveOsm ? '#f8fafc' : '#f8fafc',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.12s ease',
-                      gap: 8,
-                    }}
-                  >
-                    <div style={{ minWidth: 0, flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {isLiveOsm ? '📍 ' : ''}{isMr ? loc.nameMr : loc.nameEn}
-                      </div>
-                      <div style={{ fontSize: 11, color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {isLiveOsm
-                          ? `🌐 GPS: ${loc.latitude.toFixed(4)}°, ${loc.longitude.toFixed(4)}°`
-                          : `🚇 ${isMr ? loc.popularTransitHubMr : loc.popularTransitHubEn}`}
-                      </div>
-                    </div>
-                    <span
+              {searchResults.length === 0 ? (
+                <div style={{ padding: '24px 12px', textAlign: 'center', color: '#64748b', fontSize: 13 }}>
+                  {isMr ? 'कोणतेही ठिकाण सापडले नाही.' : 'No matching areas found.'}
+                </div>
+              ) : (
+                searchResults.map((loc) => {
+                  const isSelected = currentLoc?.id === loc.id;
+                  return (
+                    <button
+                      key={loc.id}
+                      type="button"
+                      onClick={() => handleSelectLocality(loc)}
                       style={{
-                        fontSize: 11,
-                        color: isSelected ? '#059669' : '#475569',
-                        fontWeight: 700,
-                        flexShrink: 0,
-                        background: isLiveOsm ? '#ecfdf5' : 'transparent',
-                        padding: isLiveOsm ? '2px 6px' : '0',
-                        borderRadius: 4,
+                        padding: '10px 14px',
+                        borderRadius: 8,
+                        border: isSelected ? '1.5px solid #10b981' : '1px solid #e2e8f0',
+                        background: isSelected ? '#ecfdf5' : '#ffffff',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 10,
+                        transition: 'all 0.12s ease',
                       }}
                     >
-                      {isSelected ? '✓ Active' : isLiveOsm ? 'Live GPS' : 'Select'}
-                    </span>
-                  </button>
-                );
-              })}
+                      <div>
+                        <strong
+                          style={{
+                            display: 'block',
+                            fontSize: 13.5,
+                            color: isSelected ? '#065f46' : '#0f172a',
+                          }}
+                        >
+                          {isMr ? loc.nameMr : loc.nameEn}
+                        </strong>
+                        <span style={{ fontSize: 11, color: '#64748b' }}>
+                          🚇 {isMr ? loc.popularTransitHubMr : loc.popularTransitHubEn}
+                        </span>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 10.5,
+                          color: isSelected ? '#047857' : '#94a3b8',
+                          fontWeight: 700,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {isSelected ? '✓ ' + (isMr ? 'निवडले' : 'Active') : isMr ? loc.zoneMr : loc.zoneEn}
+                      </span>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>
@@ -518,16 +424,20 @@ export default function LocationPickerModal({
             borderTop: '1px solid #e2e8f0',
             background: '#f8fafc',
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
+          <span style={{ fontSize: 11.5, color: '#64748b' }}>
+            {isMr ? '५०+ पुणे उपनगरे उपलब्ध' : '50+ Pune neighborhoods supported'}
+          </span>
           <button
             type="button"
             onClick={onClose}
-            className="btn"
-            style={{ padding: '6px 18px', fontSize: 13, borderRadius: 8 }}
+            className="btn outline"
+            style={{ padding: '6px 14px', fontSize: 12.5 }}
           >
-            {isMr ? 'पूर्ण झाले' : 'Done'}
+            {isMr ? 'बंद करा' : 'Done'}
           </button>
         </div>
       </div>

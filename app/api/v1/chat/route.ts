@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       /(near\s*me|nearby|closest|near\s*my\s*location|around\s*here)/i.test(lowerMsg) ||
       /(माझ्याजवळ|जवळची|नजीक|येथील|माझ्या\s*परिसरात)/i.test(lowerMsg);
 
-    // Dynamic Live GPS Near-Me calculation
+    // Dynamic Locality Near-Me calculation
     if (isNearMe && userLocation && typeof userLocation.lat === 'number' && allPlaces.length > 0) {
       const sortedByDistance = [...allPlaces]
         .map((p) => ({
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
 
       const top3 = sortedByDistance.slice(0, 3);
       const replyText = isMr
-        ? `📍 **तुमच्या सध्याच्या GPS स्थानावरून सर्वात जवळची पुणे पर्यटन स्थळे:**\n\n` +
+        ? `📍 **तुमच्या निवडलेल्या स्थानावरून सर्वात जवळची पुणे पर्यटन स्थळे:**\n\n` +
           top3
             .map(
               (p, i) =>

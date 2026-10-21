@@ -177,9 +177,9 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
             alignItems: 'center',
             gap: 4,
           }}
-          title="Click to copy GPS coordinates"
+          title="Click to copy map coordinates"
         >
-          📍 GPS: <strong style={{ color: 'var(--ink)' }}>{lat.toFixed(4)}° N, {lng.toFixed(4)}° E</strong>
+          📍 Coordinates: <strong style={{ color: 'var(--ink)' }}>{lat.toFixed(4)}° N, {lng.toFixed(4)}° E</strong>
           <span style={{ fontSize: 11, color: '#059669', marginLeft: 4 }}>
             {copied ? '✓ Copied' : '📋'}
           </span>

@@ -25,20 +25,19 @@ import {
   calculateJourneyTotalDistance,
 } from '@/lib/journeyStorage';
 import {
-  detectPreciseGps,
-  setStaticPuneLocation,
   getStoredUserLocation,
   DEFAULT_PUNE_STATIC_LOCATION,
 } from '@/lib/userLocation';
 
 const STARTS: Record<string, { coords: [number, number]; mr: string }> = {
-  'Central Pune (Shaniwar Wada - Static GPS)': { coords: [18.5204, 73.8567], mr: 'मध्यवर्ती पुणे (शनिवार वाडा - स्टॅटिक GPS)' },
-  'Shaniwar Wada (Old City)': { coords: [18.5195, 73.8553], mr: 'शनिवार वाडा (मध्यवर्ती शहर)' },
+  'Central Pune (Shaniwar Wada)': { coords: [18.5204, 73.8567], mr: 'मध्यवर्ती पुणे (शनिवार वाडा)' },
   'Pune Railway Station': { coords: [18.5289, 73.8744], mr: 'पुणे रेल्वे स्टेशन' },
   'Swargate Bus Terminal': { coords: [18.5018, 73.8636], mr: 'स्वारगेट बस स्थानक' },
   'Deccan Gymkhana (FC Road)': { coords: [18.5167, 73.8409], mr: 'डेक्कन जिमखाना (एफसी रोड)' },
   'Shivajinagar': { coords: [18.5308, 73.8475], mr: 'शिवाजीनगर' },
+  'Kothrud (Vanaz Metro)': { coords: [18.5074, 73.8077], mr: 'कोथरूड (वनाज मेट्रो)' },
   'Hinjewadi IT Park': { coords: [18.5912, 73.7389], mr: 'हिंजवडी आयटी पार्क' },
+  'Hadapsar Gadital': { coords: [18.5089, 73.9259], mr: 'हडपसर गाडीतळ' },
 };
 
 const INTERESTS: Array<{ key: string; en: string; mr: string; icon: string }> = [
@@ -56,7 +55,7 @@ export default function PlannerPage() {
   const [duration, setDuration] = useState(180);
   const [mode, setMode] = useState('public_transit');
   const [budget, setBudget] = useState('500');
-  const [start, setStart] = useState('Central Pune (Shaniwar Wada - Static GPS)');
+  const [start, setStart] = useState('Central Pune (Shaniwar Wada)');
   const [time, setTime] = useState('09:30');
   const [interests, setInterests] = useState<string[]>([]);
   const [includeUnverified, setIncludeUnverified] = useState(true);
@@ -88,30 +87,6 @@ export default function PlannerPage() {
   const [speakingText, setSpeakingText] = useState<string | null>(null);
   const [checkinNotice, setCheckinNotice] = useState<string>('');
 
-  // GPS Geolocation state
-  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const [gpsStatus, setGpsStatus] = useState<'idle' | 'locating' | 'success' | 'error'>('idle');
-  const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
-  const [gpsErrorMsg, setGpsErrorMsg] = useState<string>('');
-
-  // Load existing location or default to workable static Central Pune
-  useEffect(() => {
-    const loc = getStoredUserLocation();
-    if (loc && typeof loc.lat === 'number') {
-      setUserCoords({ lat: loc.lat, lng: loc.lng });
-      if (loc.isGps && (!loc.distanceFromPuneKm || loc.distanceFromPuneKm <= 35)) {
-        setStart('my-live-gps');
-        setGpsStatus('success');
-        setGpsAccuracy(loc.accuracyRadiusMeters ?? 15);
-      } else {
-        setStart('Central Pune (Shaniwar Wada - Static GPS)');
-      }
-    } else {
-      const def = DEFAULT_PUNE_STATIC_LOCATION;
-      setUserCoords({ lat: def.lat, lng: def.lng });
-    }
-  }, []);
-
   useEffect(() => {
     const syncActiveTrip = () => {
       const saved = getActiveTrip();
@@ -125,60 +100,6 @@ export default function PlannerPage() {
     return () => window.removeEventListener('explore-pune-active-trip-changed', syncActiveTrip);
   }, []);
 
-  const handleGetGps = async () => {
-    setGpsStatus('locating');
-    setGpsErrorMsg('');
-    try {
-      const res = await detectPreciseGps();
-      if (res.success && res.location) {
-        setUserCoords({ lat: res.location.lat, lng: res.location.lng });
-        setGpsAccuracy(res.location.accuracyRadiusMeters || 10);
-        setGpsStatus('success');
-        setStart('my-live-gps');
-        if (res.isOutsidePune) {
-          setGpsErrorMsg(
-            isMr
-              ? `तुमचे नेटवर्क स्थान पुण्याबाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) असल्यामुळे अचूक सहल आराखड्यासाठी आपोआप मध्यवर्ती पुणे (शनिवार वाडा - 18.5204, 73.8567) स्टॅटिक लोकेशनवर सेट केले गेले आहे.`
-              : `Detected GPS is outside Pune (${Math.round(res.distanceFromPuneKm || 0)} km). Auto-snapped to workable Central Pune (Shaniwar Wada - 18.5204, 73.8567) for 100% route feasibility!`
-          );
-        }
-      } else {
-        const staticLoc = setStaticPuneLocation();
-        setUserCoords({ lat: staticLoc.lat, lng: staticLoc.lng });
-        setGpsAccuracy(5);
-        setGpsStatus('success');
-        setStart('Central Pune (Shaniwar Wada - Static GPS)');
-        setGpsErrorMsg(
-          isMr
-            ? 'GPS उपलब्ध नसल्याने 100% कार्यक्षम स्टॅटिक लोकेशन (शनिवार वाडा - 18.5204, 73.8567) निवडले गेले आहे.'
-            : 'GPS unavailable. Defaulted to workable static Central Pune (Shaniwar Wada).'
-        );
-      }
-    } catch {
-      const staticLoc = setStaticPuneLocation();
-      setUserCoords({ lat: staticLoc.lat, lng: staticLoc.lng });
-      setGpsStatus('success');
-      setStart('Central Pune (Shaniwar Wada - Static GPS)');
-      setGpsErrorMsg(
-        isMr
-          ? 'GPS त्रुटीमुळे स्टॅटिक मध्यवर्ती पुणे लोकेशन वापरले जात आहे.'
-          : 'GPS error. Using workable static Central Pune location.'
-      );
-    }
-  };
-
-  const handleSetStaticGps = () => {
-    const staticLoc = setStaticPuneLocation();
-    setUserCoords({ lat: staticLoc.lat, lng: staticLoc.lng });
-    setStart('Central Pune (Shaniwar Wada - Static GPS)');
-    setGpsStatus('idle');
-    setGpsErrorMsg(
-      isMr
-        ? '✓ 100% कार्यक्षम मध्यवर्ती पुणे स्टॅटिक लोकेशन (शनिवार वाडा - 18.5204, 73.8567) निवडले गेले आहे.'
-        : '✓ Active start point set to 100% workable Central Pune Static Location (Shaniwar Wada).'
-    );
-  };
-
   async function generate(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -189,16 +110,9 @@ export default function PlannerPage() {
     setIsGuidedMode(false);
 
     const [h, m] = time.split(':').map(Number);
-    let lat = 18.5195;
-    let lng = 73.8553;
-
-    if (start === 'my-live-gps' && userCoords) {
-      lat = userCoords.lat;
-      lng = userCoords.lng;
-    } else if (STARTS[start]) {
-      lat = STARTS[start].coords[0];
-      lng = STARTS[start].coords[1];
-    }
+    const startObj = STARTS[start] || STARTS['Central Pune (Shaniwar Wada)'];
+    const lat = startObj.coords[0];
+    const lng = startObj.coords[1];
 
     try {
       const res = await fetch('/api/v1/itineraries/generate', {
@@ -240,10 +154,7 @@ export default function PlannerPage() {
   // Start Guided Trip from Selected Plan
   const handleStartGuidedTrip = (plan: any) => {
     if (!plan || !plan.stops || plan.stops.length === 0) return;
-    const startLabel =
-      start === 'my-live-gps'
-        ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
-        : STARTS[start] && isMr ? STARTS[start].mr : start;
+    const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
 
     const stops: ActiveTripStop[] = plan.stops.map((s: any, idx: number) => ({
       index: idx + 1,
@@ -431,10 +342,7 @@ export default function PlannerPage() {
         ? planToExport.themeMr || planToExport.themeEn || ''
         : planToExport.themeEn || '';
 
-      const startLabel =
-        start === 'my-live-gps'
-          ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
-          : STARTS[start] && isMr ? STARTS[start].mr : start;
+      const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
         user?.displayName ||
@@ -510,10 +418,7 @@ export default function PlannerPage() {
         ? planToExport.themeMr || planToExport.themeEn || ''
         : planToExport.themeEn || '';
 
-      const startLabel =
-        start === 'my-live-gps'
-          ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
-          : STARTS[start] && isMr ? STARTS[start].mr : start;
+      const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
         user?.displayName ||
@@ -1223,117 +1128,18 @@ export default function PlannerPage() {
             {t('planner.params')}
           </h2>
 
-          {/* Starting Point & GPS Geolocation */}
+          {/* Starting Point Hub */}
           <div className="field">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap', gap: 6 }}>
-              <label htmlFor="start" style={{ margin: 0 }}>
-                {t('planner.startPoint')}
-              </label>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                <button
-                  type="button"
-                  onClick={handleGetGps}
-                  disabled={gpsStatus === 'locating'}
-                  style={{
-                    background: '#ecfdf5',
-                    border: '1px solid #10b981',
-                    color: '#065f46',
-                    fontSize: 11.5,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    padding: '3px 8px',
-                    borderRadius: 6,
-                  }}
-                  title={isMr ? 'डिव्हाइस सेन्सरद्वारे थेट GPS स्थान मिळवा' : 'Acquire live coordinates from device GPS'}
-                >
-                  {gpsStatus === 'locating' ? (
-                    <>⏳ {t('planner.locating')}</>
-                  ) : (
-                    <>🎯 {isMr ? 'थेट डायनॅमिक GPS' : 'Live Dynamic GPS'}</>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSetStaticGps}
-                  style={{
-                    background: '#eff6ff',
-                    border: '1px solid #3b82f6',
-                    color: '#1d4ed8',
-                    fontSize: 11.5,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    padding: '3px 8px',
-                    borderRadius: 6,
-                  }}
-                  title={isMr ? 'मध्यवर्ती पुणे (शनिवार वाडा - 18.5204, 73.8567) कार्यक्षम स्टॅटिक GPS स्थान निवडा' : 'Select 100% workable Central Pune (Shaniwar Wada) static location'}
-                >
-                  📍 {isMr ? 'स्टॅटिक GPS (मध्यवर्ती पुणे)' : 'Static GPS (Central Pune)'}
-                </button>
-              </div>
-            </div>
-
+            <label htmlFor="start">
+              {t('planner.startPoint')}
+            </label>
             <select id="start" value={start} onChange={(e) => setStart(e.target.value)}>
-              {userCoords && (
-                <option value="my-live-gps">
-                  📍 {isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS Location'} ({userCoords.lat.toFixed(4)}, {userCoords.lng.toFixed(4)})
-                </option>
-              )}
               {Object.entries(STARTS).map(([k, val]) => (
                 <option key={k} value={k}>
                   {isMr ? val.mr : k}
                 </option>
               ))}
             </select>
-
-            {gpsStatus === 'success' && userCoords && !gpsErrorMsg && (
-              <div
-                style={{
-                  marginTop: 6,
-                  padding: '6px 10px',
-                  background: '#ecfdf5',
-                  border: '1px solid #10b981',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: 12,
-                  color: '#065f46',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                <span>🎯</span>
-                <span>
-                  <strong>{t('planner.gpsDetected')}:</strong> {userCoords.lat.toFixed(4)}, {userCoords.lng.toFixed(4)}
-                  {gpsAccuracy && ` (±${Math.round(gpsAccuracy)}m)`}
-                </span>
-              </div>
-            )}
-
-            {gpsErrorMsg && (
-              <div
-                style={{
-                  marginTop: 6,
-                  padding: '6px 10px',
-                  background: gpsStatus === 'error' ? '#fef2f2' : '#f0fdf4',
-                  border: gpsStatus === 'error' ? '1px solid #f87171' : '1px solid #86efac',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: 12,
-                  color: gpsStatus === 'error' ? '#dc2626' : '#15803d',
-                  display: 'flex',
-                  alignItems: 'start',
-                  gap: 6,
-                  lineHeight: 1.4,
-                }}
-              >
-                <span>{gpsStatus === 'error' ? '⚠️' : '📍'}</span>
-                <span>{gpsErrorMsg}</span>
-              </div>
-            )}
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>

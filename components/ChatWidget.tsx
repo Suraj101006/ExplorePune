@@ -179,8 +179,8 @@ export default function ChatWidget() {
             ? 'नमस्कार! 🙏 मी तुमचा Explore Pune AI मार्गदर्शक (पुणे दर्शन मित्र) आहे. पुण्यातील गड-किल्ले, पेशवेकालीन वाडे, प्रसिद्ध मंदिरे, सार्वजनिक वाहतूक (मेट्रो व बस), किंवा सहल नियोजनाबद्दल काहीही विचारा!'
             : 'Namaste! 🙏 Welcome to Explore Pune AI guide. Ask me about historical forts, Peshwa palaces, temples, Pune Metro & PMPML bus routes, or custom itineraries!',
           suggestions: isMr
-            ? ['माझ्याजवळील ठिकाणे (GPS)', 'पुणे मेट्रो तिकीट कसे काढावे?', 'सिंहगड किल्ला कसा जावा?', '१ दिवसाची सहल आखा']
-            : ['Places near me (GPS)', 'How to book Pune Metro ticket', 'How to reach Sinhagad Fort', 'Plan 1-day itinerary'],
+            ? ['माझ्या परिसराजवळील ठिकाणे', 'पुणे मेट्रो तिकीट कसे काढावे?', 'सिंहगड किल्ला कसा जावा?', '१ दिवसाची सहल आखा']
+            : ['Places near my area', 'How to book Pune Metro ticket', 'How to reach Sinhagad Fort', 'Plan 1-day itinerary'],
         },
       ]);
     }
@@ -272,8 +272,8 @@ export default function ChatWidget() {
           ? 'चॅट इतिहास साफ झाला आहे. आपण नवीन प्रश्न विचारू शकता! 🙏'
           : 'Chat history cleared. What would you like to explore in Pune?',
         suggestions: isMr
-          ? ['माझ्याजवळील ठिकाणे (GPS)', 'शनिवार वाडा', 'पुणे मेट्रो मार्ग', '१ दिवसाची सहल']
-          : ['Places near me (GPS)', 'Shaniwar Wada', 'Pune Metro routes', '1-day itinerary'],
+          ? ['माझ्या परिसराजवळील ठिकाणे', 'शनिवार वाडा', 'पुणे मेट्रो मार्ग', '१ दिवसाची सहल']
+          : ['Places near my area', 'Shaniwar Wada', 'Pune Metro routes', '1-day itinerary'],
       },
     ]);
   }
@@ -377,7 +377,7 @@ export default function ChatWidget() {
                   gap: 4,
                   marginTop: 3,
                 }}
-                title={isMr ? 'पुणे परिसर बदला किंवा अचूक GPS वापरा' : 'Change locality or use smart GPS'}
+                title={isMr ? 'पुणे परिसर निवडा किंवा बदला' : 'Choose or change Pune locality'}
               >
                 <span>📍</span>
                 <span>
@@ -827,7 +827,7 @@ export default function ChatWidget() {
                 justifyContent: 'center',
                 flexShrink: 0,
               }}
-              title={isMr ? 'माझ्याजवळील ठिकाणे (GPS)' : 'Find places near my location'}
+              title={isMr ? 'माझ्या परिसराजवळील ठिकाणे' : 'Find places near my area'}
             >
               📍
             </button>
@@ -856,7 +856,7 @@ export default function ChatWidget() {
         </section>
       )}
 
-      {/* Global Location & GPS Picker Modal */}
+      {/* Pune Locality Picker Modal */}
       <LocationPickerModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}
