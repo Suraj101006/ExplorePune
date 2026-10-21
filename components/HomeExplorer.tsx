@@ -14,7 +14,7 @@ import { calculateDistanceKm } from '@/lib/publicTransit';
 import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
-import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
+import { getStoredUserLocation, UserSavedLocation, DEFAULT_PUNE_STATIC_LOCATION } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 
 const TIER_MR: Record<string, string> = {
@@ -93,15 +93,13 @@ export default function HomeExplorer({
   const [slideshowPlace, setSlideshowPlace] = useState<any | null>(null);
 
   useEffect(() => {
-    // Initial saved location sync
-    const loc = getStoredUserLocation();
-    if (loc) {
-      setSavedLoc(loc);
-      setUserGps({ lat: loc.lat, lng: loc.lng });
-    }
+    // Initial saved location sync or fallback to 100% workable Central Pune static GPS
+    const loc = getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION;
+    setSavedLoc(loc);
+    setUserGps({ lat: loc.lat, lng: loc.lng });
 
     const handleLocChanged = (e: any) => {
-      const updated = e.detail || getStoredUserLocation();
+      const updated = e.detail || getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION;
       if (updated) {
         setSavedLoc(updated);
         setUserGps({ lat: updated.lat, lng: updated.lng });

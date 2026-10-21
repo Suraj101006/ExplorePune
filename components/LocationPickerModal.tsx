@@ -6,6 +6,8 @@ import {
   getStoredUserLocation,
   setStoredUserLocation,
   setLocationFromLocality,
+  setStaticPuneLocation,
+  DEFAULT_PUNE_STATIC_LOCATION,
   searchPuneLocalities,
   searchPuneLivePlaces,
   detectPreciseGps,
@@ -107,6 +109,18 @@ export default function LocationPickerModal({
     }
   };
 
+  const handleStaticClick = () => {
+    const saved = setStaticPuneLocation();
+    setCurrentLoc(saved);
+    onLocationSelected?.(saved);
+    setGpsMessage({
+      text: isMr
+        ? '✓ कार्यक्षम मध्यवर्ती पुणे स्थान (शनिवार वाडा - 18.5204, 73.8567) यशस्वीरीत्या निवडले!'
+        : '✓ Set to 100% Workable Static Pune Location: Central Pune (Shaniwar Wada - 18.5204, 73.8567)!',
+    });
+    setTimeout(() => onClose(), 900);
+  };
+
   const handleGpsClick = async () => {
     setIsDetectingGps(true);
     setGpsMessage(null);
@@ -121,16 +135,17 @@ export default function LocationPickerModal({
       if (res.isOutsidePune) {
         setGpsMessage({
           text: isMr
-            ? `⚠️ तुमचे थेट स्थान पुण्याच्या बाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) आढळले. अचूक स्थानिक बस व मेट्रो मार्गासाठी खालीलपैकी तुमचा पुणे परिसर निवडा.`
-            : `⚠️ Detected ${Math.round(res.distanceFromPuneKm || 0)} km outside Pune (IP/remote geolocation). For city transit & distances, pick your starting Pune neighborhood below.`,
-          isError: true,
+            ? `ℹ️ तुमचे डिव्हाइस नेटवर्क पुण्याच्या बाहेर (${Math.round(res.distanceFromPuneKm || 0)} किमी) आढळले. अचूक मेट्रो व बस मार्गांसाठी मध्यवर्ती पुणे (शनिवार वाडा) हे स्थान स्वयंचलित सेट केले आहे!`
+            : `ℹ️ Remote location detected (${Math.round(res.distanceFromPuneKm || 0)} km from Pune). Auto-set to Central Pune (Shaniwar Wada) so all transit & distances work 100%!`,
+          isError: false,
         });
+        setTimeout(() => onClose(), 1400);
       } else {
         const accuracyText = res.accuracyMeters ? ` (±${res.accuracyMeters}m)` : '';
         setGpsMessage({
           text: isMr
-            ? `✓ अचूक स्थान नोंदवले: ${res.location.nameMr}${accuracyText}`
-            : `✓ Location locked: ${res.location.nameEn}${accuracyText}`,
+            ? `✓ अचूक थेट स्थान नोंदवले: ${res.location.nameMr}${accuracyText}`
+            : `✓ Live GPS locked: ${res.location.nameEn}${accuracyText}`,
         });
         setTimeout(() => onClose(), 1200);
       }
@@ -252,36 +267,73 @@ export default function LocationPickerModal({
 
         {/* Body */}
         <div style={{ padding: '18px 22px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {/* GPS Button */}
-          <button
-            type="button"
-            onClick={handleGpsClick}
-            disabled={isDetectingGps}
-            style={{
-              width: '100%',
-              padding: '12px 16px',
-              borderRadius: 12,
-              border: '1.5px solid #10b981',
-              background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
-              color: '#047857',
-              fontSize: 13.5,
-              fontWeight: 700,
-              cursor: isDetectingGps ? 'wait' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              boxShadow: '0 2px 6px rgba(16, 185, 129, 0.12)',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <span>{isDetectingGps ? '⏳' : '🎯'}</span>
-            <span>
-              {isDetectingGps
-                ? (isMr ? 'थेट अचूक GPS शोधत आहे…' : 'Acquiring Precise GPS Signal…')
-                : (isMr ? 'माझे थेट GPS स्थान वापरा' : 'Detect My Live Precise GPS')}
-            </span>
-          </button>
+          {/* Dual Location Strategy: Live Dynamic GPS vs 100% Workable Static Pune GPS */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 10 }}>
+            {/* 1. Dynamic GPS Button */}
+            <button
+              type="button"
+              onClick={handleGpsClick}
+              disabled={isDetectingGps}
+              style={{
+                padding: '12px 14px',
+                borderRadius: 12,
+                border: '1.5px solid #10b981',
+                background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
+                color: '#047857',
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: isDetectingGps ? 'wait' : 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                boxShadow: '0 2px 6px rgba(16, 185, 129, 0.12)',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>{isDetectingGps ? '⏳' : '🎯'}</span>
+                <span>{isMr ? 'थेट डायनॅमिक GPS' : 'Live Dynamic GPS'}</span>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 500, color: '#059669' }}>
+                {isDetectingGps
+                  ? (isMr ? 'स्थान शोधत आहे…' : 'Locating device…')
+                  : (isMr ? 'ब्राउझर / फोन सेन्सर्स' : 'Browser / Phone Sensors')}
+              </span>
+            </button>
+
+            {/* 2. 100% Workable Static Pune Location */}
+            <button
+              type="button"
+              onClick={handleStaticClick}
+              style={{
+                padding: '12px 14px',
+                borderRadius: 12,
+                border: '1.5px solid #c2410c',
+                background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+                color: '#9a3412',
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                boxShadow: '0 2px 6px rgba(194, 65, 12, 0.12)',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span>📍</span>
+                <span>{isMr ? 'कार्यक्षम स्टॅटिक GPS' : 'Workable Static GPS'}</span>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 500, color: '#c2410c' }}>
+                {isMr ? 'मध्यवर्ती शनिवार वाडा (अचूक)' : 'Central Pune (Shaniwar Wada)'}
+              </span>
+            </button>
+          </div>
 
           {/* GPS Message */}
           {gpsMessage && (
