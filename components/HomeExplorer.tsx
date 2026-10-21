@@ -791,18 +791,21 @@ export default function HomeExplorer({
                     </div>
 
                     {/* Metadata Row: Category & Data Tier */}
-                    <div className="card-top" style={{ minHeight: 28, margin: '4px 0 6px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                    <div className="card-top" style={{ minHeight: 28, margin: '4px 0 6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: '1 1 auto' }}>
                         <Image
                           src={badgeImg}
                           alt=""
-                          width={20}
-                          height={20}
+                          width={18}
+                          height={18}
                           className="cat-badge-img"
+                          style={{ flexShrink: 0 }}
                         />
-                        <span className="cat">{catDisplayName}</span>
+                        <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '140px' }}>
+                          {catDisplayName}
+                        </span>
                       </div>
-                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: 4, alignItems: 'center', flexShrink: 0 }}>
                         {p.distanceKm !== undefined && (
                           <span
                             className="tier"
@@ -811,8 +814,8 @@ export default function HomeExplorer({
                               color: '#065f46',
                               borderColor: '#10b981',
                               fontWeight: 700,
-                              fontSize: '11px',
-                              padding: '2px 8px',
+                              fontSize: '10.5px',
+                              padding: '2px 6px',
                             }}
                           >
                             📍 {p.distanceKm} {isMr ? 'किमी' : 'km'}
@@ -823,18 +826,22 @@ export default function HomeExplorer({
                     </div>
 
                     {/* Aligned Title Container */}
-                    <div style={{ minHeight: 48, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ minHeight: 46, display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0 }}>
                       {isMr && p.name_mr ? (
                         <>
-                          <h2 style={{ fontSize: '18px', fontFamily: 'var(--deva)', margin: '0 0 2px', lineHeight: 1.25 }}>
+                          <h2 style={{ fontSize: '17px', fontFamily: 'var(--deva)', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                             {p.name_mr}
                           </h2>
-                          <div style={{ fontSize: '12.5px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+                          <div style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
                         </>
                       ) : (
                         <>
-                          <h2 style={{ fontSize: '17px', margin: '0 0 2px', lineHeight: 1.25 }}>{p.name}</h2>
-                          {p.name_mr && <p className="mr" style={{ margin: 0, fontSize: '13px' }}>{p.name_mr}</p>}
+                          <h2 style={{ fontSize: '16.5px', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{p.name}</h2>
+                          {p.name_mr && (
+                            <p className="mr" style={{ margin: 0, fontSize: '12.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {p.name_mr}
+                            </p>
+                          )}
                         </>
                       )}
                     </div>
@@ -842,7 +849,7 @@ export default function HomeExplorer({
                     {/* Clamped Description */}
                     <p
                       style={{
-                        fontSize: '13.5px',
+                        fontSize: '13px',
                         color: 'var(--muted)',
                         lineHeight: 1.45,
                         margin: '4px 0 8px',
@@ -850,7 +857,10 @@ export default function HomeExplorer({
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
-                        height: '39px',
+                        minHeight: '38px',
+                        maxHeight: '40px',
+                        wordBreak: 'break-word',
+                        overflowWrap: 'break-word',
                         fontFamily: isMr ? 'var(--deva)' : 'inherit',
                       }}
                     >
@@ -859,13 +869,15 @@ export default function HomeExplorer({
                     </p>
 
                     {/* Free Live Operating Hours Status Badge */}
-                    <div style={{ margin: '2px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
-                      <span className={`status-badge ${opStatus.badgeClass}`}>
-                        <span style={{ fontSize: 9 }}>{opStatus.isOpen ? '🟢' : '🔴'}</span>
-                        <span>{isMr ? opStatus.statusTextMr : opStatus.statusTextEn}</span>
+                    <div style={{ margin: '2px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minWidth: 0, flexWrap: 'wrap' }}>
+                      <span className={`status-badge ${opStatus.badgeClass}`} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <span style={{ fontSize: 9, flexShrink: 0 }}>{opStatus.isOpen ? '🟢' : '🔴'}</span>
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {isMr ? opStatus.statusTextMr : opStatus.statusTextEn}
+                        </span>
                       </span>
                       {p.recommended_duration_minutes && (
-                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600 }}>
+                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600, flexShrink: 0 }}>
                           ⏱️ {p.recommended_duration_minutes} {isMr ? 'मि.' : 'min'}
                         </span>
                       )}

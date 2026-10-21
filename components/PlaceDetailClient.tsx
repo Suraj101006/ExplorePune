@@ -726,8 +726,8 @@ export default function PlaceDetailClient({ place }: { place: any }) {
             </div>
 
             {/* Comprehensive Locality Dropdown */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 12, color: '#64748b', whiteSpace: 'nowrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', minWidth: 0, width: '100%' }}>
+              <span style={{ fontSize: 12, color: '#64748b', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {isMr ? 'सर्व उपनगरे:' : 'All localities:'}
               </span>
               <select
@@ -735,7 +735,11 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 value={selectedHubId}
                 onChange={(e) => handleSelectHub(e.target.value)}
                 style={{
-                  flex: 1,
+                  flex: '1 1 200px',
+                  minWidth: 0,
+                  maxWidth: '100%',
+                  width: '100%',
+                  boxSizing: 'border-box',
                   padding: '6px 12px',
                   borderRadius: 8,
                   border: '1px solid #cbd5e1',

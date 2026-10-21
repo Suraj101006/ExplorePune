@@ -129,7 +129,7 @@ export default function EmergencyHelplineModal() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="chip"
+        className="chip helpline-chip-btn"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -146,7 +146,7 @@ export default function EmergencyHelplineModal() {
         title={isMr ? 'पुणे आपत्कालीन व प्रवासी हेल्पलाइन' : 'Pune Tourist & Emergency Helplines'}
       >
         <span>🚨</span>
-        <span>{isMr ? 'मदत व हेल्पलाइन' : 'Helplines'}</span>
+        <span className="hide-on-compact-desktop">{isMr ? 'मदत व हेल्पलाइन' : 'Helplines'}</span>
       </button>
 
       {/* Modal Backdrop */}

@@ -47,7 +47,7 @@ export default function SavedPlacesDrawer() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="chip"
+        className="chip saved-chip-btn"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -64,7 +64,7 @@ export default function SavedPlacesDrawer() {
         title={isMr ? 'माझी आवडती ठिकाणे' : 'My Saved Places'}
       >
         <span>{saved.length > 0 ? '❤️' : '🤍'}</span>
-        <span className="saved-chip-text">{isMr ? 'जतन केलेली' : 'Saved'}</span>
+        <span className="saved-chip-text hide-on-compact-desktop">{isMr ? 'जतन केलेली' : 'Saved'}</span>
         {saved.length > 0 && (
           <span
             style={{

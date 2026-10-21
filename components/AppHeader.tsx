@@ -48,20 +48,20 @@ export default function AppHeader() {
     <header className="site-header">
       <div className="wrap site-header-inner">
         {/* Brand Identity */}
-        <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <Link href="/" className="brand">
           <Image
             src="/images/logo.svg"
             alt="Explore Pune Logo"
             width={38}
             height={38}
-            style={{ borderRadius: '50%', objectFit: 'cover' }}
+            className="brand-logo-img"
             priority
           />
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-            <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+          <div className="brand-text-col" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+            <span className="brand-title" style={{ fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
               Explore<span style={{ color: 'var(--primary)' }}> Pune</span>
             </span>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', color: 'var(--clay)', textTransform: 'uppercase' }}>
+            <span className="brand-subtitle" style={{ fontWeight: 700, letterSpacing: '0.06em', color: 'var(--clay)', textTransform: 'uppercase' }}>
               {isMr ? 'पुण्यनगरी • सह्याद्री' : 'Heritage & Trails'}
             </span>
           </div>
@@ -77,7 +77,7 @@ export default function AppHeader() {
                 href={item.href}
                 className={active ? 'active-nav-link' : ''}
               >
-                <span style={{ fontSize: '14px' }}>{item.icon}</span>
+                <span className="desktop-nav-icon" style={{ fontSize: '14px' }}>{item.icon}</span>
                 <span>{item.label}</span>
               </Link>
             );
@@ -113,17 +113,6 @@ export default function AppHeader() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
             aria-expanded={mobileMenuOpen}
-            style={{
-              display: 'none',
-              background: 'transparent',
-              border: '1px solid var(--line)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '7px 11px',
-              cursor: 'pointer',
-              color: 'var(--ink)',
-              fontSize: '18px',
-              fontWeight: 700,
-            }}
           >
             {mobileMenuOpen ? '✕' : '☰'}
           </button>
