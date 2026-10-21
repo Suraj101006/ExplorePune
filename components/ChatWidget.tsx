@@ -16,6 +16,7 @@ interface PlaceSummary {
   description?: string;
   description_mr?: string;
   data_tier?: string;
+  image_url?: string;
   place_prices?: Array<{ amount?: number; is_free?: boolean; visitor_category?: string }>;
   place_hours?: Array<{ opens_at?: string; closes_at?: string; is_closed?: boolean }>;
 }
@@ -47,12 +48,6 @@ interface TransitData {
   estimatedCostInr: number;
   ticketInfoEn: string;
   ticketInfoMr: string;
-  bookingOptions?: {
-    metroWhatsApp?: string;
-    busApp?: string;
-    ticketType?: string;
-    dayPassEligible?: boolean;
-  };
 }
 
 interface ChatMessage {
@@ -62,36 +57,56 @@ interface ChatMessage {
   places?: PlaceSummary[];
   transit?: TransitData;
   suggestions?: string[];
-  time?: string;
   isGemini?: boolean;
   model?: string;
 }
 
-const DEFAULT_HINTS_EN = [
-  '🏰 Forts around Pune',
-  '🏛️ Historic Peshwa Wadas',
-  '🛕 Famous Ganpati Temples',
-  '🚇 Pune Metro & WhatsApp Ticket',
-  '🚌 PMPML ₹70 / ₹150 Day Pass',
-  '🎟️ Free places to visit',
-  '⚡ 1-Day Pune Itinerary',
-];
+/**
+ * Parses markdown bold (**text**), markdown links [Label](url), and raw paths (/places/slug) into React elements.
+ */
+function renderMarkdownContent(text: string) {
+  // Pattern matches [Label](url) OR /places/slug OR **bold**
+  const regex = /(\[[^\]]+\]\([^)]+\)|\/places\/[a-z0-9-]+|\*\*[^*]+\*\*)/gi;
+  const parts = text.split(regex);
 
-const DEFAULT_HINTS_MR = [
-  '🏰 पुण्याभोवतीचे गड-किल्ले',
-  '🏛️ पेशवेकालीन ऐतिहासिक वाडे',
-  '🛕 प्रसिद्ध गणपती मंदिरे',
-  '🚇 पुणे मेट्रो व व्हॉट्सअॅप तिकीट',
-  '🚌 पीएमपीएमएल ₹७० / ₹१५० डेली पास',
-  '🎟️ मोफत प्रेक्षणीय ठिकाणे',
-  '⚡ १ दिवसाची पुणे सहल',
-];
-
-function formatMarkdownLinks(text: string) {
-  // Support bold **text** and /places/slug links
-  const parts = text.split(/(\/places\/[a-z0-9-]+|\*\*[^*]+\*\*)/gi);
   return parts.map((part, i) => {
+    // Markdown link [Label](url)
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, label, url] = linkMatch;
+      const isInternal = url.startsWith('/');
+      return isInternal ? (
+        <Link
+          key={i}
+          href={url}
+          style={{
+            color: 'var(--primary)',
+            textDecoration: 'underline',
+            fontWeight: 700,
+          }}
+        >
+          {label}
+        </Link>
+      ) : (
+        <a
+          key={i}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: 'var(--primary)',
+            textDecoration: 'underline',
+            fontWeight: 700,
+          }}
+        >
+          {label}
+        </a>
+      );
+    }
+
+    // Bare /places/slug link
     if (part.startsWith('/places/')) {
+      const slugName = part.replace('/places/', '').replace(/-/g, ' ');
       return (
         <Link
           key={i}
@@ -100,15 +115,19 @@ function formatMarkdownLinks(text: string) {
             color: 'var(--primary)',
             textDecoration: 'underline',
             fontWeight: 700,
+            textTransform: 'capitalize',
           }}
         >
-          {part}
+          {slugName}
         </Link>
       );
     }
+
+    // Bold text **word**
     if (part.startsWith('**') && part.endsWith('**')) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
     }
+
     return part;
   });
 }
@@ -119,39 +138,22 @@ export default function ChatWidget() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [busy, setBusy] = useState(false);
   const [input, setInput] = useState('');
-  const [showTeaser, setShowTeaser] = useState(false);
-  const [hasDismissedTeaser, setHasDismissedTeaser] = useState(false);
   const [log, setLog] = useState<ChatMessage[]>([]);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [savedLoc, setSavedLoc] = useState<UserSavedLocation | null>(null);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const [locatingGps, setLocatingGps] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<Record<string, 'up' | 'down'>>({});
   const [expandedTransitSteps, setExpandedTransitSteps] = useState<Record<string, boolean>>({});
 
-  // Gemini API key support (stored in localStorage)
-  const [geminiKey, setGeminiKey] = useState<string>('');
-  const [showKeyModal, setShowKeyModal] = useState<boolean>(false);
-  const [keyInput, setKeyInput] = useState<string>('');
-  const [keyNotice, setKeyNotice] = useState<string>('');
-
   const endRef = useRef<HTMLDivElement>(null);
 
-  // Load stored location and Gemini API key
+  // Sync saved user location
   useEffect(() => {
     const loc = getStoredUserLocation();
     if (loc) {
       setSavedLoc(loc);
       setUserLocation({ lat: loc.lat, lng: loc.lng });
-    }
-
-    if (typeof window !== 'undefined') {
-      const storedKey = localStorage.getItem('explore-pune-gemini-key') || '';
-      if (storedKey) {
-        setGeminiKey(storedKey);
-        setKeyInput(storedKey);
-      }
     }
 
     const handleLocChanged = (e: any) => {
@@ -166,7 +168,7 @@ export default function ChatWidget() {
     return () => window.removeEventListener('explore-pune-location-changed', handleLocChanged);
   }, []);
 
-  // Initialize welcome message when language changes
+  // Initialize clean, welcoming greeting
   useEffect(() => {
     if (log.length === 0) {
       setLog([
@@ -174,23 +176,15 @@ export default function ChatWidget() {
           id: 'welcome',
           role: 'bot',
           text: isMr
-            ? 'नमस्कार! 🙏 मी तुमचा एक्सप्लोर पुणे (Explore Pune) डिजिटल मार्गदर्शक आहे. गुगल जेमिनी (Google Gemini AI) द्वारे समर्थित — पुण्यातील गड-किल्ले, वाडे, मंदिरे, सार्वजनिक वाहतूक (मेट्रो व बस), तिकीट दर किंवा सहलीबद्दल काहीही विचारा.'
-            : 'Namaste! 🙏 I am your Explore Pune guide, powered by Google Gemini AI. Ask me anything about forts, wadas, temples, Pune Metro & PMPML buses, tickets, or travel itineraries.',
-          suggestions: isMr ? DEFAULT_HINTS_MR.slice(0, 4) : DEFAULT_HINTS_EN.slice(0, 4),
+            ? 'नमस्कार! 🙏 मी तुमचा Explore Pune AI मार्गदर्शक (पुणे दर्शन मित्र) आहे. पुण्यातील गड-किल्ले, पेशवेकालीन वाडे, प्रसिद्ध मंदिरे, सार्वजनिक वाहतूक (मेट्रो व बस), किंवा सहल नियोजनाबद्दल काहीही विचारा!'
+            : 'Namaste! 🙏 Welcome to Explore Pune AI guide. Ask me about historical forts, Peshwa palaces, temples, Pune Metro & PMPML bus routes, or custom itineraries!',
+          suggestions: isMr
+            ? ['माझ्याजवळील ठिकाणे (GPS)', 'पुणे मेट्रो तिकीट कसे काढावे?', 'सिंहगड किल्ला कसा जावा?', '१ दिवसाची सहल आखा']
+            : ['Places near me (GPS)', 'How to book Pune Metro ticket', 'How to reach Sinhagad Fort', 'Plan 1-day itinerary'],
         },
       ]);
     }
   }, [isMr, log.length]);
-
-  // Animated teaser popup after site load (900ms)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!open && !hasDismissedTeaser) {
-        setShowTeaser(true);
-      }
-    }, 900);
-    return () => clearTimeout(timer);
-  }, [open, hasDismissedTeaser]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -199,30 +193,12 @@ export default function ChatWidget() {
     }
   }, [log, busy, open]);
 
-  const handleSaveGeminiKey = () => {
-    const clean = keyInput.trim();
-    if (clean) {
-      localStorage.setItem('explore-pune-gemini-key', clean);
-      setGeminiKey(clean);
-      setKeyNotice(isMr ? '✓ जेमिनी की यशस्वीरित्या जोडली!' : '✓ Gemini API Key saved successfully!');
-    } else {
-      localStorage.removeItem('explore-pune-gemini-key');
-      setGeminiKey('');
-      setKeyNotice(isMr ? '✓ डीफॉल्ट सर्व्हर मोड सेट केला.' : '✓ Set to default server mode.');
-    }
-    setTimeout(() => {
-      setKeyNotice('');
-      setShowKeyModal(false);
-    }, 1200);
-  };
-
   async function send(text: string, locationOverride?: { lat: number; lng: number }) {
     const message = text.trim();
     if (!message || busy) return;
 
     setInput('');
     setBusy(true);
-    setShowTeaser(false);
 
     const activeLoc =
       locationOverride ||
@@ -232,7 +208,7 @@ export default function ChatWidget() {
     // Append user message
     setLog((prev) => [...prev, { id: `u-${msgId}`, role: 'me', text: message }]);
 
-    // Prepare multi-turn history (up to last 6 turns)
+    // Prepare multi-turn history
     const historyPayload = log
       .filter((m) => m.id !== 'welcome' && m.id !== 'cleared')
       .map((m) => ({
@@ -242,20 +218,14 @@ export default function ChatWidget() {
       .slice(-6);
 
     try {
-      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-      if (geminiKey) {
-        headers['x-gemini-key'] = geminiKey;
-      }
-
       const res = await fetch('/api/v1/chat', {
         method: 'POST',
-        headers,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message,
           history: historyPayload,
           lang,
           userLocation: activeLoc || undefined,
-          apiKey: geminiKey || undefined,
         }),
       });
       const data = await res.json();
@@ -268,15 +238,13 @@ export default function ChatWidget() {
           text:
             data.reply ||
             (isMr
-              ? 'माहिती मिळाली नाही, पुन्हा प्रयत्न करा.'
-              : 'Could not fetch details. Please try again.'),
+              ? 'माहिती मिळाली नाही, पुन्हा विचारून पहा.'
+              : 'Could not fetch details. Please try asking again.'),
           places: data.places,
           transit: data.transit,
           isGemini: data.isGemini,
           model: data.model,
-          suggestions:
-            data.suggestions ||
-            (isMr ? DEFAULT_HINTS_MR.slice(0, 3) : DEFAULT_HINTS_EN.slice(0, 3)),
+          suggestions: data.suggestions,
         },
       ]);
     } catch {
@@ -287,18 +255,12 @@ export default function ChatWidget() {
           role: 'bot',
           text: isMr
             ? 'संपर्क त्रुटी आली. कृपया इंटरनेट तपासा आणि पुन्हा विचारा.'
-            : 'Connection failure. Check your internet connection and try again.',
+            : 'Connection failure. Please check your network and try again.',
         },
       ]);
     } finally {
       setBusy(false);
     }
-  }
-
-  function handleOpen() {
-    setOpen(true);
-    setShowTeaser(false);
-    setHasDismissedTeaser(true);
   }
 
   function handleClear() {
@@ -307,9 +269,11 @@ export default function ChatWidget() {
         id: 'cleared',
         role: 'bot',
         text: isMr
-          ? 'चॅट साफ झाले आहे. आपण नवीन प्रश्न विचारू शकता! 🙏'
+          ? 'चॅट इतिहास साफ झाला आहे. आपण नवीन प्रश्न विचारू शकता! 🙏'
           : 'Chat history cleared. What would you like to explore in Pune?',
-        suggestions: isMr ? DEFAULT_HINTS_MR.slice(0, 4) : DEFAULT_HINTS_EN.slice(0, 4),
+        suggestions: isMr
+          ? ['माझ्याजवळील ठिकाणे (GPS)', 'शनिवार वाडा', 'पुणे मेट्रो मार्ग', '१ दिवसाची सहल']
+          : ['Places near me (GPS)', 'Shaniwar Wada', 'Pune Metro routes', '1-day itinerary'],
       },
     ]);
   }
@@ -322,7 +286,7 @@ export default function ChatWidget() {
     }
   }
 
-  function handleShareLocation() {
+  function handleNearMeClick() {
     if (savedLoc) {
       const queryText = isMr
         ? `${savedLoc.nameMr} परिसरावरून सर्वात जवळची पुणे पर्यटन स्थळे कोणती आहेत?`
@@ -333,84 +297,35 @@ export default function ChatWidget() {
     setIsLocationModalOpen(true);
   }
 
-  const hints = isMr ? DEFAULT_HINTS_MR : DEFAULT_HINTS_EN;
-
   return (
     <>
-      {/* Right-Corner Fixed Container */}
+      {/* Floating Action Button at Bottom Right */}
       <div className="chat-fab-container">
-        {/* Animated Teaser Bubble on Site Open */}
-        {showTeaser && !open && (
-          <div
-            className="chat-teaser-bubble"
-            onClick={handleOpen}
-            role="dialog"
-            aria-label="Pune Guide Greeting"
-          >
-            <span style={{ fontSize: 24, animation: 'pulseGlow 2s infinite' }}>🚩</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>
-                {isMr ? 'नमस्कार! पुणे फिरताय?' : 'Namaskar! Exploring Pune?'}
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                {isMr ? 'मेट्रो, बस व ठिकाणांबद्दल विचारा ⚡' : 'Ask about Metro, buses & spots ⚡'}
-              </div>
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowTeaser(false);
-                setHasDismissedTeaser(true);
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--muted)',
-                cursor: 'pointer',
-                fontSize: 14,
-                padding: '4px',
-              }}
-              aria-label="Dismiss greeting"
-            >
-              ✕
-            </button>
-          </div>
-        )}
-
-        {/* FAB Button at Right Corner */}
         <button
           className="chat-fab"
-          onClick={() => (open ? setOpen(false) : handleOpen())}
+          onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
-          aria-label={
-            open
-              ? isMr
-                ? 'मार्गदर्शक बंद करा'
-                : 'Close Pune Guide'
-              : isMr
-              ? 'पुणे मार्गदर्शक उघडा'
-              : 'Open Pune Guide'
-          }
+          aria-label={open ? (isMr ? 'मार्गदर्शक बंद करा' : 'Close Guide') : (isMr ? 'पुणे AI मार्गदर्शक' : 'Open Pune AI Guide')}
         >
           <div className="chat-fab-pulse" />
           <span style={{ fontSize: 20 }}>🚩</span>
-          <span style={{ fontSize: 14 }}>
+          <span style={{ fontSize: 13.5, fontWeight: 700 }}>
             {open
               ? isMr
-                ? 'मार्गदर्शक बंद करा'
-                : 'Close Guide'
+                ? 'बंद करा'
+                : 'Close'
               : isMr
-              ? 'पुणे मार्गदर्शक AI'
-              : 'Ask Pune Guide'}
+              ? 'पुणे AI मार्गदर्शक'
+              : 'Ask Pune AI'}
           </span>
         </button>
       </div>
 
-      {/* Interactive Chat Panel at Right Corner */}
+      {/* Interactive Chat Panel */}
       {open && (
         <section
           className={`chat-panel ${isExpanded ? 'expanded' : ''}`}
-          aria-label="Pune Assistant"
+          aria-label="Explore Pune AI Assistant"
         >
           {/* Header */}
           <div className="chat-panel-header">
@@ -428,110 +343,62 @@ export default function ChatWidget() {
                   gap: 6,
                 }}
               >
-                <span>{isMr ? 'एक्सप्लोर पुणे AI मार्गदर्शक' : 'Explore Pune AI Guide'}</span>
-                <button
-                  type="button"
-                  onClick={() => setShowKeyModal(true)}
+                <span>{isMr ? 'Explore Pune AI' : 'Explore Pune AI Guide'}</span>
+                <span
                   style={{
-                    background: geminiKey
-                      ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                      : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                    border: 'none',
+                    background: 'rgba(255, 255, 255, 0.25)',
                     color: '#ffffff',
                     fontSize: 9.5,
                     fontWeight: 800,
                     padding: '2px 7px',
-                    borderRadius: '999px',
-                    letterSpacing: '0.04em',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.18)',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 3,
+                    borderRadius: 999,
+                    letterSpacing: '0.03em',
                   }}
-                  title={isMr ? 'गुगल जेमिनी AI सेटिंग्ज' : 'Configure Google Gemini AI Key'}
                 >
-                  <span>✨</span>
-                  <span>{geminiKey ? 'Gemini Active' : 'Gemini AI'}</span>
-                </button>
-              </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  opacity: 0.95,
-                  fontWeight: 400,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  marginTop: 2,
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setIsLocationModalOpen(true)}
-                  style={{
-                    background: 'rgba(255,255,255,0.22)',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    color: '#ffffff',
-                    padding: '1px 8px',
-                    borderRadius: '999px',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                  title={isMr ? 'पुणे परिसर बदला किंवा अचूक GPS वापरा' : 'Change Pune locality or use smart GPS'}
-                >
-                  <span>📍</span>
-                  <span>
-                    {savedLoc
-                      ? isMr
-                        ? savedLoc.nameMr
-                        : savedLoc.nameEn
-                      : userLocation
-                      ? 'GPS'
-                      : isMr
-                      ? 'परिसर निवडा'
-                      : 'Choose Area'}
-                  </span>
-                  <span style={{ opacity: 0.8, fontSize: 9 }}>✏️</span>
-                </button>
-                <span style={{ opacity: 0.85, fontSize: 10.5 }}>
-                  {isMr ? 'मेट्रो, बस व पर्यटन' : 'Transit & Guide'}
+                  ✨ Gemini
                 </span>
               </div>
-            </div>
 
-            {/* Configure Gemini Key */}
-            <button
-              onClick={() => setShowKeyModal(!showKeyModal)}
-              title={isMr ? 'जेमिनी AI की सेट करा' : 'Configure Gemini API Key'}
-              style={{
-                background: geminiKey ? '#059669' : 'rgba(255,255,255,0.2)',
-                border: 0,
-                color: '#fff',
-                padding: '4px 7px',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: 10.5,
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-              }}
-            >
-              <span>🔑</span>
-              <span>{geminiKey ? 'Key ✓' : 'Key'}</span>
-            </button>
+              {/* Locality Badge (Click to Change) */}
+              <button
+                type="button"
+                onClick={() => setIsLocationModalOpen(true)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.35)',
+                  color: '#ffffff',
+                  padding: '1px 8px',
+                  borderRadius: 999,
+                  fontSize: 10,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  marginTop: 3,
+                }}
+                title={isMr ? 'पुणे परिसर बदला किंवा अचूक GPS वापरा' : 'Change locality or use smart GPS'}
+              >
+                <span>📍</span>
+                <span>
+                  {savedLoc
+                    ? isMr
+                      ? savedLoc.nameMr
+                      : savedLoc.nameEn
+                    : isMr
+                    ? 'परिसर निवडा'
+                    : 'Choose Area'}
+                </span>
+                <span style={{ opacity: 0.8, fontSize: 9 }}>✏️</span>
+              </button>
+            </div>
 
             {/* Expand / Minimize Window */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               title={isExpanded ? 'Minimize' : 'Expand'}
               style={{
-                background: 'rgba(255,255,255,0.2)',
+                background: 'rgba(255, 255, 255, 0.2)',
                 border: 0,
                 color: '#fff',
                 width: 26,
@@ -552,7 +419,7 @@ export default function ChatWidget() {
               onClick={handleClear}
               title={isMr ? 'चॅट साफ करा' : 'Clear conversation'}
               style={{
-                background: 'rgba(255,255,255,0.2)',
+                background: 'rgba(255, 255, 255, 0.2)',
                 border: 0,
                 color: '#fff',
                 padding: '4px 8px',
@@ -569,7 +436,7 @@ export default function ChatWidget() {
             <button
               onClick={() => setOpen(false)}
               style={{
-                background: 'rgba(255,255,255,0.25)',
+                background: 'rgba(255, 255, 255, 0.25)',
                 border: 0,
                 color: '#fff',
                 width: 26,
@@ -586,97 +453,12 @@ export default function ChatWidget() {
             </button>
           </div>
 
-          {/* Gemini AI Key Settings Overlay */}
-          {showKeyModal && (
-            <div
-              style={{
-                background: '#f8fafc',
-                borderBottom: '2px solid #10b981',
-                padding: '12px 14px',
-                color: '#0f172a',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <strong style={{ fontSize: 13, color: '#065f46', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span>✨</span> {isMr ? 'गुगल जेमिनी AI की (Google Gemini Key)' : 'Google Gemini AI Key'}
-                </strong>
-                <button
-                  type="button"
-                  onClick={() => setShowKeyModal(false)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#64748b' }}
-                >
-                  ✕
-                </button>
-              </div>
-              <p style={{ fontSize: 11.5, color: '#475569', margin: '0 0 8px', lineHeight: 1.4 }}>
-                {isMr
-                  ? 'अमर्याद व जलद AI संभाषणासाठी तुमची मोफत Google AI Studio API Key येथे पेस्ट करा (ती तुमच्या ब्राउझरमध्ये सुरक्षित सेव्ह राहील).'
-                  : 'For unlimited, instant Gemini conversations, paste your free Google AI Studio API Key below (stored securely in your local browser).'}
-              </p>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <input
-                  type="password"
-                  value={keyInput}
-                  onChange={(e) => setKeyInput(e.target.value)}
-                  placeholder={isMr ? 'उदा. AIzaSy...' : 'Paste AIzaSy... key'}
-                  style={{
-                    flex: 1,
-                    padding: '6px 10px',
-                    borderRadius: 6,
-                    border: '1px solid #cbd5e1',
-                    fontSize: 12,
-                    fontFamily: 'monospace',
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={handleSaveGeminiKey}
-                  className="btn"
-                  style={{ padding: '6px 12px', fontSize: 12 }}
-                >
-                  {isMr ? 'सेव्ह करा' : 'Save'}
-                </button>
-              </div>
-              {keyNotice && (
-                <div style={{ fontSize: 11.5, color: '#059669', fontWeight: 600, marginTop: 6 }}>
-                  {keyNotice}
-                </div>
-              )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8, fontSize: 11 }}>
-                <a
-                  href="https://aistudio.google.com/app/apikey"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#0284c7', fontWeight: 600, textDecoration: 'underline' }}
-                >
-                  🔑 {isMr ? 'मोफत जेमिनी की मिळवा (Google AI Studio)' : 'Get free Gemini API Key →'}
-                </a>
-                {geminiKey && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setKeyInput('');
-                      localStorage.removeItem('explore-pune-gemini-key');
-                      setGeminiKey('');
-                      setKeyNotice(isMr ? 'डीफॉल्ट मोड' : 'Reset to default');
-                      setTimeout(() => setKeyNotice(''), 1500);
-                    }}
-                    style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: 11, cursor: 'pointer' }}
-                  >
-                    {isMr ? 'काढून टाका' : 'Remove Key'}
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Messages Log */}
           <div className="chat-log" aria-live="polite">
             {log.map((m) => (
               <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <div className={`msg ${m.role}`}>
-                  {formatMarkdownLinks(m.text)}
+                  {renderMarkdownContent(m.text)}
                   {m.isGemini && (
                     <div
                       style={{
@@ -693,7 +475,7 @@ export default function ChatWidget() {
                       }}
                     >
                       <span>✨</span>
-                      <span>Google Gemini AI</span>
+                      <span>Explore Pune Gemini AI</span>
                     </div>
                   )}
                 </div>
@@ -710,7 +492,7 @@ export default function ChatWidget() {
                       }}
                     >
                       <strong style={{ color: '#065f46', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span>🚇</span> {isMr ? 'सार्वजनिक वाहतूक मार्ग' : 'Public Transit Option'}
+                        <span>🚇</span> {isMr ? 'सार्वजनिक वाहतूक मार्ग' : 'Public Transit Guide'}
                       </strong>
                       <span
                         style={{
@@ -740,7 +522,7 @@ export default function ChatWidget() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                           <span
                             style={{
-                              background: m.transit.nearestMetro.lineColor,
+                              background: m.transit.nearestMetro.lineColor || '#7c3aed',
                               color: '#fff',
                               fontSize: 10,
                               fontWeight: 700,
@@ -757,14 +539,12 @@ export default function ChatWidget() {
                           </strong>
                         </div>
                         <div style={{ color: 'var(--muted)', fontSize: 11 }}>
-                          🚶 {m.transit.nearestMetro.distanceKm} km (
-                          ~{m.transit.nearestMetro.walkingMinutes}{' '}
-                          {isMr ? 'मिनिटे पायी' : 'min walk'})
+                          🚶 {m.transit.nearestMetro.distanceKm} km (~{m.transit.nearestMetro.walkingMinutes} {isMr ? 'मिनिटे पायी' : 'min walk'})
                         </div>
                       </div>
                     )}
 
-                    {/* Nearest Bus */}
+                    {/* Nearest Bus Stop */}
                     {m.transit.nearestBus && (
                       <div
                         style={{
@@ -795,67 +575,8 @@ export default function ChatWidget() {
                           </strong>
                         </div>
                         <div style={{ color: 'var(--muted)', fontSize: 11 }}>
-                          🚌 {isMr ? 'बस क्रमांक:' : 'Bus Routes:'}{' '}
-                          <strong>{m.transit.nearestBus.routeNumbers.join(', ')}</strong>
+                          🚌 {isMr ? 'बस क्र.:' : 'Routes:'} <strong>{m.transit.nearestBus.routeNumbers.join(', ')}</strong>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Step-by-Step Toggle */}
-                    {((isMr ? m.transit.stepByStepMr : m.transit.stepByStepEn) || []).length > 0 && (
-                      <div style={{ marginTop: 2 }}>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setExpandedTransitSteps((prev) => ({
-                              ...prev,
-                              [m.id]: !prev[m.id],
-                            }))
-                          }
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: '#047857',
-                            fontWeight: 700,
-                            fontSize: 11.5,
-                            cursor: 'pointer',
-                            padding: '2px 0',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 4,
-                          }}
-                        >
-                          <span>{expandedTransitSteps[m.id] ? '▼' : '►'}</span>
-                          <span>
-                            {expandedTransitSteps[m.id]
-                              ? isMr
-                                ? 'तपशीलवार मार्ग लपवा'
-                                : 'Hide directions steps'
-                              : isMr
-                              ? 'पायरी-दर-पायरी मार्ग पहा'
-                              : 'View step-by-step directions'}
-                          </span>
-                        </button>
-
-                        {expandedTransitSteps[m.id] && (
-                          <ol
-                            style={{
-                              margin: '6px 0 0 16px',
-                              padding: 0,
-                              fontSize: 11.5,
-                              color: 'var(--ink)',
-                              lineHeight: 1.5,
-                            }}
-                          >
-                            {(isMr ? m.transit.stepByStepMr : m.transit.stepByStepEn).map(
-                              (st, sIdx) => (
-                                <li key={sIdx} style={{ marginBottom: 4 }}>
-                                  {st}
-                                </li>
-                              )
-                            )}
-                          </ol>
-                        )}
                       </div>
                     )}
 
@@ -894,7 +615,7 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                {/* Interactive Place Cards */}
+                {/* Structured Place Cards */}
                 {m.places && m.places.length > 0 && (
                   <div style={{ display: 'grid', gap: 8, marginTop: 4, maxWidth: '98%' }}>
                     {m.places.map((p) => {
@@ -924,13 +645,7 @@ export default function ChatWidget() {
                               className={`tier ${verified ? 'verified' : ''}`}
                               style={{ fontSize: 9, padding: '2px 6px' }}
                             >
-                              {verified
-                                ? isMr
-                                  ? 'तपासलेले'
-                                  : 'Verified'
-                                : isMr
-                                ? 'सार्वजनिक'
-                                : 'Public'}
+                              {verified ? (isMr ? 'तपासलेले' : 'Verified') : (isMr ? 'सार्वजनिक' : 'Public')}
                             </span>
                           </div>
 
@@ -961,18 +676,12 @@ export default function ChatWidget() {
                               borderTop: '1px solid var(--line)',
                             }}
                           >
-                            <span
-                              style={{ fontSize: 11, fontWeight: 700, color: 'var(--clay)' }}
-                            >
+                            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--clay)' }}>
                               {price
                                 ? price.is_free
-                                  ? isMr
-                                    ? 'मोफत प्रवेश'
-                                    : 'Free Entry'
+                                  ? isMr ? 'मोफत प्रवेश' : 'Free Entry'
                                   : `₹${price.amount}`
-                                : isMr
-                                ? 'प्रवेश शुल्क'
-                                : 'Admission details'}
+                                : isMr ? 'प्रवेश शुल्क' : 'Admission'}
                             </span>
                             <div style={{ display: 'flex', gap: 6 }}>
                               <Link
@@ -994,7 +703,7 @@ export default function ChatWidget() {
                                 className="btn clay"
                                 style={{ padding: '4px 8px', fontSize: 11 }}
                               >
-                                🚌 {isMr ? 'बस/मेट्रो मार्ग' : 'Transit'}
+                                🚌 {isMr ? 'मार्ग' : 'Transit'}
                               </button>
                             </div>
                           </div>
@@ -1050,7 +759,7 @@ export default function ChatWidget() {
                   </div>
                 )}
 
-                {/* Suggestions / Prompt Chips */}
+                {/* Contextual Suggestion Chips */}
                 {m.suggestions && m.suggestions.length > 0 && m.id === log[log.length - 1]?.id && !busy && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
                     {m.suggestions.map((s) => (
@@ -1076,48 +785,11 @@ export default function ChatWidget() {
               </div>
             ))}
 
-            {/* Quick Chips on New Chat */}
-            {log.length === 1 && !busy && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-                <span
-                  style={{
-                    fontSize: 11,
-                    color: 'var(--muted)',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {isMr ? 'लोकप्रिय प्रश्न:' : 'Suggested topics:'}
-                </span>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {hints.map((h) => (
-                    <button
-                      key={h}
-                      type="button"
-                      className="chip"
-                      style={{
-                        fontSize: 12,
-                        padding: '6px 12px',
-                        background: '#ffffff',
-                        border: '1px solid var(--primary-border)',
-                        color: 'var(--primary)',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => send(h)}
-                    >
-                      {h}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Thinking Indicator */}
+            {/* Thinking / Streaming Indicator */}
             {busy && (
               <div className="msg bot" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-                  {isMr ? 'पुणे नोंदी तपासत आहे' : 'Consulting Pune records'}
+                  {isMr ? 'पुणे माहिती तपासत आहे' : 'Consulting Pune records'}
                 </span>
                 <div className="chat-typing-dots">
                   <span />
@@ -1130,88 +802,53 @@ export default function ChatWidget() {
             <div ref={endRef} />
           </div>
 
-          {/* Quick Interactive Actions Bar above input */}
-          <div className="chat-actions-bar">
-            {/* Share Live Location GPS Pill */}
-            <button
-              type="button"
-              className="chat-action-pill"
-              onClick={handleShareLocation}
-              disabled={locatingGps}
-              title="Locate closest spots via live GPS"
-            >
-              <span>{locatingGps ? '⏳' : '📍'}</span>
-              <span>{locatingGps ? t('chat.locating') : t('chat.shareLocation')}</span>
-            </button>
-
-            {/* Metro WhatsApp Ticket Booking */}
-            <button
-              type="button"
-              className="chat-action-pill"
-              onClick={() =>
-                send(
-                  isMr
-                    ? 'पुणे मेट्रोचे मार्ग आणि व्हॉट्सअॅपवरून तिकीट कसे काढावे?'
-                    : 'Tell me about Pune Metro lines and how to buy WhatsApp tickets'
-                )
-              }
-            >
-              <span>🚇</span>
-              <span>{isMr ? 'मेट्रो व तिकीट' : 'Metro Ticket'}</span>
-            </button>
-
-            {/* PMPML Day Pass */}
-            <button
-              type="button"
-              className="chat-action-pill"
-              onClick={() =>
-                send(
-                  isMr
-                    ? 'पीएमपीएमएल ₹७० आणि ₹१५० डेली पास व बस मार्गांची माहिती सांगा'
-                    : 'Tell me about the PMPML ₹70 & ₹150 unlimited daily pass and bus routes'
-                )
-              }
-            >
-              <span>🚌</span>
-              <span>{isMr ? '₹७०/₹१५० बस पास' : '₹70/₹150 Pass'}</span>
-            </button>
-
-            {/* Forts Trek */}
-            <button
-              type="button"
-              className="chat-action-pill"
-              onClick={() =>
-                send(isMr ? 'पुण्यातील किल्ले व ट्रेकिंग मार्ग' : 'Top forts and trekking routes in Pune')
-              }
-            >
-              <span>🏰</span>
-              <span>{isMr ? 'किल्ले' : 'Forts'}</span>
-            </button>
-          </div>
-
-          {/* Input Form */}
+          {/* Clean Input Form with Location Action */}
           <form
             className="chat-form"
             onSubmit={(e) => {
               e.preventDefault();
               send(input);
             }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
           >
+            <button
+              type="button"
+              onClick={handleNearMeClick}
+              style={{
+                background: '#ecfdf5',
+                border: '1px solid #10b981',
+                color: '#065f46',
+                borderRadius: 'var(--radius-sm)',
+                padding: '8px 10px',
+                fontSize: 14,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+              title={isMr ? 'माझ्याजवळील ठिकाणे (GPS)' : 'Find places near my location'}
+            >
+              📍
+            </button>
+
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              maxLength={500}
+              maxLength={1000}
               placeholder={
                 isMr
-                  ? 'ठिकाणाबद्दल विचारा (उदा. शनिवार वाड्याची वेळ, मेट्रो, बस)...'
-                  : 'Ask about places, metro, buses, or entry fees...'
+                  ? 'पुण्यातील ठिकाण, मेट्रो, बस किंवा सहलीबद्दल विचारा...'
+                  : 'Ask about Pune places, metro, buses, or itineraries...'
               }
               aria-label={isMr ? 'तुमचा प्रश्न' : 'Your question'}
+              style={{ flex: 1 }}
             />
+
             <button
               className="btn"
               disabled={busy || !input.trim()}
-              style={{ padding: '8px 16px', fontSize: 13 }}
+              style={{ padding: '8px 16px', fontSize: 13, flexShrink: 0 }}
             >
               {isMr ? 'विचारा' : 'Send'}
             </button>

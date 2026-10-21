@@ -34,7 +34,7 @@ export default function PlacePhotoSlideshowModal({
   const [photos, setPhotos] = useState<PlacePhotoItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [loading, setLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const touchStartXRef = useRef<number | null>(null);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -43,7 +43,7 @@ export default function PlacePhotoSlideshowModal({
     if (!isOpen || !place) return;
 
     setCurrentIndex(initialIndex);
-    setIsPlaying(false);
+    setIsPlaying(true);
 
     // Initial fallback photo while fetching gallery
     const basePhoto: PlacePhotoItem = {
@@ -61,6 +61,7 @@ export default function PlacePhotoSlideshowModal({
         if (!isMounted) return;
         if (data.photos && data.photos.length > 0) {
           setPhotos(data.photos);
+          setIsPlaying(true);
         }
       })
       .catch((err) => {
@@ -112,12 +113,12 @@ export default function PlacePhotoSlideshowModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose, handleNext, handlePrev]);
 
-  // Auto-play loop
+  // Auto-play loop (advances automatically every 3 seconds)
   useEffect(() => {
     if (isPlaying && photos.length > 1) {
       autoPlayTimerRef.current = setInterval(() => {
         handleNext();
-      }, 3500);
+      }, 3000);
     } else if (autoPlayTimerRef.current) {
       clearInterval(autoPlayTimerRef.current);
       autoPlayTimerRef.current = null;
@@ -287,6 +288,38 @@ export default function PlacePhotoSlideshowModal({
           </button>
         </div>
       </div>
+
+      {/* Animated Auto-play Progress Bar */}
+      {isPlaying && totalPhotos > 1 && (
+        <div
+          style={{
+            height: 3,
+            width: '100%',
+            background: 'rgba(255, 255, 255, 0.15)',
+            borderRadius: 2,
+            overflow: 'hidden',
+            margin: '4px 0 2px',
+          }}
+        >
+          <div
+            key={`${currentIndex}-${isPlaying}`}
+            style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, #f97316 0%, #10b981 100%)',
+              width: '100%',
+              animation: 'photoSlideProgress 3000ms linear forwards',
+            }}
+          />
+        </div>
+      )}
+
+      {/* Keyframe animation style */}
+      <style>{`
+        @keyframes photoSlideProgress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
 
       {/* 2. MAIN PHOTO STAGE & ARROWS */}
       <div
