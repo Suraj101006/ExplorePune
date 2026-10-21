@@ -1013,7 +1013,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 className="btn outline"
                 style={{ padding: '4px 12px', fontSize: 11.5 }}
               >
-                🗺️ {isMr ? 'गुगल मॅप्सवर थेट बस/मेट्रो मार्ग ↗' : 'Transit on Google Maps ↗'}
+                🗺️ {isMr ? 'गुगल मॅप्सवर थेट बस/मेट्रो मार्ग ↗' : 'Google Maps Live Bus & Metro ↗'}
               </a>
             </div>
           </div>

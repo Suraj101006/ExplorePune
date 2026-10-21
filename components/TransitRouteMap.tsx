@@ -76,8 +76,8 @@ export default function TransitRouteMap({
           <span style={{ background: '#059669', color: '#ffffff', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
             🎫 ₹{transitInfo.estimatedCostInr}
           </span>
-          <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 4, fontSize: 11, fontWeight: 700 }}>
-            🗺️ Google Maps
+          <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: 6, fontSize: 11, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span>🚍 PMPML & 🚇 Metro</span>
           </span>
         </div>
       </div>
