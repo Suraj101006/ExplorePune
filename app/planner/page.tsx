@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 // Image import removed — not used in this file
 import { useLanguage } from '@/lib/LanguageContext';
+import { useAuth } from '@/lib/useAuth';
 import { downloadItineraryPdf } from '@/lib/generateItineraryPdf';
 import { speakPlaceName } from '@/lib/speech';
 import {
@@ -44,6 +45,7 @@ const INTERESTS: Array<{ key: string; en: string; mr: string; icon: string }> = 
 
 export default function PlannerPage() {
   const { isMr, t } = useLanguage();
+  const { user } = useAuth();
   const [duration, setDuration] = useState(180);
   const [mode, setMode] = useState('public_transit');
   const [budget, setBudget] = useState('500');
@@ -57,6 +59,20 @@ export default function PlannerPage() {
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [pdfSuccess, setPdfSuccess] = useState('');
+
+  // Email Itinerary / PDF Dispatch State
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [emailAddress, setEmailAddress] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSuccess, setEmailSuccess] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  // Pre-fill email when authenticated
+  useEffect(() => {
+    if (user?.email && !emailAddress) {
+      setEmailAddress(user.email);
+    }
+  }, [user, emailAddress]);
 
   // Active / Guided Trip State (Persisted for later milestones & history)
   const [savedOngoingTrip, setSavedOngoingTrip] = useState<ActiveTrip | null>(null);
@@ -414,6 +430,103 @@ export default function PlannerPage() {
       console.error('Error generating PDF:', err);
     } finally {
       setTimeout(() => setDownloadingPdf(false), 600);
+    }
+  };
+
+  const handleSendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanEmail = emailAddress.trim();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      setEmailError(isMr ? 'कृपया वैध ईमेल पत्ता प्रविष्ट करा.' : 'Please enter a valid email address.');
+      return;
+    }
+
+    const planToExport = isGuidedMode && activeGuidedTrip ? activeGuidedTrip : activePlan;
+    if (!planToExport) return;
+
+    setSendingEmail(true);
+    setEmailError('');
+    setEmailSuccess('');
+
+    try {
+      const planTitle = isMr
+        ? planToExport.titleMr || planToExport.titleEn || 'पुणे सहल आराखडा'
+        : planToExport.titleEn || 'Explore Pune Itinerary';
+      const planTheme = isMr
+        ? planToExport.themeMr || planToExport.themeEn || ''
+        : planToExport.themeEn || '';
+
+      const startLabel =
+        start === 'my-live-gps'
+          ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
+          : STARTS[start] && isMr ? STARTS[start].mr : start;
+
+      const itineraryData = {
+        planTitle,
+        planTheme,
+        badge: planToExport.badge || '🗺️',
+        startLocationName: startLabel,
+        startTime: time,
+        travelMode: mode,
+        totalDurationMinutes: planToExport.totalDurationMinutes || 0,
+        bufferMinutes: (planToExport as any).bufferMinutes || 0,
+        estimatedCost: planToExport.knownCost || 0,
+        isMr,
+        stops: (planToExport.stops || []).map((s: any, idx: number) => ({
+          index: idx + 1,
+          name: isMr ? s.placeName_mr || s.placeName : s.placeName,
+          nameMr: s.placeName_mr,
+          arrivalTime: s.arrivalTime,
+          departureTime: s.departureTime,
+          visitMinutes: s.visitMinutes,
+          travelMinutes: s.travelMinutes,
+          entryCost: s.entryCost,
+          transitSummary: isMr ? s.transitDetails?.summaryMr : s.transitDetails?.summaryEn,
+          transitStepByStep: isMr ? s.transitDetails?.stepByStepMr : s.transitDetails?.stepByStepEn,
+          nearestMetro: isMr
+            ? s.transitDetails?.nearestMetro?.stationNameMr
+            : s.transitDetails?.nearestMetro?.stationNameEn,
+          nearestBus: isMr
+            ? s.transitDetails?.nearestBus?.stopNameMr
+            : s.transitDetails?.nearestBus?.stopNameEn,
+          ticketInfo: isMr ? s.transitDetails?.ticketInfoMr : s.transitDetails?.ticketInfoEn,
+        })),
+        warnings: (planToExport as any).warnings || [],
+      };
+
+      const res = await fetch('/api/v1/itineraries/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: cleanEmail,
+          userName: user?.displayName || cleanEmail.split('@')[0],
+          lang: isMr ? 'mr' : 'en',
+          itineraryData,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error?.message || 'Failed to dispatch email');
+      }
+
+      setEmailSuccess(
+        data.message ||
+          (isMr
+            ? `✓ सानुकूल आराखडा आणि PDF ${cleanEmail} वर पाठवले!`
+            : `✓ Itinerary and PDF successfully sent to ${cleanEmail}!`)
+      );
+      setTimeout(() => {
+        setEmailModalOpen(false);
+        setEmailSuccess('');
+      }, 4000);
+    } catch (err: any) {
+      setEmailError(
+        err?.message ||
+          (isMr ? 'ईमेल पाठवता आला नाही. कृपया पुन्हा प्रयत्न करा.' : 'Could not send email. Please try again.')
+      );
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -1525,12 +1638,108 @@ export default function PlannerPage() {
                   <span>{isMr ? 'WhatsApp वर पाठवा' : 'Share on WhatsApp'}</span>
                 </a>
 
+                {/* Email Itinerary & PDF Button */}
+                <button
+                  type="button"
+                  onClick={() => setEmailModalOpen(!emailModalOpen)}
+                  className="btn"
+                  style={{
+                    background: '#047857',
+                    color: '#ffffff',
+                    padding: '8px 18px',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                  }}
+                  title={isMr ? 'हा सहल आराखडा आणि PDF ईमेलवर मिळवा' : 'Receive this itinerary and PDF via email'}
+                >
+                  <span>📧</span>
+                  <span>{isMr ? 'ईमेलवर PDF मिळवा' : 'Email Me My Itinerary (PDF)'}</span>
+                </button>
+
                 {pdfSuccess && (
                   <span style={{ fontSize: 12.5, fontWeight: 700, color: '#047857' }}>
                     {pdfSuccess}
                   </span>
                 )}
               </div>
+
+              {/* Interactive Email Itinerary & PDF Dispatch Box */}
+              {emailModalOpen && (
+                <div
+                  style={{
+                    background: 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)',
+                    border: '1.5px solid #86efac',
+                    borderRadius: 12,
+                    padding: '16px 20px',
+                    margin: '12px 0 16px',
+                    boxShadow: '0 4px 14px rgba(4, 120, 87, 0.08)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <strong style={{ fontSize: 14, color: '#065f46', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span>📧</span> {isMr ? 'हा सहल आराखडा व PDF ईमेलवर मिळवा' : 'Receive Your Itinerary & PDF via Email'}
+                    </strong>
+                    <button
+                      type="button"
+                      onClick={() => setEmailModalOpen(false)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#64748b' }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <p style={{ fontSize: 12.5, color: '#334155', margin: '0 0 12px', lineHeight: 1.5 }}>
+                    {isMr
+                      ? 'खाली तुमचा ईमेल पत्ता प्रविष्ट करा. एक्सप्लोर पुणे टीम (suraj10.pp@gmail.com) कडून तुम्हाला संपूर्ण सहल आराखडा आणि उच्च-गुणवत्तेची प्रिंट करण्यायोग्य PDF फाईल ईमेलवर पाठवली जाईल.'
+                      : 'Enter your email below. The ExplorePune Team (suraj10.pp@gmail.com) will email you this complete itinerary with your high-resolution printable PDF attached for offline travel.'}
+                  </p>
+                  <form onSubmit={handleSendEmail} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <input
+                      type="email"
+                      required
+                      value={emailAddress}
+                      onChange={(e) => setEmailAddress(e.target.value)}
+                      placeholder={isMr ? 'तुमचा ईमेल पत्ता (उदा. user@example.com)' : 'Your email address (e.g. user@gmail.com)'}
+                      style={{
+                        flex: '1 1 240px',
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                        border: '1px solid #cbd5e1',
+                        fontSize: 13,
+                        background: '#ffffff',
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      disabled={sendingEmail}
+                      className="btn"
+                      style={{
+                        background: '#047857',
+                        color: '#ffffff',
+                        padding: '8px 18px',
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {sendingEmail ? (isMr ? 'पाठवत आहे…' : 'Sending…') : (isMr ? 'ईमेल पाठवा' : 'Send Itinerary')}
+                    </button>
+                  </form>
+                  {emailSuccess && (
+                    <div style={{ marginTop: 10, fontSize: 13, fontWeight: 700, color: '#047857' }}>
+                      {emailSuccess}
+                    </div>
+                  )}
+                  {emailError && (
+                    <div style={{ marginTop: 10, fontSize: 13, fontWeight: 700, color: '#dc2626' }}>
+                      {emailError}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {activePlan.warnings?.length > 0 && (
                 <div className="note" style={{ fontSize: 13 }}>

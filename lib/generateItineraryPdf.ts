@@ -8,7 +8,7 @@ export interface ItineraryPdfStop {
   departureTime?: string;
   visitMinutes: number;
   travelMinutes: number;
-  entryCost: number | null;
+  entryCost?: number | null;
   transitSummary?: string;
   transitStepByStep?: string[];
   nearestMetro?: string;
