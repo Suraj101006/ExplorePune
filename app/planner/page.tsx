@@ -391,9 +391,18 @@ export default function PlannerPage() {
           ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
           : STARTS[start] && isMr ? STARTS[start].mr : start;
 
+      const profileName =
+        user?.displayName ||
+        (user?.email ? user.email.split('@')[0] : '') ||
+        (isMr ? 'पुणे पर्यटक' : 'Pune Explorer');
+
       downloadItineraryPdf({
+        userName: profileName,
+        userEmail: user?.email || undefined,
         planTitle,
+        planTitleMr: planToExport.titleMr,
         planTheme,
+        planThemeMr: planToExport.themeMr,
         badge: planToExport.badge || '🗺️',
         startLocationName: startLabel,
         startTime: time,
@@ -411,15 +420,15 @@ export default function PlannerPage() {
           visitMinutes: s.visitMinutes,
           travelMinutes: s.travelMinutes,
           entryCost: s.entryCost,
-          transitSummary: isMr ? s.transitDetails?.summaryMr : s.transitDetails?.summaryEn,
-          transitStepByStep: isMr ? s.transitDetails?.stepByStepMr : s.transitDetails?.stepByStepEn,
+          transitSummary: isMr ? s.transitDetails?.summaryMr || s.transitDetails?.summaryEn : s.transitDetails?.summaryEn,
+          transitStepByStep: isMr ? s.transitDetails?.stepByStepMr || s.transitDetails?.stepByStepEn : s.transitDetails?.stepByStepEn,
           nearestMetro: isMr
-            ? s.transitDetails?.nearestMetro?.stationNameMr
+            ? s.transitDetails?.nearestMetro?.stationNameMr || s.transitDetails?.nearestMetro?.stationNameEn
             : s.transitDetails?.nearestMetro?.stationNameEn,
           nearestBus: isMr
-            ? s.transitDetails?.nearestBus?.stopNameMr
+            ? s.transitDetails?.nearestBus?.stopNameMr || s.transitDetails?.nearestBus?.stopNameEn
             : s.transitDetails?.nearestBus?.stopNameEn,
-          ticketInfo: isMr ? s.transitDetails?.ticketInfoMr : s.transitDetails?.ticketInfoEn,
+          ticketInfo: isMr ? s.transitDetails?.ticketInfoMr || s.transitDetails?.ticketInfoEn : s.transitDetails?.ticketInfoEn,
         })),
         warnings: (planToExport as any).warnings || [],
       });
@@ -461,9 +470,17 @@ export default function PlannerPage() {
           ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
           : STARTS[start] && isMr ? STARTS[start].mr : start;
 
+      const profileName =
+        user?.displayName ||
+        cleanEmail.split('@')[0] ||
+        (isMr ? 'पुणे पर्यटक' : 'Pune Explorer');
+
       const itineraryData = {
+        userName: profileName,
         planTitle,
+        planTitleMr: planToExport.titleMr,
         planTheme,
+        planThemeMr: planToExport.themeMr,
         badge: planToExport.badge || '🗺️',
         startLocationName: startLabel,
         startTime: time,
@@ -481,15 +498,15 @@ export default function PlannerPage() {
           visitMinutes: s.visitMinutes,
           travelMinutes: s.travelMinutes,
           entryCost: s.entryCost,
-          transitSummary: isMr ? s.transitDetails?.summaryMr : s.transitDetails?.summaryEn,
-          transitStepByStep: isMr ? s.transitDetails?.stepByStepMr : s.transitDetails?.stepByStepEn,
+          transitSummary: isMr ? s.transitDetails?.summaryMr || s.transitDetails?.summaryEn : s.transitDetails?.summaryEn,
+          transitStepByStep: isMr ? s.transitDetails?.stepByStepMr || s.transitDetails?.stepByStepEn : s.transitDetails?.stepByStepEn,
           nearestMetro: isMr
-            ? s.transitDetails?.nearestMetro?.stationNameMr
+            ? s.transitDetails?.nearestMetro?.stationNameMr || s.transitDetails?.nearestMetro?.stationNameEn
             : s.transitDetails?.nearestMetro?.stationNameEn,
           nearestBus: isMr
-            ? s.transitDetails?.nearestBus?.stopNameMr
+            ? s.transitDetails?.nearestBus?.stopNameMr || s.transitDetails?.nearestBus?.stopNameEn
             : s.transitDetails?.nearestBus?.stopNameEn,
-          ticketInfo: isMr ? s.transitDetails?.ticketInfoMr : s.transitDetails?.ticketInfoEn,
+          ticketInfo: isMr ? s.transitDetails?.ticketInfoMr || s.transitDetails?.ticketInfoEn : s.transitDetails?.ticketInfoEn,
         })),
         warnings: (planToExport as any).warnings || [],
       };
@@ -499,7 +516,7 @@ export default function PlannerPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: cleanEmail,
-          userName: user?.displayName || cleanEmail.split('@')[0],
+          userName: profileName,
           lang: isMr ? 'mr' : 'en',
           itineraryData,
         }),

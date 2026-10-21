@@ -8,6 +8,7 @@ const Schema = z.object({
   userName: z.string().max(100).optional(),
   lang: z.enum(['en', 'mr']).default('en').optional(),
   itineraryData: z.object({
+    userName: z.string().optional(),
     planTitle: z.string(),
     planTitleMr: z.string().optional(),
     planTheme: z.string().optional().default(''),
@@ -72,12 +73,14 @@ export async function POST(req: NextRequest) {
 
     const { email, userName, lang, itineraryData } = parsed.data;
     const isMr = lang === 'mr' || Boolean(itineraryData.isMr);
+    const resolvedUserName = userName?.trim() || itineraryData.userName?.trim() || email.split('@')[0];
 
     const emailResult = await sendItineraryEmail({
       toEmail: email.trim(),
-      userName: userName?.trim() || email.split('@')[0],
+      userName: resolvedUserName,
       itineraryData: {
         ...itineraryData,
+        userName: resolvedUserName,
         stops: itineraryData.stops.map((s) => ({
           ...s,
           entryCost: s.entryCost ?? null,
