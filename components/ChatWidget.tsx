@@ -282,7 +282,7 @@ export default function ChatWidget() {
             : 'Unable to detect location. Please check GPS settings.'
         );
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
     );
   }
 

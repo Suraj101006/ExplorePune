@@ -154,7 +154,7 @@ export default function HomeExplorer({
             : 'Unable to detect location.'
         );
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
     );
   };
 

@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import PlaceActions from '@/components/PlaceActions';
@@ -13,10 +13,12 @@ import {
   getPublicTransitRoute,
   TransitRouteInfo,
   PUNE_COMMUTE_HUBS,
+  calculateDistanceKm,
 } from '@/lib/publicTransit';
 import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
+import { getPlaceVisitorGuidelines } from '@/lib/visitorGuidelines';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -78,10 +80,13 @@ export default function PlaceDetailClient({ place }: { place: any }) {
     isMr ? 'मध्यवर्ती पुणे (मनपा/शनिवार वाडा)' : 'Central Pune (PMC Bhavan)'
   );
   const [gpsError, setGpsError] = useState('');
+  const [gpsNotice, setGpsNotice] = useState('');
+  const [activeGuidelineTab, setActiveGuidelineTab] = useState<'commute' | 'timing' | 'rules'>('commute');
   const [speaking, setSpeaking] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
 
+  const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
 
   useEffect(() => {
@@ -138,7 +143,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const handleCalcGps = () => {
     if (typeof window === 'undefined' || !navigator.geolocation) {
-      alert(
+      setGpsError(
         isMr
           ? 'आपल्या ब्राउझरमध्ये GPS सेवा उपलब्ध नाही.'
           : 'Geolocation is not supported by your browser.'
@@ -147,15 +152,77 @@ export default function PlaceDetailClient({ place }: { place: any }) {
     }
     setGpsLoading(true);
     setGpsError('');
+    setGpsNotice('');
+
+    // Fast, non-hanging geolocation configuration
+    const geoOptions: PositionOptions = {
+      enableHighAccuracy: false,
+      timeout: 8000,
+      maximumAge: 300000,
+    };
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        const userLat = pos.coords.latitude;
+        const userLng = pos.coords.longitude;
+        const coords = { lat: userLat, lng: userLng };
         setUserCoords(coords);
         setSelectedHubId('gps');
-        const gpsLabel = isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS Location';
-        setOriginName(gpsLabel);
-        const computed = getPublicTransitRoute(coords.lat, coords.lng, place, gpsLabel);
-        setLiveTransit(computed);
+
+        // Check geographic proximity to Pune center (18.5204, 73.8567)
+        const distFromPune = calculateDistanceKm(userLat, userLng, 18.5204, 73.8567);
+        const distToPlace =
+          place.latitude && place.longitude
+            ? calculateDistanceKm(userLat, userLng, place.latitude, place.longitude)
+            : distFromPune;
+
+        if (distFromPune > 45) {
+          // Coordinates are outside Pune Metropolitan Region (e.g. testing from Mumbai/desktop IP)
+          // Intelligently route from closest main arrival gateway to avoid broken long-distance walking steps
+          const gatewayHub =
+            PUNE_COMMUTE_HUBS.find((h) => h.id === 'pune-station') || PUNE_COMMUTE_HUBS[0];
+          const gatewayLabel = isMr ? 'पुणे स्टेशन (मुख्य प्रवेशद्वार)' : 'Pune Station (Gateway)';
+          const notice = isMr
+            ? `📍 तुमचे थेट स्थान पुण्याच्या बाहेर (${Math.round(distFromPune)} किमी) आढळले. ${primaryName} येथे जाण्यासाठी पुण्याच्या मुख्य प्रवेशद्वारावरून (पुणे स्टेशन) थेट मेट्रो व बस मार्ग तयार केला आहे.`
+            : `📍 Location detected ${Math.round(distFromPune)} km outside Pune. For visiting ${primaryName}, transit is routed from Pune's central gateway (${gatewayHub.nameEn}), plus highway travel options!`;
+          setGpsNotice(notice);
+          setOriginName(gatewayLabel);
+
+          const computed = getPublicTransitRoute(
+            gatewayHub.latitude,
+            gatewayHub.longitude,
+            place,
+            gatewayLabel
+          );
+          setLiveTransit(computed);
+        } else {
+          // User is inside Pune! Identify closest neighborhood
+          let closestHub = PUNE_COMMUTE_HUBS[0];
+          let minHubDist = 999;
+          for (const hub of PUNE_COMMUTE_HUBS) {
+            const d = calculateDistanceKm(userLat, userLng, hub.latitude, hub.longitude);
+            if (d < minHubDist) {
+              minHubDist = d;
+              closestHub = hub;
+            }
+          }
+
+          const localityName = isMr
+            ? closestHub.nameMr.split('/')[0]
+            : closestHub.nameEn.split('/')[0];
+          const gpsLabel = isMr
+            ? `माझे GPS स्थान (जवळ ${localityName} • ${distToPlace.toFixed(1)} किमी)`
+            : `My Live GPS (near ${localityName} • ${distToPlace.toFixed(1)} km away)`;
+          setOriginName(gpsLabel);
+          setGpsNotice(
+            isMr
+              ? `📍 थेट GPS सक्रिय: तुम्ही ${primaryName} पासून अंदाजे ${distToPlace.toFixed(1)} किमी अंतरावर आहात.`
+              : `📍 Live GPS Active: You are ~${distToPlace.toFixed(1)} km from ${primaryName}!`
+          );
+
+          const computed = getPublicTransitRoute(userLat, userLng, place, gpsLabel);
+          setLiveTransit(computed);
+        }
         setGpsLoading(false);
       },
       (err) => {
@@ -163,20 +230,21 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         setGpsError(
           err.code === err.PERMISSION_DENIED
             ? isMr
-              ? 'कृपया ब्राउझरमध्ये लोकेशन परवानगी द्या.'
-              : 'Location permission was denied.'
+              ? 'कृपया ब्राउझरमध्ये लोकेशन परवानगी द्या (Allow Location).'
+              : 'Location permission was denied by browser.'
             : isMr
-            ? 'स्थान शोधता आले नाही.'
-            : 'Unable to detect location.'
+            ? 'स्थान शोधता आले नाही. कृपया खालील यादीतून तुमचा भाग निवडा.'
+            : 'Could not acquire precise GPS. Please pick your starting locality from the list below.'
         );
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      geoOptions
     );
   };
 
   const handleSelectHub = (hubId: string) => {
     setSelectedHubId(hubId);
     setGpsError('');
+    setGpsNotice('');
     if (hubId === 'gps') {
       handleCalcGps();
       return;
@@ -570,6 +638,214 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           </section>
         </div>
 
+        {/* Comprehensive Visitor Guidelines & How to Visit */}
+        <section
+          className="panel"
+          style={{
+            marginBottom: 24,
+            border: '1.5px solid #fed7aa',
+            background: 'linear-gradient(to bottom, #fffbeb 0%, #ffffff 120px)',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 12,
+              borderBottom: '1px solid var(--line)',
+              paddingBottom: 12,
+              marginBottom: 16,
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: '20px',
+                  margin: 0,
+                  color: '#9a3412',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <span>📋</span>
+                <span>
+                  {isMr
+                    ? `${primaryName} — भेट मार्गदर्शक व नियम`
+                    : `Guidelines: How to Visit ${primaryName}`}
+                </span>
+              </h2>
+              <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--ink-secondary)' }}>
+                {isMr ? guidelines.summaryMr : guidelines.summaryEn}
+              </p>
+            </div>
+
+            {guidelines.difficultyOrTypeEn && (
+              <span
+                style={{
+                  background: '#ffedd5',
+                  color: '#c2410c',
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  borderRadius: 999,
+                  border: '1px solid #fdba74',
+                }}
+              >
+                {isMr ? guidelines.difficultyOrTypeMr : guidelines.difficultyOrTypeEn}
+              </span>
+            )}
+          </div>
+
+          {/* Guideline Navigation Tabs */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 8,
+              marginBottom: 16,
+              flexWrap: 'wrap',
+              borderBottom: '1px solid #e2e8f0',
+              paddingBottom: 8,
+            }}
+          >
+            {[
+              { id: 'commute', labelEn: '🧭 How to Reach (Commute)', labelMr: '🧭 कसे पोहोचावे' },
+              { id: 'timing', labelEn: '🎟️ Timing & Tickets', labelMr: '🎟️ वेळ व तिकीट' },
+              { id: 'rules', labelEn: "📋 Rules & Do's / Don'ts", labelMr: '📋 नियम व आचारसंहिता' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveGuidelineTab(tab.id as any)}
+                style={{
+                  border: 'none',
+                  background: activeGuidelineTab === tab.id ? '#ea580c' : 'rgba(0,0,0,0.05)',
+                  color: activeGuidelineTab === tab.id ? '#ffffff' : '#475569',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {isMr ? tab.labelMr : tab.labelEn}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content Display */}
+          <div style={{ display: 'grid', gap: 12 }}>
+            {guidelines.sections
+              .filter((_, idx) => {
+                if (activeGuidelineTab === 'commute') return idx === 0;
+                if (activeGuidelineTab === 'timing') return idx === 1;
+                return idx === 2;
+              })
+              .map((section, sIdx) => (
+                <div key={sIdx} style={{ display: 'grid', gap: 10 }}>
+                  {section.items.map((item, itemIdx) => (
+                    <div
+                      key={itemIdx}
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #f1f5f9',
+                        borderRadius: 10,
+                        padding: '12px 14px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: 8,
+                          marginBottom: 4,
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        <strong style={{ fontSize: 13.5, color: '#1e293b' }}>
+                          {isMr ? item.labelMr : item.labelEn}
+                        </strong>
+                        {item.tag && (
+                          <span
+                            style={{
+                              background: '#fef3c7',
+                              color: '#92400e',
+                              fontSize: 10,
+                              fontWeight: 700,
+                              padding: '1px 6px',
+                              borderRadius: 4,
+                            }}
+                          >
+                            {item.tag}
+                          </span>
+                        )}
+                      </div>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: 13,
+                          color: '#475569',
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        {isMr ? item.descMr : item.descEn}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+          </div>
+
+          {/* Local Pro-Tips Callout */}
+          {guidelines.proTipsEn.length > 0 && (
+            <div
+              style={{
+                marginTop: 18,
+                background: '#fff7ed',
+                border: '1px solid #fed7aa',
+                borderRadius: 10,
+                padding: '12px 16px',
+              }}
+            >
+              <strong style={{ fontSize: 13, color: '#c2410c', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <span>💡</span> {isMr ? 'स्थानिक तज्ज्ञ सूचना (Local Pro-Tips):' : 'Local Expert Pro-Tips:'}
+              </strong>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: '#7c2d12', lineHeight: 1.6 }}>
+                {(isMr ? guidelines.proTipsMr : guidelines.proTipsEn).map((tip, tIdx) => (
+                  <li key={tIdx} style={{ marginBottom: 2 }}>{tip}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Local Authentic Food Recommendations */}
+          {guidelines.nearbyCulinaryEn.length > 0 && (
+            <div
+              style={{
+                marginTop: 12,
+                background: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderRadius: 10,
+                padding: '12px 16px',
+              }}
+            >
+              <strong style={{ fontSize: 13, color: '#15803d', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <span>🍲</span> {isMr ? 'परिसरातील प्रसिद्ध खाद्यसंस्कृती:' : 'Authentic Local Food to Try Nearby:'}
+              </strong>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: '#166534', lineHeight: 1.6 }}>
+                {(isMr ? guidelines.nearbyCulinaryMr : guidelines.nearbyCulinaryEn).map((dish, dIdx) => (
+                  <li key={dIdx} style={{ marginBottom: 2 }}>{dish}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+
         {/* Public Transit & Directions Section */}
         <section
           className="panel"
@@ -678,6 +954,50 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 </span>
               </button>
             </div>
+
+            {/* GPS Live Notice Banner */}
+            {gpsNotice && (
+              <div
+                style={{
+                  marginBottom: 12,
+                  padding: '10px 14px',
+                  background: '#ecfdf5',
+                  border: '1px solid #10b981',
+                  borderRadius: 8,
+                  fontSize: 12.5,
+                  color: '#065f46',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <span style={{ fontSize: 16 }}>📍</span>
+                <span>{gpsNotice}</span>
+              </div>
+            )}
+
+            {/* GPS Error Banner */}
+            {gpsError && (
+              <div
+                style={{
+                  marginBottom: 12,
+                  padding: '10px 14px',
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: 8,
+                  fontSize: 12.5,
+                  color: '#b91c1c',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <span style={{ fontSize: 16 }}>⚠️</span>
+                <span>{gpsError}</span>
+              </div>
+            )}
 
             {/* Quick Hub Pills */}
             <div
