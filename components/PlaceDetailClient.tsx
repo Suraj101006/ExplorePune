@@ -932,21 +932,130 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           {guidelines.nearbyCulinaryEn.length > 0 && (
             <div
               style={{
-                marginTop: 12,
-                background: '#f0fdf4',
-                border: '1px solid #bbf7d0',
-                borderRadius: 10,
-                padding: '12px 16px',
+                marginTop: 18,
+                background: 'linear-gradient(to bottom, #fffbf5, #ffffff)',
+                border: '1.5px solid #fdba74',
+                borderRadius: 14,
+                padding: '16px 20px',
+                boxShadow: '0 2px 8px rgba(234, 88, 12, 0.05)',
               }}
             >
-              <strong style={{ fontSize: 13, color: '#15803d', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                <span>🍲</span> {isMr ? 'परिसरातील प्रसिद्ध खाद्यसंस्कृती:' : 'Authentic Local Food to Try Nearby:'}
-              </strong>
-              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: '#166534', lineHeight: 1.6 }}>
-                {(isMr ? guidelines.nearbyCulinaryMr : guidelines.nearbyCulinaryEn).map((dish, dIdx) => (
-                  <li key={dIdx} style={{ marginBottom: 2 }}>{dish}</li>
-                ))}
-              </ul>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 10,
+                  borderBottom: '1px solid #fed7aa',
+                  paddingBottom: 12,
+                  marginBottom: 14,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 10,
+                      background: '#ffedd5',
+                      color: '#c2410c',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                      <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                      <line x1="6" y1="1" x2="6" y2="4"></line>
+                      <line x1="10" y1="1" x2="10" y2="4"></line>
+                      <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: 15,
+                        fontWeight: 800,
+                        color: '#9a3412',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                      }}
+                    >
+                      {isMr ? 'परिसरातील अस्सल खाद्यसंस्कृती व नामांकित ठिकाणे' : 'Authentic Local Food & Landmark Eateries Nearby'}
+                    </h3>
+                    <p style={{ margin: '2px 0 0 0', fontSize: 12, color: '#7c2d12', opacity: 0.85 }}>
+                      {isMr
+                        ? 'या ठिकाणानुरूप विशेष खाद्यसंस्कृती आणि प्रसिद्ध ऐतिहासिक उपाहारगृहे'
+                        : 'Curated hyper-local dishes and iconic eateries situated around this specific landmark'}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 10px',
+                    borderRadius: 999,
+                    background: '#ffedd5',
+                    color: '#c2410c',
+                    border: '1px solid #fdba74',
+                  }}
+                >
+                  {isMr ? 'अस्सल पुणेरी चव' : 'Authentic Pune Flavors'}
+                </span>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 10 }}>
+                {(isMr ? guidelines.nearbyCulinaryMr : guidelines.nearbyCulinaryEn).map((dish, dIdx) => {
+                  const parts = dish.split(/—|-/);
+                  const hasPrefix = parts.length > 1;
+                  const title = hasPrefix ? parts[0].trim() : '';
+                  const desc = hasPrefix ? parts.slice(1).join('—').trim() : dish;
+
+                  return (
+                    <div
+                      key={dIdx}
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #ffedd5',
+                        borderRadius: 10,
+                        padding: '10px 14px',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 10,
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          background: '#ea580c',
+                          marginTop: 6,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <div style={{ fontSize: 12.5, lineHeight: 1.5, color: '#431407' }}>
+                        {hasPrefix ? (
+                          <>
+                            <strong style={{ color: '#9a3412', fontWeight: 700 }}>{title}</strong>
+                            <span style={{ color: '#78350f' }}> — {desc}</span>
+                          </>
+                        ) : (
+                          <span style={{ color: '#78350f' }}>{dish}</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </section>
