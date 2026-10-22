@@ -7,7 +7,7 @@
 
 import { app } from './firebase';
 import { getPublicTransitRoute, calculateDistanceKm } from './publicTransit';
-import { searchPmpmlTimetable } from './pmpmlGtfs';
+import { searchPmpmlTimetable, getLandmarkTimetables } from './pmpmlGtfs';
 
 export interface ChatHistoryTurn {
   role: 'user' | 'model';
@@ -300,19 +300,30 @@ function synthesizeWebsiteInteractiveReply(
 
   if (isMr) {
     if (isTimetable) {
-      reply = `⏱️ **अधिकृत पीएमपीएमएल (PMPML) बस वेळापत्रक व प्रमुख फेऱ्या:**\n\n` +
-        `• 🏛️ **बस क्र. ५० ([सिंहगड किल्ला पायथा](/places/sinhagad-fort) ⇆ शनिवारवाडा / स्वारगेट):**\n` +
-        `  - पहिली बस: **०६:१० AM** | शेवटची बस: **०७:३० PM**\n` +
-        `  - वारंवारता: दर २५ ते ३० मिनिटांनी (खडकवासला धरण मार्गे)\n` +
-        `• 🛕 **बस क्र. ११९ ([आळंदी संत ज्ञानेश्वर समाधी](/places/alandi-dnyaneshwar-mandir) ⇆ मनपा):**\n` +
-        `  - पहिली बस: **०५:३० AM** | शेवटची बस: **११:२० PM** (दर १०-१५ मिनिटांनी)\n` +
-        `• ✈️ **बस क्र. १६६ (लोहगाव विमानतळ ⇆ पुणे स्टेशन):**\n` +
-        `  - वेळ: **०५:२० AM ते १०:२५ PM** (दर १५-२० मिनिटांनी)\n` +
-        `• 💻 **बस क्र. ११५ (पुणे स्टेशन ⇆ हिंजवडी फेज ३):**\n` +
-        `  - वेळ: **०४:३० AM ते ०१:०० AM मध्यरात्री**\n` +
-        `• 🌙 **रात्रराणी बसेस (Ratrani 1 ते 7):**\n` +
-        `  - वेळ: **रात्री १०:४० ते पहाटे ०४:४५** (स्वारगेट, पुणे स्टेशन, कात्रज व हडपसरवरून थेट)\n\n` +
-        `💡 **पास:** अमर्याद प्रवासासाठी पीएमपीएमएलचा **₹७० चा दैनंदिन पास** वापरा. तुम्हाला कोणत्याही विशिष्ट मार्गाचे वेळापत्रक हवे आहे का?`;
+      const specificRoutes = first?.slug ? getLandmarkTimetables(first.slug) : [];
+      if (first && specificRoutes.length > 0) {
+        reply = `⏱️ **[${first.name_mr || first.name}](/places/${first.slug}) साठी अधिकृत थेट पीएमपीएमएल बस वेळापत्रक:**\n\n` +
+          specificRoutes.slice(0, 4).map((r) =>
+            `• 🚌 **बस क्र. ${r.routeNo} (${r.nameEn}):**\n` +
+            `  - पहिली बस: **${r.firstBus}** | शेवटची बस: **${r.lastBus}**\n` +
+            `  - वारंवारता: **${r.frequency}** | तिकीट: **${r.fare}**\n` +
+            `  - प्रमुख फेऱ्या: ${r.directions[0]?.departures?.slice(0, 4).join(', ') || 'नियमित उपलब्ध'}`
+          ).join('\n\n') +
+          `\n\n💡 **टीप:** या ठिकाणाला जोडणाऱ्या सर्व बसेसमध्ये ₹७० चा पीएमपीएमएल दैनंदिन पास (PMC + PCMC) चालतो.`;
+      } else {
+        reply = `⏱️ **अधिकृत पीएमपीएमएल (PMPML) बस वेळापत्रक व प्रमुख फेऱ्या:**\n\n` +
+          `• 🏛️ **बस क्र. ५० ([सिंहगड किल्ला पायथा](/places/sinhagad-fort) ⇆ स्वारगेट / शनिवारवाडा):**\n` +
+          `  - पहिली बस: **०६:१० AM** | शेवटची बस: **०७:३० PM** (दर २५-३० मिनिटांनी)\n` +
+          `• 🛕 **बस क्र. ११९ ([आळंदी संत ज्ञानेश्वर समाधी](/places/alandi-dnyaneshwar-mandir) ⇆ मनपा):**\n` +
+          `  - पहिली बस: **०५:३० AM** | शेवटची बस: **११:२० PM** (दर १०-१५ मिनिटांनी)\n` +
+          `• ✈️ **बस क्र. १६६ (लोहगाव विमानतळ ⇆ पुणे स्टेशन):**\n` +
+          `  - वेळ: **०५:२० AM ते १०:२५ PM** (दर १५-२० मिनिटांनी)\n` +
+          `• 💻 **बस क्र. ११५ (पुणे स्टेशन ⇆ हिंजवडी फेज ३):**\n` +
+          `  - वेळ: **०४:३० AM ते ०१:०० AM मध्यरात्री**\n` +
+          `• 🌙 **रात्रराणी बसेस (Ratrani 1 ते 7):**\n` +
+          `  - वेळ: **रात्री १०:४० ते पहाटे ०४:४५** (स्वारगेट, पुणे स्टेशन, कात्रज व हडपसरवरून थेट)\n\n` +
+          `💡 **पास:** अमर्याद प्रवासासाठी पीएमपीएमएलचा **₹७० चा दैनंदिन पास** वापरा. कोणत्याही विशिष्ट ठिकाणाचे वेळापत्रक हवे असल्यास ठिकाणाचे नाव विचारा!`;
+      }
     } else if (first && isTransit && transitData) {
       reply = `🚌 **[${first.name_mr || first.name}](/places/${first.slug}) साठी सार्वजनिक वाहतूक मार्ग:**\n\n` +
         `• **मार्ग संक्षेप:** ${transitData.summaryMr}\n` +
@@ -348,19 +359,30 @@ function synthesizeWebsiteInteractiveReply(
     }
   } else {
     if (isTimetable) {
-      reply = `⏱️ **Official PMPML Bus Timetable & Key Corridors:**\n\n` +
-        `• 🏛️ **Route 50 ([Sinhagad Fort Paytha](/places/sinhagad-fort) ⇆ Shaniwarwada Stand / Swargate):**\n` +
-        `  - First Bus: **06:10 AM** | Last Bus: **07:30 PM**\n` +
-        `  - Headway: Every 25–30 mins (via Khadakwasla Dam & Donje Phata)\n` +
-        `• 🛕 **Route 119 ([Alandi Dnyaneshwar Mandir](/places/alandi-dnyaneshwar-mandir) ⇆ Manapa Daphale Garage):**\n` +
-        `  - First Bus: **05:30 AM** | Last Bus: **11:20 PM** (every 10–15 mins)\n` +
-        `• ✈️ **Route 166 (Pune Lohegaon Airport ⇆ Pune Station):**\n` +
-        `  - Timings: **05:20 AM to 10:25 PM** (every 15–20 mins)\n` +
-        `• 💻 **Route 115 (Pune Station ⇆ Hinjawadi IT Phase 3):**\n` +
-        `  - Timings: **04:30 AM to 01:00 AM Midnight** (every 15–20 mins)\n` +
-        `• 🌙 **Night Ratrani Services (Ratrani 1 to 7):**\n` +
-        `  - Timings: **10:40 PM to 04:45 AM** (Connecting Swargate, Pune Station, Katraj & Hadapsar)\n\n` +
-        `💡 **Pro Tip:** Buy PMPML's **₹70 Unlimited Day Pass** (PMC & PCMC limits). Would you like departure times for any specific bus line?`;
+      const specificRoutes = first?.slug ? getLandmarkTimetables(first.slug) : [];
+      if (first && specificRoutes.length > 0) {
+        reply = `⏱️ **Official PMPML Bus Timetable for [${first.name}](/places/${first.slug}):**\n\n` +
+          specificRoutes.slice(0, 4).map((r) =>
+            `• 🚌 **Route ${r.routeNo} (${r.nameEn}):**\n` +
+            `  - First Bus: **${r.firstBus}** | Last Bus: **${r.lastBus}**\n` +
+            `  - Headway: **${r.frequency}** | Fare: **${r.fare}**\n` +
+            `  - Scheduled Departures: ${r.directions[0]?.departures?.slice(0, 4).join(', ') || 'Regular intervals'}`
+          ).join('\n\n') +
+          `\n\n💡 **Tip:** PMPML unlimited **₹70 Day Pass** (PMC & PCMC limits) is valid on all routes serving this destination.`;
+      } else {
+        reply = `⏱️ **Official PMPML Bus Timetable & Key Corridors:**\n\n` +
+          `• 🏛️ **Route 50 ([Sinhagad Fort Paytha](/places/sinhagad-fort) ⇆ Swargate / Shaniwarwada):**\n` +
+          `  - First Bus: **06:10 AM** | Last Bus: **07:30 PM** (every 25–30 mins)\n` +
+          `• 🛕 **Route 119 ([Alandi Dnyaneshwar Mandir](/places/alandi-dnyaneshwar-mandir) ⇆ Manapa Daphale Garage):**\n` +
+          `  - First Bus: **05:30 AM** | Last Bus: **11:20 PM** (every 10–15 mins)\n` +
+          `• ✈️ **Route 166 (Pune Lohegaon Airport ⇆ Pune Station):**\n` +
+          `  - Timings: **05:20 AM to 10:25 PM** (every 15–20 mins)\n` +
+          `• 💻 **Route 115 (Pune Station ⇆ Hinjawadi IT Phase 3):**\n` +
+          `  - Timings: **04:30 AM to 01:00 AM Midnight** (every 15–20 mins)\n` +
+          `• 🌙 **Night Ratrani Services (Ratrani 1 to 7):**\n` +
+          `  - Timings: **10:40 PM to 04:45 AM** (Connecting Swargate, Pune Station, Katraj & Hadapsar)\n\n` +
+          `💡 **Pro Tip:** Buy PMPML's **₹70 Unlimited Day Pass** (PMC & PCMC limits). To get the exact bus schedule for a specific landmark, ask for it by name!`;
+      }
     } else if (first && isTransit && transitData) {
       reply = `🚌 **Public Transit Route to [${first.name}](/places/${first.slug}):**\n\n` +
         `• **Transit Summary:** ${transitData.summaryEn}\n` +

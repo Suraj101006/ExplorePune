@@ -4,37 +4,70 @@
   "landmarkRouteMap": {
     "sinhagad-fort": [
       "50",
+      "51",
       "52"
     ],
+    "rajgad-fort": [
+      "64",
+      "64M"
+    ],
+    "torna-fort": [
+      "60",
+      "61",
+      "64"
+    ],
+    "shivneri-fort": [
+      "350",
+      "358",
+      "358A"
+    ],
+    "lohagad-fort": [
+      "368",
+      "369",
+      "370"
+    ],
+    "visapur-fort": [
+      "368",
+      "369",
+      "370"
+    ],
+    "purandar-fort": [
+      "66",
+      "67",
+      "175",
+      "176"
+    ],
+    "tikona-fort": [
+      "348",
+      "354",
+      "369"
+    ],
+    "karla-caves": [
+      "368",
+      "369",
+      "370"
+    ],
+    "bhaja-caves": [
+      "368",
+      "369",
+      "370"
+    ],
     "shaniwar-wada": [
-      "50",
+      "174",
       "108",
       "113",
-      "174",
       "RATRANI 4"
     ],
     "lal-mahal": [
-      "50",
-      "108",
+      "17",
+      "174",
       "113",
-      "174"
+      "RATRANI 4"
     ],
     "vishrambaug-wada": [
-      "108",
-      "113",
       "17",
-      "18"
-    ],
-    "kasba-ganpati": [
       "108",
-      "113",
-      "174"
-    ],
-    "shreemant-dagdusheth-halwai-ganpati": [
-      "50",
-      "108",
-      "113",
-      "174"
+      "113"
     ],
     "aga-khan-palace": [
       "149",
@@ -42,13 +75,69 @@
       "165",
       "166"
     ],
+    "shinde-chhatri": [
+      "111M",
+      "139",
+      "140",
+      "188"
+    ],
+    "fergusson-college-heritage": [
+      "100",
+      "104",
+      "113",
+      "METRO SHUTTLE 2"
+    ],
+    "pune-university-heritage-building": [
+      "100",
+      "114",
+      "115",
+      "142"
+    ],
+    "bund-garden": [
+      "108",
+      "149",
+      "166"
+    ],
+    "shreemant-dagdusheth-halwai-ganpati": [
+      "17",
+      "174",
+      "113",
+      "108"
+    ],
+    "kasba-ganpati": [
+      "108",
+      "174",
+      "113",
+      "17"
+    ],
+    "pataleshwar-cave-temple": [
+      "100",
+      "104",
+      "113",
+      "METRO SHUTTLE 2"
+    ],
+    "chaturshringi-temple": [
+      "100",
+      "114",
+      "115",
+      "142"
+    ],
+    "baps-swaminarayan-mandir": [
+      "143",
+      "144",
+      "144A"
+    ],
+    "parvati-hill": [
+      "12",
+      "13",
+      "103",
+      "METRO SHUTTLE 13"
+    ],
     "alandi-dnyaneshwar-mandir": [
       "119",
       "119A",
       "151",
       "153",
-      "200",
-      "201",
       "309",
       "327"
     ],
@@ -58,102 +147,68 @@
       "330",
       "350"
     ],
-    "khadakwasla-dam": [
-      "50",
-      "52"
+    "jejuri-khandoba-temple": [
+      "66",
+      "67",
+      "175",
+      "176"
     ],
-    "rajiv-gandhi-zoological-park": [
-      "103",
-      "11C",
-      "140A",
-      "188",
-      "RATRANI 1",
-      "RATRANI 2"
+    "bhimashankar-temple": [
+      "350",
+      "358"
     ],
-    "parvati-hill": [
-      "103",
-      "117",
-      "118",
-      "118A",
-      "12",
-      "13",
-      "METRO SHUTTLE 13"
-    ],
-    "sarasbaug": [
-      "103",
-      "117",
-      "118",
-      "118A",
-      "12",
-      "13"
-    ],
-    "okayama-friendship-garden": [
-      "50",
-      "52",
-      "117",
-      "118"
-    ],
-    "bund-garden": [
+    "tulshibaug-temple": [
+      "17",
       "108",
-      "149",
-      "166"
-    ],
-    "tribal-museum": [
-      "108",
-      "149",
-      "166"
-    ],
-    "chaturshringi-temple": [
-      "100",
-      "114",
-      "115",
-      "142",
-      "143",
-      "144"
-    ],
-    "vetal-tekdi": [
-      "100",
-      "114",
-      "115",
-      "142",
-      "143"
-    ],
-    "pune-university-heritage-building": [
-      "100",
-      "114",
-      "115",
-      "142"
-    ],
-    "pataleshwar-cave-temple": [
-      "100",
-      "104",
       "113",
-      "114",
-      "12",
-      "13",
-      "123"
+      "174"
     ],
-    "baps-swaminarayan-mandir": [
-      "144",
-      "144A",
-      "143"
+    "iskcon-nvcc-kondhwa": [
+      "139",
+      "140",
+      "188",
+      "189"
+    ],
+    "raja-dinkar-kelkar-museum": [
+      "17",
+      "108",
+      "113",
+      "174"
     ],
     "joshi-miniature-railway": [
       "103",
       "108",
       "219"
     ],
-    "raja-dinkar-kelkar-museum": [
+    "joshi-miniature-railway-museum": [
+      "103",
       "108",
-      "113",
-      "17",
-      "50"
+      "219"
     ],
-    "empress-botanical-garden": [
-      "111M",
-      "139",
-      "140",
-      "188"
+    "tribal-museum": [
+      "108",
+      "149",
+      "166"
+    ],
+    "iucaa-science-park": [
+      "100",
+      "114",
+      "115",
+      "142"
+    ],
+    "okayama-friendship-garden": [
+      "50",
+      "51",
+      "52",
+      "117",
+      "118"
+    ],
+    "sarasbaug": [
+      "12",
+      "13",
+      "103",
+      "117",
+      "118"
     ],
     "sambhaji-park": [
       "100",
@@ -161,16 +216,69 @@
       "113",
       "METRO SHUTTLE 2"
     ],
+    "empress-botanical-garden": [
+      "111M",
+      "139",
+      "140",
+      "188"
+    ],
+    "rajiv-gandhi-zoological-park": [
+      "103",
+      "188",
+      "RATRANI 1",
+      "RATRANI 2"
+    ],
+    "khadakwasla-dam": [
+      "50",
+      "51",
+      "52"
+    ],
     "pashan-lake": [
       "114",
       "142",
       "145"
     ],
+    "gram-sanskruti-udyan": [
+      "114",
+      "142",
+      "145"
+    ],
+    "vetal-tekdi": [
+      "100",
+      "114",
+      "115",
+      "142"
+    ],
     "taljai-hills": [
-      "103",
-      "117",
       "12",
-      "13"
+      "13",
+      "103",
+      "117"
+    ],
+    "bhopdeo-ghat-viewpoint": [
+      "66",
+      "67",
+      "176"
+    ],
+    "pawna-lake": [
+      "348",
+      "354",
+      "369"
+    ],
+    "bushi-dam": [
+      "368",
+      "369",
+      "370"
+    ],
+    "tiger-point-lonavala": [
+      "368",
+      "369",
+      "370"
+    ],
+    "tamhini-ghat": [
+      "231",
+      "232",
+      "233"
     ]
   },
   "routes": {

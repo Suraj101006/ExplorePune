@@ -16,7 +16,11 @@ export interface UserSavedLocation {
   lng: number;
   timestamp: number;
   isGps?: boolean;
+  isLiveTracking?: boolean;
   accuracyRadiusMeters?: number;
+  speedKmh?: number | null;
+  heading?: number | null;
+  altitudeMeters?: number | null;
   addressDetails?: {
     suburb?: string;
     road?: string;
@@ -268,6 +272,188 @@ export interface GpsDetectionResult {
   isOutsidePune?: boolean;
   distanceFromPuneKm?: number;
   accuracyMeters?: number;
+  speedKmh?: number | null;
+  heading?: number | null;
+}
+
+// =========================================================================
+// ACCURATE DISTANCE & PROXIMITY CALCULATIONS
+// =========================================================================
+
+/**
+ * High-precision WGS84 geodesic distance calculation in kilometers.
+ */
+export function calculateAccurateDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371.0088; // WGS84 mean earth radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Number((R * c).toFixed(3));
+}
+
+/**
+ * Calculates realistic road travel distance factoring in Pune urban grid,
+ * river bridges (Mula-Mutha), and hill/ghat topography (Sinhagad, Khadakwasla).
+ */
+export function calculateRoadDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const straight = calculateAccurateDistanceKm(lat1, lon1, lat2, lon2);
+  if (straight <= 0.05) return straight;
+
+  // South-West Pune ghats & reservoirs (Sinhagad, Khadakwasla, Panshet) require winding ascent
+  const isGhatRegion = lat1 < 18.42 || lat2 < 18.42;
+  const roadMultiplier = isGhatRegion ? 1.36 : 1.24;
+
+  return Number((straight * roadMultiplier).toFixed(2));
+}
+
+export interface ProximityStatus {
+  straightKm: number;
+  roadKm: number;
+  meters: number;
+  walkingMinutes: number;
+  drivingMinutes: number;
+  isArrived: boolean; // within 150m
+  isNearby: boolean; // within 400m
+  statusTextEn: string;
+  statusTextMr: string;
+}
+
+/**
+ * Evaluates proximity status and realistic travel times from user to landmark.
+ */
+export function getProximityToPlace(
+  userLat: number,
+  userLng: number,
+  destLat: number,
+  destLng: number
+): ProximityStatus {
+  const straightKm = calculateAccurateDistanceKm(userLat, userLng, destLat, destLng);
+  const roadKm = calculateRoadDistanceKm(userLat, userLng, destLat, destLng);
+  const meters = Math.round(straightKm * 1000);
+
+  // Travel time estimation: Walking ~ 5 km/h (12 mins/km), Driving ~ 22 km/h (Pune traffic avg)
+  const walkingMinutes = Math.max(1, Math.round(roadKm * 12));
+  const drivingMinutes = Math.max(3, Math.round(roadKm * 2.6) + 3);
+
+  const isArrived = meters <= 150;
+  const isNearby = meters <= 400;
+
+  let statusTextEn = `${roadKm} km away (~${walkingMinutes} mins walk)`;
+  let statusTextMr = `${roadKm} किमी अंतरावर (~${walkingMinutes} मि. चालत)`;
+
+  if (isArrived) {
+    statusTextEn = `🎯 You have arrived! (Within ${meters}m of destination)`;
+    statusTextMr = `🎯 तुम्ही गंतव्यस्थानी पोहोचला आहात! (${meters} मी. अंतरावर)`;
+  } else if (isNearby) {
+    statusTextEn = `🚶 Almost there (${meters}m, ~${walkingMinutes} mins walk)`;
+    statusTextMr = `🚶 जवळ पोहोचला आहात (${meters} मी., ~${walkingMinutes} मि. चालत)`;
+  }
+
+  return {
+    straightKm,
+    roadKm,
+    meters,
+    walkingMinutes,
+    drivingMinutes,
+    isArrived,
+    isNearby,
+    statusTextEn,
+    statusTextMr,
+  };
+}
+
+/**
+ * Human-readable relative time formatting for live GPS fixes.
+ */
+export function formatGpsAge(timestamp: number, isMr: boolean = false): string {
+  if (!timestamp) return isMr ? 'माहिती नाही' : 'Unknown';
+  const sec = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
+  if (sec < 5) return isMr ? 'आत्ताच' : 'Just now';
+  if (sec < 60) return isMr ? `${sec} से. पूर्वी` : `${sec}s ago`;
+  const mins = Math.floor(sec / 60);
+  if (mins < 60) return isMr ? `${mins} मि. पूर्वी` : `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  return isMr ? `${hrs} तासांपूर्वी` : `${hrs}h ago`;
+}
+
+// =========================================================================
+// REAL-TIME GPS WATCHER & INTERVAL POSITION TRACKING ("Update time to time")
+// =========================================================================
+
+let globalWatchId: number | null = null;
+let globalHeartbeatIntervalId: any = null;
+let lastAcquiredGpsLocation: UserSavedLocation | null = null;
+const gpsSubscribers = new Set<(loc: UserSavedLocation) => void>();
+
+function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
+  const { latitude, longitude, accuracy, speed, heading, altitude } = pos.coords;
+  const distFromCenter = calculateDistanceKm(latitude, longitude, 18.5204, 73.8567);
+  const { locality } = findClosestPuneLocality(latitude, longitude);
+
+  const isOutside = distFromCenter > 45;
+  const localityShortEn = locality.nameEn.split('/')[0].trim();
+  const localityShortMr = locality.nameMr.split('/')[0].trim();
+
+  const nameEn = isOutside
+    ? `Live GPS (~${Math.round(distFromCenter)} km from Pune)`
+    : `Live GPS (Near ${localityShortEn})`;
+  const nameMr = isOutside
+    ? `थेट GPS (पुण्यापासून ~${Math.round(distFromCenter)} किमी)`
+    : `थेट GPS (${localityShortMr} जवळ)`;
+
+  const speedKmh =
+    speed != null && speed > 0 ? Math.round(speed * 3.6 * 10) / 10 : null;
+  const parsedHeading =
+    heading != null && !isNaN(heading) ? Math.round(heading) : null;
+  const parsedAltitude =
+    altitude != null && !isNaN(altitude) ? Math.round(altitude) : null;
+
+  const savedLoc: UserSavedLocation = {
+    id: 'live-gps',
+    nameEn,
+    nameMr,
+    latitude,
+    longitude,
+    lat: latitude,
+    lng: longitude,
+    timestamp: Date.now(),
+    isGps: true,
+    isLiveTracking: true,
+    accuracyRadiusMeters: Math.round(accuracy),
+    speedKmh,
+    heading: parsedHeading,
+    altitudeMeters: parsedAltitude,
+  };
+
+  lastAcquiredGpsLocation = savedLoc;
+  setStoredUserLocation(savedLoc);
+
+  // Notify registered callbacks
+  gpsSubscribers.forEach((cb) => {
+    try {
+      cb(savedLoc);
+    } catch (e) {
+      console.error('GPS subscriber callback error:', e);
+    }
+  });
+
+  return savedLoc;
 }
 
 /**
@@ -286,41 +472,16 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const { latitude, longitude, accuracy } = pos.coords;
-        const distFromCenter = calculateDistanceKm(latitude, longitude, 18.5204, 73.8567);
-        const { locality } = findClosestPuneLocality(latitude, longitude);
-
-        const isOutside = distFromCenter > 45;
-        const localityShortEn = locality.nameEn.split('/')[0].trim();
-        const localityShortMr = locality.nameMr.split('/')[0].trim();
-
-        const nameEn = isOutside
-          ? `Live GPS (~${Math.round(distFromCenter)} km from Pune)`
-          : `Live GPS (Near ${localityShortEn})`;
-        const nameMr = isOutside
-          ? `थेट GPS (पुण्यापासून ~${Math.round(distFromCenter)} किमी)`
-          : `थेट GPS (${localityShortMr} जवळ)`;
-
-        const savedLoc: UserSavedLocation = {
-          id: 'live-gps',
-          nameEn,
-          nameMr,
-          latitude,
-          longitude,
-          lat: latitude,
-          lng: longitude,
-          timestamp: Date.now(),
-          isGps: true,
-          accuracyRadiusMeters: Math.round(accuracy),
-        };
-
-        setStoredUserLocation(savedLoc);
+        const savedLoc = processGpsPosition(pos);
+        const distFromCenter = calculateDistanceKm(savedLoc.lat, savedLoc.lng, 18.5204, 73.8567);
         resolve({
           success: true,
           location: savedLoc,
-          isOutsidePune: isOutside,
+          isOutsidePune: distFromCenter > 45,
           distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
-          accuracyMeters: Math.round(accuracy),
+          accuracyMeters: savedLoc.accuracyRadiusMeters,
+          speedKmh: savedLoc.speedKmh,
+          heading: savedLoc.heading,
         });
       },
       (err) => {
@@ -338,10 +499,127 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
         });
       },
       {
-        enableHighAccuracy: true, // Forces phone hardware GPS
-        timeout: 12000,
-        maximumAge: 0, // Direct real-time reading
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
       }
     );
   });
+}
+
+/**
+ * Starts continuous real-time GPS tracking.
+ * Listens to device movements via `watchPosition` and maintains a periodic heartbeat (every 10s)
+ * so distance, proximity, and coordinates update automatically from time to time.
+ */
+export function startGpsWatcher(
+  onUpdate?: (loc: UserSavedLocation) => void,
+  onError?: (err: string) => void
+): boolean {
+  if (typeof window === 'undefined' || !navigator.geolocation) {
+    onError?.('Geolocation is not supported by your browser.');
+    return false;
+  }
+
+  if (onUpdate) {
+    gpsSubscribers.add(onUpdate);
+  }
+
+  // If already tracking, trigger immediate update and ensure heartbeat is running
+  if (globalWatchId !== null) {
+    if (lastAcquiredGpsLocation && onUpdate) {
+      onUpdate(lastAcquiredGpsLocation);
+    }
+    return true;
+  }
+
+  try {
+    globalWatchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        processGpsPosition(pos);
+      },
+      (err) => {
+        let msg = 'Could not acquire GPS updates.';
+        if (err.code === err.PERMISSION_DENIED) {
+          msg = 'Location permission was denied.';
+          stopGpsWatcher();
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          msg = 'GPS satellite fix temporarily unavailable.';
+        } else if (err.code === err.TIMEOUT) {
+          msg = 'GPS satellite update timed out.';
+        }
+        onError?.(msg);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 3000,
+        timeout: 15000,
+      }
+    );
+
+    // Heartbeat every 10 seconds: Re-queries device GPS to ensure fresh reading if user is stationary or paused
+    if (!globalHeartbeatIntervalId) {
+      globalHeartbeatIntervalId = setInterval(() => {
+        if (typeof navigator !== 'undefined' && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              processGpsPosition(pos);
+            },
+            () => {
+              // Ignore background jitter
+            },
+            {
+              enableHighAccuracy: true,
+              maximumAge: 5000,
+              timeout: 8000,
+            }
+          );
+        }
+      }, 10000);
+    }
+
+    return true;
+  } catch (e) {
+    console.error('Failed to start GPS watcher:', e);
+    onError?.('Failed to initiate GPS watcher.');
+    return false;
+  }
+}
+
+/**
+ * Stops continuous GPS tracking to preserve device battery.
+ */
+export function stopGpsWatcher(): void {
+  if (typeof window !== 'undefined' && navigator.geolocation && globalWatchId !== null) {
+    navigator.geolocation.clearWatch(globalWatchId);
+    globalWatchId = null;
+  }
+  if (globalHeartbeatIntervalId) {
+    clearInterval(globalHeartbeatIntervalId);
+    globalHeartbeatIntervalId = null;
+  }
+}
+
+/**
+ * Check if the GPS watcher is currently active.
+ */
+export function isGpsWatcherRunning(): boolean {
+  return globalWatchId !== null;
+}
+
+/**
+ * Returns the most recently acquired GPS location object.
+ */
+export function getLastGpsFix(): UserSavedLocation | null {
+  return lastAcquiredGpsLocation || getStoredUserLocation();
+}
+
+/**
+ * Subscribes to live GPS updates and returns an unsubscribe function.
+ */
+export function subscribeToGpsUpdates(callback: (loc: UserSavedLocation) => void): () => void {
+  gpsSubscribers.add(callback);
+  return () => {
+    gpsSubscribers.delete(callback);
+  };
 }

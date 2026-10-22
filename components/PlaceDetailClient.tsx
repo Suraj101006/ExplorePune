@@ -20,7 +20,16 @@ import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getPlaceVisitorGuidelines } from '@/lib/visitorGuidelines';
-import { getStoredUserLocation, UserSavedLocation, detectBrowserGps } from '@/lib/userLocation';
+import {
+  getStoredUserLocation,
+  UserSavedLocation,
+  detectBrowserGps,
+  startGpsWatcher,
+  stopGpsWatcher,
+  formatGpsAge,
+  getProximityToPlace,
+  ProximityStatus,
+} from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 import {
   getLandmarkTimetables,
@@ -85,6 +94,11 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedHubId, setSelectedHubId] = useState<string>('central');
   const [isLocatingGps, setIsLocatingGps] = useState(false);
+  const [isLiveGpsTracking, setIsLiveGpsTracking] = useState(false);
+  const [gpsTimestamp, setGpsTimestamp] = useState<number>(0);
+  const [gpsAccuracy, setGpsAccuracy] = useState<number>(10);
+  const [proximity, setProximity] = useState<ProximityStatus | null>(null);
+  const [gpsAgeText, setGpsAgeText] = useState<string>('');
   const [originName, setOriginName] = useState<string>(
     isMr ? 'मध्यवर्ती पुणे (मनपा/शनिवार वाडा)' : 'Central Pune (PMC Bhavan)'
   );
@@ -189,6 +203,23 @@ export default function PlaceDetailClient({ place }: { place: any }) {
     if (typeof window !== 'undefined') window.print();
   };
 
+  // Keep GPS freshness timestamp string updated
+  useEffect(() => {
+    if (!isLiveGpsTracking || !gpsTimestamp) return;
+    setGpsAgeText(formatGpsAge(gpsTimestamp, isMr));
+    const interval = setInterval(() => {
+      setGpsAgeText(formatGpsAge(gpsTimestamp, isMr));
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isLiveGpsTracking, gpsTimestamp, isMr]);
+
+  // Clean up GPS watcher on component unmount
+  useEffect(() => {
+    return () => {
+      stopGpsWatcher();
+    };
+  }, []);
+
   const handleUseLiveGps = async () => {
     setIsLocatingGps(true);
     setOriginNotice('');
@@ -196,16 +227,38 @@ export default function PlaceDetailClient({ place }: { place: any }) {
       const result = await detectBrowserGps();
       if (result.success && result.location) {
         setSelectedHubId('live-gps');
+        setIsLiveGpsTracking(true);
         const name = isMr ? result.location.nameMr : result.location.nameEn;
         setOriginName(name);
         setUserCoords({ lat: result.location.lat, lng: result.location.lng });
+        const ts = result.location.timestamp || Date.now();
+        setGpsTimestamp(ts);
+        const acc = result.accuracyMeters || 10;
+        setGpsAccuracy(acc);
+
+        const prox = getProximityToPlace(result.location.lat, result.location.lng, place.latitude, place.longitude);
+        setProximity(prox);
+
         setOriginNotice(
           isMr
-            ? `✓ थेट GPS जोडले गेले (अचूकता: ±${result.accuracyMeters}m) • ${name} येथून मार्ग निश्चित केला!`
-            : `✓ Live GPS connected (Accuracy: ±${result.accuracyMeters}m) • Transit routed from your location!`
+            ? `✓ थेट GPS जोडले गेले (अचूकता: ±${acc}m) • वेळोवेळी रिअल-टाइम ट्रॅकिंग सक्रिय!`
+            : `✓ Live GPS connected (Accuracy: ±${acc}m) • Real-time tracking active!`
         );
         const computed = getPublicTransitRoute(result.location.lat, result.location.lng, place, name);
         setLiveTransit(computed);
+
+        // Initiate continuous background tracking so distance refreshes time to time as user moves
+        startGpsWatcher((freshLoc) => {
+          const freshTs = freshLoc.timestamp || Date.now();
+          setGpsTimestamp(freshTs);
+          if (freshLoc.accuracyRadiusMeters) setGpsAccuracy(freshLoc.accuracyRadiusMeters);
+          setUserCoords({ lat: freshLoc.lat, lng: freshLoc.lng });
+          const updatedProx = getProximityToPlace(freshLoc.lat, freshLoc.lng, place.latitude, place.longitude);
+          setProximity(updatedProx);
+          const freshName = isMr ? freshLoc.nameMr : freshLoc.nameEn;
+          const freshTransit = getPublicTransitRoute(freshLoc.lat, freshLoc.lng, place, freshName);
+          setLiveTransit(freshTransit);
+        });
       } else {
         setOriginNotice(result.error || (isMr ? 'GPS स्थान मिळवता आले नाही.' : 'Could not acquire GPS position.'));
       }
@@ -217,6 +270,9 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   };
 
   const handleSelectHub = (hubId: string) => {
+    stopGpsWatcher();
+    setIsLiveGpsTracking(false);
+    setProximity(null);
     setSelectedHubId(hubId);
     setOriginNotice('');
     const hub = PUNE_COMMUTE_HUBS.find((h) => h.id === hubId);
@@ -1285,10 +1341,21 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   <span style={{ fontSize: 20 }}>⏱️</span>
                   <div>
                     <h4 style={{ margin: 0, fontSize: 14.5, fontWeight: 800, color: '#9a3412' }}>
-                      {isMr ? 'पीएमपीएमएल वेळापत्रक व पुढील बसेस' : 'PMPML Scheduled Departures'}
+                      {isMr ? `${primaryName} थेट बस वेळापत्रक` : `PMPML Schedule for ${primaryName}`}
                     </h4>
-                    <span style={{ fontSize: 11, color: 'var(--muted)' }}>
-                      {isMr ? 'अधिकृत वेळापत्रक व वारंवारता' : 'Official Timetable & Headway'}
+                    <span style={{ fontSize: 11, color: '#78350f' }}>
+                      {activeTransit.nearestBus ? (
+                        <>
+                          📍 {isMr ? 'अधिकृत थांबा:' : 'Official Stop:'}{' '}
+                          <strong>
+                            {isMr
+                              ? activeTransit.nearestBus.stopNameMr
+                              : activeTransit.nearestBus.stopNameEn}
+                          </strong>
+                        </>
+                      ) : (
+                        isMr ? 'या ठिकाणाला थेट जोडणारे अधिकृत मार्ग व पुढील बसेस' : 'Authentic routes directly serving this destination'
+                      )}
                     </span>
                   </div>
                 </div>

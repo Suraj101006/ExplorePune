@@ -43,6 +43,10 @@ export interface TransitRouteInfo {
   };
   stepByStepEn: string[];
   stepByStepMr: string[];
+  totalCrowKm?: number;
+  roadDistanceKm?: number;
+  walkingMinutes?: number;
+  drivingMinutes?: number;
   estimatedMinutes: number;
   estimatedCostInr: number;
   ticketInfoEn: string;
@@ -1425,7 +1429,15 @@ export function getPublicTransitRoute(
 
   const nearestPmpmlStop = gtfsLandmark?.nearestStops?.[0];
 
-  const nearestBusInfo = nearestPmpmlStop
+  const nearestBusInfo = directRule
+    ? {
+        stopNameEn: directRule.nearestStopEn,
+        stopNameMr: directRule.nearestStopMr,
+        routeNumbers: directRule.directBuses || ['PMPML Local Corridor'],
+        distanceKm: nearestPmpmlStop ? nearestPmpmlStop.distanceKm : 0.3,
+        walkingMinutes: nearestPmpmlStop ? nearestPmpmlStop.walkMinutes : 4,
+      }
+    : nearestPmpmlStop
     ? {
         stopNameEn: nearestPmpmlStop.stopName,
         stopNameMr: `${nearestPmpmlStop.stopName} (अधिकृत पीएमपीएमएल थांबा)`,
@@ -1433,22 +1445,10 @@ export function getPublicTransitRoute(
         distanceKm: nearestPmpmlStop.distanceKm,
         walkingMinutes: nearestPmpmlStop.walkMinutes,
       }
-    : directRule
-    ? {
-        stopNameEn: directRule.nearestStopEn,
-        stopNameMr: directRule.nearestStopMr,
-        routeNumbers: directRule.directBuses || ['PMPML Local Corridor'],
-        distanceKm: 0.3,
-        walkingMinutes: 4,
-      }
     : {
-        stopNameEn: `${place.name} PMPML Stop`,
-        stopNameMr: `${place.name_mr || place.name} पीएमपीएमएल थांबा`,
-        routeNumbers: [
-          'Bus 149 (Hadapsar Gadital ↔ Nigdi Pradhikaran)',
-          'Bus 100 (Hinjewadi ↔ Pune Station via Deccan)',
-          'Bus 24 (Katraj ↔ Pune Station via Swargate)',
-        ],
+        stopNameEn: `${place.name} Local Stop`,
+        stopNameMr: `${place.name_mr || place.name} स्थानिक थांबा`,
+        routeNumbers: [`PMPML Local Feeder to ${place.name}`],
         distanceKm: 0.4,
         walkingMinutes: 5,
       };
@@ -1487,6 +1487,10 @@ export function getPublicTransitRoute(
     nearestBus: nearestBusInfo,
     stepByStepEn: stepsEn,
     stepByStepMr: stepsMr,
+    totalCrowKm: Number(totalCrowKm.toFixed(2)),
+    roadDistanceKm: Number(busDistanceKm.toFixed(2)),
+    walkingMinutes: Math.round(totalCrowKm * 12),
+    drivingMinutes: Math.max(5, Math.round(busDistanceKm * 2.5)),
     estimatedMinutes: estimatedTime,
     estimatedCostInr: estimatedCost,
     ticketInfoEn: isMetroViable

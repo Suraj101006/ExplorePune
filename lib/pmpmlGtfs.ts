@@ -242,19 +242,24 @@ export function getLandmarkTimetables(landmarkSlug: string): PmpmlTimetableRoute
 
   for (const rNo of routeNumbers) {
     const rData = getPmpmlRouteSchedule(rNo);
-    if (rData) results.push(rData);
+    if (rData && !results.some((r) => r.routeNo === rData.routeNo)) {
+      results.push(rData);
+    }
   }
 
-  // Also check if nearest stops have buses with timetable data
+  // If place-specific authentic routes exist, return them immediately so schedules are strictly landmark-specific (not diluted with common area buses)
+  if (results.length > 0) {
+    return results;
+  }
+
+  // Fallback to nearest stops only if no specific mapped routes exist
   const landmarkStops = getLandmarkPmpmlStops(cleanSlug);
   if (landmarkStops && landmarkStops.nearestStops) {
-    for (const stop of landmarkStops.nearestStops.slice(0, 3)) {
+    for (const stop of landmarkStops.nearestStops.slice(0, 2)) {
       for (const bNo of stop.buses || []) {
-        if (!routeNumbers.includes(bNo)) {
-          const rData = getPmpmlRouteSchedule(bNo);
-          if (rData && !results.some((r) => r.routeNo === rData.routeNo)) {
-            results.push(rData);
-          }
+        const rData = getPmpmlRouteSchedule(bNo);
+        if (rData && !results.some((r) => r.routeNo === rData.routeNo)) {
+          results.push(rData);
         }
       }
     }
@@ -332,16 +337,38 @@ export function getUpcomingDepartures(
 }
 
 /**
- * Search timetable routes by keyword (e.g. "Airport", "Sinhagad", "Alandi", "50", "Night")
+ * Search timetable routes by keyword or landmark name (e.g. "Shaniwar Wada", "Sinhagad", "Alandi", "50", "Katraj")
  */
 export function searchPmpmlTimetable(query: string): PmpmlTimetableRoute[] {
   if (!query) return [];
   const q = query.toLowerCase().trim();
+
+  // 1. Check if query matches any landmark slug or landmark keywords
+  for (const [slug, rNos] of Object.entries(timetableData.landmarkRouteMap)) {
+    const slugKeywords = slug.replace(/-/g, ' ').split(' ');
+    const isLandmarkMatch =
+      q.includes(slug.replace(/-/g, ' ')) ||
+      slugKeywords.some((kw) => kw.length > 3 && q.includes(kw));
+
+    if (isLandmarkMatch) {
+      const landmarkRoutes: PmpmlTimetableRoute[] = [];
+      for (const rNo of rNos) {
+        const rData = getPmpmlRouteSchedule(rNo);
+        if (rData && !landmarkRoutes.some((r) => r.routeNo === rData.routeNo)) {
+          landmarkRoutes.push(rData);
+        }
+      }
+      if (landmarkRoutes.length > 0) return landmarkRoutes;
+    }
+  }
+
+  // 2. Direct route search across all 315 PMPML timetable routes
   const allRoutes = Object.values(timetableData.routes);
 
   return allRoutes
     .filter((r) => {
       return (
+        r.routeNo.toLowerCase() === q ||
         r.routeNo.toLowerCase().includes(q) ||
         r.nameEn.toLowerCase().includes(q) ||
         r.terminalA.toLowerCase().includes(q) ||
