@@ -89,13 +89,31 @@ export async function POST(req: NextRequest) {
       isMarathi: isMr,
     });
 
+    if (!emailResult.success) {
+      console.warn('Itinerary email dispatch failed:', emailResult.error || emailResult.reason);
+      return NextResponse.json(
+        {
+          success: false,
+          emailSent: false,
+          mode: emailResult.mode,
+          error: {
+            code: 'EMAIL_SEND_FAILED',
+            message: isMr
+              ? `ईमेल पाठवण्यात अडचण आली (${emailResult.error || 'सर्व्हर टाइमआउट'}). आपण खालील बटणाने थेट PDF डाऊनलोड करू शकता किंवा Gmail मध्ये उघडू शकता.`
+              : `Could not send email (${emailResult.error || 'Server timeout'}). You can download the PDF directly or open the itinerary in Gmail below.`,
+          },
+        },
+        { status: 502 }
+      );
+    }
+
     const successMsg = isMr
       ? `✓ तुमचा सानुकूल सहल आराखडा आणि PDF फाईल ${email} वर पाठवण्यात आली आहे!`
       : `✓ Custom itinerary and PDF have been successfully sent to ${email}!`;
 
     return NextResponse.json({
       success: true,
-      emailSent: emailResult.success,
+      emailSent: true,
       mode: emailResult.mode,
       message: successMsg,
     });

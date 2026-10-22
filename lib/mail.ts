@@ -49,7 +49,7 @@ const TYPE_LABELS: Record<string, { en: string; mr: string }> = {
 
 function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = Number(process.env.SMTP_PORT) || 587;
+  const port = Number(process.env.SMTP_PORT) || 465;
   const user = process.env.SMTP_USER || process.env.GMAIL_USER || DEFAULT_EXPLORE_EMAIL;
   const rawPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
   const pass = rawPass ? rawPass.trim().replace(/\s+/g, '') : '';
@@ -57,12 +57,18 @@ function getTransporter() {
 
   if (pass) {
     if (host.includes('gmail') || user.includes('@gmail.com')) {
+      // Direct SSL on port 465 is faster, highly reliable, and avoids port 587 STARTTLS timeouts
       return nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: { user, pass },
-        connectionTimeout: 10000,
-        greetingTimeout: 8000,
-        socketTimeout: 15000,
+        tls: {
+          rejectUnauthorized: false,
+        },
+        connectionTimeout: 25000,
+        greetingTimeout: 20000,
+        socketTimeout: 35000,
       });
     }
 
@@ -71,9 +77,12 @@ function getTransporter() {
       port,
       secure,
       auth: { user, pass },
-      connectionTimeout: 10000,
-      greetingTimeout: 8000,
-      socketTimeout: 15000,
+      tls: {
+        rejectUnauthorized: false,
+      },
+      connectionTimeout: 25000,
+      greetingTimeout: 20000,
+      socketTimeout: 35000,
     });
   }
 

@@ -1,5 +1,44 @@
 [
   {
+    "id": "mail_1792655604941_vfnue",
+    "timestamp": "2026-10-22T07:53:24.941Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "suraj10.pp@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Best of Pune Citadels & Trails 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nBest of Pune Citadels & Trails\n\nDear Suraj Dhok,\n\nThank you for using Explore Pune! Your custom itinerary starting from Shaniwar Wada at 08:30 AM has been created.\nTotal Duration: ~5 hrs\nEstimated Entry/Transit Cost: ₹120\n\nStops:\n1. Shaniwar Wada (08:30 AM - 10:00 AM) - Stay: 90m\n2. Sinhagad Fort (11:15 AM - 01:30",
+    "metadata": {
+      "userName": "Suraj Dhok",
+      "planTitle": "Best of Pune Citadels & Trails",
+      "stopsCount": 2
+    }
+  },
+  {
+    "id": "mail_1792655582984_p1yva",
+    "timestamp": "2026-10-22T07:53:02.984Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "explorepune232@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Heritage Heart of Pune (Live Test) 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nHeritage Heart of Pune (Live Test)\n\nDear Suraj Dhok,\n\nThank you for using Explore Pune! Your custom itinerary starting from Pune Railway Station at 09:00 AM has been created.\nTotal Duration: ~4 hrs\nEstimated Entry/Transit Cost: ₹150\n\nStops:\n1. Shaniwar Wada (09:30 AM - 11:00 AM) - Stay: 90m\n\nAttached PDF:\nWe have ",
+    "metadata": {
+      "userName": "Suraj Dhok",
+      "planTitle": "Heritage Heart of Pune (Live Test)",
+      "stopsCount": 1
+    }
+  },
+  {
+    "id": "mail_1792655388766_uva8q",
+    "timestamp": "2026-10-22T07:49:48.766Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "explorepune232@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Heritage Heart of Pune 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nHeritage Heart of Pune\n\nDear Suraj,\n\nThank you for using Explore Pune! Your custom itinerary starting from Pune Railway Station at 09:00 AM has been created.\nTotal Duration: ~4 hrs\nEstimated Entry/Transit Cost: ₹150\n\nStops:\n1. Shaniwar Wada (09:30 AM - 11:00 AM) - Stay: 90m\n\nAttached PDF:\nWe have attached your off",
+    "metadata": {
+      "userName": "Suraj",
+      "planTitle": "Heritage Heart of Pune",
+      "stopsCount": 1
+    }
+  },
+  {
     "id": "mail_1792654369582_tbaov",
     "timestamp": "2026-10-22T07:32:49.582Z",
     "type": "itinerary_pdf_dispatch",

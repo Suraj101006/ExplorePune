@@ -28,11 +28,8 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
   const [gpsError, setGpsError] = useState('');
 
   // 1. Google Maps Universal Precision Embed
-  // Using exact lat,lng coordinates + name pin marker with zoom 16
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const googleMapEmbedUrl = apiKey
-    ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${lat},${lng}&maptype=${mapView}`
-    : `https://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(name + ' Pune')})&t=${mapView === 'satellite' ? 'k' : ''}&z=16&ie=UTF8&iwloc=B&output=embed`;
+  // Using exact lat,lng coordinates + name pin marker with zoom 16 (100% free, zero authorization errors)
+  const googleMapEmbedUrl = `https://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(name + ' Pune')})&t=${mapView === 'satellite' ? 'k' : ''}&z=16&ie=UTF8&iwloc=B&output=embed`;
 
   // 2. OpenStreetMap Precision Marker Embed (100% free, guaranteed pin on landmark)
   const osmEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${(lng - 0.006).toFixed(5)}%2C${(lat - 0.004).toFixed(5)}%2C${(lng + 0.006).toFixed(5)}%2C${(lat + 0.004).toFixed(5)}&layer=mapnik&marker=${lat.toFixed(5)}%2C${lng.toFixed(5)}`;

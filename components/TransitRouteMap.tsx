@@ -30,10 +30,8 @@ export default function TransitRouteMap({
   const minLng = Math.min(origin.lng, destination.lng) - 0.02;
   const maxLng = Math.max(origin.lng, destination.lng) + 0.02;
 
-  const gmapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const googleMapsEmbedRouteUrl = gmapsApiKey
-    ? `https://www.google.com/maps/embed/v1/directions?key=${gmapsApiKey}&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&mode=transit`
-    : `https://maps.google.com/maps?saddr=${origin.lat},${origin.lng}&daddr=${destination.lat},${destination.lng}&dirflg=r&hl=${isMarathi ? 'mr' : 'en'}&output=embed`;
+  // Universal Google Maps directions embed (100% free, reliable transit route map)
+  const googleMapsEmbedRouteUrl = `https://maps.google.com/maps?saddr=${origin.lat},${origin.lng}&daddr=${destination.lat},${destination.lng}&dirflg=r&hl=${isMarathi ? 'mr' : 'en'}&output=embed`;
 
   const gmapsTransitUrl =
     transitInfo.gmapsTransitUrl ||
