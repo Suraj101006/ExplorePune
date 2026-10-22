@@ -1803,68 +1803,6 @@ export default function HomeExplorer({
           </div>
         </section>
 
-        {/* DATA PROVENANCE & TIER TRANSPARENCY ACCORD */}
-        <section className="scroll-reveal" style={{ marginBottom: '40px' }}>
-          <div
-            style={{
-              background: '#f8fafc',
-              border: '1px solid var(--line)',
-              borderRadius: 'var(--radius-md)',
-              padding: '24px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-              <ShieldCheck size={20} color="#059669" />
-              <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800 }}>
-                {isMr ? 'माहिती सत्यता आणि स्रोत पडताळणी' : 'Authenticity Framework & Source Transparency'}
-              </h3>
-            </div>
-            <p style={{ margin: '0 0 16px', fontSize: '13px', color: 'var(--muted)', lineHeight: 1.5 }}>
-              {isMr
-                ? 'एक्सप्लोर पुणे मधील प्रत्येक ठिकाण शासकीय पर्यटन संस्था, पुरातत्व विभाग आणि प्रत्यक्ष जागेवरील पडताळणीनुसार प्रमाणित केले आहे.'
-                : 'Every attraction in the Explore Pune directory is verified against strict 3-tier authenticity criteria to prevent commercial spam and ensure accurate visitor guidance.'}
-            </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                gap: '14px',
-                fontSize: '12.5px',
-              }}
-            >
-              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
-                <strong style={{ color: '#065f46', display: 'block', marginBottom: 2 }}>
-                  {isMr ? 'स्तर १: अधिकृत पर्यटन व पुरातत्व' : 'Tier 1: Authority & Institutional'}
-                </strong>
-                <span style={{ color: 'var(--muted)' }}>
-                  {isMr
-                    ? 'महाराष्ट्र पर्यटन (MTDC), भारतीय पुरातत्व सर्वेक्षण (ASI) व शासकीय गॅझेटिअर.'
-                    : 'Maharashtra Tourism (MTDC), Archaeological Survey of India (ASI) & State Gazetteers.'}
-                </span>
-              </div>
-              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
-                <strong style={{ color: '#0369a1', display: 'block', marginBottom: 2 }}>
-                  {isMr ? 'स्तर २: प्रत्यक्ष भौगोलिक पडताळणी' : 'Tier 2: Geographic & Operational Verification'}
-                </strong>
-                <span style={{ color: 'var(--muted)' }}>
-                  {isMr
-                    ? 'OpenStreetMap, थेट अक्षांश-रेखांश व नियमित वेळेची क्षेत्रीय पडताळणी.'
-                    : 'OpenStreetMap coordinates, PMPML depot routes, and regular operational status checks.'}
-                </span>
-              </div>
-              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
-                <strong style={{ color: '#7c3aed', display: 'block', marginBottom: 2 }}>
-                  {isMr ? 'स्तर ३: ऐतिहासिक संदर्भ' : 'Tier 3: Archival Documentation'}
-                </strong>
-                <span style={{ color: 'var(--muted)' }}>
-                  {isMr
-                    ? 'पुणे विद्यापीठ, भारत इतिहास संशोधक मंडळ (BISM) व अधिकृत ग्रंथ संदर्भ.'
-                    : 'Bharat Itihas Sanshodhak Mandal (BISM), Pune University archives, and verified literature.'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Smart Trip Planner Callout */}
         <div
