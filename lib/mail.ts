@@ -53,25 +53,17 @@ function getTransporter() {
   const user = process.env.SMTP_USER || process.env.GMAIL_USER || DEFAULT_EXPLORE_EMAIL;
   const rawPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
   const pass = rawPass ? rawPass.trim().replace(/\s+/g, '') : '';
-  const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
   if (pass) {
     if (host.includes('gmail') || user.includes('@gmail.com')) {
-      // Direct SSL on port 465 is faster, highly reliable, and avoids port 587 STARTTLS timeouts
+      // Use nodemailer's official built-in Gmail service configuration for optimal SSL/TLS & connection pooling
       return nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        service: 'gmail',
         auth: { user, pass },
-        tls: {
-          rejectUnauthorized: false,
-        },
-        connectionTimeout: 25000,
-        greetingTimeout: 20000,
-        socketTimeout: 35000,
       });
     }
 
+    const secure = process.env.SMTP_SECURE === 'true' || port === 465;
     return nodemailer.createTransport({
       host,
       port,
@@ -80,9 +72,9 @@ function getTransporter() {
       tls: {
         rejectUnauthorized: false,
       },
-      connectionTimeout: 25000,
-      greetingTimeout: 20000,
-      socketTimeout: 35000,
+      connectionTimeout: 15000,
+      greetingTimeout: 12000,
+      socketTimeout: 20000,
     });
   }
 
@@ -434,12 +426,22 @@ export async function sendItineraryEmail(params: ItineraryEmailParams) {
     return { success: false, reason: 'Invalid recipient email address' };
   }
 
+  const resolvedUserName =
+    userName?.trim() ||
+    itineraryData.userName?.trim() ||
+    (toEmail ? toEmail.split('@')[0] : 'Explorer');
+
+  itineraryData.userName = resolvedUserName;
+  if (!itineraryData.userEmail) {
+    itineraryData.userEmail = toEmail;
+  }
+
   const fromHeader = getExplorePuneFromHeader();
   const planTitle = itineraryData.planTitle || 'Explore Pune Custom Plan';
 
   const subject = isMarathi
-    ? `तुमचा सानुकूल पुणे सहल आराखडा आणि PDF मार्गदर्शक 🗺️ | ExplorePune Team`
-    : `Your Custom Pune Itinerary & PDF Guide: ${planTitle} 🗺️ | ExplorePune Team`;
+    ? `तुमचा सानुकूल पुणे सहल आराखडा: ${planTitle} 🗺️ | ${resolvedUserName} यांच्यासाठी ExplorePune टीमकडून`
+    : `Your Custom Pune Itinerary: ${planTitle} 🗺️ | Prepared for ${resolvedUserName} by ExplorePune Team`;
 
   // Generate real PDF attachment buffer using jsPDF
   let pdfBuffer: Buffer | null = null;
@@ -617,10 +619,11 @@ ExplorePune Team
 
   if (transporter) {
     try {
+      const safeUserName = resolvedUserName.replace(/[^a-zA-Z0-9]/g, '_');
       const attachments = pdfBuffer
         ? [
             {
-              filename: 'Explore_Pune_Itinerary.pdf',
+              filename: `Explore_Pune_${safeUserName}_Itinerary.pdf`,
               content: pdfBuffer,
               contentType: 'application/pdf',
             },
@@ -637,16 +640,16 @@ ExplorePune Team
         attachments,
       });
 
-      return { success: true, messageId: info.messageId, mode: 'smtp' };
+      return { success: true, messageId: info.messageId, mode: 'smtp', userName: resolvedUserName };
     } catch (err: any) {
       console.warn('Failed to send itinerary email via SMTP:', err?.message || err);
-      return { success: false, error: err?.message, mode: 'smtp_failed' };
+      return { success: false, error: err?.message, mode: 'smtp_failed', userName: resolvedUserName };
     }
   }
 
   // Graceful fallback
   console.log(
-    `[Explore Pune Mailer] Itinerary email & PDF generated for ${toEmail} from Suraj Dhok & Sahil Jadhav (ExplorePune Team).`
+    `[Explore Pune Mailer] Itinerary email & PDF generated for ${toEmail} (${resolvedUserName}) from Suraj Dhok & Sahil Jadhav (ExplorePune Team).`
   );
-  return { success: true, mode: 'simulated_fallback' };
+  return { success: true, mode: 'simulated_fallback', userName: resolvedUserName };
 }

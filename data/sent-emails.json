@@ -1,5 +1,18 @@
 [
   {
+    "id": "mail_1792684090139_086zm",
+    "timestamp": "2026-10-22T15:48:10.139Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "explorepune232@gmail.com",
+    "subject": "Your Custom Pune Itinerary: Pune Heritage and Fort Circuit 🗺️ | Prepared for Suraj Dhok by ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPune Heritage and Fort Circuit\n\nDear Suraj Dhok,\n\nThank you for using Explore Pune! Your custom itinerary starting from Shaniwar Wada at 09:00 AM has been created.\nTotal Duration: ~3 hrs\nEstimated Entry/Transit Cost: ₹120\n\nStops:\n1. Shaniwar Wada (09:00 AM - 10:30 AM) - Stay: 90m\n2. Lal Mahal (10:45 AM - 11:45 AM)",
+    "metadata": {
+      "userName": "Suraj Dhok",
+      "planTitle": "Pune Heritage and Fort Circuit",
+      "stopsCount": 2
+    }
+  },
+  {
     "id": "mail_1792678974911_qx5e7",
     "timestamp": "2026-10-22T14:22:54.911Z",
     "type": "itinerary_pdf_dispatch",

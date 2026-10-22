@@ -74,16 +74,20 @@ export default function PlannerPage() {
   // Email Itinerary / PDF Dispatch State
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [emailAddress, setEmailAddress] = useState('');
+  const [itineraryUserName, setItineraryUserName] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  // Pre-fill email when authenticated
+  // Pre-fill email and user name when authenticated
   useEffect(() => {
     if (user?.email && !emailAddress) {
       setEmailAddress(user.email);
     }
-  }, [user, emailAddress]);
+    if (user?.displayName && !itineraryUserName) {
+      setItineraryUserName(user.displayName);
+    }
+  }, [user, emailAddress, itineraryUserName]);
 
   // Active / Guided Trip State (Persisted for later milestones & history)
   const [savedOngoingTrip, setSavedOngoingTrip] = useState<ActiveTrip | null>(null);
@@ -382,6 +386,7 @@ export default function PlannerPage() {
         : STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
+        itineraryUserName.trim() ||
         user?.displayName ||
         (user?.email ? user.email.split('@')[0] : '') ||
         (isMr ? 'पुणे पर्यटक' : 'Pune Explorer');
@@ -461,8 +466,9 @@ export default function PlannerPage() {
         : STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
+        itineraryUserName.trim() ||
         user?.displayName ||
-        cleanEmail.split('@')[0] ||
+        (cleanEmail ? cleanEmail.split('@')[0] : '') ||
         (isMr ? 'पुणे पर्यटक' : 'Pune Explorer');
 
       const itineraryData = {
@@ -520,9 +526,16 @@ export default function PlannerPage() {
       setEmailSuccess(
         data.message ||
           (isMr
-            ? `✓ सानुकूल आराखडा आणि PDF ${cleanEmail} वर पाठवले!`
-            : `✓ Itinerary and PDF successfully sent to ${cleanEmail}!`)
+            ? `✓ ${profileName} यांच्यासाठी सानुकूल आराखडा आणि अधिकृत PDF फाईल ${cleanEmail} वर पाठवली!`
+            : `✓ Custom itinerary and official PDF successfully sent to ${cleanEmail} for ${profileName}!`)
       );
+
+      // Also trigger instant browser PDF download so the user receives their PDF immediately
+      try {
+        downloadItineraryPdf(itineraryData);
+      } catch (pdfErr) {
+        console.warn('Instant PDF download notice:', pdfErr);
+      }
       setTimeout(() => {
         setEmailModalOpen(false);
         setEmailSuccess('');
@@ -1715,40 +1728,127 @@ export default function PlannerPage() {
                   </div>
                   <p style={{ fontSize: 12.5, color: '#334155', margin: '0 0 12px', lineHeight: 1.5 }}>
                     {isMr
-                      ? 'खाली तुमचा ईमेल पत्ता प्रविष्ट करा. एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून तुम्हाला संपूर्ण सहल आराखडा आणि उच्च-गुणवत्तेची प्रिंट करण्यायोग्य PDF फाईल ईमेलवर पाठवली जाईल.'
-                      : 'Enter your email below. The ExplorePune Team (explorepune232@gmail.com) will email you this complete itinerary with your high-resolution printable PDF attached for offline travel.'}
+                      ? 'तुमचे नाव व ईमेल प्रविष्ट करा. एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून तुमच्या नावाचा अधिकृत सहल आराखडा आणि उच्च दर्जाची प्रिंट करण्यायोग्य PDF फाईल ईमेलवर पाठवली जाईल.'
+                      : 'Enter your name and email below. The ExplorePune Team (explorepune232@gmail.com) will email you your personalized expedition pass with your high-resolution printable PDF attached for offline travel.'}
                   </p>
-                  <form onSubmit={handleSendEmail} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    <input
-                      type="email"
-                      required
-                      value={emailAddress}
-                      onChange={(e) => setEmailAddress(e.target.value)}
-                      placeholder={isMr ? 'तुमचा ईमेल पत्ता (उदा. user@example.com)' : 'Your email address (e.g. user@gmail.com)'}
-                      style={{
-                        flex: '1 1 240px',
-                        padding: '8px 12px',
-                        borderRadius: 8,
-                        border: '1px solid #cbd5e1',
-                        fontSize: 13,
-                        background: '#ffffff',
-                      }}
-                    />
-                    <button
-                      type="submit"
-                      disabled={sendingEmail}
-                      className="btn"
-                      style={{
-                        background: '#047857',
-                        color: '#ffffff',
-                        padding: '8px 18px',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {sendingEmail ? (isMr ? 'पाठवत आहे…' : 'Sending…') : (isMr ? 'ईमेल पाठवा' : 'Send Itinerary')}
-                    </button>
+
+                  {/* PDF Attachment & Personalization Badge */}
+                  <div
+                    style={{
+                      background: '#eff6ff',
+                      border: '1px solid #bfdbfe',
+                      borderRadius: 8,
+                      padding: '8px 12px',
+                      marginBottom: 12,
+                      fontSize: 12,
+                      color: '#1e40af',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                    }}
+                  >
+                    <span style={{ fontSize: 18 }}>📎</span>
+                    <span>
+                      <strong>{isMr ? 'अधिकृत PDF संलग्नक:' : 'Official PDF Attached:'}</strong>{' '}
+                      {isMr
+                        ? `${itineraryUserName.trim() || 'पर्यटक'} यांच्यासाठी तयार केलेली Explore_Pune_Itinerary.pdf ईमेलमध्ये जोडली जाईल व थेट डाऊनलोडही होईल.`
+                        : `Explore_Pune_${(itineraryUserName.trim() || 'Explorer').replace(/[^a-zA-Z0-9]/g, '_')}_Itinerary.pdf prepared for ${itineraryUserName.trim() || 'Explorer'} will be attached to your email and saved to your device.`}
+                    </span>
+                  </div>
+
+                  <form onSubmit={handleSendEmail} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
+                      <div>
+                        <label
+                          style={{
+                            display: 'block',
+                            fontSize: 11.5,
+                            fontWeight: 700,
+                            color: '#065f46',
+                            marginBottom: 4,
+                          }}
+                        >
+                          👤 {isMr ? 'तुमचे नाव (PDF व ईमेलसाठी):' : 'Your Full Name (for PDF & Pass):'}
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={itineraryUserName}
+                          onChange={(e) => setItineraryUserName(e.target.value)}
+                          placeholder={isMr ? 'तुमचे नाव (उदा. सुरज ढोक)' : 'Your Name (e.g. Suraj Dhok)'}
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            borderRadius: 8,
+                            border: '1px solid #cbd5e1',
+                            fontSize: 13,
+                            background: '#ffffff',
+                            boxSizing: 'border-box',
+                          }}
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          style={{
+                            display: 'block',
+                            fontSize: 11.5,
+                            fontWeight: 700,
+                            color: '#065f46',
+                            marginBottom: 4,
+                          }}
+                        >
+                          ✉️ {isMr ? 'तुमचा ईमेल पत्ता:' : 'Your Email Address:'}
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={emailAddress}
+                          onChange={(e) => setEmailAddress(e.target.value)}
+                          placeholder={isMr ? 'तुमचा ईमेल पत्ता (उदा. user@example.com)' : 'Your email address (e.g. user@gmail.com)'}
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            borderRadius: 8,
+                            border: '1px solid #cbd5e1',
+                            fontSize: 13,
+                            background: '#ffffff',
+                            boxSizing: 'border-box',
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 4 }}>
+                      <button
+                        type="submit"
+                        disabled={sendingEmail}
+                        className="btn"
+                        style={{
+                          background: '#047857',
+                          color: '#ffffff',
+                          padding: '9px 20px',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          borderRadius: 8,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 6,
+                        }}
+                      >
+                        <span>{sendingEmail ? '⏳' : '🚀'}</span>
+                        <span>
+                          {sendingEmail
+                            ? isMr
+                              ? 'PDF तयार करून पाठवत आहे…'
+                              : 'Generating & Sending PDF…'
+                            : isMr
+                            ? 'PDF व ईमेल पाठवा'
+                            : 'Send PDF Itinerary to Email'}
+                        </span>
+                      </button>
+                    </div>
                   </form>
                   {emailSuccess && (
                     <div style={{ marginTop: 12, padding: 12, background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 8 }}>
@@ -1758,12 +1858,12 @@ export default function PlannerPage() {
                       </div>
                       <div style={{ fontSize: 12, color: '#166534', marginBottom: 10 }}>
                         {isMr
-                          ? 'एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून हा ईमेल पाठवला गेला आहे.'
-                          : 'Sent by ExplorePune Team (explorepune232@gmail.com). You can also view or send directly in Gmail below:'}
+                          ? 'एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून हा अधिकृत PDF ईमेल पाठवला गेला आहे.'
+                          : 'Sent by ExplorePune Team (explorepune232@gmail.com). You can also view or open directly in Gmail below:'}
                       </div>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         <a
-                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear Explorer,\n\nHere is your custom Pune itinerary created on Explore Pune (explorepune232@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nWarm regards,\nSuraj Dhok (suraj10.pp@gmail.com) and Sahil Jadhav (sj176644@gmail.com)\nExplorePune Team`)}`}
+                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear ${itineraryUserName.trim() || 'Explorer'},\n\nHere is your custom Pune itinerary created on Explore Pune (explorepune232@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nPrepared for: ${itineraryUserName.trim() || 'Explorer'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nOfficial PDF Attached: Explore_Pune_${(itineraryUserName.trim() || 'Explorer').replace(/[^a-zA-Z0-9]/g, '_')}_Itinerary.pdf\n\nWarm regards,\nSuraj Dhok and Sahil Jadhav\nExplorePune Team`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn"

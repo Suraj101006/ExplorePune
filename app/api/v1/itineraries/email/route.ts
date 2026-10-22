@@ -108,12 +108,13 @@ export async function POST(req: NextRequest) {
     }
 
     const successMsg = isMr
-      ? `✓ तुमचा सानुकूल सहल आराखडा आणि PDF फाईल ${email} वर पाठवण्यात आली आहे!`
-      : `✓ Custom itinerary and PDF have been successfully sent to ${email}!`;
+      ? `✓ ${resolvedUserName} यांच्यासाठी सानुकूल सहल आराखडा आणि अधिकृत PDF फाईल ${email} वर पाठवण्यात आली आहे!`
+      : `✓ Custom itinerary and official PDF have been successfully sent to ${email} for ${resolvedUserName}!`;
 
     return NextResponse.json({
       success: true,
       emailSent: true,
+      userName: resolvedUserName,
       mode: emailResult.mode,
       message: successMsg,
     });
