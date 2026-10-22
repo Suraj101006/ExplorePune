@@ -382,8 +382,8 @@ export default function FeedbackSection() {
             <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 8, padding: '10px 14px', marginBottom: 18, fontSize: 13, color: '#065f46', textAlign: 'left' }}>
               <strong>✉️ {isMr ? 'पुष्टीकरण ईमेल:' : 'Confirmation Email:'}</strong>{' '}
               {isMr
-                ? 'एक्सप्लोर पुणे टीमकडून (suraj10.pp@gmail.com) आपल्या ईमेलवर आभार संदेश पाठवला गेला आहे.'
-                : 'A Thank-You confirmation has been recorded and dispatched from suraj10.pp@gmail.com (ExplorePune Team).'}
+                ? 'एक्सप्लोर पुणे टीमकडून (explorepune232@gmail.com) आपल्या ईमेलवर आभार संदेश पाठवला गेला आहे.'
+                : 'A Thank-You confirmation has been recorded and dispatched from explorepune232@gmail.com (ExplorePune Team).'}
             </div>
 
             <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 14, marginBottom: 18, fontSize: 12.5, color: '#64748b' }}>

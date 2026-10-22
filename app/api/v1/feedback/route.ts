@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
         created_at: new Date().toISOString(),
       };
 
-      const adminEmail = process.env.ADMIN_FEEDBACK_EMAIL || 'suraj.dhok24@mmit.edu.in';
+      const adminEmail = process.env.ADMIN_FEEDBACK_EMAIL || 'explorepune232@gmail.com';
       const adminMailPayload = {
         to: [adminEmail],
         message: {

@@ -27,7 +27,7 @@ export interface ItineraryEmailParams {
   isMarathi?: boolean;
 }
 
-export const DEFAULT_EXPLORE_EMAIL = 'suraj10.pp@gmail.com';
+export const DEFAULT_EXPLORE_EMAIL = 'explorepune232@gmail.com';
 export const DEFAULT_EXPLORE_SENDER_NAME = 'ExplorePune Team';
 
 export function getExplorePuneFromHeader(): string {
@@ -51,7 +51,8 @@ function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT) || 587;
   const user = process.env.SMTP_USER || process.env.GMAIL_USER || DEFAULT_EXPLORE_EMAIL;
-  const pass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+  const rawPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+  const pass = rawPass ? rawPass.trim().replace(/\s+/g, '') : '';
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
   if (pass) {
@@ -59,9 +60,9 @@ function getTransporter() {
       return nodemailer.createTransport({
         service: 'gmail',
         auth: { user, pass },
-        connectionTimeout: 8000,
-        greetingTimeout: 6000,
-        socketTimeout: 10000,
+        connectionTimeout: 10000,
+        greetingTimeout: 8000,
+        socketTimeout: 15000,
       });
     }
 
@@ -70,9 +71,9 @@ function getTransporter() {
       port,
       secure,
       auth: { user, pass },
-      connectionTimeout: 8000,
-      greetingTimeout: 6000,
-      socketTimeout: 10000,
+      connectionTimeout: 10000,
+      greetingTimeout: 8000,
+      socketTimeout: 15000,
     });
   }
 
@@ -110,7 +111,7 @@ export async function saveToEmailOutbox(type: string, to: string, subject: strin
  * 1. SENDS AUTOMATED CONFIRMATION & THANK-YOU EMAIL TO THE USER
  * Acknowledges their feedback, assures that issues will be investigated and resolved by the team,
  * and signs off from Suraj Dhok and Sahil Jadhav (ExplorePune Team).
- * Sender email: suraj10.pp@gmail.com, displayed as 'ExplorePune Team'.
+ * Sender email: explorepune232@gmail.com, displayed as 'ExplorePune Team'.
  */
 export async function sendFeedbackConfirmationEmail(params: FeedbackEmailParams) {
   const { toEmail, userName, rating, type, message, isMarathi } = params;
@@ -231,7 +232,7 @@ export async function sendFeedbackConfirmationEmail(params: FeedbackEmailParams)
         Explore Pune • Verified Tourism, Sahyadri Trails & Transit Guide
       </p>
       <p style="margin: 0;">
-        Sent with care by ExplorePune Team (suraj10.pp@gmail.com).
+        Sent with care by ExplorePune Team (explorepune232@gmail.com).
       </p>
     </div>
   </div>
@@ -273,6 +274,7 @@ ExplorePune Team
       const info = await transporter.sendMail({
         from: fromHeader,
         to: toEmail,
+        replyTo: DEFAULT_EXPLORE_EMAIL,
         subject,
         text: textContent,
         html: htmlContent,
@@ -393,6 +395,7 @@ Feedback ID: ${feedbackId || 'N/A'}
       const info = await transporter.sendMail({
         from: fromHeader,
         to: adminEmail,
+        replyTo: userEmail,
         subject,
         text: textContent,
         html: htmlContent,
@@ -413,7 +416,7 @@ Feedback ID: ${feedbackId || 'N/A'}
 /**
  * 3. SENDS CUSTOM ITINERARY WITH ATTACHED PDF DIRECTLY TO USER'S EMAIL
  * Allows travelers in Trip Planner to receive their full schedule, transit routes, and PDF guide.
- * Sent from: ExplorePune Team <suraj10.pp@gmail.com>
+ * Sent from: ExplorePune Team <explorepune232@gmail.com>
  * Signed off: Suraj Dhok and Sahil Jadhav, ExplorePune Team
  */
 export async function sendItineraryEmail(params: ItineraryEmailParams) {
@@ -567,7 +570,7 @@ export async function sendItineraryEmail(params: ItineraryEmailParams) {
         Explore Pune • Verified Tourism, Sahyadri Trails & Transit Guide
       </p>
       <p style="margin: 0;">
-        Sent on behalf of ExplorePune Team (suraj10.pp@gmail.com).
+        Sent on behalf of ExplorePune Team (explorepune232@gmail.com).
       </p>
     </div>
   </div>
@@ -618,6 +621,7 @@ ExplorePune Team
       const info = await transporter.sendMail({
         from: fromHeader,
         to: toEmail,
+        replyTo: DEFAULT_EXPLORE_EMAIL,
         subject,
         text: textContent,
         html: htmlContent,

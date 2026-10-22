@@ -210,7 +210,7 @@ export default function PrivacyPolicyPage() {
             </div>
             <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: 14, borderRadius: 8 }}>
               <strong style={{ color: '#065f46', display: 'block', marginBottom: 4 }}>📬 {isMr ? 'ईमेल संप्रेषण' : 'Official Communications'}</strong>
-              <span style={{ fontSize: 13 }}>{isMr ? 'suraj10.pp@gmail.com द्वारे आभार संदेश व PDF वेळापत्रक पाठवणे.' : 'Dispatching automated Thank-You confirmations and PDF schedules via suraj10.pp@gmail.com.'}</span>
+              <span style={{ fontSize: 13 }}>{isMr ? 'explorepune232@gmail.com द्वारे आभार संदेश व PDF वेळापत्रक पाठवणे.' : 'Dispatching automated Thank-You confirmations and PDF schedules via explorepune232@gmail.com.'}</span>
             </div>
           </div>
         </section>

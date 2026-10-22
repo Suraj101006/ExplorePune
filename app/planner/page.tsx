@@ -1715,8 +1715,8 @@ export default function PlannerPage() {
                   </div>
                   <p style={{ fontSize: 12.5, color: '#334155', margin: '0 0 12px', lineHeight: 1.5 }}>
                     {isMr
-                      ? 'खाली तुमचा ईमेल पत्ता प्रविष्ट करा. एक्सप्लोर पुणे टीम (suraj10.pp@gmail.com) कडून तुम्हाला संपूर्ण सहल आराखडा आणि उच्च-गुणवत्तेची प्रिंट करण्यायोग्य PDF फाईल ईमेलवर पाठवली जाईल.'
-                      : 'Enter your email below. The ExplorePune Team (suraj10.pp@gmail.com) will email you this complete itinerary with your high-resolution printable PDF attached for offline travel.'}
+                      ? 'खाली तुमचा ईमेल पत्ता प्रविष्ट करा. एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून तुम्हाला संपूर्ण सहल आराखडा आणि उच्च-गुणवत्तेची प्रिंट करण्यायोग्य PDF फाईल ईमेलवर पाठवली जाईल.'
+                      : 'Enter your email below. The ExplorePune Team (explorepune232@gmail.com) will email you this complete itinerary with your high-resolution printable PDF attached for offline travel.'}
                   </p>
                   <form onSubmit={handleSendEmail} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     <input
@@ -1758,12 +1758,12 @@ export default function PlannerPage() {
                       </div>
                       <div style={{ fontSize: 12, color: '#166534', marginBottom: 10 }}>
                         {isMr
-                          ? 'एक्सप्लोर पुणे टीम (suraj10.pp@gmail.com) कडून हा ईमेल पाठवला गेला आहे.'
-                          : 'Sent by ExplorePune Team (suraj10.pp@gmail.com). You can also view or send directly in Gmail below:'}
+                          ? 'एक्सप्लोर पुणे टीम (explorepune232@gmail.com) कडून हा ईमेल पाठवला गेला आहे.'
+                          : 'Sent by ExplorePune Team (explorepune232@gmail.com). You can also view or send directly in Gmail below:'}
                       </div>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         <a
-                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear Explorer,\n\nHere is your custom Pune itinerary created on Explore Pune (suraj10.pp@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nWarm regards,\nSuraj Dhok (suraj10.pp@gmail.com) and Sahil Jadhav (sj176644@gmail.com)\nExplorePune Team`)}`}
+                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear Explorer,\n\nHere is your custom Pune itinerary created on Explore Pune (explorepune232@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nWarm regards,\nSuraj Dhok (suraj10.pp@gmail.com) and Sahil Jadhav (sj176644@gmail.com)\nExplorePune Team`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn"
@@ -1780,7 +1780,7 @@ export default function PlannerPage() {
                             gap: 6,
                           }}
                         >
-                          <span>📬</span> {isMr ? 'Gmail मध्ये उघडा' : 'Open in Gmail (suraj10.pp@gmail.com)'}
+                          <span>📬</span> {isMr ? 'Gmail मध्ये उघडा' : 'Open in Gmail (explorepune232@gmail.com)'}
                         </a>
                         <button
                           type="button"

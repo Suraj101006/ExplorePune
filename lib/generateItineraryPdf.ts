@@ -424,7 +424,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
   );
 
   y += 3.5;
-  doc.text('Email & Inquiries: suraj10.pp@gmail.com', margin, y);
+  doc.text('Email & Inquiries: explorepune232@gmail.com', margin, y);
 
   // 7. MULTI-PAGE NUMBERING FOOTERS
   const totalPages = doc.getNumberOfPages();
