@@ -1,0 +1,6310 @@
+{
+  "generatedAt": "2026-10-22T14:05:34.075Z",
+  "totalRoutes": 315,
+  "totalStops": 6745,
+  "hubs": [
+    {
+      "id": "pune-station",
+      "name": "Pune Railway Station",
+      "nameMr": "पुणे रेल्वे स्टेशन",
+      "lat": 18.5284,
+      "lon": 73.8739
+    },
+    {
+      "id": "swargate",
+      "name": "Swargate Bus Terminal",
+      "nameMr": "स्वारगेट बस टर्मिनल",
+      "lat": 18.5018,
+      "lon": 73.8586
+    },
+    {
+      "id": "shivajinagar",
+      "name": "Shivajinagar Station",
+      "nameMr": "शिवाजीनगर स्थानक",
+      "lat": 18.5314,
+      "lon": 73.8446
+    },
+    {
+      "id": "katraj",
+      "name": "Katraj Bus Depot",
+      "nameMr": "कात्रज बस डेपो",
+      "lat": 18.4575,
+      "lon": 73.8587
+    },
+    {
+      "id": "hadapsar",
+      "name": "Hadapsar Gadital",
+      "nameMr": "हडपसर गाडीतळ",
+      "lat": 18.4999,
+      "lon": 73.939
+    },
+    {
+      "id": "nigdi",
+      "name": "Nigdi Bhakti Shakti Stand",
+      "nameMr": "निगडी भक्ती शक्ती स्टँड",
+      "lat": 18.654,
+      "lon": 73.7745
+    },
+    {
+      "id": "wakad",
+      "name": "Wakad / Dange Chowk",
+      "nameMr": "वाकड / डांगे चौक",
+      "lat": 18.5987,
+      "lon": 73.7667
+    },
+    {
+      "id": "hinjawadi",
+      "name": "Hinjawadi Shivaji Chowk",
+      "nameMr": "हिंजवडी शिवाजी चौक",
+      "lat": 18.5912,
+      "lon": 73.7391
+    },
+    {
+      "id": "kothrud",
+      "name": "Kothrud Bus Depot",
+      "nameMr": "कोथरूड बस डेपो",
+      "lat": 18.502,
+      "lon": 73.805
+    },
+    {
+      "id": "aundh",
+      "name": "Aundh Bremen Chowk",
+      "nameMr": "औंध ब्रेमेन चौक",
+      "lat": 18.558,
+      "lon": 73.8075
+    },
+    {
+      "id": "baner",
+      "name": "Baner Phata",
+      "nameMr": "बाणेर फाटा",
+      "lat": 18.559,
+      "lon": 73.7868
+    },
+    {
+      "id": "bhosari",
+      "name": "Bhosari Nashik Phata",
+      "nameMr": "भोसरी नाशिक फाटा",
+      "lat": 18.6042,
+      "lon": 73.8242
+    },
+    {
+      "id": "viman-nagar",
+      "name": "Viman Nagar / Airport Corner",
+      "nameMr": "विमान नगर / विमानतळ कॉर्नर",
+      "lat": 18.5679,
+      "lon": 73.9143
+    },
+    {
+      "id": "chandani-chowk",
+      "name": "Chandani Chowk / Bavdhan",
+      "nameMr": "चांदणी चौक / बावधन",
+      "lat": 18.508,
+      "lon": 73.785
+    }
+  ],
+  "landmarkStops": {
+    "shaniwar-wada": {
+      "placeName": "Shaniwar Wada",
+      "placeNameMr": "शनिवार वाडा",
+      "lat": 18.5196,
+      "lng": 73.8553,
+      "nearestStops": [
+        {
+          "stopId": "344",
+          "stopName": "Shaniwarwada",
+          "lat": 18.519699,
+          "lon": 73.8545,
+          "distanceKm": 0.09,
+          "distanceMeters": 85,
+          "walkMinutes": 1,
+          "buses": [
+            "108",
+            "11",
+            "113",
+            "11A",
+            "11C",
+            "13",
+            "143",
+            "144",
+            "144A",
+            "17",
+            "174",
+            "180"
+          ]
+        },
+        {
+          "stopId": "387",
+          "stopName": "Kasba Peth Police Chowky",
+          "lat": 18.5205,
+          "lon": 73.855904,
+          "distanceKm": 0.12,
+          "distanceMeters": 119,
+          "walkMinutes": 1,
+          "buses": [
+            "11",
+            "113",
+            "11A",
+            "11C",
+            "13",
+            "17",
+            "180",
+            "2",
+            "21",
+            "216",
+            "297",
+            "298"
+          ]
+        },
+        {
+          "stopId": "327",
+          "stopName": "Vasant Talkies",
+          "lat": 18.5183095726825,
+          "lon": 73.8562166670321,
+          "distanceKm": 0.17,
+          "distanceMeters": 173,
+          "walkMinutes": 2,
+          "buses": [
+            "108",
+            "11",
+            "113",
+            "11A",
+            "11C",
+            "13",
+            "143",
+            "17",
+            "2",
+            "21",
+            "216",
+            "297"
+          ]
+        }
+      ]
+    },
+    "lal-mahal": {
+      "placeName": "Lal Mahal",
+      "placeNameMr": "लाल महाल",
+      "lat": 18.5186,
+      "lng": 73.8568,
+      "nearestStops": [
+        {
+          "stopId": "345",
+          "stopName": "Jijamatabaug",
+          "lat": 18.5185187397531,
+          "lon": 73.8567125844026,
+          "distanceKm": 0.01,
+          "distanceMeters": 13,
+          "walkMinutes": 1,
+          "buses": [
+            "108",
+            "143",
+            "144",
+            "144A",
+            "180",
+            "283",
+            "81",
+            "94"
+          ]
+        },
+        {
+          "stopId": "326",
+          "stopName": "Jijamatabaug",
+          "lat": 18.5187038462609,
+          "lon": 73.8570865949359,
+          "distanceKm": 0.03,
+          "distanceMeters": 32,
+          "walkMinutes": 1,
+          "buses": [
+            "108",
+            "143",
+            "174",
+            "180",
+            "57",
+            "94",
+            "RATRANI 7"
+          ]
+        },
+        {
+          "stopId": "327",
+          "stopName": "Vasant Talkies",
+          "lat": 18.5183095726825,
+          "lon": 73.8562166670321,
+          "distanceKm": 0.07,
+          "distanceMeters": 69,
+          "walkMinutes": 1,
+          "buses": [
+            "108",
+            "11",
+            "113",
+            "11A",
+            "11C",
+            "13",
+            "143",
+            "17",
+            "2",
+            "21",
+            "216",
+            "297"
+          ]
+        }
+      ]
+    },
+    "vishrambaug-wada": {
+      "placeName": "Vishrambaug Wada",
+      "placeNameMr": "विश्रामबाग वाडा",
+      "lat": 18.5129,
+      "lng": 73.8532,
+      "nearestStops": [
+        {
+          "stopId": "8042",
+          "stopName": "Shanipar Stand",
+          "lat": 18.5128,
+          "lon": 73.852898,
+          "distanceKm": 0.03,
+          "distanceMeters": 34,
+          "walkMinutes": 1,
+          "buses": [
+            "55",
+            "58",
+            "59"
+          ]
+        },
+        {
+          "stopId": "382",
+          "stopName": "Shanipar",
+          "lat": 18.5121713525364,
+          "lon": 73.8538181835903,
+          "distanceKm": 0.1,
+          "distanceMeters": 104,
+          "walkMinutes": 1,
+          "buses": [
+            "11",
+            "11A",
+            "11C",
+            "13",
+            "17",
+            "2",
+            "21",
+            "216",
+            "297",
+            "298",
+            "2A",
+            "30"
+          ]
+        },
+        {
+          "stopId": "3166",
+          "stopName": "Vishrambaugwada",
+          "lat": 18.5136685579106,
+          "lon": 73.8523399829865,
+          "distanceKm": 0.12,
+          "distanceMeters": 125,
+          "walkMinutes": 1,
+          "buses": [
+            "144",
+            "144A",
+            "174",
+            "202",
+            "283",
+            "57",
+            "68",
+            "81",
+            "RATRANI 7"
+          ]
+        }
+      ]
+    },
+    "aga-khan-palace": {
+      "placeName": "Aga Khan Palace",
+      "placeNameMr": "आगाखान पॅलेस",
+      "lat": 18.5524,
+      "lng": 73.9015,
+      "nearestStops": [
+        {
+          "stopId": "1381",
+          "stopName": "Ramwadi Jakat Naka",
+          "lat": 18.5549530352251,
+          "lon": 73.9051258988334,
+          "distanceKm": 0.48,
+          "distanceMeters": 476,
+          "walkMinutes": 6,
+          "buses": [
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "153",
+            "157",
+            "159",
+            "159B",
+            "162",
+            "163"
+          ]
+        },
+        {
+          "stopId": "1371",
+          "stopName": "Ramwadi Jakat Naka",
+          "lat": 18.5547343555914,
+          "lon": 73.9053297430515,
+          "distanceKm": 0.48,
+          "distanceMeters": 480,
+          "walkMinutes": 6,
+          "buses": [
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "149",
+            "157",
+            "159",
+            "159B",
+            "162",
+            "163"
+          ]
+        },
+        {
+          "stopId": "1372",
+          "stopName": "Shastri Nagar Nagar Road",
+          "lat": 18.551751718517,
+          "lon": 73.8958963751793,
+          "distanceKm": 0.6,
+          "distanceMeters": 595,
+          "walkMinutes": 7,
+          "buses": [
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "149",
+            "153",
+            "159",
+            "159B",
+            "162",
+            "163"
+          ]
+        }
+      ]
+    },
+    "shinde-chhatri": {
+      "placeName": "Shinde Chhatri",
+      "placeNameMr": "शिंदे छत्री",
+      "lat": 18.4975,
+      "lng": 73.8967,
+      "nearestStops": [
+        {
+          "stopId": "3131",
+          "stopName": "Wanwadi Corner",
+          "lat": 18.498093,
+          "lon": 73.895676,
+          "distanceKm": 0.13,
+          "distanceMeters": 127,
+          "walkMinutes": 2,
+          "buses": [
+            "176"
+          ]
+        },
+        {
+          "stopId": "3097",
+          "stopName": "Wanwadi Corner",
+          "lat": 18.499201,
+          "lon": 73.894997,
+          "distanceKm": 0.26,
+          "distanceMeters": 261,
+          "walkMinutes": 3,
+          "buses": [
+            "176"
+          ]
+        },
+        {
+          "stopId": "3132",
+          "stopName": "Wanwadi Bazar",
+          "lat": 18.4952838816185,
+          "lon": 73.8946437835694,
+          "distanceKm": 0.33,
+          "distanceMeters": 328,
+          "walkMinutes": 4,
+          "buses": [
+            "176"
+          ]
+        }
+      ]
+    },
+    "fergusson-college-heritage": {
+      "placeName": "Fergusson College",
+      "placeNameMr": "फर्ग्युसन कॉलेज",
+      "lat": 18.5236,
+      "lng": 73.8407,
+      "nearestStops": [
+        {
+          "stopId": "290",
+          "stopName": "Fergusson College",
+          "lat": 18.5227390694741,
+          "lon": 73.8409239126729,
+          "distanceKm": 0.1,
+          "distanceMeters": 99,
+          "walkMinutes": 1,
+          "buses": [
+            "104",
+            "107",
+            "111M",
+            "12",
+            "219",
+            "26",
+            "281",
+            "282",
+            "299",
+            "337",
+            "339",
+            "4"
+          ]
+        },
+        {
+          "stopId": "291",
+          "stopName": "Dyneshwar Paduka Chowk",
+          "lat": 18.5264885125279,
+          "lon": 73.8419655437044,
+          "distanceKm": 0.35,
+          "distanceMeters": 348,
+          "walkMinutes": 4,
+          "buses": [
+            "104",
+            "107",
+            "111M",
+            "12",
+            "146",
+            "219",
+            "26",
+            "281",
+            "282",
+            "299",
+            "337",
+            "339"
+          ]
+        },
+        {
+          "stopId": "292",
+          "stopName": "Police Line Modern College Road",
+          "lat": 18.5264297696072,
+          "lon": 73.8441875543344,
+          "distanceKm": 0.48,
+          "distanceMeters": 484,
+          "walkMinutes": 6,
+          "buses": [
+            "107",
+            "111M",
+            "219",
+            "51",
+            "83",
+            "85",
+            "87",
+            "87A",
+            "90",
+            "91",
+            "98",
+            "99"
+          ]
+        }
+      ]
+    },
+    "pune-university-heritage-building": {
+      "placeName": "SPPU Heritage Main Building",
+      "placeNameMr": "पुणे विद्यापीठ मुख्य इमारत",
+      "lat": 18.5529,
+      "lng": 73.8247,
+      "nearestStops": [
+        {
+          "stopId": "27",
+          "stopName": "Gol Market Aundh Road",
+          "lat": 18.551201,
+          "lon": 73.8218,
+          "distanceKm": 0.36,
+          "distanceMeters": 359,
+          "walkMinutes": 4,
+          "buses": [
+            "100",
+            "113",
+            "115",
+            "204",
+            "225",
+            "276",
+            "277",
+            "298",
+            "322",
+            "322A",
+            "333",
+            "348"
+          ]
+        },
+        {
+          "stopId": "48",
+          "stopName": "Gol Market Aundh Road",
+          "lat": 18.5511,
+          "lon": 73.821602,
+          "distanceKm": 0.38,
+          "distanceMeters": 383,
+          "walkMinutes": 5,
+          "buses": [
+            "100",
+            "113",
+            "115",
+            "204",
+            "225",
+            "276",
+            "277",
+            "298",
+            "322",
+            "322A",
+            "333",
+            "348"
+          ]
+        },
+        {
+          "stopId": "28",
+          "stopName": "Bal Kalyan Sanstha",
+          "lat": 18.5483,
+          "lon": 73.823898,
+          "distanceKm": 0.52,
+          "distanceMeters": 518,
+          "walkMinutes": 6,
+          "buses": [
+            "100",
+            "113",
+            "115",
+            "204",
+            "225",
+            "276",
+            "277",
+            "298",
+            "322",
+            "322A",
+            "333",
+            "348"
+          ]
+        }
+      ]
+    },
+    "bund-garden": {
+      "placeName": "Bund Garden (Fitzgerald Bridge)",
+      "placeNameMr": "बंड गार्डन",
+      "lat": 18.5365,
+      "lng": 73.8825,
+      "nearestStops": [
+        {
+          "stopId": "106816",
+          "stopName": "Wadia College",
+          "lat": 18.5348765690014,
+          "lon": 73.8815699375542,
+          "distanceKm": 0.21,
+          "distanceMeters": 205,
+          "walkMinutes": 2,
+          "buses": [
+            "131",
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "148",
+            "148A",
+            "151",
+            "154",
+            "155"
+          ]
+        },
+        {
+          "stopId": "1324",
+          "stopName": "Guruprasad Bungalow",
+          "lat": 18.535999,
+          "lon": 73.880302,
+          "distanceKm": 0.24,
+          "distanceMeters": 238,
+          "walkMinutes": 3,
+          "buses": [
+            "131",
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "148",
+            "148A",
+            "151",
+            "154",
+            "155"
+          ]
+        },
+        {
+          "stopId": "1320",
+          "stopName": "Wadia College",
+          "lat": 18.5355,
+          "lon": 73.880203,
+          "distanceKm": 0.27,
+          "distanceMeters": 266,
+          "walkMinutes": 3,
+          "buses": [
+            "162",
+            "169",
+            "24",
+            "29"
+          ]
+        }
+      ]
+    },
+    "shreemant-dagdusheth-halwai-ganpati": {
+      "placeName": "Shreemant Dagdusheth Ganpati",
+      "placeNameMr": "श्रीमंत दगडूशेठ हलवाई गणपती",
+      "lat": 18.5164,
+      "lng": 73.856,
+      "nearestStops": [
+        {
+          "stopId": "1957",
+          "stopName": "City Post",
+          "lat": 18.5158,
+          "lon": 73.8573,
+          "distanceKm": 0.15,
+          "distanceMeters": 152,
+          "walkMinutes": 2,
+          "buses": [
+            "144",
+            "144A",
+            "174",
+            "202",
+            "283",
+            "57",
+            "81",
+            "RATRANI 7"
+          ]
+        },
+        {
+          "stopId": "491",
+          "stopName": "Ganpati Chowk Laxmi Road",
+          "lat": 18.5149311916394,
+          "lon": 73.8548889436307,
+          "distanceKm": 0.2,
+          "distanceMeters": 201,
+          "walkMinutes": 2,
+          "buses": [
+            "113",
+            "144A",
+            "174",
+            "283",
+            "57",
+            "81",
+            "RATRANI 7"
+          ]
+        },
+        {
+          "stopId": "327",
+          "stopName": "Vasant Talkies",
+          "lat": 18.5183095726825,
+          "lon": 73.8562166670321,
+          "distanceKm": 0.21,
+          "distanceMeters": 214,
+          "walkMinutes": 3,
+          "buses": [
+            "108",
+            "11",
+            "113",
+            "11A",
+            "11C",
+            "13",
+            "143",
+            "17",
+            "2",
+            "21",
+            "216",
+            "297"
+          ]
+        }
+      ]
+    },
+    "kasba-ganpati": {
+      "placeName": "Kasba Ganpati",
+      "placeNameMr": "कसबा गणपती",
+      "lat": 18.5201,
+      "lng": 73.8587,
+      "nearestStops": [
+        {
+          "stopId": "325",
+          "stopName": "Phadke Haud",
+          "lat": 18.518999,
+          "lon": 73.860298,
+          "distanceKm": 0.21,
+          "distanceMeters": 208,
+          "walkMinutes": 2,
+          "buses": [
+            "108",
+            "143",
+            "174",
+            "180",
+            "57",
+            "94",
+            "RATRANI 7"
+          ]
+        },
+        {
+          "stopId": "346",
+          "stopName": "Phadke Haud",
+          "lat": 18.5189,
+          "lon": 73.860298,
+          "distanceKm": 0.21,
+          "distanceMeters": 215,
+          "walkMinutes": 3,
+          "buses": [
+            "108",
+            "143",
+            "144",
+            "144A",
+            "180",
+            "283",
+            "6",
+            "81",
+            "94"
+          ]
+        },
+        {
+          "stopId": "326",
+          "stopName": "Jijamatabaug",
+          "lat": 18.5187038462609,
+          "lon": 73.8570865949359,
+          "distanceKm": 0.23,
+          "distanceMeters": 230,
+          "walkMinutes": 3,
+          "buses": [
+            "108",
+            "143",
+            "174",
+            "180",
+            "57",
+            "94",
+            "RATRANI 7"
+          ]
+        }
+      ]
+    },
+    "pataleshwar-cave-temple": {
+      "placeName": "Pataleshwar Cave Temple",
+      "placeNameMr": "पाताळेश्वर लेणी",
+      "lat": 18.5273,
+      "lng": 73.851,
+      "nearestStops": [
+        {
+          "stopId": "35",
+          "stopName": "Coep Hostel Jm Road",
+          "lat": 18.5263,
+          "lon": 73.850502,
+          "distanceKm": 0.12,
+          "distanceMeters": 123,
+          "walkMinutes": 1,
+          "buses": [
+            "100",
+            "119",
+            "119A",
+            "12",
+            "121",
+            "122",
+            "123",
+            "146",
+            "152",
+            "204",
+            "205",
+            "208"
+          ]
+        },
+        {
+          "stopId": "274",
+          "stopName": "Coep Hostel Shivaji Road",
+          "lat": 18.528299,
+          "lon": 73.851997,
+          "distanceKm": 0.15,
+          "distanceMeters": 153,
+          "walkMinutes": 2,
+          "buses": [
+            "107",
+            "11",
+            "113",
+            "114",
+            "115",
+            "11A",
+            "11C",
+            "13",
+            "142",
+            "145",
+            "17",
+            "180"
+          ]
+        },
+        {
+          "stopId": "40",
+          "stopName": "Shivaji Maharaj Putla",
+          "lat": 18.5264,
+          "lon": 73.8526,
+          "distanceKm": 0.2,
+          "distanceMeters": 196,
+          "walkMinutes": 2,
+          "buses": [
+            "100",
+            "107",
+            "11",
+            "113",
+            "114",
+            "115",
+            "119",
+            "119A",
+            "11A",
+            "11C",
+            "121",
+            "122"
+          ]
+        }
+      ]
+    },
+    "chaturshringi-temple": {
+      "placeName": "Chaturshringi Temple",
+      "placeNameMr": "चतुःशृंगी मंदिर",
+      "lat": 18.5386,
+      "lng": 73.8292,
+      "nearestStops": [
+        {
+          "stopId": "4507",
+          "stopName": "Mseb Office Chaturshringi",
+          "lat": 18.5374216278907,
+          "lon": 73.8301721822242,
+          "distanceKm": 0.17,
+          "distanceMeters": 166,
+          "walkMinutes": 2,
+          "buses": [
+            "276",
+            "277",
+            "322A",
+            "41"
+          ]
+        },
+        {
+          "stopId": "4476",
+          "stopName": "Mseb Office Chaturshringi",
+          "lat": 18.5375169899887,
+          "lon": 73.8303015928922,
+          "distanceKm": 0.17,
+          "distanceMeters": 167,
+          "walkMinutes": 2,
+          "buses": [
+            "276",
+            "277",
+            "322A",
+            "41"
+          ]
+        },
+        {
+          "stopId": "4475",
+          "stopName": "Chatuhshrungi Paytha",
+          "lat": 18.5404,
+          "lon": 73.830101,
+          "distanceKm": 0.22,
+          "distanceMeters": 222,
+          "walkMinutes": 3,
+          "buses": [
+            "276",
+            "277",
+            "322A",
+            "41"
+          ]
+        }
+      ]
+    },
+    "baps-swaminarayan-mandir": {
+      "placeName": "BAPS Swaminarayan Mandir",
+      "placeNameMr": "स्वामिना नारायण मंदिर",
+      "lat": 18.4878,
+      "lng": 73.834,
+      "nearestStops": [
+        {
+          "stopId": "3323",
+          "stopName": "Jaidev Nagar",
+          "lat": 18.490259,
+          "lon": 73.832428,
+          "distanceKm": 0.32,
+          "distanceMeters": 320,
+          "walkMinutes": 4,
+          "buses": [
+            "60"
+          ]
+        },
+        {
+          "stopId": "626",
+          "stopName": "Jaidev Nagar",
+          "lat": 18.4891523649665,
+          "lon": 73.8309009679899,
+          "distanceKm": 0.36,
+          "distanceMeters": 360,
+          "walkMinutes": 4,
+          "buses": [
+            "117",
+            "118",
+            "118A",
+            "15",
+            "17",
+            "337",
+            "47",
+            "50",
+            "51",
+            "52",
+            "52A",
+            "55"
+          ]
+        },
+        {
+          "stopId": "621",
+          "stopName": "Jaidev Nagar",
+          "lat": 18.489401,
+          "lon": 73.831001,
+          "distanceKm": 0.36,
+          "distanceMeters": 363,
+          "walkMinutes": 4,
+          "buses": [
+            "117",
+            "118",
+            "118A",
+            "15",
+            "17",
+            "337",
+            "47",
+            "50",
+            "51",
+            "52",
+            "52A",
+            "55"
+          ]
+        }
+      ]
+    },
+    "parvati-hill": {
+      "placeName": "Parvati Hill & Peshwa Shrines",
+      "placeNameMr": "पार्वती टेकडी",
+      "lat": 18.4965,
+      "lng": 73.8488,
+      "nearestStops": [
+        {
+          "stopId": "7749",
+          "stopName": "Mahila Mandal",
+          "lat": 18.4993816091099,
+          "lon": 73.8505851541124,
+          "distanceKm": 0.37,
+          "distanceMeters": 372,
+          "walkMinutes": 4,
+          "buses": [
+            "37",
+            "97"
+          ]
+        },
+        {
+          "stopId": "106874",
+          "stopName": "Mahila Mandal",
+          "lat": 18.4992493412638,
+          "lon": 73.850928402901,
+          "distanceKm": 0.38,
+          "distanceMeters": 379,
+          "walkMinutes": 5,
+          "buses": [
+            "37",
+            "97"
+          ]
+        },
+        {
+          "stopId": "6356",
+          "stopName": "Lakshmi Nagar Corner",
+          "lat": 18.4924442396963,
+          "lon": 73.8498723506928,
+          "distanceKm": 0.46,
+          "distanceMeters": 465,
+          "walkMinutes": 6,
+          "buses": [
+            "97"
+          ]
+        }
+      ]
+    },
+    "alandi-dnyaneshwar-mandir": {
+      "placeName": "Alandi Sant Dnyaneshwar Samadhi",
+      "placeNameMr": "आळंदी ज्ञानेश्वर माऊली समाधी",
+      "lat": 18.6756,
+      "lng": 73.8986,
+      "nearestStops": [
+        {
+          "stopId": "5222",
+          "stopName": "Alandi Police Chowky",
+          "lat": 18.675972047244,
+          "lon": 73.8984886736517,
+          "distanceKm": 0.04,
+          "distanceMeters": 43,
+          "walkMinutes": 1,
+          "buses": [
+            "264"
+          ]
+        },
+        {
+          "stopId": "5223",
+          "stopName": "Alandi Police Chowky",
+          "lat": 18.676001,
+          "lon": 73.898804,
+          "distanceKm": 0.05,
+          "distanceMeters": 49,
+          "walkMinutes": 1,
+          "buses": [
+            "264"
+          ]
+        },
+        {
+          "stopId": "761",
+          "stopName": "Alandi",
+          "lat": 18.6748133205203,
+          "lon": 73.8971222018015,
+          "distanceKm": 0.18,
+          "distanceMeters": 179,
+          "walkMinutes": 2,
+          "buses": [
+            "119",
+            "151",
+            "153",
+            "200",
+            "201",
+            "219",
+            "257",
+            "264",
+            "29",
+            "302A",
+            "309",
+            "327"
+          ]
+        }
+      ]
+    },
+    "dehu-tukaram-mandir": {
+      "placeName": "Dehu Sant Tukaram Maharaj Gatha Mandir",
+      "placeNameMr": "देहू संत तुकाराम महाराज मंदिर",
+      "lat": 18.7188,
+      "lng": 73.7712,
+      "nearestStops": [
+        {
+          "stopId": "6106",
+          "stopName": "Jain Mandir Dehugaon",
+          "lat": 18.7157,
+          "lon": 73.7705,
+          "distanceKm": 0.35,
+          "distanceMeters": 352,
+          "walkMinutes": 4,
+          "buses": [
+            "309",
+            "350"
+          ]
+        },
+        {
+          "stopId": "6045",
+          "stopName": "Jain Mandir Dehugaon",
+          "lat": 18.715501191918,
+          "lon": 73.7707887603081,
+          "distanceKm": 0.37,
+          "distanceMeters": 369,
+          "walkMinutes": 4,
+          "buses": [
+            "309",
+            "350"
+          ]
+        },
+        {
+          "stopId": "5131",
+          "stopName": "Dehugaon Gram Panchayat",
+          "lat": 18.7173,
+          "lon": 73.767799,
+          "distanceKm": 0.4,
+          "distanceMeters": 395,
+          "walkMinutes": 5,
+          "buses": [
+            "262",
+            "309",
+            "329",
+            "350"
+          ]
+        }
+      ]
+    },
+    "tulshibaug-temple": {
+      "placeName": "Tulshibaug Ram Mandir",
+      "placeNameMr": "तुळशीबाग राम मंदिर",
+      "lat": 18.5144,
+      "lng": 73.8558,
+      "nearestStops": [
+        {
+          "stopId": "3815",
+          "stopName": "Mandai Stand",
+          "lat": 18.5134727160639,
+          "lon": 73.8559019565582,
+          "distanceKm": 0.1,
+          "distanceMeters": 104,
+          "walkMinutes": 1,
+          "buses": [
+            "68"
+          ]
+        },
+        {
+          "stopId": "1990",
+          "stopName": "Mandai Stand",
+          "lat": 18.5134396518339,
+          "lon": 73.8559636473656,
+          "distanceKm": 0.11,
+          "distanceMeters": 108,
+          "walkMinutes": 1,
+          "buses": [
+            "144",
+            "202"
+          ]
+        },
+        {
+          "stopId": "491",
+          "stopName": "Ganpati Chowk Laxmi Road",
+          "lat": 18.5149311916394,
+          "lon": 73.8548889436307,
+          "distanceKm": 0.11,
+          "distanceMeters": 113,
+          "walkMinutes": 1,
+          "buses": [
+            "113",
+            "144A",
+            "174",
+            "283",
+            "57",
+            "81",
+            "RATRANI 7"
+          ]
+        }
+      ]
+    },
+    "iskcon-nvcc-kondhwa": {
+      "placeName": "ISKCON NVCC Kondhwa",
+      "placeNameMr": "इस्कॉन मंदिर कोंढवा",
+      "lat": 18.4485,
+      "lng": 73.8842,
+      "nearestStops": [
+        {
+          "stopId": "3141",
+          "stopName": "Metro Green Society",
+          "lat": 18.449718112071,
+          "lon": 73.8843923807144,
+          "distanceKm": 0.14,
+          "distanceMeters": 137,
+          "walkMinutes": 2,
+          "buses": [
+            "172",
+            "K16"
+          ]
+        },
+        {
+          "stopId": "3142",
+          "stopName": "Tilekar Steel",
+          "lat": 18.4479726802796,
+          "lon": 73.8854357600212,
+          "distanceKm": 0.14,
+          "distanceMeters": 143,
+          "walkMinutes": 2,
+          "buses": [
+            "172",
+            "K16"
+          ]
+        },
+        {
+          "stopId": "3158",
+          "stopName": "Tilekar Steel",
+          "lat": 18.4478,
+          "lon": 73.885498,
+          "distanceKm": 0.16,
+          "distanceMeters": 157,
+          "walkMinutes": 2,
+          "buses": [
+            "172",
+            "K16"
+          ]
+        }
+      ]
+    },
+    "raja-dinkar-kelkar-museum": {
+      "placeName": "Raja Dinkar Kelkar Museum",
+      "placeNameMr": "राजा दिनकर केळकर संग्रहालय",
+      "lat": 18.5113,
+      "lng": 73.8543,
+      "nearestStops": [
+        {
+          "stopId": "382",
+          "stopName": "Shanipar",
+          "lat": 18.5121713525364,
+          "lon": 73.8538181835903,
+          "distanceKm": 0.11,
+          "distanceMeters": 109,
+          "walkMinutes": 1,
+          "buses": [
+            "11",
+            "11A",
+            "11C",
+            "13",
+            "17",
+            "2",
+            "21",
+            "216",
+            "297",
+            "298",
+            "2A",
+            "30"
+          ]
+        },
+        {
+          "stopId": "8042",
+          "stopName": "Shanipar Stand",
+          "lat": 18.5128,
+          "lon": 73.852898,
+          "distanceKm": 0.22,
+          "distanceMeters": 223,
+          "walkMinutes": 3,
+          "buses": [
+            "55",
+            "58",
+            "59"
+          ]
+        },
+        {
+          "stopId": "3815",
+          "stopName": "Mandai Stand",
+          "lat": 18.5134727160639,
+          "lon": 73.8559019565582,
+          "distanceKm": 0.29,
+          "distanceMeters": 295,
+          "walkMinutes": 4,
+          "buses": [
+            "68"
+          ]
+        }
+      ]
+    },
+    "joshi-miniature-railway": {
+      "placeName": "Joshi's Museum of Miniature Railways",
+      "placeNameMr": "जोशी रेल्वे संग्रहालय",
+      "lat": 18.5036,
+      "lng": 73.8188,
+      "nearestStops": [
+        {
+          "stopId": "219",
+          "stopName": "Maruti Mandir Karve Road",
+          "lat": 18.5036191132045,
+          "lon": 73.820119450371,
+          "distanceKm": 0.14,
+          "distanceMeters": 139,
+          "walkMinutes": 2,
+          "buses": [
+            "104",
+            "107",
+            "144",
+            "144A",
+            "174",
+            "276",
+            "281",
+            "282",
+            "283",
+            "322A",
+            "64",
+            "64M"
+          ]
+        },
+        {
+          "stopId": "206",
+          "stopName": "Maruti Mandir Karve Road / Maruti Mandir Kothrud",
+          "lat": 18.503599,
+          "lon": 73.820297,
+          "distanceKm": 0.16,
+          "distanceMeters": 158,
+          "walkMinutes": 2,
+          "buses": [
+            "107",
+            "144",
+            "144A",
+            "202",
+            "276",
+            "281",
+            "282",
+            "283",
+            "64",
+            "64M",
+            "66",
+            "72"
+          ]
+        },
+        {
+          "stopId": "205",
+          "stopName": "Karve Putala",
+          "lat": 18.502199,
+          "lon": 73.816597,
+          "distanceKm": 0.28,
+          "distanceMeters": 280,
+          "walkMinutes": 3,
+          "buses": [
+            "107",
+            "144",
+            "144A",
+            "202",
+            "276",
+            "281",
+            "282",
+            "283",
+            "322A",
+            "64",
+            "64M",
+            "66"
+          ]
+        }
+      ]
+    },
+    "tribal-museum": {
+      "placeName": "Tribal Cultural Museum",
+      "placeNameMr": "आदिवासी संग्रहालय",
+      "lat": 18.5348,
+      "lng": 73.8797,
+      "nearestStops": [
+        {
+          "stopId": "1320",
+          "stopName": "Wadia College",
+          "lat": 18.5355,
+          "lon": 73.880203,
+          "distanceKm": 0.09,
+          "distanceMeters": 94,
+          "walkMinutes": 1,
+          "buses": [
+            "162",
+            "169",
+            "24",
+            "29"
+          ]
+        },
+        {
+          "stopId": "1324",
+          "stopName": "Guruprasad Bungalow",
+          "lat": 18.535999,
+          "lon": 73.880302,
+          "distanceKm": 0.15,
+          "distanceMeters": 148,
+          "walkMinutes": 2,
+          "buses": [
+            "131",
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "148",
+            "148A",
+            "151",
+            "154",
+            "155"
+          ]
+        },
+        {
+          "stopId": "106816",
+          "stopName": "Wadia College",
+          "lat": 18.5348765690014,
+          "lon": 73.8815699375542,
+          "distanceKm": 0.2,
+          "distanceMeters": 197,
+          "walkMinutes": 2,
+          "buses": [
+            "131",
+            "132",
+            "133",
+            "133A",
+            "135",
+            "137",
+            "147",
+            "148",
+            "148A",
+            "151",
+            "154",
+            "155"
+          ]
+        }
+      ]
+    },
+    "okayama-friendship-garden": {
+      "placeName": "Okayama Friendship Garden (Pu La Deshpande)",
+      "placeNameMr": "पु. ल. देशपांडे उद्यान",
+      "lat": 18.4925,
+      "lng": 73.8322,
+      "nearestStops": [
+        {
+          "stopId": "622",
+          "stopName": "Vitthalwadi Jakat Naka",
+          "lat": 18.491130014308,
+          "lon": 73.8331273198128,
+          "distanceKm": 0.18,
+          "distanceMeters": 181,
+          "walkMinutes": 2,
+          "buses": [
+            "117",
+            "118",
+            "118A",
+            "15",
+            "17",
+            "337",
+            "47",
+            "50",
+            "51",
+            "52",
+            "52A",
+            "55"
+          ]
+        },
+        {
+          "stopId": "625",
+          "stopName": "Vitthalwadi Jakat Naka",
+          "lat": 18.491000547838,
+          "lon": 73.8331741256662,
+          "distanceKm": 0.2,
+          "distanceMeters": 196,
+          "walkMinutes": 2,
+          "buses": [
+            "117",
+            "118",
+            "118A",
+            "15",
+            "17",
+            "337",
+            "47",
+            "50",
+            "51",
+            "52",
+            "52A",
+            "55"
+          ]
+        },
+        {
+          "stopId": "3323",
+          "stopName": "Jaidev Nagar",
+          "lat": 18.490259,
+          "lon": 73.832428,
+          "distanceKm": 0.25,
+          "distanceMeters": 250,
+          "walkMinutes": 3,
+          "buses": [
+            "60"
+          ]
+        }
+      ]
+    },
+    "sarasbaug": {
+      "placeName": "Sarasbaug & Talyatla Ganpati",
+      "placeNameMr": "सारसबाग व तळ्यातील गणपती",
+      "lat": 18.5028,
+      "lng": 73.8538,
+      "nearestStops": [
+        {
+          "stopId": "173",
+          "stopName": "Sarasbaug",
+          "lat": 18.5028922722082,
+          "lon": 73.8538125131059,
+          "distanceKm": 0.01,
+          "distanceMeters": 10,
+          "walkMinutes": 1,
+          "buses": [
+            "297",
+            "72"
+          ]
+        },
+        {
+          "stopId": "143",
+          "stopName": "Lakshminarayan",
+          "lat": 18.5035,
+          "lon": 73.853699,
+          "distanceKm": 0.08,
+          "distanceMeters": 79,
+          "walkMinutes": 1,
+          "buses": [
+            "215",
+            "30",
+            "66",
+            "METRO SHUTTLE 13"
+          ]
+        },
+        {
+          "stopId": "4509",
+          "stopName": "Sarasbaug",
+          "lat": 18.503571,
+          "lon": 73.853628,
+          "distanceKm": 0.09,
+          "distanceMeters": 88,
+          "walkMinutes": 1,
+          "buses": [
+            "11",
+            "111M",
+            "117",
+            "11A",
+            "11C",
+            "13",
+            "199",
+            "216",
+            "231",
+            "232",
+            "233",
+            "233A"
+          ]
+        }
+      ]
+    },
+    "sambhaji-park": {
+      "placeName": "Chhatrapati Sambhaji Garden",
+      "placeNameMr": "छत्रपती संभाजी उद्यान",
+      "lat": 18.5208,
+      "lng": 73.8447,
+      "nearestStops": [
+        {
+          "stopId": "215",
+          "stopName": "Balgandharv",
+          "lat": 18.5217343149885,
+          "lon": 73.8472473481107,
+          "distanceKm": 0.29,
+          "distanceMeters": 288,
+          "walkMinutes": 3,
+          "buses": [
+            "107",
+            "111M",
+            "12",
+            "219",
+            "26",
+            "281",
+            "282",
+            "299",
+            "337",
+            "339",
+            "4",
+            "42"
+          ]
+        },
+        {
+          "stopId": "216",
+          "stopName": "Natraj Talkies",
+          "lat": 18.5181525286138,
+          "lon": 73.8443175116017,
+          "distanceKm": 0.3,
+          "distanceMeters": 297,
+          "walkMinutes": 4,
+          "buses": [
+            "107",
+            "111M",
+            "12",
+            "219",
+            "26",
+            "281",
+            "282",
+            "299",
+            "337",
+            "339",
+            "4",
+            "42"
+          ]
+        },
+        {
+          "stopId": "2017",
+          "stopName": "Ghole Road Press",
+          "lat": 18.5236,
+          "lon": 73.846199,
+          "distanceKm": 0.35,
+          "distanceMeters": 349,
+          "walkMinutes": 4,
+          "buses": [
+            "146"
+          ]
+        }
+      ]
+    },
+    "empress-botanical-garden": {
+      "placeName": "Empress Botanical Garden",
+      "placeNameMr": "एम्प्रेस गार्डन",
+      "lat": 18.5126,
+      "lng": 73.8992,
+      "nearestStops": [
+        {
+          "stopId": "1683",
+          "stopName": "Fatima Nagar",
+          "lat": 18.506701,
+          "lon": 73.8993,
+          "distanceKm": 0.66,
+          "distanceMeters": 656,
+          "walkMinutes": 8,
+          "buses": [
+            "139A"
+          ]
+        },
+        {
+          "stopId": "411",
+          "stopName": "Bhairoba Nala Police Chowky",
+          "lat": 18.5068552120791,
+          "lon": 73.8967835856414,
+          "distanceKm": 0.69,
+          "distanceMeters": 688,
+          "walkMinutes": 8,
+          "buses": [
+            "111M",
+            "139",
+            "139A",
+            "148",
+            "148A",
+            "15",
+            "168",
+            "175",
+            "177",
+            "180",
+            "199",
+            "201"
+          ]
+        },
+        {
+          "stopId": "439",
+          "stopName": "Bhairoba Nala Police Chowky",
+          "lat": 18.5067223822691,
+          "lon": 73.896894454218,
+          "distanceKm": 0.7,
+          "distanceMeters": 697,
+          "walkMinutes": 8,
+          "buses": [
+            "111M",
+            "139",
+            "139A",
+            "148",
+            "148A",
+            "15",
+            "168",
+            "175",
+            "177",
+            "180",
+            "199",
+            "201"
+          ]
+        }
+      ]
+    },
+    "rajiv-gandhi-zoological-park": {
+      "placeName": "Rajiv Gandhi Zoological Park (Katraj Zoo)",
+      "placeNameMr": "राजीव गांधी प्राणी संग्रहालय (कात्रज)",
+      "lat": 18.4552,
+      "lng": 73.8584,
+      "nearestStops": [
+        {
+          "stopId": "4488",
+          "stopName": "Katraj Dairy",
+          "lat": 18.454399,
+          "lon": 73.857803,
+          "distanceKm": 0.11,
+          "distanceMeters": 109,
+          "walkMinutes": 1,
+          "buses": [
+            "216"
+          ]
+        },
+        {
+          "stopId": "4496",
+          "stopName": "Katraj Dairy",
+          "lat": 18.4543,
+          "lon": 73.857803,
+          "distanceKm": 0.12,
+          "distanceMeters": 118,
+          "walkMinutes": 1,
+          "buses": [
+            "216"
+          ]
+        },
+        {
+          "stopId": "137",
+          "stopName": "Bharati Vidyapeeth Gate",
+          "lat": 18.4566105334252,
+          "lon": 73.8586110239416,
+          "distanceKm": 0.16,
+          "distanceMeters": 158,
+          "walkMinutes": 2,
+          "buses": [
+            "103",
+            "11C",
+            "130",
+            "216",
+            "235",
+            "236",
+            "24",
+            "24A",
+            "290",
+            "292",
+            "293",
+            "296"
+          ]
+        }
+      ]
+    },
+    "khadakwasla-dam": {
+      "placeName": "Khadakwasla Dam & Chowpatty",
+      "placeNameMr": "खडकवासला धरण",
+      "lat": 18.4358,
+      "lng": 73.7638,
+      "nearestStops": [
+        {
+          "stopId": "5543",
+          "stopName": "Mes Canteen Iat",
+          "lat": 18.4315505223431,
+          "lon": 73.7694630844195,
+          "distanceKm": 0.76,
+          "distanceMeters": 762,
+          "walkMinutes": 9,
+          "buses": [
+            "50",
+            "52",
+            "52A"
+          ]
+        },
+        {
+          "stopId": "7837",
+          "stopName": "Mes Canteen Iat",
+          "lat": 18.4316491251832,
+          "lon": 73.7695958471912,
+          "distanceKm": 0.77,
+          "distanceMeters": 766,
+          "walkMinutes": 9,
+          "buses": [
+            "50",
+            "52",
+            "52A"
+          ]
+        },
+        {
+          "stopId": "8184",
+          "stopName": "Khadakwasla Dharan Stores",
+          "lat": 18.443001,
+          "lon": 73.759804,
+          "distanceKm": 0.9,
+          "distanceMeters": 905,
+          "walkMinutes": 11,
+          "buses": [
+            "66",
+            "84",
+            "84A"
+          ]
+        }
+      ]
+    },
+    "pashan-lake": {
+      "placeName": "Pashan Bird Sanctuary & Lake",
+      "placeNameMr": "पाषाण तलाव",
+      "lat": 18.536,
+      "lng": 73.7845,
+      "nearestStops": [
+        {
+          "stopId": "2003",
+          "stopName": "Shiv Nagar Sus Road Sutarwadi",
+          "lat": 18.5381622810575,
+          "lon": 73.7844961881638,
+          "distanceKm": 0.24,
+          "distanceMeters": 240,
+          "walkMinutes": 3,
+          "buses": [
+            "145",
+            "87"
+          ]
+        },
+        {
+          "stopId": "2006",
+          "stopName": "Shiv Nagar Sus Road Sutarwadi",
+          "lat": 18.5382411151189,
+          "lon": 73.7842950224877,
+          "distanceKm": 0.25,
+          "distanceMeters": 250,
+          "walkMinutes": 3,
+          "buses": [
+            "145",
+            "87"
+          ]
+        },
+        {
+          "stopId": "8558",
+          "stopName": "Nalavade Vasti Pashan",
+          "lat": 18.537901,
+          "lon": 73.786598,
+          "distanceKm": 0.31,
+          "distanceMeters": 306,
+          "walkMinutes": 4,
+          "buses": [
+            "87"
+          ]
+        }
+      ]
+    },
+    "vetal-tekdi": {
+      "placeName": "Vetal Tekdi (ARAI Viewpoint)",
+      "placeNameMr": "वेताळ टेकडी",
+      "lat": 18.523,
+      "lng": 73.819,
+      "nearestStops": [
+        {
+          "stopId": "2008",
+          "stopName": "Gokhale Nagar Police Line",
+          "lat": 18.523701,
+          "lon": 73.824997,
+          "distanceKm": 0.64,
+          "distanceMeters": 637,
+          "walkMinutes": 8,
+          "buses": [
+            "146",
+            "58",
+            "90"
+          ]
+        },
+        {
+          "stopId": "8052",
+          "stopName": "Janwadi Corner",
+          "lat": 18.5292,
+          "lon": 73.8237,
+          "distanceKm": 0.85,
+          "distanceMeters": 849,
+          "walkMinutes": 10,
+          "buses": [
+            "59"
+          ]
+        },
+        {
+          "stopId": "8051",
+          "stopName": "Janwadi Corner",
+          "lat": 18.529301,
+          "lon": 73.823601,
+          "distanceKm": 0.85,
+          "distanceMeters": 852,
+          "walkMinutes": 10,
+          "buses": [
+            "59"
+          ]
+        }
+      ]
+    },
+    "taljai-hills": {
+      "placeName": "Taljai Hills Forest Reserve",
+      "placeNameMr": "तळजाई टेकडी",
+      "lat": 18.4835,
+      "lng": 73.8475,
+      "nearestStops": [
+        {
+          "stopId": "4061",
+          "stopName": "Sahakar Nagar",
+          "lat": 18.4846840711539,
+          "lon": 73.845230794567,
+          "distanceKm": 0.27,
+          "distanceMeters": 273,
+          "walkMinutes": 3,
+          "buses": [
+            "37",
+            "97"
+          ]
+        },
+        {
+          "stopId": "6359",
+          "stopName": "Dnyaneshwar Society",
+          "lat": 18.482607,
+          "lon": 73.849937,
+          "distanceKm": 0.28,
+          "distanceMeters": 276,
+          "walkMinutes": 3,
+          "buses": [
+            "215",
+            "24",
+            "298"
+          ]
+        },
+        {
+          "stopId": "4473",
+          "stopName": "Dnyaneshwar Society",
+          "lat": 18.4825,
+          "lon": 73.849899,
+          "distanceKm": 0.28,
+          "distanceMeters": 276,
+          "walkMinutes": 3,
+          "buses": [
+            "215",
+            "24",
+            "298"
+          ]
+        }
+      ]
+    },
+    "sinhagad-fort": {
+      "placeName": "Sinhagad Fort (Kalyan Darwaza & Tanaji Memorial)",
+      "placeNameMr": "सिंहगड किल्ला",
+      "lat": 18.3663,
+      "lng": 73.7558,
+      "nearestStops": [
+        {
+          "stopId": "7812",
+          "stopName": "Sinhgad",
+          "lat": 18.3797209100236,
+          "lon": 73.7681943732576,
+          "distanceKm": 1.98,
+          "distanceMeters": 1984,
+          "walkMinutes": 24,
+          "buses": [
+            "50"
+          ]
+        },
+        {
+          "stopId": "7844",
+          "stopName": "Sinhgad",
+          "lat": 18.3800861868155,
+          "lon": 73.7682707964911,
+          "distanceKm": 2.02,
+          "distanceMeters": 2020,
+          "walkMinutes": 24,
+          "buses": [
+            "50"
+          ]
+        }
+      ]
+    },
+    "rajgad-fort": {
+      "placeName": "Rajgad Fort (Suvela & Padmavati Machi)",
+      "placeNameMr": "राजगड किल्ला",
+      "lat": 18.257,
+      "lng": 73.682,
+      "nearestStops": []
+    },
+    "torna-fort": {
+      "placeName": "Torna Fort (Prachandagad / Menghai)",
+      "placeNameMr": "तोरणा किल्ला",
+      "lat": 18.277,
+      "lng": 73.623,
+      "nearestStops": [
+        {
+          "stopId": "5663",
+          "stopName": "Velhe",
+          "lat": 18.293041,
+          "lon": 73.637557,
+          "distanceKm": 2.35,
+          "distanceMeters": 2355,
+          "walkMinutes": 28,
+          "buses": [
+            "296"
+          ]
+        }
+      ]
+    },
+    "lohagad-fort": {
+      "placeName": "Lohagad Fort (Vinchukata)",
+      "placeNameMr": "लोहगड किल्ला",
+      "lat": 18.709,
+      "lng": 73.479,
+      "nearestStops": []
+    },
+    "purandar-fort": {
+      "placeName": "Purandar Fort (Birthplace of Sambhaji Maharaj)",
+      "placeNameMr": "पुरंदर किल्ला",
+      "lat": 18.281,
+      "lng": 73.978,
+      "nearestStops": [
+        {
+          "stopId": "5471",
+          "stopName": "Chivhewadi",
+          "lat": 18.283474,
+          "lon": 73.96125,
+          "distanceKm": 1.79,
+          "distanceMeters": 1790,
+          "walkMinutes": 21,
+          "buses": [
+            "293"
+          ]
+        },
+        {
+          "stopId": "5539",
+          "stopName": "Narayan Dham",
+          "lat": 18.2932358126855,
+          "lon": 73.9660052547534,
+          "distanceKm": 1.86,
+          "distanceMeters": 1859,
+          "walkMinutes": 22,
+          "buses": [
+            "293"
+          ]
+        },
+        {
+          "stopId": "5470",
+          "stopName": "Royal Purandar",
+          "lat": 18.2932,
+          "lon": 73.965797,
+          "distanceKm": 1.87,
+          "distanceMeters": 1871,
+          "walkMinutes": 22,
+          "buses": [
+            "293"
+          ]
+        }
+      ]
+    },
+    "karla-caves": {
+      "placeName": "Karla Buddhist Caves & Ekvira Mandir",
+      "placeNameMr": "कार्ले लेणी व एकवीरा आई मंदिर",
+      "lat": 18.782,
+      "lng": 73.47,
+      "nearestStops": [
+        {
+          "stopId": "7339",
+          "stopName": "Ekvira Vidya Mandir",
+          "lat": 18.7616,
+          "lon": 73.477303,
+          "distanceKm": 2.4,
+          "distanceMeters": 2395,
+          "walkMinutes": 29,
+          "buses": [
+            "368"
+          ]
+        },
+        {
+          "stopId": "7400",
+          "stopName": "Ekvira Vidya Mandir",
+          "lat": 18.7614,
+          "lon": 73.477203,
+          "distanceKm": 2.41,
+          "distanceMeters": 2413,
+          "walkMinutes": 29,
+          "buses": [
+            "368"
+          ]
+        },
+        {
+          "stopId": "7340",
+          "stopName": "Carla Phata",
+          "lat": 18.7626,
+          "lon": 73.4804,
+          "distanceKm": 2.42,
+          "distanceMeters": 2419,
+          "walkMinutes": 29,
+          "buses": [
+            "368"
+          ]
+        }
+      ]
+    }
+  },
+  "hubCorridors": {
+    "pune-station": {
+      "hubName": "Pune Railway Station",
+      "hubNameMr": "पुणे रेल्वे स्टेशन",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "108",
+              "routeName": "Pune Station Moledina Road ⇆ Sutardara"
+            },
+            {
+              "busNo": "143",
+              "routeName": "Pune Station Moledina Stand ⇆ Galinde Path"
+            },
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "108",
+              "routeName": "Pune Station Moledina Road ⇆ Sutardara"
+            },
+            {
+              "busNo": "143",
+              "routeName": "Pune Station Moledina Stand ⇆ Galinde Path"
+            },
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "57",
+              "routeName": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "RATRANI 7",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "57",
+              "routeName": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "RATRANI 7",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "aga-khan-palace": {
+          "directBuses": [
+            {
+              "busNo": "132",
+              "routeName": "Shubham Society Nagar Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133",
+              "routeName": "Anand Park Vadgaon Sheri Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133A",
+              "routeName": "Columbia Hospital ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "135",
+              "routeName": "Ranjangaon Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "137",
+              "routeName": "Pargaon Salu Malu ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "147",
+              "routeName": "Nhavi Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "157",
+              "routeName": "JSPM Vidhyapith Wagholi ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "159",
+              "routeName": "Talegaon Dhamdhere Bazar ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "159B",
+              "routeName": "Loni Dhamni ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "162",
+              "routeName": "Pabal Gaon ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "163",
+              "routeName": "Dhole Patil Collage ⇆ Pune Station Ambedkar Putala"
+            }
+          ],
+          "arrivalStop": "Ramwadi Jakat Naka",
+          "walkFromStopMeters": 476
+        },
+        "shinde-chhatri": {
+          "directBuses": [
+            {
+              "busNo": "176",
+              "routeName": "Vadachi Wadi ⇆ Pune Station Depot"
+            }
+          ],
+          "arrivalStop": "Wanwadi Corner",
+          "walkFromStopMeters": 127
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "98",
+              "routeName": "Kesnand Phata Wagholi ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "225",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Kharadi Gaon"
+            },
+            {
+              "busNo": "333",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "348",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "bund-garden": {
+          "directBuses": [
+            {
+              "busNo": "131",
+              "routeName": "Golegaon Gram Panchayat ⇆ Ma Na Pa Dengle Pul Nadikhathi"
+            },
+            {
+              "busNo": "132",
+              "routeName": "Shubham Society Nagar Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133",
+              "routeName": "Anand Park Vadgaon Sheri Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133A",
+              "routeName": "Columbia Hospital ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "135",
+              "routeName": "Ranjangaon Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "137",
+              "routeName": "Pargaon Salu Malu ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "147",
+              "routeName": "Nhavi Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "151",
+              "routeName": "Alandi ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "154",
+              "routeName": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "155",
+              "routeName": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "162",
+              "routeName": "Pabal Gaon ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "169",
+              "routeName": "Keshav Nagar ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 205
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "57",
+              "routeName": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "RATRANI 7",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "108",
+              "routeName": "Pune Station Moledina Road ⇆ Sutardara"
+            },
+            {
+              "busNo": "143",
+              "routeName": "Pune Station Moledina Stand ⇆ Galinde Path"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "108",
+              "routeName": "Pune Station Moledina Road ⇆ Sutardara"
+            },
+            {
+              "busNo": "143",
+              "routeName": "Pune Station Moledina Stand ⇆ Galinde Path"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "57",
+              "routeName": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            },
+            {
+              "busNo": "RATRANI 7",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "6",
+              "routeName": "Pune Station Moledina Stand ⇆ Swargate"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "205",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "142",
+              "routeName": "Ghotawade Phata ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "145",
+              "routeName": "Sutarwadi Depot ⇆ Pune Station Depot"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "151",
+              "routeName": "Alandi ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "201",
+              "routeName": "Alandi ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        },
+        "dehu-tukaram-mandir": {
+          "directBuses": [
+            {
+              "busNo": "262",
+              "routeName": "Sant Tukaram Maharaj Krida Sankul Dehugaon ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Jain Mandir Dehugaon",
+          "walkFromStopMeters": 352
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "57",
+              "routeName": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "RATRANI 7",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "iskcon-nvcc-kondhwa": {
+          "directBuses": [
+            {
+              "busNo": "172",
+              "routeName": "Pune Station Jayprakash Stand ⇆ Yewalewadi"
+            }
+          ],
+          "arrivalStop": "Metro Green Society",
+          "walkFromStopMeters": 137
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "144",
+              "routeName": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "144A",
+              "routeName": "Pune Station Moledina Stand ⇆ Aditya Garden City"
+            },
+            {
+              "busNo": "174",
+              "routeName": "Nda 10 No. Gate ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "tribal-museum": {
+          "directBuses": [
+            {
+              "busNo": "162",
+              "routeName": "Pabal Gaon ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "169",
+              "routeName": "Keshav Nagar ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            },
+            {
+              "busNo": "131",
+              "routeName": "Golegaon Gram Panchayat ⇆ Ma Na Pa Dengle Pul Nadikhathi"
+            },
+            {
+              "busNo": "132",
+              "routeName": "Shubham Society Nagar Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133",
+              "routeName": "Anand Park Vadgaon Sheri Road ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "133A",
+              "routeName": "Columbia Hospital ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "135",
+              "routeName": "Ranjangaon Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "137",
+              "routeName": "Pargaon Salu Malu ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "147",
+              "routeName": "Nhavi Sandas ⇆ Ma Na Pa Shramik Bhavan"
+            },
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "151",
+              "routeName": "Alandi ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "154",
+              "routeName": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "155",
+              "routeName": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 94
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "139A",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "139",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "168",
+              "routeName": "Keshav Nagar ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "175",
+              "routeName": "Hadapsar Gadital ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "177",
+              "routeName": "Bhangire Nagar Mahamadwadi ⇆ Pune Station Depot"
+            },
+            {
+              "busNo": "201",
+              "routeName": "Alandi ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        },
+        "rajiv-gandhi-zoological-park": {
+          "directBuses": [
+            {
+              "busNo": "235",
+              "routeName": "Kharadi Gaon ⇆ Katraj"
+            },
+            {
+              "busNo": "236",
+              "routeName": "Kesnand Phata Wagholi ⇆ Katraj"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "24A",
+              "routeName": "Lohegaon Haran Tale ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Katraj Dairy",
+          "walkFromStopMeters": 109
+        },
+        "pashan-lake": {
+          "directBuses": [
+            {
+              "busNo": "145",
+              "routeName": "Sutarwadi Depot ⇆ Pune Station Depot"
+            }
+          ],
+          "arrivalStop": "Shiv Nagar Sus Road Sutarwadi",
+          "walkFromStopMeters": 240
+        },
+        "vetal-tekdi": {
+          "directBuses": [
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            }
+          ],
+          "arrivalStop": "Gokhale Nagar Police Line",
+          "walkFromStopMeters": 637
+        },
+        "taljai-hills": {
+          "directBuses": [
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Sahakar Nagar",
+          "walkFromStopMeters": 273
+        }
+      }
+    },
+    "swargate": {
+      "hubName": "Swargate Bus Terminal",
+      "hubNameMr": "स्वारगेट बस टर्मिनल",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "68",
+              "routeName": "Upper Depot ⇆ Sutardara"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "4",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "bund-garden": {
+          "directBuses": [
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 205
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "6",
+              "routeName": "Pune Station Moledina Stand ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "chaturshringi-temple": {
+          "directBuses": [
+            {
+              "busNo": "41",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Upper Depot"
+            }
+          ],
+          "arrivalStop": "Mseb Office Chaturshringi",
+          "walkFromStopMeters": 166
+        },
+        "baps-swaminarayan-mandir": {
+          "directBuses": [
+            {
+              "busNo": "60",
+              "routeName": "Ghule Nagar Vadgaon Budruk ⇆ Swargate"
+            },
+            {
+              "busNo": "117",
+              "routeName": "Dhayareshwar Mandir ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "118",
+              "routeName": "Vadgaon Budruk Stand ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "118A",
+              "routeName": "Suncity ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "47",
+              "routeName": "Sanaswadi Nandoshi ⇆ Swargate"
+            },
+            {
+              "busNo": "50",
+              "routeName": "Sinhgad ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "52",
+              "routeName": "Khanapur ⇆ Swargate"
+            },
+            {
+              "busNo": "52A",
+              "routeName": "Varasgaon Goradwadi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Jaidev Nagar",
+          "walkFromStopMeters": 320
+        },
+        "parvati-hill": {
+          "directBuses": [
+            {
+              "busNo": "37",
+              "routeName": "Wakdewadi Navin ST Stand ⇆ Sahakar Nagar"
+            },
+            {
+              "busNo": "97",
+              "routeName": "Sahakar Nagar ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Mahila Mandal",
+          "walkFromStopMeters": 372
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "68",
+              "routeName": "Upper Depot ⇆ Sutardara"
+            },
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "raja-dinkar-kelkar-museum": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "68",
+              "routeName": "Upper Depot ⇆ Sutardara"
+            }
+          ],
+          "arrivalStop": "Shanipar",
+          "walkFromStopMeters": 109
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "64",
+              "routeName": "Nda 10 No. Gate ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "64M",
+              "routeName": "Ganpati Matha ⇆ Hadapsar Gadital"
+            },
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "66",
+              "routeName": "Thakarwadi ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "72",
+              "routeName": "Nda 10 No. Gate ⇆ Sukhsagar Nagar"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "tribal-museum": {
+          "directBuses": [
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "29",
+              "routeName": "Alandi ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 94
+        },
+        "okayama-friendship-garden": {
+          "directBuses": [
+            {
+              "busNo": "117",
+              "routeName": "Dhayareshwar Mandir ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "118",
+              "routeName": "Vadgaon Budruk Stand ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "118A",
+              "routeName": "Suncity ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "47",
+              "routeName": "Sanaswadi Nandoshi ⇆ Swargate"
+            },
+            {
+              "busNo": "50",
+              "routeName": "Sinhgad ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "52",
+              "routeName": "Khanapur ⇆ Swargate"
+            },
+            {
+              "busNo": "52A",
+              "routeName": "Varasgaon Goradwadi ⇆ Swargate"
+            },
+            {
+              "busNo": "60",
+              "routeName": "Ghule Nagar Vadgaon Budruk ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Vitthalwadi Jakat Naka",
+          "walkFromStopMeters": 181
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "72",
+              "routeName": "Nda 10 No. Gate ⇆ Sukhsagar Nagar"
+            },
+            {
+              "busNo": "215",
+              "routeName": "Swargate ⇆ Chintamani Dnyanpith"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "66",
+              "routeName": "Thakarwadi ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "METRO SHUTTLE 13",
+              "routeName": "Swargate ⇆ Upper Depot"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "117",
+              "routeName": "Dhayareshwar Mandir ⇆ Swargate Natraj Stand"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "231",
+              "routeName": "Shilim Gaon ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "232",
+              "routeName": "Gram Panchayat Belawade ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233",
+              "routeName": "Paud Shashkiy Vishram Gruh ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233A",
+              "routeName": "Kolwan Gaon ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "4",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "42",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        },
+        "rajiv-gandhi-zoological-park": {
+          "directBuses": [
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "103",
+              "routeName": "Kothrud Depot ⇆ Katraj"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "130",
+              "routeName": "Swargate ⇆ Narhegaon"
+            },
+            {
+              "busNo": "235",
+              "routeName": "Kharadi Gaon ⇆ Katraj"
+            },
+            {
+              "busNo": "236",
+              "routeName": "Kesnand Phata Wagholi ⇆ Katraj"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "24A",
+              "routeName": "Lohegaon Haran Tale ⇆ Katraj"
+            },
+            {
+              "busNo": "290",
+              "routeName": "Swargate ⇆ Jambhulwadi"
+            }
+          ],
+          "arrivalStop": "Katraj Dairy",
+          "walkFromStopMeters": 109
+        },
+        "khadakwasla-dam": {
+          "directBuses": [
+            {
+              "busNo": "50",
+              "routeName": "Sinhgad ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "52",
+              "routeName": "Khanapur ⇆ Swargate"
+            },
+            {
+              "busNo": "52A",
+              "routeName": "Varasgaon Goradwadi ⇆ Swargate"
+            },
+            {
+              "busNo": "66",
+              "routeName": "Thakarwadi ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Mes Canteen Iat",
+          "walkFromStopMeters": 762
+        },
+        "vetal-tekdi": {
+          "directBuses": [
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Gokhale Nagar Police Line",
+          "walkFromStopMeters": 637
+        },
+        "taljai-hills": {
+          "directBuses": [
+            {
+              "busNo": "37",
+              "routeName": "Wakdewadi Navin ST Stand ⇆ Sahakar Nagar"
+            },
+            {
+              "busNo": "97",
+              "routeName": "Sahakar Nagar ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "215",
+              "routeName": "Swargate ⇆ Chintamani Dnyanpith"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Sahakar Nagar",
+          "walkFromStopMeters": 273
+        },
+        "sinhagad-fort": {
+          "directBuses": [
+            {
+              "busNo": "50",
+              "routeName": "Sinhgad ⇆ Shaniwarwada Stand"
+            }
+          ],
+          "arrivalStop": "Sinhgad",
+          "walkFromStopMeters": 1984
+        }
+      }
+    },
+    "shivajinagar": {
+      "hubName": "Shivajinagar Station",
+      "hubNameMr": "शिवाजीनगर स्थानक",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "104",
+              "routeName": "Dsk Vishwa ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "107",
+              "routeName": "Pimplegurav ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "4",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "51",
+              "routeName": "Dsk Vishwa ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "83",
+              "routeName": "Alandi ⇆ Nda 10 No. Gate"
+            },
+            {
+              "busNo": "85",
+              "routeName": "Khadewadi ⇆ Ma Na Pa Congress Bhavan"
+            },
+            {
+              "busNo": "87",
+              "routeName": "Sutarwadi Depot ⇆ Deccan Gymkhana"
+            },
+            {
+              "busNo": "87A",
+              "routeName": "Zilla Parishad School Chande ⇆ Deccan Gymkhana"
+            },
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            },
+            {
+              "busNo": "91",
+              "routeName": "Isha Nagari ⇆ Ma Na Pa Congress Bhavan"
+            },
+            {
+              "busNo": "98",
+              "routeName": "Kesnand Phata Wagholi ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "99",
+              "routeName": "Kekan Gas ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "100",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Ma Na Pa Dengle Pul Nadikathi"
+            },
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "225",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Kharadi Gaon"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "322",
+              "routeName": "Akurdi Railway Station ⇆ Ma Na Pa Main Gate"
+            },
+            {
+              "busNo": "333",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "348",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "100",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Ma Na Pa Dengle Pul Nadikathi"
+            },
+            {
+              "busNo": "119",
+              "routeName": "Alandi ⇆ Ma Na Pa Daphale Garage"
+            },
+            {
+              "busNo": "119A",
+              "routeName": "Charholigaon ⇆ Ma Na Pa Daphale Garage"
+            },
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "121",
+              "routeName": "Bhosari Terminal ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "122",
+              "routeName": "Chinchwadgaon ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "123",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "152",
+              "routeName": "Lohegaon ⇆ Ma Na Pa Daphale Garage"
+            },
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "205",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "107",
+              "routeName": "Pimplegurav ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "114",
+              "routeName": "Bajirao Padale Chowk Mhalunge ⇆ Ma Na Pa Main Gate"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "142",
+              "routeName": "Ghotawade Phata ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "145",
+              "routeName": "Sutarwadi Depot ⇆ Pune Station Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "baps-swaminarayan-mandir": {
+          "directBuses": [
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "51",
+              "routeName": "Dsk Vishwa ⇆ Shivaji Nagar"
+            }
+          ],
+          "arrivalStop": "Jaidev Nagar",
+          "walkFromStopMeters": 320
+        },
+        "parvati-hill": {
+          "directBuses": [
+            {
+              "busNo": "37",
+              "routeName": "Wakdewadi Navin ST Stand ⇆ Sahakar Nagar"
+            }
+          ],
+          "arrivalStop": "Mahila Mandal",
+          "walkFromStopMeters": 372
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "119",
+              "routeName": "Alandi ⇆ Ma Na Pa Daphale Garage"
+            },
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        },
+        "dehu-tukaram-mandir": {
+          "directBuses": [
+            {
+              "busNo": "262",
+              "routeName": "Sant Tukaram Maharaj Krida Sankul Dehugaon ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Jain Mandir Dehugaon",
+          "walkFromStopMeters": 352
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "raja-dinkar-kelkar-museum": {
+          "directBuses": [
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "2",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Shanipar",
+          "walkFromStopMeters": 109
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "104",
+              "routeName": "Dsk Vishwa ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "107",
+              "routeName": "Pimplegurav ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "okayama-friendship-garden": {
+          "directBuses": [
+            {
+              "busNo": "17",
+              "routeName": "Narhegaon ⇆ Shivaji Nagar"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "51",
+              "routeName": "Dsk Vishwa ⇆ Shivaji Nagar"
+            }
+          ],
+          "arrivalStop": "Vitthalwadi Jakat Naka",
+          "walkFromStopMeters": 181
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "30",
+              "routeName": "Ghotawade Phata ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11",
+              "routeName": "Pimplegurav ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "13",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "107",
+              "routeName": "Pimplegurav ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "12",
+              "routeName": "Shivaji Nagar ⇆ Upper Depot"
+            },
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "4",
+              "routeName": "Shivaji Nagar ⇆ Swargate"
+            },
+            {
+              "busNo": "42",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        },
+        "rajiv-gandhi-zoological-park": {
+          "directBuses": [
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Katraj Dairy",
+          "walkFromStopMeters": 109
+        },
+        "pashan-lake": {
+          "directBuses": [
+            {
+              "busNo": "145",
+              "routeName": "Sutarwadi Depot ⇆ Pune Station Depot"
+            },
+            {
+              "busNo": "87",
+              "routeName": "Sutarwadi Depot ⇆ Deccan Gymkhana"
+            }
+          ],
+          "arrivalStop": "Shiv Nagar Sus Road Sutarwadi",
+          "walkFromStopMeters": 240
+        },
+        "vetal-tekdi": {
+          "directBuses": [
+            {
+              "busNo": "146",
+              "routeName": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+            },
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Gokhale Nagar Police Line",
+          "walkFromStopMeters": 637
+        },
+        "taljai-hills": {
+          "directBuses": [
+            {
+              "busNo": "37",
+              "routeName": "Wakdewadi Navin ST Stand ⇆ Sahakar Nagar"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Sahakar Nagar",
+          "walkFromStopMeters": 273
+        }
+      }
+    },
+    "katraj": {
+      "hubName": "Katraj Bus Depot",
+      "hubNameMr": "कात्रज बस डेपो",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "bund-garden": {
+          "directBuses": [
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 205
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "raja-dinkar-kelkar-museum": {
+          "directBuses": [
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "2A",
+              "routeName": "Shivaji Nagar ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Shanipar",
+          "walkFromStopMeters": 109
+        },
+        "tribal-museum": {
+          "directBuses": [
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 94
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "297",
+              "routeName": "Shivaji Nagar ⇆ Rajas Society"
+            },
+            {
+              "busNo": "215",
+              "routeName": "Swargate ⇆ Chintamani Dnyanpith"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "26",
+              "routeName": "Shivaji Nagar ⇆ Dhankawadi"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "42",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "rajiv-gandhi-zoological-park": {
+          "directBuses": [
+            {
+              "busNo": "216",
+              "routeName": "Shivaji Nagar ⇆ Bharati Vidyapeeth"
+            },
+            {
+              "busNo": "103",
+              "routeName": "Kothrud Depot ⇆ Katraj"
+            },
+            {
+              "busNo": "11C",
+              "routeName": "Pimplegurav ⇆ Katraj"
+            },
+            {
+              "busNo": "130",
+              "routeName": "Swargate ⇆ Narhegaon"
+            },
+            {
+              "busNo": "235",
+              "routeName": "Kharadi Gaon ⇆ Katraj"
+            },
+            {
+              "busNo": "236",
+              "routeName": "Kesnand Phata Wagholi ⇆ Katraj"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "24A",
+              "routeName": "Lohegaon Haran Tale ⇆ Katraj"
+            },
+            {
+              "busNo": "290",
+              "routeName": "Swargate ⇆ Jambhulwadi"
+            },
+            {
+              "busNo": "292",
+              "routeName": "Kondhanpur ⇆ Balaji Nagar Corner Satara Road"
+            },
+            {
+              "busNo": "293",
+              "routeName": "Saswad ⇆ Balaji Nagar Corner Satara Road"
+            },
+            {
+              "busNo": "296",
+              "routeName": "Velhe ⇆ Balaji Nagar Corner Satara Road"
+            }
+          ],
+          "arrivalStop": "Katraj Dairy",
+          "walkFromStopMeters": 109
+        },
+        "vetal-tekdi": {
+          "directBuses": [
+            {
+              "busNo": "90",
+              "routeName": "Gokhale Nagar Police Line ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Gokhale Nagar Police Line",
+          "walkFromStopMeters": 637
+        },
+        "taljai-hills": {
+          "directBuses": [
+            {
+              "busNo": "215",
+              "routeName": "Swargate ⇆ Chintamani Dnyanpith"
+            },
+            {
+              "busNo": "24",
+              "routeName": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+            },
+            {
+              "busNo": "298",
+              "routeName": "Chinchwadgaon ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Sahakar Nagar",
+          "walkFromStopMeters": 273
+        },
+        "torna-fort": {
+          "directBuses": [
+            {
+              "busNo": "296",
+              "routeName": "Velhe ⇆ Balaji Nagar Corner Satara Road"
+            }
+          ],
+          "arrivalStop": "Velhe",
+          "walkFromStopMeters": 2355
+        },
+        "purandar-fort": {
+          "directBuses": [
+            {
+              "busNo": "293",
+              "routeName": "Saswad ⇆ Balaji Nagar Corner Satara Road"
+            }
+          ],
+          "arrivalStop": "Chivhewadi",
+          "walkFromStopMeters": 1790
+        }
+      }
+    },
+    "hadapsar": {
+      "hubName": "Hadapsar Gadital",
+      "hubNameMr": "हडपसर गाडीतळ",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "aga-khan-palace": {
+          "directBuses": [
+            {
+              "busNo": "149",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Hadapsar Gadital"
+            }
+          ],
+          "arrivalStop": "Ramwadi Jakat Naka",
+          "walkFromStopMeters": 476
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "bund-garden": {
+          "directBuses": [
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 205
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "204",
+              "routeName": "Chinchwadgaon ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "205",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "baps-swaminarayan-mandir": {
+          "directBuses": [
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Jaidev Nagar",
+          "walkFromStopMeters": 320
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "200",
+              "routeName": "Alandi ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "201",
+              "routeName": "Alandi ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "64",
+              "routeName": "Nda 10 No. Gate ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "64M",
+              "routeName": "Ganpati Matha ⇆ Hadapsar Gadital"
+            },
+            {
+              "busNo": "202",
+              "routeName": "Ganpati Matha ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "tribal-museum": {
+          "directBuses": [
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 94
+        },
+        "okayama-friendship-garden": {
+          "directBuses": [
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Vitthalwadi Jakat Naka",
+          "walkFromStopMeters": 181
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "139A",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "111M",
+              "routeName": "Ma Na Pa Congress Bhavan ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "139",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148",
+              "routeName": "Pimplegurav ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "15",
+              "routeName": "Dsk Vishwa ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "175",
+              "routeName": "Hadapsar Gadital ⇆ Shaniwarwada Stand"
+            },
+            {
+              "busNo": "180",
+              "routeName": "Bhekrai Nagar ⇆ Na Ta Wadi"
+            },
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "201",
+              "routeName": "Alandi ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        }
+      }
+    },
+    "nigdi": {
+      "hubName": "Nigdi Bhakti Shakti Stand",
+      "hubNameMr": "निगडी भक्ती शक्ती स्टँड",
+      "destinations": {
+        "aga-khan-palace": {
+          "directBuses": [
+            {
+              "busNo": "149",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Hadapsar Gadital"
+            }
+          ],
+          "arrivalStop": "Ramwadi Jakat Naka",
+          "walkFromStopMeters": 476
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "322",
+              "routeName": "Akurdi Railway Station ⇆ Ma Na Pa Main Gate"
+            },
+            {
+              "busNo": "348",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "123",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ma Na Pa Main Stand"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "baps-swaminarayan-mandir": {
+          "directBuses": [
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            }
+          ],
+          "arrivalStop": "Jaidev Nagar",
+          "walkFromStopMeters": 320
+        },
+        "dehu-tukaram-mandir": {
+          "directBuses": [
+            {
+              "busNo": "350",
+              "routeName": "Sant Tukaram Maharaj Krida Sankul Dehugaon ⇆ Nigdi Tilak Chowk"
+            },
+            {
+              "busNo": "262",
+              "routeName": "Sant Tukaram Maharaj Krida Sankul Dehugaon ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "329",
+              "routeName": "Siddhanta College Sudumbare ⇆ Pimpri Road"
+            }
+          ],
+          "arrivalStop": "Jain Mandir Dehugaon",
+          "walkFromStopMeters": 352
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "okayama-friendship-garden": {
+          "directBuses": [
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            }
+          ],
+          "arrivalStop": "Vitthalwadi Jakat Naka",
+          "walkFromStopMeters": 181
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "42",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "139A",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "139",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Shewalewadi Depot"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        },
+        "karla-caves": {
+          "directBuses": [
+            {
+              "busNo": "368",
+              "routeName": "Lonavala Railway Station ⇆ Nigdi Pawale Chowk"
+            }
+          ],
+          "arrivalStop": "Ekvira Vidya Mandir",
+          "walkFromStopMeters": 2395
+        }
+      }
+    },
+    "wakad": {
+      "hubName": "Wakad / Dange Chowk",
+      "hubNameMr": "वाकड / डांगे चौक",
+      "destinations": {
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "327",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Alandi"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        }
+      }
+    },
+    "hinjawadi": {
+      "hubName": "Hinjawadi Shivaji Chowk",
+      "hubNameMr": "हिंजवडी शिवाजी चौक",
+      "destinations": {
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "100",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Ma Na Pa Dengle Pul Nadikathi"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "225",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Kharadi Gaon"
+            },
+            {
+              "busNo": "333",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "100",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Ma Na Pa Dengle Pul Nadikathi"
+            },
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "327",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Alandi"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        }
+      }
+    },
+    "kothrud": {
+      "hubName": "Kothrud Bus Depot",
+      "hubNameMr": "कोथरूड बस डेपो",
+      "destinations": {
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "99",
+              "routeName": "Kekan Gas ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            },
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "chaturshringi-temple": {
+          "directBuses": [
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Mseb Office Chaturshringi",
+          "walkFromStopMeters": 166
+        },
+        "alandi-dnyaneshwar-mandir": {
+          "directBuses": [
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Alandi Police Chowky",
+          "walkFromStopMeters": 43
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            },
+            {
+              "busNo": "81",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "283",
+              "routeName": "Pune Station Moledina Stand ⇆ Kumbare Park"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "231",
+              "routeName": "Shilim Gaon ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "232",
+              "routeName": "Gram Panchayat Belawade ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233",
+              "routeName": "Paud Shashkiy Vishram Gruh ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233A",
+              "routeName": "Kolwan Gaon ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "219",
+              "routeName": "Alandi ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "199",
+              "routeName": "Shewalewadi Depot ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        },
+        "rajiv-gandhi-zoological-park": {
+          "directBuses": [
+            {
+              "busNo": "103",
+              "routeName": "Kothrud Depot ⇆ Katraj"
+            }
+          ],
+          "arrivalStop": "Katraj Dairy",
+          "walkFromStopMeters": 109
+        }
+      }
+    },
+    "aundh": {
+      "hubName": "Aundh Bremen Chowk",
+      "hubNameMr": "औंध ब्रेमेन चौक",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            },
+            {
+              "busNo": "276",
+              "routeName": "Chinchwadgaon ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "333",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "205",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            },
+            {
+              "busNo": "114",
+              "routeName": "Bajirao Padale Chowk Mhalunge ⇆ Ma Na Pa Main Gate"
+            },
+            {
+              "busNo": "115",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "chaturshringi-temple": {
+          "directBuses": [
+            {
+              "busNo": "276",
+              "routeName": "Chinchwadgaon ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            },
+            {
+              "busNo": "41",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Upper Depot"
+            }
+          ],
+          "arrivalStop": "Mseb Office Chaturshringi",
+          "walkFromStopMeters": 166
+        },
+        "tulshibaug-temple": {
+          "directBuses": [
+            {
+              "busNo": "113",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+            }
+          ],
+          "arrivalStop": "Mandai Stand",
+          "walkFromStopMeters": 104
+        },
+        "raja-dinkar-kelkar-museum": {
+          "directBuses": [
+            {
+              "busNo": "21",
+              "routeName": "Sangvi Vasantdada Putala ⇆ Swargate"
+            }
+          ],
+          "arrivalStop": "Shanipar",
+          "walkFromStopMeters": 109
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "276",
+              "routeName": "Chinchwadgaon ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        }
+      }
+    },
+    "baner": {
+      "hubName": "Baner Phata",
+      "hubNameMr": "बाणेर फाटा",
+      "destinations": {
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "208",
+              "routeName": "Hinjawadi Maan Phase 3 ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "114",
+              "routeName": "Bajirao Padale Chowk Mhalunge ⇆ Ma Na Pa Main Gate"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        }
+      }
+    },
+    "bhosari": {
+      "hubName": "Bhosari Nashik Phata",
+      "hubNameMr": "भोसरी नाशिक फाटा",
+      "destinations": {
+        "shaniwar-wada": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Shaniwarwada",
+          "walkFromStopMeters": 85
+        },
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "vishrambaug-wada": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Shanipar Stand",
+          "walkFromStopMeters": 34
+        },
+        "fergusson-college-heritage": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Fergusson College",
+          "walkFromStopMeters": 99
+        },
+        "pune-university-heritage-building": {
+          "directBuses": [
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Gol Market Aundh Road",
+          "walkFromStopMeters": 359
+        },
+        "bund-garden": {
+          "directBuses": [
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 205
+        },
+        "shreemant-dagdusheth-halwai-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "City Post",
+          "walkFromStopMeters": 152
+        },
+        "pataleshwar-cave-temple": {
+          "directBuses": [
+            {
+              "busNo": "121",
+              "routeName": "Bhosari Terminal ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "122",
+              "routeName": "Chinchwadgaon ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "123",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ma Na Pa Main Stand"
+            },
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Coep Hostel Jm Road",
+          "walkFromStopMeters": 123
+        },
+        "chaturshringi-temple": {
+          "directBuses": [
+            {
+              "busNo": "277",
+              "routeName": "Bhosari Terminal ⇆ Kothrud Depot"
+            }
+          ],
+          "arrivalStop": "Mseb Office Chaturshringi",
+          "walkFromStopMeters": 166
+        },
+        "baps-swaminarayan-mandir": {
+          "directBuses": [
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            }
+          ],
+          "arrivalStop": "Jaidev Nagar",
+          "walkFromStopMeters": 320
+        },
+        "dehu-tukaram-mandir": {
+          "directBuses": [
+            {
+              "busNo": "262",
+              "routeName": "Sant Tukaram Maharaj Krida Sankul Dehugaon ⇆ Pune Station Moledina Stand"
+            }
+          ],
+          "arrivalStop": "Jain Mandir Dehugaon",
+          "walkFromStopMeters": 352
+        },
+        "raja-dinkar-kelkar-museum": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Shanipar",
+          "walkFromStopMeters": 109
+        },
+        "joshi-miniature-railway": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            }
+          ],
+          "arrivalStop": "Maruti Mandir Karve Road",
+          "walkFromStopMeters": 139
+        },
+        "tribal-museum": {
+          "directBuses": [
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Wadia College",
+          "walkFromStopMeters": 94
+        },
+        "okayama-friendship-garden": {
+          "directBuses": [
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            }
+          ],
+          "arrivalStop": "Vitthalwadi Jakat Naka",
+          "walkFromStopMeters": 181
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "11A",
+              "routeName": "Kasarwadi Railway Station ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        },
+        "sambhaji-park": {
+          "directBuses": [
+            {
+              "busNo": "281",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "282",
+              "routeName": "Bhosari Terminal ⇆ Ganpati Matha"
+            },
+            {
+              "busNo": "299",
+              "routeName": "Bhosari Terminal ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "337",
+              "routeName": "Dsk Vishwa ⇆ Nigdi Bhakti Shakti Stand"
+            },
+            {
+              "busNo": "339",
+              "routeName": "Sant Nagar Rto Office ⇆ Gujarwadi Pmt Bus Stand"
+            },
+            {
+              "busNo": "42",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+            }
+          ],
+          "arrivalStop": "Balgandharv",
+          "walkFromStopMeters": 288
+        },
+        "empress-botanical-garden": {
+          "directBuses": [
+            {
+              "busNo": "139A",
+              "routeName": "Nigdi Bhakti Shakti Stand ⇆ Bhekrai Nagar"
+            },
+            {
+              "busNo": "139",
+              "routeName": "Nigdi Bhakti Shakti ⇆ Shewalewadi Depot"
+            },
+            {
+              "busNo": "148A",
+              "routeName": "Bhosari Terminal ⇆ Bhekrai Nagar"
+            }
+          ],
+          "arrivalStop": "Fatima Nagar",
+          "walkFromStopMeters": 656
+        }
+      }
+    },
+    "viman-nagar": {
+      "hubName": "Viman Nagar / Airport Corner",
+      "hubNameMr": "विमान नगर / विमानतळ कॉर्नर",
+      "destinations": {}
+    },
+    "chandani-chowk": {
+      "hubName": "Chandani Chowk / Bavdhan",
+      "hubNameMr": "चांदणी चौक / बावधन",
+      "destinations": {
+        "lal-mahal": {
+          "directBuses": [
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            }
+          ],
+          "arrivalStop": "Jijamatabaug",
+          "walkFromStopMeters": 13
+        },
+        "kasba-ganpati": {
+          "directBuses": [
+            {
+              "busNo": "94",
+              "routeName": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+            }
+          ],
+          "arrivalStop": "Phadke Haud",
+          "walkFromStopMeters": 208
+        },
+        "sarasbaug": {
+          "directBuses": [
+            {
+              "busNo": "231",
+              "routeName": "Shilim Gaon ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "232",
+              "routeName": "Gram Panchayat Belawade ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233",
+              "routeName": "Paud Shashkiy Vishram Gruh ⇆ Marketyard Depot"
+            },
+            {
+              "busNo": "233A",
+              "routeName": "Kolwan Gaon ⇆ Marketyard Depot"
+            }
+          ],
+          "arrivalStop": "Sarasbaug",
+          "walkFromStopMeters": 10
+        }
+      }
+    }
+  },
+  "allRoutesSample": [
+    {
+      "id": "2",
+      "busNo": "2",
+      "name": "Shivaji Nagar ⇆ Swargate"
+    },
+    {
+      "id": "4",
+      "busNo": "4",
+      "name": "Shivaji Nagar ⇆ Swargate"
+    },
+    {
+      "id": "5",
+      "busNo": "5",
+      "name": "Pune Station Moledina Stand ⇆ Swargate"
+    },
+    {
+      "id": "6",
+      "busNo": "6",
+      "name": "Pune Station Moledina Stand ⇆ Swargate"
+    },
+    {
+      "id": "11",
+      "busNo": "11",
+      "name": "Pimplegurav ⇆ Marketyard Depot"
+    },
+    {
+      "id": "12",
+      "busNo": "12",
+      "name": "Shivaji Nagar ⇆ Upper Depot"
+    },
+    {
+      "id": "13",
+      "busNo": "13",
+      "name": "Shivaji Nagar ⇆ Upper Depot"
+    },
+    {
+      "id": "15",
+      "busNo": "15",
+      "name": "Dsk Vishwa ⇆ Bhekrai Nagar"
+    },
+    {
+      "id": "17",
+      "busNo": "17",
+      "name": "Narhegaon ⇆ Shivaji Nagar"
+    },
+    {
+      "id": "19",
+      "busNo": "19",
+      "name": "Swargate ⇆ Yewalewadi"
+    },
+    {
+      "id": "21",
+      "busNo": "21",
+      "name": "Sangvi Vasantdada Putala ⇆ Swargate"
+    },
+    {
+      "id": "24",
+      "busNo": "24",
+      "name": "Maharashtra Housing Board Samta Nagar ⇆ Katraj"
+    },
+    {
+      "id": "26",
+      "busNo": "26",
+      "name": "Shivaji Nagar ⇆ Dhankawadi"
+    },
+    {
+      "id": "29",
+      "busNo": "29",
+      "name": "Alandi ⇆ Swargate"
+    },
+    {
+      "id": "30",
+      "busNo": "30",
+      "name": "Ghotawade Phata ⇆ Marketyard Depot"
+    },
+    {
+      "id": "34",
+      "busNo": "34",
+      "name": "Nigdi Pawale Chowk ⇆ Aundhgaon"
+    },
+    {
+      "id": "35",
+      "busNo": "35",
+      "name": "Mukai Chowk ⇆ Ma Na Pa Dengle Pul Nadikathi"
+    },
+    {
+      "id": "37",
+      "busNo": "37",
+      "name": "Wakdewadi Navin ST Stand ⇆ Sahakar Nagar"
+    },
+    {
+      "id": "38",
+      "busNo": "38",
+      "name": "Na Ta Wadi ⇆ Dhankawadi"
+    },
+    {
+      "id": "39",
+      "busNo": "39",
+      "name": "Pune Station Jayprakash Stand ⇆ Dhankawadi"
+    },
+    {
+      "id": "41",
+      "busNo": "41",
+      "name": "Sangvi Vasantdada Putala ⇆ Upper Depot"
+    },
+    {
+      "id": "42",
+      "busNo": "42",
+      "name": "Nigdi Bhakti Shakti ⇆ Gujarwadi Pmt Bus Stand"
+    },
+    {
+      "id": "43",
+      "busNo": "43",
+      "name": "Nigdi Bhakti Shakti Stand ⇆ Katraj"
+    },
+    {
+      "id": "44",
+      "busNo": "44",
+      "name": "Akurdi Railway Station ⇆ Katraj"
+    },
+    {
+      "id": "47",
+      "busNo": "47",
+      "name": "Sanaswadi Nandoshi ⇆ Swargate"
+    },
+    {
+      "id": "50",
+      "busNo": "50",
+      "name": "Sinhgad ⇆ Shaniwarwada Stand"
+    },
+    {
+      "id": "51",
+      "busNo": "51",
+      "name": "Dsk Vishwa ⇆ Shivaji Nagar"
+    },
+    {
+      "id": "52",
+      "busNo": "52",
+      "name": "Khanapur ⇆ Swargate"
+    },
+    {
+      "id": "55",
+      "busNo": "55",
+      "name": "Shanipar Stand ⇆ Suncity"
+    },
+    {
+      "id": "57",
+      "busNo": "57",
+      "name": "Vadgaon Budruk Stand ⇆ Pune Station Jayprakash Stand"
+    },
+    {
+      "id": "58",
+      "busNo": "58",
+      "name": "Gokhale Nagar Police Line ⇆ Shanipar Stand"
+    },
+    {
+      "id": "59",
+      "busNo": "59",
+      "name": "Niljyoti Society ⇆ Shanipar Stand"
+    },
+    {
+      "id": "60",
+      "busNo": "60",
+      "name": "Ghule Nagar Vadgaon Budruk ⇆ Swargate"
+    },
+    {
+      "id": "61",
+      "busNo": "61",
+      "name": "Sarola ⇆ Balaji Nagar Corner Satara Road"
+    },
+    {
+      "id": "64",
+      "busNo": "64",
+      "name": "Nda 10 No. Gate ⇆ Bhekrai Nagar"
+    },
+    {
+      "id": "66",
+      "busNo": "66",
+      "name": "Thakarwadi ⇆ Marketyard Depot"
+    },
+    {
+      "id": "67",
+      "busNo": "67",
+      "name": "Uruli Kanchan ⇆ Hadapsar Gadital Solapur Road"
+    },
+    {
+      "id": "68",
+      "busNo": "68",
+      "name": "Upper Depot ⇆ Sutardara"
+    },
+    {
+      "id": "69",
+      "busNo": "69",
+      "name": "Ghotawadegaon ⇆ Marketyard Depot"
+    },
+    {
+      "id": "70",
+      "busNo": "70",
+      "name": "Mulshi Gaon ⇆ Marketyard Depot"
+    },
+    {
+      "id": "72",
+      "busNo": "72",
+      "name": "Nda 10 No. Gate ⇆ Sukhsagar Nagar"
+    },
+    {
+      "id": "73",
+      "busNo": "73",
+      "name": "Gada Modi Chowk Khamgaon ⇆ Hadapsar Gadital Solapur Road"
+    },
+    {
+      "id": "74",
+      "busNo": "74",
+      "name": "Paud Shashkiy Vishram Gruh ⇆ Chinchwadgaon"
+    },
+    {
+      "id": "77",
+      "busNo": "77",
+      "name": "Hinjawadi Maan Phase 3 ⇆ Ganpati Matha"
+    },
+    {
+      "id": "78",
+      "busNo": "78",
+      "name": "Nda 10 No. Gate ⇆ Marketyard Depot"
+    },
+    {
+      "id": "81",
+      "busNo": "81",
+      "name": "Pune Station Moledina Stand ⇆ Kumbare Park"
+    },
+    {
+      "id": "83",
+      "busNo": "83",
+      "name": "Alandi ⇆ Nda 10 No. Gate"
+    },
+    {
+      "id": "84",
+      "busNo": "84",
+      "name": "Mutha Gaon ⇆ Deccan Gymkhana"
+    },
+    {
+      "id": "85",
+      "busNo": "85",
+      "name": "Khadewadi ⇆ Ma Na Pa Congress Bhavan"
+    },
+    {
+      "id": "86",
+      "busNo": "86",
+      "name": "Paud St Stand ⇆ Deccan Gymkhana"
+    },
+    {
+      "id": "87",
+      "busNo": "87",
+      "name": "Sutarwadi Depot ⇆ Deccan Gymkhana"
+    },
+    {
+      "id": "90",
+      "busNo": "90",
+      "name": "Gokhale Nagar Police Line ⇆ Katraj"
+    },
+    {
+      "id": "91",
+      "busNo": "91",
+      "name": "Isha Nagari ⇆ Ma Na Pa Congress Bhavan"
+    },
+    {
+      "id": "92",
+      "busNo": "92",
+      "name": "Venutai Chavan College ⇆ Kothrud Depot"
+    },
+    {
+      "id": "94",
+      "busNo": "94",
+      "name": "Pune Station Moledina Stand ⇆ Matalwadi Bhugaon"
+    },
+    {
+      "id": "95",
+      "busNo": "95",
+      "name": "PVPIT College Bawdhan ⇆ Deccan Gymkhana"
+    },
+    {
+      "id": "97",
+      "busNo": "97",
+      "name": "Sahakar Nagar ⇆ Ganpati Matha"
+    },
+    {
+      "id": "98",
+      "busNo": "98",
+      "name": "Kesnand Phata Wagholi ⇆ Ganpati Matha"
+    },
+    {
+      "id": "99",
+      "busNo": "99",
+      "name": "Kekan Gas ⇆ Kothrud Depot"
+    },
+    {
+      "id": "100",
+      "busNo": "100",
+      "name": "Hinjawadi Maan Phase 3 ⇆ Ma Na Pa Dengle Pul Nadikathi"
+    },
+    {
+      "id": "103",
+      "busNo": "103",
+      "name": "Kothrud Depot ⇆ Katraj"
+    },
+    {
+      "id": "104",
+      "busNo": "104",
+      "name": "Dsk Vishwa ⇆ Shivaji Nagar"
+    },
+    {
+      "id": "107",
+      "busNo": "107",
+      "name": "Pimplegurav ⇆ Ganpati Matha"
+    },
+    {
+      "id": "108",
+      "busNo": "108",
+      "name": "Pune Station Moledina Road ⇆ Sutardara"
+    },
+    {
+      "id": "113",
+      "busNo": "113",
+      "name": "Sangvi Vasantdada Putala ⇆ Vasant Talkies"
+    },
+    {
+      "id": "114",
+      "busNo": "114",
+      "name": "Bajirao Padale Chowk Mhalunge ⇆ Ma Na Pa Main Gate"
+    },
+    {
+      "id": "115",
+      "busNo": "115",
+      "name": "Hinjawadi Maan Phase 3 ⇆ Pune Station Moledina Stand"
+    },
+    {
+      "id": "117",
+      "busNo": "117",
+      "name": "Dhayareshwar Mandir ⇆ Swargate Natraj Stand"
+    },
+    {
+      "id": "118",
+      "busNo": "118",
+      "name": "Vadgaon Budruk Stand ⇆ Swargate Natraj Stand"
+    },
+    {
+      "id": "119",
+      "busNo": "119",
+      "name": "Alandi ⇆ Ma Na Pa Daphale Garage"
+    },
+    {
+      "id": "120",
+      "busNo": "120",
+      "name": "Endurance Systems Chakan Mahalunge ⇆ Bhosari Chakan Road"
+    },
+    {
+      "id": "121",
+      "busNo": "121",
+      "name": "Bhosari Terminal ⇆ Ma Na Pa Main Stand"
+    },
+    {
+      "id": "122",
+      "busNo": "122",
+      "name": "Chinchwadgaon ⇆ Ma Na Pa Main Stand"
+    },
+    {
+      "id": "123",
+      "busNo": "123",
+      "name": "Nigdi Bhakti Shakti ⇆ Ma Na Pa Main Stand"
+    },
+    {
+      "id": "124",
+      "busNo": "124",
+      "name": "Neilsoft Company infosys Phase 3 ⇆ Aundhgaon"
+    },
+    {
+      "id": "126",
+      "busNo": "126",
+      "name": "Pimple Nilakh ⇆ Bopkhel"
+    },
+    {
+      "id": "130",
+      "busNo": "130",
+      "name": "Swargate ⇆ Narhegaon"
+    },
+    {
+      "id": "131",
+      "busNo": "131",
+      "name": "Golegaon Gram Panchayat ⇆ Ma Na Pa Dengle Pul Nadikhathi"
+    },
+    {
+      "id": "132",
+      "busNo": "132",
+      "name": "Shubham Society Nagar Road ⇆ Ma Na Pa Shramik Bhavan"
+    },
+    {
+      "id": "133",
+      "busNo": "133",
+      "name": "Anand Park Vadgaon Sheri Road ⇆ Ma Na Pa Shramik Bhavan"
+    },
+    {
+      "id": "135",
+      "busNo": "135",
+      "name": "Ranjangaon Sandas ⇆ Ma Na Pa Shramik Bhavan"
+    },
+    {
+      "id": "136",
+      "busNo": "136",
+      "name": "Vadegaon ⇆ Kesnand Phata Wagholi"
+    },
+    {
+      "id": "137",
+      "busNo": "137",
+      "name": "Pargaon Salu Malu ⇆ Ma Na Pa Shramik Bhavan"
+    },
+    {
+      "id": "139",
+      "busNo": "139",
+      "name": "Nigdi Bhakti Shakti ⇆ Shewalewadi Depot"
+    },
+    {
+      "id": "140",
+      "busNo": "140",
+      "name": "Pune Station Jayprakash Stand ⇆ Upper Depot"
+    },
+    {
+      "id": "141",
+      "busNo": "141",
+      "name": "Pune Station Jayprakash Stand ⇆ Kumar Pruthvi Kondhwa"
+    },
+    {
+      "id": "142",
+      "busNo": "142",
+      "name": "Ghotawade Phata ⇆ Pune Station Moledina Stand"
+    },
+    {
+      "id": "143",
+      "busNo": "143",
+      "name": "Pune Station Moledina Stand ⇆ Galinde Path"
+    },
+    {
+      "id": "144",
+      "busNo": "144",
+      "name": "Pune Station Moledina Stand ⇆ Nda 10 No. Gate"
+    },
+    {
+      "id": "145",
+      "busNo": "145",
+      "name": "Sutarwadi Depot ⇆ Pune Station Depot"
+    },
+    {
+      "id": "146",
+      "busNo": "146",
+      "name": "Gokhale Nagar Police Line ⇆ Pune Station Jayprakash Stand"
+    },
+    {
+      "id": "147",
+      "busNo": "147",
+      "name": "Nhavi Sandas ⇆ Ma Na Pa Shramik Bhavan"
+    },
+    {
+      "id": "148",
+      "busNo": "148",
+      "name": "Pimplegurav ⇆ Shewalewadi Depot"
+    },
+    {
+      "id": "149",
+      "busNo": "149",
+      "name": "Nigdi Bhakti Shakti Stand ⇆ Hadapsar Gadital"
+    },
+    {
+      "id": "151",
+      "busNo": "151",
+      "name": "Alandi ⇆ Pune Station Moledina Stand"
+    },
+    {
+      "id": "152",
+      "busNo": "152",
+      "name": "Lohegaon ⇆ Ma Na Pa Daphale Garage"
+    },
+    {
+      "id": "153",
+      "busNo": "153",
+      "name": "Alandi ⇆ Kharadi Gaon"
+    },
+    {
+      "id": "154",
+      "busNo": "154",
+      "name": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+    },
+    {
+      "id": "155",
+      "busNo": "155",
+      "name": "Dimond Water Park ⇆ Pune Station Moledina Stand"
+    },
+    {
+      "id": "157",
+      "busNo": "157",
+      "name": "JSPM Vidhyapith Wagholi ⇆ Ma Na Pa Shramik Bhavan"
+    }
+  ]
+}

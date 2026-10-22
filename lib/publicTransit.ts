@@ -1,8 +1,10 @@
 /**
  * Explore Pune - Public Transit Engine (Pune Metro & PMPML Buses)
  * Provides comprehensive routing, station data, bus lines, and ticket information.
- * Verified with official Pune Metro (Maha Metro) Phase 1 & PMPML fare charts.
+ * Verified with official Pune Metro (Maha Metro) Phase 1 & PMPML GTFS dataset (315 routes, 6,745 stops).
  */
+
+import { getPmpmlTransitCorridor, getLandmarkPmpmlStops } from './pmpmlGtfs';
 
 export interface MetroStation {
   id: string;
@@ -1314,6 +1316,8 @@ export function getPublicTransitRoute(
 ): TransitRouteInfo {
   const pSlug = place.slug || place.id;
   const directRule = PLACE_TRANSIT_RULES[pSlug];
+  const gtfsCorridor = getPmpmlTransitCorridor(userLat, userLng, pSlug, originName);
+  const gtfsLandmark = getLandmarkPmpmlStops(pSlug);
 
   const nearestMetroFromUser = findNearestMetroStation(userLat, userLng);
   const nearestMetroToDest = findNearestMetroStation(place.latitude, place.longitude);
@@ -1376,6 +1380,19 @@ export function getPublicTransitRoute(
       stepsEn.push(`Alight at ${nearestMetroToDest.station.nameEn}. Take a quick connecting PMPML feeder bus or auto (${nearestMetroToDest.distanceKm} km, ~${nearestMetroToDest.walkingMinutes} mins walk, ₹10).`);
       stepsMr.push(`${nearestMetroToDest.station.nameMr} येथे उतरा. तिथून फीडर बस किंवा रिक्षाने ${nearestMetroToDest.distanceKm} किमी अंतर पार करा (अंदाजे ₹१०).`);
     }
+  } else if (gtfsCorridor && gtfsCorridor.hasDirectBus) {
+    // Authentic PMPML GTFS Corridor Connection
+    transitType = 'bus_only';
+    estimatedCost = busFare;
+
+    const busNos = gtfsCorridor.buses.map((b) => `Bus ${b.busNo}`).join(', ');
+    const firstRoute = gtfsCorridor.buses[0];
+
+    stepsEn.push(`Board direct PMPML ${busNos} (Route: ${firstRoute.routeName}) from ${originLabelEn}.`);
+    stepsMr.push(`${originLabelMr} येथून थेट पीएमपीएमएल ${busNos} पकडा (मार्ग: ${firstRoute.routeName}).`);
+
+    stepsEn.push(`Alight at official PMPML Stop: "${gtfsCorridor.arrivalStop}". Walk ${gtfsCorridor.walkFromStopMeters}m (~${gtfsCorridor.walkMinutes} mins) directly into ${place.name} (Fare: ₹${busFare}).`);
+    stepsMr.push(`अधिकृत पीएमपीएमएल थांबा: "${gtfsCorridor.arrivalStop}" येथे उतरा. तिथून ${gtfsCorridor.walkFromStopMeters} मी. (~${gtfsCorridor.walkMinutes} मिनिटे) चालून ${place.name_mr || place.name} मध्ये पोहोचा (तिकीट: ₹${busFare}).`);
   } else if (directRule) {
     // Specific rule available
     transitType = directRule.specialTransitEn?.includes('train') ? 'train_plus_local' : 'intercity_bus';
@@ -1406,7 +1423,17 @@ export function getPublicTransitRoute(
     stepsMr.push(`${place.name_mr || place.name} च्या जवळच्या थांब्यावर उतरा.`);
   }
 
-  const nearestBusInfo = directRule
+  const nearestPmpmlStop = gtfsLandmark?.nearestStops?.[0];
+
+  const nearestBusInfo = nearestPmpmlStop
+    ? {
+        stopNameEn: nearestPmpmlStop.stopName,
+        stopNameMr: `${nearestPmpmlStop.stopName} (अधिकृत पीएमपीएमएल थांबा)`,
+        routeNumbers: (nearestPmpmlStop.buses || []).map((b) => `Bus ${b}`),
+        distanceKm: nearestPmpmlStop.distanceKm,
+        walkingMinutes: nearestPmpmlStop.walkMinutes,
+      }
+    : directRule
     ? {
         stopNameEn: directRule.nearestStopEn,
         stopNameMr: directRule.nearestStopMr,

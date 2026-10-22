@@ -1178,11 +1178,16 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                 padding: 14,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <span style={{ fontSize: 20 }}>🚌</span>
-                <strong style={{ fontSize: 14, color: 'var(--ink)' }}>
-                  {isMr ? 'पीएमपीएमएल (PMPML) बस सेवा' : 'PMPML City Buses'}
-                </strong>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 20 }}>🚌</span>
+                  <strong style={{ fontSize: 14, color: 'var(--ink)' }}>
+                    {isMr ? 'पीएमपीएमएल (PMPML) बस सेवा' : 'PMPML City Buses'}
+                  </strong>
+                </div>
+                <span style={{ fontSize: 10.5, background: '#ffedd5', color: '#c2410c', fontWeight: 800, padding: '2px 7px', borderRadius: 999 }}>
+                  {isMr ? 'अधिकृत GTFS डेटा' : 'Official GTFS'}
+                </span>
               </div>
               {activeTransit.nearestBus && (
                 <>

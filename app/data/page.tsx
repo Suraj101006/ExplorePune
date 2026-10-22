@@ -226,31 +226,36 @@ export default function DataMethodologyPage() {
           </div>
         </section>
 
-        {/* Public Transit Corridors & PMPML Bus Data */}
+        {/* Public Transit Corridors & PMPML GTFS Data */}
         <section style={{ marginBottom: 36, borderTop: '1px solid #e2e8f0', paddingTop: 28 }}>
           <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 14 }}>
-            🚌 {isMr ? 'PMPML बस व पुणे मेट्रो डेटा कार्यपद्धती' : 'PMPML Bus Routes & Pune Metro Integration'}
+            🚌 {isMr ? 'अधिकृत PMPML GTFS बस व पुणे मेट्रो डेटा एकत्रीकरण' : 'Official PMPML GTFS Transit & Pune Metro Integration'}
           </h2>
           <p>
             {isMr ? (
               <>
-                पुणे शहरात एका ठिकाणाहून दुसऱ्या ठिकाणी जाण्यासाठी प्रवाशांना खाजगी कॅबवर अवलंबून राहावे लागू नये म्हणून आम्ही प्रत्यक्ष <strong>PMPML बस क्रमांक</strong> आणि त्यांचे मार्ग जोडले आहेत:
+                पुणे शहरात एका ठिकाणाहून दुसऱ्या ठिकाणी जाण्यासाठी प्रवाशांना खाजगी कॅबवर अवलंबून राहावे लागू नये म्हणून आम्ही अधिकृत <strong>PMPML GTFS (General Transit Feed Specification)</strong> डेटाबेस समाविष्ट केला आहे. यात <strong>३१५ बस मार्ग</strong>, <strong>६,७४५ अधिकृत बस थांबे</strong> आणि प्रत्येक वारसा स्थळाजवळचे नेमके बस थांबे समाविष्ट आहेत:
               </>
             ) : (
               <>
-                To ensure budget-friendly, sustainable commuting across Pune, Explore Pune maps official bus numbers with recognized terminal endpoints:
+                To ensure budget-friendly, sustainable commuting across Pune, Explore Pune integrates the official <strong>PMPML GTFS (General Transit Feed Specification)</strong> dataset, covering <strong>315 official bus routes</strong> and <strong>6,745 geocoded bus stops</strong> directly mapped to city landmarks and transit hubs:
               </>
             )}
           </p>
 
           <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, marginTop: 12, fontSize: 13.5 }}>
+            <div style={{ fontWeight: 700, color: '#c2410c', marginBottom: 8, fontSize: 14 }}>
+              {isMr ? 'प्रमुख PMPML बस कॉरिडॉर्स व वारसा थांबे:' : 'Key PMPML Corridors & Landmark Stops:'}
+            </div>
             <ul style={{ paddingLeft: 20, margin: 0, lineHeight: 1.8 }}>
               <li><strong>Bus 149:</strong> Hadapsar Gadital ↔ Nigdi Pradhikaran via Kharadi Bypass, Viman Nagar, Bhosari & Pimpri</li>
-              <li><strong>Bus 24:</strong> Katraj Bus Stand ↔ Pune Railway Station via Swargate, Shivaji Road & Collector Office</li>
-              <li><strong>Bus 50:</strong> Shanipar (Mandai / Old City) ↔ Sinhagad Fort Paytha via Khadakwasla Dam & Donje</li>
-              <li><strong>Bus 100:</strong> Ma Na Pa (PMC) ↔ Hinjawadi Maan Phase 3 via Baner & Wakad Bridge</li>
-              <li><strong>Bus 159:</strong> Swargate Bus Terminal ↔ Hadapsar Gadital via Fatima Nagar & Magarpatta</li>
-              <li><strong>Bus 174:</strong> Pune Station ↔ NDA Khadakwasla Dam via Deccan Gymkhana & Warje</li>
+              <li><strong>Bus 108:</strong> Pune Station Moledina Road ↔ Sutardara via Shaniwarwada (85m walk), Kesari Wada & Deccan</li>
+              <li><strong>Bus 50:</strong> Swargate Natraj Stand ↔ Sinhagad Fort Paytha / Donje via Khadakwasla Dam</li>
+              <li><strong>Bus 144 / 144A:</strong> Pune Station ↔ NDA 10 No. Gate / Khadakwasla Dam via Shaniwar Wada & Swargate</li>
+              <li><strong>Bus 100:</strong> Ma Na Pa (PMC) / Pune Station ↔ Hinjawadi Maan Phase 3 via Baner & Wakad Bridge</li>
+              <li><strong>Bus 119:</strong> Alandi Sant Dnyaneshwar Samadhi ↔ Ma Na Pa Daphale Garage via Dighi & Charholi</li>
+              <li><strong>Bus 24:</strong> Katraj Bus Depot ↔ Pune Railway Station via Swargate & Sarasbaug / Parvati</li>
+              <li><strong>Bus 42:</strong> Nigdi Bhakti Shakti ↔ Katraj Bus Depot via Pimpri, Shivajinagar, Swargate & Parvati Payatha</li>
               <li><strong>Pune Metro Line 1 (Purple):</strong> PCMC Station ↔ Swargate (via Shivajinagar & Civil Court)</li>
               <li><strong>Pune Metro Line 2 (Aqua):</strong> Vanaz (Kothrud) ↔ Ramwadi (via Deccan Gymkhana & District Court)</li>
             </ul>

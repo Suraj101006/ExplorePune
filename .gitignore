@@ -43,4 +43,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# raw extracted datasets
+data/pmpml-extracted/
+scratch-*.js
+
 !.env.example
