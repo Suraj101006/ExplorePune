@@ -70,7 +70,7 @@ function getTransporter() {
       secure,
       auth: { user, pass },
       tls: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: process.env.NODE_ENV === 'development' ? false : true,
       },
       connectionTimeout: 15000,
       greetingTimeout: 12000,

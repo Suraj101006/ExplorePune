@@ -72,7 +72,6 @@ export async function getLiveGoogleTransitRoute({
 }): Promise<GoogleTransitResult> {
   const apiKey =
     process.env.GOOGLE_MAPS_API_KEY ||
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
     process.env.GOOGLE_API_KEY;
 
   const defaultGmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat.toFixed(5)},${originLng.toFixed(5)}&destination=${destLat.toFixed(5)},${destLng.toFixed(5)}&travelmode=transit`;

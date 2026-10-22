@@ -79,6 +79,20 @@ export async function POST(req: NextRequest) {
         .sort((a, b) => a.distanceKm - b.distanceKm);
 
       const top3 = sortedByDistance.slice(0, 3);
+      const sanitizedTop3 = top3.map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        name: p.name,
+        name_mr: p.name_mr,
+        category: p.category,
+        category_slug: p.category_slug,
+        image_url: p.image_url,
+        latitude: p.latitude,
+        longitude: p.longitude,
+        distanceKm: p.distanceKm,
+        data_tier: p.data_tier,
+      }));
+
       const replyText = isMr
         ? `📍 **तुमच्या निवडलेल्या स्थानावरून सर्वात जवळची पुणे पर्यटन स्थळे:**\n\n` +
           top3
@@ -99,7 +113,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         reply: replyText,
-        places: top3,
+        places: sanitizedTop3,
         transit: getPublicTransitRoute(userLocation.lat, userLocation.lng, top3[0]),
         suggestions: isMr
           ? ['पुणे मेट्रो तिकीट कसे काढावे?', '१ दिवसाची सहल आखा', 'सिंहगड किल्ला मार्ग']
@@ -133,9 +147,23 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const sanitizedPlaces = (result.places || []).map((p: any) => ({
+      id: p.id,
+      slug: p.slug,
+      name: p.name,
+      name_mr: p.name_mr,
+      category: p.category,
+      category_slug: p.category_slug,
+      image_url: p.image_url,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      distanceKm: p.distanceKm,
+      data_tier: p.data_tier,
+    }));
+
     return NextResponse.json({
       reply: result.reply,
-      places: result.places,
+      places: sanitizedPlaces,
       transit,
       suggestions: result.suggestions,
       isGemini: result.isGemini,

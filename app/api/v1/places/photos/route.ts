@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { isLimited } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
@@ -103,11 +104,21 @@ async function searchCommons(query: string, maxResults: number): Promise<PlacePh
 }
 
 export async function GET(req: NextRequest) {
+  // Rate limit: 60 photo requests per 15 minutes per IP
+  if (isLimited(req, 'places-photos', 60, 900_000)) {
+    return NextResponse.json(
+      { error: { code: 'RATE_LIMITED', message: 'Too many photo requests. Please try again shortly.' } },
+      { status: 429, headers: { 'Retry-After': '300' } }
+    );
+  }
+
   const { searchParams } = new URL(req.url);
-  const slug = (searchParams.get('slug') || '').trim().toLowerCase();
-  const name = (searchParams.get('name') || '').trim();
+  const rawSlug = (searchParams.get('slug') || '').trim().toLowerCase();
+  // Strict slug validation: must match valid slug pattern to prevent path traversal
+  const slug = /^[a-z0-9_-]{1,80}$/.test(rawSlug) ? rawSlug : '';
+  const name = (searchParams.get('name') || '').trim().slice(0, 100);
   const limitParam = parseInt(searchParams.get('limit') || '8', 10);
-  const limit = Math.max(3, Math.min(limitParam, 16));
+  const limit = Math.max(3, Math.min(isNaN(limitParam) ? 8 : limitParam, 16));
 
   if (!slug && !name) {
     return NextResponse.json(
@@ -130,11 +141,12 @@ export async function GET(req: NextRequest) {
   const photos: PlacePhotoItem[] = [];
   const seenUrls = new Set<string>();
 
-  // 1. Check if local authentic image exists for this slug
+  // 1. Check if local authentic image exists for this slug with path boundary check
   if (slug) {
     const localRelPath = `/images/places/${slug}.jpg`;
-    const localDiskPath = path.join(process.cwd(), 'public', 'images', 'places', `${slug}.jpg`);
-    if (fs.existsSync(localDiskPath)) {
+    const imagesBaseDir = path.resolve(process.cwd(), 'public', 'images', 'places');
+    const localDiskPath = path.resolve(imagesBaseDir, `${slug}.jpg`);
+    if (localDiskPath.startsWith(imagesBaseDir) && fs.existsSync(localDiskPath)) {
       photos.push({
         url: localRelPath,
         thumbnail: localRelPath,

@@ -1,67 +1,127 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
     // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
+
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    // Profiles: public read for community display, only owner can write
+    function getUserRole() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/profiles/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data.role
+        : 'guest';
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        getUserRole() == 'admin' ||
+        request.auth.token.admin == true ||
+        request.auth.token.email in ['surajdhok1010@gmail.com', '1ishankakade@gmail.com', 'explorepune232@gmail.com']
+      );
+    }
+
+    function isStaff() {
+      return isAuthenticated() && (
+        isAdmin() ||
+        getUserRole() == 'moderator'
+      );
+    }
+
+    // Profiles: public read for community contributors.
+    // Users can only manage their own profile and CANNOT escalate their own role to moderator/admin.
     match /profiles/{userId} {
       allow read: if true;
-      allow write: if isOwner(userId);
+      allow create: if isOwner(userId) && (!request.resource.data.keys().hasAny(['role']) || request.resource.data.role == 'member');
+      allow update: if isOwner(userId) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']) ||
+        isAdmin()
+      );
+      allow delete: if isOwner(userId) || isAdmin();
     }
 
-    // Places & Categories: public read & management
+    // Places & Categories: public read for all visitors. Only authorized staff/admins can write.
     match /places/{placeId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isStaff();
     }
     match /place_categories/{catId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isStaff();
     }
 
-    // Favorites & Visits: user specific
+    // Favorites & Visits: strictly user-scoped. Users cannot view, modify, or tamper with others' data.
     match /favorites/{docId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated() && (resource.data.user_id == request.auth.uid || isStaff());
+      allow create: if isAuthenticated() && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if isAuthenticated() && (resource.data.user_id == request.auth.uid || isStaff());
     }
     match /visits/{docId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated() && (resource.data.user_id == request.auth.uid || isStaff());
+      allow create: if isAuthenticated() && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if isAuthenticated() && (resource.data.user_id == request.auth.uid || isStaff());
     }
 
-    // Reviews: public read for published, authenticated can write
+    // Reviews: published reviews are publicly readable; owners can manage pending drafts; staff can moderate.
     match /reviews/{docId} {
-      allow read, write: if true;
+      allow read: if resource.data.status == 'published' || isStaff() || (isAuthenticated() && resource.data.user_id == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.user_id == request.auth.uid;
+      allow update: if isStaff() || (isAuthenticated() && resource.data.user_id == request.auth.uid && request.resource.data.status != 'published');
+      allow delete: if isStaff() || (isAuthenticated() && resource.data.user_id == request.auth.uid);
     }
 
-    // Blogs: public read for published, authenticated can write
+    // Blogs: published blogs are public; authors can manage their drafts; staff can moderate.
     match /blogs/{blogId} {
-      allow read, write: if true;
+      allow read: if resource.data.status == 'published' || isStaff() || (isAuthenticated() && resource.data.author_id == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.author_id == request.auth.uid;
+      allow update: if isStaff() || (isAuthenticated() && resource.data.author_id == request.auth.uid);
+      allow delete: if isStaff() || (isAuthenticated() && resource.data.author_id == request.auth.uid);
     }
 
-    // Reports: authenticated users can submit
-    match /reports/{reportId} {
-      allow read, write: if true;
-    }
-
-    // Feedbacks & Suggestions
+    // Feedbacks: anyone can submit feedback; only staff can view and manage stored feedback.
     match /feedbacks/{feedbackId} {
-      allow read, write: if true;
+      allow read: if isStaff();
+      allow create: if true;
+      allow update, delete: if isStaff();
     }
 
-    // Badges & Milestones
+    // Reports: authenticated users can report; only staff can read and review.
+    match /reports/{reportId} {
+      allow read: if isStaff();
+      allow create: if isAuthenticated();
+      allow update, delete: if isStaff();
+    }
+
+    // Badges & Milestones: definitions are public; only staff can create/edit definitions.
     match /milestones/{milestoneId} {
-      allow read, write: if true;
-    }
-    match /user_milestones/{docId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isStaff();
     }
 
-    // Staging
+    // User Milestones: achievements earned by users.
+    match /user_milestones/{docId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && (
+        (request.resource.data.user_id == request.auth.uid) ||
+        (resource != null && resource.data.user_id == request.auth.uid) ||
+        isStaff()
+      );
+    }
+
+    // Staging / Import queue: internal admin tools only.
     match /place_import_staging/{stagingId} {
-      allow read, write: if true;
+      allow read, write: if isStaff();
+    }
+
+    // Mail queue for Firebase Trigger Email extension: only backend admin SDK or staff can read.
+    match /mail/{mailId} {
+      allow read: if isStaff();
+      allow create: if true;
+      allow update, delete: if isStaff();
     }
   }
 }

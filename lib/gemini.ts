@@ -79,8 +79,7 @@ export function isGeminiConfigured(clientApiKey?: string): boolean {
     clientApiKey ||
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
-    process.env.GOOGLE_GEMINI_API_KEY ||
-    process.env.NEXT_PUBLIC_GEMINI_API_KEY
+    process.env.GOOGLE_GEMINI_API_KEY
   );
 }
 
@@ -494,8 +493,7 @@ export async function generateGeminiReply({
     clientApiKey ||
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
-    process.env.GOOGLE_GEMINI_API_KEY ||
-    process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    process.env.GOOGLE_GEMINI_API_KEY;
 
   if (apiKey) {
     const restRes = await tryRestGeminiApi(

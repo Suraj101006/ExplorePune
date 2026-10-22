@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth, adminDb } from '@/lib/firebaseAdmin';
+import { isLimited } from '@/lib/rateLimit';
 
 // Deletes the signed-in user's auth account and their Firestore data.
 export async function POST(req: NextRequest) {
+  // Rate limit: 5 deletion attempts per hour per IP
+  if (isLimited(req, 'account-delete', 5, 3600_000)) {
+    return NextResponse.json(
+      { error: { code: 'RATE_LIMITED', message: 'Too many account operations. Please try again later.' } },
+      { status: 429, headers: { 'Retry-After': '900' } }
+    );
+  }
+
   const token = (req.headers.get('authorization') ?? '').replace(/^Bearer /i, '');
   if (!token) {
     return NextResponse.json({ error: { code: 'UNAUTHORIZED', message: 'Please sign in again.' } }, { status: 401 });

@@ -99,8 +99,8 @@ export async function POST(req: NextRequest) {
           error: {
             code: 'EMAIL_SEND_FAILED',
             message: isMr
-              ? `ईमेल पाठवण्यात अडचण आली (${emailResult.error || 'सर्व्हर टाइमआउट'}). आपण खालील बटणाने थेट PDF डाऊनलोड करू शकता किंवा Gmail मध्ये उघडू शकता.`
-              : `Could not send email (${emailResult.error || 'Server timeout'}). You can download the PDF directly or open the itinerary in Gmail below.`,
+              ? 'ईमेल पाठवण्यात अडचण आली. आपण खालील बटणाने थेट PDF डाऊनलोड करू शकता किंवा Gmail मध्ये उघडू शकता.'
+              : 'Could not send email automatically. You can download the PDF directly or open the itinerary in Gmail below.',
           },
         },
         { status: 502 }
