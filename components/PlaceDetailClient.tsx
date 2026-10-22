@@ -37,6 +37,7 @@ import {
   formatAmPm,
   PmpmlTimetableRoute,
 } from '@/lib/pmpmlGtfs';
+import { getPlaceAuthenticity } from '@/lib/authenticity';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -112,6 +113,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
+  const authenticity = useMemo(() => getPlaceAuthenticity(place.slug || place.id, place), [place]);
 
   // PMPML Bus Timetable integration
   const timetableRoutes = useMemo(() => {
@@ -412,7 +414,28 @@ export default function PlaceDetailClient({ place }: { place: any }) {
             >
               📍 {categoryDisplayName}
             </span>
-            <span className={`tier ${place.data_tier}`}>{tierLabel}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '3px 10px',
+                  borderRadius: 999,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  background: `${authenticity.badgeColor}15`,
+                  color: authenticity.badgeColor,
+                  border: `1.5px solid ${authenticity.badgeColor}40`,
+                }}
+                title={`${authenticity.score}/100 Authenticity Score: Government recognition, registered trust, and proven historical significance.`}
+              >
+                <span>{authenticity.badgeEmoji}</span>
+                <span>{isMr ? authenticity.tierLabelMr : authenticity.tierLabelEn}</span>
+                <span style={{ opacity: 0.85, fontSize: 11 }}>({authenticity.score}/100)</span>
+              </span>
+              <span className={`tier ${place.data_tier}`}>{tierLabel}</span>
+            </div>
           </div>
 
           <h1
@@ -588,6 +611,97 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   ? 'या ऐतिहासिक स्थानाबद्दल तपशीलवार माहिती लवकरच अद्ययावत केली जाईल.'
                   : 'Detailed information and visitor guide for this historic spot in Pune.')}
             </p>
+
+            {/* Authenticity Scoring & Source Verification Evidence Card */}
+            <div
+              style={{
+                marginTop: 20,
+                padding: '16px 18px',
+                background: '#faf5ff',
+                borderRadius: 12,
+                border: '1.5px solid #e9d5ff',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 20 }}>{authenticity.badgeEmoji}</span>
+                  <div>
+                    <strong style={{ fontSize: 14, color: '#581c87' }}>
+                      {isMr ? 'सत्यता व पुरावा निर्देशांक:' : 'Authenticity Verification:'}{' '}
+                      <span style={{ color: authenticity.badgeColor }}>
+                        {authenticity.score}/100 • {isMr ? authenticity.tierLabelMr : authenticity.tierLabelEn}
+                      </span>
+                    </strong>
+                    <div style={{ fontSize: 11.5, color: '#6b21a8' }}>
+                      {isMr
+                        ? 'शासकीय व अधिकृत संस्थांद्वारे प्रमाणित (गुगल किंवा खाजगी जाहिरातींवर अवलंबून नाही)'
+                        : 'Certified via State & Heritage Authorities (Google Places only verifies physical existence)'}
+                    </div>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 800,
+                    padding: '3px 9px',
+                    borderRadius: 999,
+                    background: '#ede9fe',
+                    color: '#6b21a8',
+                    border: '1px solid #c4b5fd',
+                  }}
+                >
+                  {isMr ? 'त्रिस्तरीय सत्यता तपासणी' : 'Tier 1 Certified'}
+                </span>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 10, fontSize: 12, marginTop: 12 }}>
+                {authenticity.evidence.governmentRecognition && (
+                  <div style={{ background: '#ffffff', padding: '10px 12px', borderRadius: 8, border: '1px solid #f3e8ff' }}>
+                    <div style={{ color: '#7e22ce', fontWeight: 700, marginBottom: 2 }}>
+                      🏛️ {isMr ? 'शासकीय व पर्यटन मान्यता:' : 'Government / Tourism:'} +{authenticity.evidence.governmentRecognition.points} pts
+                    </div>
+                    <div style={{ color: 'var(--ink-secondary)' }}>
+                      {authenticity.evidence.governmentRecognition.sourceName}
+                    </div>
+                  </div>
+                )}
+
+                {authenticity.evidence.officialInstitution && (
+                  <div style={{ background: '#ffffff', padding: '10px 12px', borderRadius: 8, border: '1px solid #f3e8ff' }}>
+                    <div style={{ color: '#7e22ce', fontWeight: 700, marginBottom: 2 }}>
+                      📜 {isMr ? 'अधिकृत संस्था / ट्रस्ट:' : 'Official Institution / Trust:'} +{authenticity.evidence.officialInstitution.points} pts
+                    </div>
+                    <div style={{ color: 'var(--ink-secondary)' }}>
+                      {authenticity.evidence.officialInstitution.trustOrBodyName}
+                    </div>
+                  </div>
+                )}
+
+                {authenticity.evidence.historicalCulturalSignificance && (
+                  <div style={{ background: '#ffffff', padding: '10px 12px', borderRadius: 8, border: '1px solid #f3e8ff' }}>
+                    <div style={{ color: '#7e22ce', fontWeight: 700, marginBottom: 2 }}>
+                      ⏳ {isMr ? 'ऐतिहासिक व सांस्कृतिक वारसा:' : 'Historical Significance:'} +{authenticity.evidence.historicalCulturalSignificance.points} pts
+                    </div>
+                    <div style={{ color: 'var(--ink-secondary)' }}>
+                      {isMr ? authenticity.evidence.historicalCulturalSignificance.summaryMr : authenticity.evidence.historicalCulturalSignificance.summaryEn}
+                    </div>
+                  </div>
+                )}
+
+                {authenticity.evidence.geographicPresence && (
+                  <div style={{ background: '#ffffff', padding: '10px 12px', borderRadius: 8, border: '1px solid #f3e8ff' }}>
+                    <div style={{ color: '#7e22ce', fontWeight: 700, marginBottom: 2 }}>
+                      📍 {isMr ? 'भौगोलिक पडताळणी:' : 'Geographic Verification:'} +{authenticity.evidence.geographicPresence.points} pts
+                    </div>
+                    <div style={{ color: 'var(--ink-secondary)' }}>
+                      {isMr
+                        ? 'ओपनस्ट्रीटमॅप आणि गुगल नकाशांद्वारे प्रत्यक्ष अस्तित्व व प्रवेशद्वार प्रमाणित.'
+                        : 'Physical existence, boundary & access gate verified via OpenStreetMap & Google Places.'}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </section>
 
           {/* Visitor Intel Section */}

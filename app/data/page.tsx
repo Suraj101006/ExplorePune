@@ -134,6 +134,132 @@ export default function DataMethodologyPage() {
           boxShadow: 'var(--shadow-sm)',
         }}
       >
+        {/* 3-Tier Source Hierarchy & Authenticity Scoring System */}
+        <section style={{ marginBottom: 36, borderBottom: '1px solid #e2e8f0', paddingBottom: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+            <span style={{ fontSize: 24 }}>🛡️</span>
+            <div>
+              <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, margin: 0 }}>
+                {isMr ? 'त्रिस्तरीय सत्यता व स्रोत पडताळणी पद्धत (3-Tier Authority Hierarchy)' : 'Authentic Sourcing & 3-Tier Verification Hierarchy'}
+              </h2>
+              <span style={{ fontSize: 13, color: '#64748b' }}>
+                {isMr
+                  ? 'गुगल किंवा खाजगी जाहिराती नव्हे, तर शासकीय व वारसा संस्थांद्वारे प्रमाणित स्थळे'
+                  : 'Google verifies physical existence; State & Heritage Authorities determine cultural authenticity'}
+              </span>
+            </div>
+          </div>
+
+          <p style={{ fontSize: 14.5, color: '#334155', lineHeight: 1.65 }}>
+            {isMr
+              ? 'पुण्यातील खऱ्या आणि अस्सल पर्यटन स्थळांची निवड करण्यासाठी आम्ही एका कडक त्रिस्तरीय (3-Tier) कार्यपद्धतीचा अवलंब करतो. यामुळे "पुण्यातील पर्यटन स्थळे" शोधताना प्रवाशांना सामान्य दुकाने, सलून किंवा व्यावसायिक हॉटेल्स दिसत नाहीत, तर केवळ अधिकृत व ऐतिहासिकदृष्ट्या महत्त्वाचा वारसा सादर केला जातो.'
+              : 'Explore Pune implements a strict 3-tier curation hierarchy. When someone searches for authentic places in Pune, they are never served ordinary businesses, salons, or commercial listings. Cultural and historical authenticity is strictly established before any place is admitted.'}
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginTop: 20 }}>
+            {/* Tier 1 */}
+            <div style={{ background: '#faf5ff', border: '1.5px solid #d8b4fe', borderRadius: 12, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 18 }}>🏛️</span>
+                <strong style={{ color: '#6b21a8', fontSize: 15 }}>
+                  {isMr ? 'Tier 1 — शोध व अधिकृत मान्यता' : 'Tier 1 — Discovery & Authority'}
+                </strong>
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: '#4c1d95', lineHeight: 1.6 }}>
+                <li>Maharashtra Tourism Development Corporation (MTDC)</li>
+                <li>Government of Maharashtra &amp; PMC / PCMC Heritage Cell</li>
+                <li>Incredible India (Ministry of Tourism, Govt of India)</li>
+                <li>Archaeological Survey of India (ASI / Ministry of Culture)</li>
+                <li>Official museum, fort, and registered trust portals</li>
+              </ul>
+            </div>
+
+            {/* Tier 2 */}
+            <div style={{ background: '#f0fdf4', border: '1.5px solid #86efac', borderRadius: 12, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 18 }}>📍</span>
+                <strong style={{ color: '#166534', fontSize: 15 }}>
+                  {isMr ? 'Tier 2 — प्रत्यक्ष अस्तित्त्वाची पडताळणी' : 'Tier 2 — Physical Verification'}
+                </strong>
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: '#14532d', lineHeight: 1.6 }}>
+                <li><strong>Google Places:</strong> Verifies physical existence, operational status, entry gate, and opening hours only. <em>(Google does NOT decide cultural significance)</em></li>
+                <li><strong>OpenStreetMap (OSM):</strong> Verifies boundary polygons, public access paths, and nearby transit stops.</li>
+              </ul>
+            </div>
+
+            {/* Tier 3 */}
+            <div style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', borderRadius: 12, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 18 }}>📚</span>
+                <strong style={{ color: '#334155', fontSize: 15 }}>
+                  {isMr ? 'Tier 3 — संशोधन व ऐतिहासिक संदर्भ' : 'Tier 3 — Research & Enrichment'}
+                </strong>
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: '#334155', lineHeight: 1.6 }}>
+                <li>Wikidata &amp; Wikipedia scholarly citations</li>
+                <li>Historical gazetteers (e.g. 1885 Poona District Gazetteer)</li>
+                <li>State archives, academic publications &amp; peer-reviewed history</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Authenticity Score Rubric */}
+          <div style={{ marginTop: 24, background: '#f1f5f9', borderRadius: 12, padding: '20px 24px', border: '1px solid #cbd5e1' }}>
+            <h3 style={{ margin: '0 0 10px', fontSize: 16, color: '#0f172a', fontWeight: 800 }}>
+              ⚖️ {isMr ? 'पुरावा-आधारित सत्यता गुणांकन (Authenticity Score Model — Max 100 Pts)' : 'Evidence-Based Authenticity Scoring Model (Max 100 Pts)'}
+            </h3>
+            <p style={{ margin: '0 0 14px', fontSize: 13.5, color: '#475569' }}>
+              {isMr
+                ? 'प्रत्येक पर्यटन स्थळाला पुराव्याच्या आधारे १०० पैकी गुण दिले जातात:'
+                : 'Every place is evaluated against tangible institutional evidence across 5 pillars:'}
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, fontSize: 12.5 }}>
+              <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                <strong style={{ color: '#0f172a', display: 'block' }}>🏛️ Government / Tourism</strong>
+                <span style={{ color: '#059669', fontWeight: 800, fontSize: 14 }}>+30 points</span>
+                <div style={{ color: '#64748b', fontSize: 11.5 }}>ASI, MTDC, State Protected, PMC Heritage Grade I/II</div>
+              </div>
+              <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                <strong style={{ color: '#0f172a', display: 'block' }}>📜 Official Institution</strong>
+                <span style={{ color: '#059669', fontWeight: 800, fontSize: 14 }}>+25 points</span>
+                <div style={{ color: '#64748b', fontSize: 11.5 }}>Registered public trust, management board, official website</div>
+              </div>
+              <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                <strong style={{ color: '#0f172a', display: 'block' }}>⏳ Historical Significance</strong>
+                <span style={{ color: '#059669', fontWeight: 800, fontSize: 14 }}>+20 points</span>
+                <div style={{ color: '#64748b', fontSize: 11.5 }}>Shivaji Maharaj era, Peshwa era, Freedom Struggle, ancient caves</div>
+              </div>
+              <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                <strong style={{ color: '#0f172a', display: 'block' }}>🏙️ Local Importance</strong>
+                <span style={{ color: '#059669', fontWeight: 800, fontSize: 14 }}>+15 points</span>
+                <div style={{ color: '#64748b', fontSize: 11.5 }}>Gramdaivat of Pune, Manache Ganpati, Vetal Tekdi conservation</div>
+              </div>
+              <div style={{ background: '#ffffff', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+                <strong style={{ color: '#0f172a', display: 'block' }}>📍 Geographic Presence</strong>
+                <span style={{ color: '#059669', fontWeight: 800, fontSize: 14 }}>+10 points</span>
+                <div style={{ color: '#64748b', fontSize: 11.5 }}>Verified physical access, OSM polygon, zero ghost listings</div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid #cbd5e1', display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 12 }}>
+              <span style={{ background: '#ede9fe', color: '#6b21a8', padding: '3px 10px', borderRadius: 6, fontWeight: 700 }}>
+                🏆 90–100: Signature Pune
+              </span>
+              <span style={{ background: '#e0f2fe', color: '#0369a1', padding: '3px 10px', borderRadius: 6, fontWeight: 700 }}>
+                🛡️ 75–89: Authentic Pune
+              </span>
+              <span style={{ background: '#dcfce7', color: '#15803d', padding: '3px 10px', borderRadius: 6, fontWeight: 700 }}>
+                💎 60–74: Local / Hidden Gem
+              </span>
+              <span style={{ background: '#fee2e2', color: '#b91c1c', padding: '3px 10px', borderRadius: 6, fontWeight: 700 }}>
+                🚫 &lt;60: Excluded from Tourism Database
+              </span>
+            </div>
+          </div>
+        </section>
+
         {/* Verification Tiers */}
         <section style={{ marginBottom: 36 }}>
           <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 16 }}>
