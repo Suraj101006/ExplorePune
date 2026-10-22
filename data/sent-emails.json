@@ -1,5 +1,31 @@
 [
   {
+    "id": "mail_1792655779364_iogb1",
+    "timestamp": "2026-10-22T07:56:19.364Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "surajdhok1010@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Royal Peshwa Wadas & Palaces 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Royal Peshwa Wadas & Palaces\n\nDear surajdhok1010,\n\nThank you for using Explore Pune! Your custom itinerary starting from My Live GPS at 09:30 has been created.\nTotal Duration: ~4 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Kayani Bakery (Iconic Shrewsbury Biscuits, Camp) (10:26 AM - 10:56 AM) - Stay: 3",
+    "metadata": {
+      "userName": "surajdhok1010",
+      "planTitle": "Plan 1: Royal Peshwa Wadas & Palaces",
+      "stopsCount": 4
+    }
+  },
+  {
+    "id": "mail_1792655730271_1sua4",
+    "timestamp": "2026-10-22T07:55:30.271Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "surajdhok10@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Royal Peshwa Wadas & Palaces 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Royal Peshwa Wadas & Palaces\n\nDear surajdhok10,\n\nThank you for using Explore Pune! Your custom itinerary starting from My Live GPS at 09:30 has been created.\nTotal Duration: ~4 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Kayani Bakery (Iconic Shrewsbury Biscuits, Camp) (10:26 AM - 10:56 AM) - Stay: 30m",
+    "metadata": {
+      "userName": "surajdhok10",
+      "planTitle": "Plan 1: Royal Peshwa Wadas & Palaces",
+      "stopsCount": 4
+    }
+  },
+  {
     "id": "mail_1792655604941_vfnue",
     "timestamp": "2026-10-22T07:53:24.941Z",
     "type": "itinerary_pdf_dispatch",
