@@ -31,6 +31,7 @@ import {
   ProximityStatus,
 } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
+import CinematicPlaceSlideshow from '@/components/CinematicPlaceSlideshow';
 import {
   getLandmarkTimetables,
   getUpcomingDepartures,
@@ -110,6 +111,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   const [isSaved, setIsSaved] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
   const [slideshowOpen, setSlideshowOpen] = useState(false);
+  const [slideshowIndex, setSlideshowIndex] = useState(0);
 
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
@@ -307,81 +309,14 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           <span>←</span> {isMr ? 'सर्व ठिकाणांकडे परत' : 'Back to All Places'}
         </Link>
 
-        {/* Photo Banner with Authentic Image & Slideshow Opener */}
-        {place.image_url && (
-          <div
-            onClick={() => setSlideshowOpen(true)}
-            style={{
-              width: '100%',
-              height: 380,
-              borderRadius: 18,
-              overflow: 'hidden',
-              marginBottom: 24,
-              boxShadow: '0 12px 32px rgba(18, 53, 36, 0.12)',
-              border: '1px solid var(--line)',
-              position: 'relative',
-              backgroundColor: '#0a1e16',
-              cursor: 'pointer',
-            }}
-            title={isMr ? 'सर्व छायाचित्रांचा स्लाइडशो पहा (क्लिक करा)' : 'Click to open full photo slideshow'}
-          >
-            <img
-              src={place.image_url}
-              alt={primaryName}
-              className="place-detail-banner-img"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-                transition: 'transform 0.4s ease',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: '16px 20px',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)',
-                color: '#ffffff',
-                fontSize: 12,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: 8,
-              }}
-            >
-              <span>📷 {isMr ? 'अधिकृत छायाचित्र (विकिपीडिया व कॉमन्स)' : 'Verified Landmark Photograph (Wikipedia & Commons)'}</span>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSlideshowOpen(true);
-                }}
-                style={{
-                  background: 'linear-gradient(135deg, #c2410c 0%, #ea580c 100%)',
-                  border: 'none',
-                  color: '#ffffff',
-                  fontWeight: 700,
-                  fontSize: '12px',
-                  padding: '6px 14px',
-                  borderRadius: '999px',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  boxShadow: '0 4px 12px rgba(194, 65, 12, 0.4)',
-                }}
-              >
-                <span>📸</span>
-                <span>{isMr ? 'छायाचित्रे स्लाइडशो उघडा' : 'View Photos Slideshow'}</span>
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Automated Cinematic Place Photo Slideshow */}
+        <CinematicPlaceSlideshow
+          place={place}
+          onOpenFullscreenTheater={(startIndex) => {
+            setSlideshowIndex(startIndex);
+            setSlideshowOpen(true);
+          }}
+        />
 
         {/* Hero Header */}
         <header
@@ -1893,6 +1828,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         isOpen={slideshowOpen}
         onClose={() => setSlideshowOpen(false)}
         place={place}
+        initialIndex={slideshowIndex}
       />
     </main>
   );

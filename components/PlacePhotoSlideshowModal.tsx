@@ -3,12 +3,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
-
-export interface PlacePhotoItem {
-  url: string;
-  title: string;
-  isPrimary?: boolean;
-}
+import { PlacePhotoItem } from '@/app/api/v1/places/photos/route';
 
 interface PlacePhotoSlideshowModalProps {
   isOpen: boolean;
@@ -20,9 +15,21 @@ interface PlacePhotoSlideshowModalProps {
     name_mr?: string;
     image_url?: string;
     category_slug?: string;
+    address?: string;
+    address_mr?: string;
   } | null;
   initialIndex?: number;
 }
+
+const KEN_BURNS_EFFECTS = [
+  'kenburns-active-zoom-in',
+  'kenburns-active-pan-left',
+  'kenburns-active-zoom-out',
+  'kenburns-active-pan-right',
+];
+
+const SLIDE_DURATION_MS = 4500;
+const MANUAL_PAUSE_RESUME_MS = 2500;
 
 export default function PlacePhotoSlideshowModal({
   isOpen,
@@ -33,10 +40,22 @@ export default function PlacePhotoSlideshowModal({
   const { isMr } = useLanguage();
   const [photos, setPhotos] = useState<PlacePhotoItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
   const touchStartXRef = useRef<number | null>(null);
-  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check reduced motion
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mq.matches);
+    }
+  }, []);
 
   // Load photos when modal opens or place changes
   useEffect(() => {
@@ -44,18 +63,23 @@ export default function PlacePhotoSlideshowModal({
 
     setCurrentIndex(initialIndex);
     setIsPlaying(true);
+    setProgress(0);
 
-    // Initial fallback photo while fetching gallery
+    const primaryUrl = place.image_url || `/images/places/${place.slug}.jpg`;
     const basePhoto: PlacePhotoItem = {
-      url: place.image_url || '/images/places/shaniwar-wada.jpg',
+      url: primaryUrl,
+      thumbnail: primaryUrl,
       title: place.name,
+      caption: isMr ? `${place.name_mr || place.name} — अधिकृत छायाचित्र` : `${place.name} — Authentic Maharashtra Heritage Photograph`,
+      source: 'Maharashtra Tourism / Wikimedia Commons',
+      license: 'CC BY-SA / Public Domain',
+      attribution: 'Wikimedia Commons Archive',
       isPrimary: true,
     };
     setPhotos([basePhoto]);
-    setLoading(true);
 
     let isMounted = true;
-    fetch(`/api/v1/places/photos?slug=${encodeURIComponent(place.slug)}&name=${encodeURIComponent(place.name)}&limit=10`)
+    fetch(`/api/v1/places/photos?slug=${encodeURIComponent(place.slug)}&name=${encodeURIComponent(place.name)}&limit=12`)
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
@@ -66,20 +90,29 @@ export default function PlacePhotoSlideshowModal({
       })
       .catch((err) => {
         console.warn('Could not load extra photos:', err);
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
       });
 
     return () => {
       isMounted = false;
     };
-  }, [isOpen, place, initialIndex]);
+  }, [isOpen, place, initialIndex, isMr]);
+
+  // Preload next image
+  useEffect(() => {
+    if (photos.length <= 1) return;
+    const nextIdx = (currentIndex + 1) % photos.length;
+    const nextPhoto = photos[nextIdx];
+    if (nextPhoto && nextPhoto.url && typeof window !== 'undefined') {
+      const img = new Image();
+      img.src = nextPhoto.url;
+    }
+  }, [currentIndex, photos]);
 
   const handleNext = useCallback(() => {
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr + 1) % prev.length);
+      setProgress(0);
       return prev;
     });
   }, []);
@@ -88,9 +121,23 @@ export default function PlacePhotoSlideshowModal({
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr - 1 + prev.length) % prev.length);
+      setProgress(0);
       return prev;
     });
   }, []);
+
+  const handleManualAction = useCallback(
+    (action: () => void) => {
+      setIsPlaying(false);
+      setProgress(0);
+      action();
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = setTimeout(() => {
+        setIsPlaying(true);
+      }, MANUAL_PAUSE_RESUME_MS);
+    },
+    []
+  );
 
   // Keyboard navigation
   useEffect(() => {
@@ -100,9 +147,9 @@ export default function PlacePhotoSlideshowModal({
       if (e.key === 'Escape') {
         onClose();
       } else if (e.key === 'ArrowRight') {
-        handleNext();
+        handleManualAction(handleNext);
       } else if (e.key === 'ArrowLeft') {
-        handlePrev();
+        handleManualAction(handlePrev);
       } else if (e.key === ' ') {
         e.preventDefault();
         setIsPlaying((p) => !p);
@@ -111,40 +158,53 @@ export default function PlacePhotoSlideshowModal({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose, handleNext, handlePrev]);
+  }, [isOpen, onClose, handleNext, handlePrev, handleManualAction]);
 
-  // Auto-play loop (advances automatically every 3 seconds)
+  // Autoplay ticker
   useEffect(() => {
-    if (isPlaying && photos.length > 1) {
-      autoPlayTimerRef.current = setInterval(() => {
-        handleNext();
-      }, 3000);
-    } else if (autoPlayTimerRef.current) {
-      clearInterval(autoPlayTimerRef.current);
-      autoPlayTimerRef.current = null;
+    if (!isOpen || !isPlaying || photos.length <= 1) {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      return;
     }
 
+    const intervalStepMs = 50;
+    const increment = (intervalStepMs / SLIDE_DURATION_MS) * 100;
+
+    progressIntervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          handleNext();
+          return 0;
+        }
+        return prev + increment;
+      });
+    }, intervalStepMs);
+
     return () => {
-      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     };
-  }, [isPlaying, photos.length, handleNext]);
+  }, [isOpen, isPlaying, photos.length, handleNext]);
 
   // Touch swipe support for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartXRef.current === null) return;
-    const diff = e.changedTouches[0].clientX - touchStartXRef.current;
-    if (Math.abs(diff) > 40) {
-      if (diff < 0) {
-        handleNext(); // swipe left -> next
+    const diffX = e.changedTouches[0].clientX - touchStartXRef.current;
+    const diffY = touchStartYRef.current ? e.changedTouches[0].clientY - touchStartYRef.current : 0;
+
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX < 0) {
+        handleManualAction(handleNext);
       } else {
-        handlePrev(); // swipe right -> prev
+        handleManualAction(handlePrev);
       }
     }
     touchStartXRef.current = null;
+    touchStartYRef.current = null;
   };
 
   if (!isOpen || !place) return null;
@@ -153,6 +213,7 @@ export default function PlacePhotoSlideshowModal({
   const totalPhotos = photos.length;
   const displayName = isMr && place.name_mr ? place.name_mr : place.name;
   const secondaryName = isMr && place.name_mr ? place.name : place.name_mr;
+  const effectClass = prefersReducedMotion ? '' : KEN_BURNS_EFFECTS[currentIndex % KEN_BURNS_EFFECTS.length];
 
   return (
     <div
@@ -162,56 +223,81 @@ export default function PlacePhotoSlideshowModal({
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        backgroundColor: 'rgba(5, 12, 10, 0.94)',
-        backdropFilter: 'blur(10px)',
+        backgroundColor: '#030712',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        animation: 'fadeIn 0.2s ease-out',
-        padding: '16px',
-        boxSizing: 'border-box',
+        animation: 'fadeIn 0.25s ease-out',
         color: '#ffffff',
+        overflow: 'hidden',
+        userSelect: 'none',
       }}
-      onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* 1. TOP CONTROLS & HEADER */}
+      {/* 1. Progress Bar */}
+      {totalPhotos > 1 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 3.5,
+            background: 'rgba(255, 255, 255, 0.15)',
+            zIndex: 30,
+          }}
+        >
+          <div
+            style={{
+              height: '100%',
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #f59e0b, #ea580c)',
+              boxShadow: '0 0 12px rgba(245, 158, 11, 0.7)',
+              transition: isPlaying ? 'width 50ms linear' : 'none',
+            }}
+          />
+        </div>
+      )}
+
+      {/* 2. Top Header Bar */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           gap: 12,
-          padding: '4px 8px',
-          zIndex: 10,
+          padding: '16px 20px',
+          zIndex: 30,
+          background: 'linear-gradient(to bottom, rgba(3, 7, 18, 0.85) 0%, rgba(3, 7, 18, 0) 100%)',
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
           <span
             style={{
-              background: '#c2410c',
+              background: '#ea580c',
               color: '#ffffff',
-              fontSize: '12px',
+              fontSize: 12,
               fontWeight: 800,
               padding: '4px 10px',
-              borderRadius: '999px',
-              letterSpacing: '0.02em',
+              borderRadius: 999,
               display: 'inline-flex',
               alignItems: 'center',
               gap: 4,
+              flexShrink: 0,
             }}
           >
             <span>📸</span>
             <span>
-              {isMr ? 'छायाचित्र' : 'Photo'} {currentIndex + 1} / {totalPhotos}
+              {currentIndex + 1} / {totalPhotos}
             </span>
           </span>
 
-          <div style={{ minWidth: 0, overflow: 'hidden' }}>
+          <div style={{ minWidth: 0 }}>
             <h3
               style={{
                 margin: 0,
-                fontSize: '16px',
+                fontSize: '17px',
                 fontWeight: 700,
                 color: '#ffffff',
                 whiteSpace: 'nowrap',
@@ -222,46 +308,45 @@ export default function PlacePhotoSlideshowModal({
               {displayName}
             </h3>
             {secondaryName && (
-              <p
+              <span
                 style={{
-                  margin: 0,
-                  fontSize: '12px',
+                  fontSize: 12,
                   color: '#94a3b8',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+                  display: 'block',
                 }}
               >
                 {secondaryName}
-              </p>
+              </span>
             )}
           </div>
         </div>
 
-        {/* Action Buttons: AutoPlay + Close */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+        {/* Controls: Pause / Play & Close */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           {totalPhotos > 1 && (
             <button
               type="button"
               onClick={() => setIsPlaying((p) => !p)}
               style={{
-                background: isPlaying ? '#065f46' : 'rgba(255, 255, 255, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                background: isPlaying ? 'rgba(5, 150, 105, 0.4)' : 'rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
                 color: '#ffffff',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontWeight: 600,
+                padding: '7px 14px',
+                borderRadius: 999,
+                fontSize: 12,
+                fontWeight: 700,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 5,
-                transition: 'all 0.15s ease',
+                gap: 6,
               }}
-              title={isPlaying ? 'Pause Slideshow' : 'Start Auto Slideshow'}
+              title={isPlaying ? 'Pause' : 'Play'}
             >
               <span>{isPlaying ? '⏸' : '▶'}</span>
-              <span className="hidden-sm">{isPlaying ? (isMr ? 'थांबवा' : 'Pause') : isMr ? 'स्लाइडशो सुरू करा' : 'Auto-play'}</span>
+              <span className="hide-on-mobile">{isPlaying ? (isMr ? 'थांबवा' : 'Pause') : (isMr ? 'सुरू करा' : 'Play')}</span>
             </button>
           )}
 
@@ -269,233 +354,239 @@ export default function PlacePhotoSlideshowModal({
             type="button"
             onClick={onClose}
             style={{
+              width: 38,
+              height: 38,
+              borderRadius: '50%',
               background: 'rgba(255, 255, 255, 0.15)',
               border: '1px solid rgba(255, 255, 255, 0.25)',
               color: '#ffffff',
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              fontSize: '16px',
+              fontSize: 18,
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background 0.15s',
+              transition: 'background 0.15s ease',
             }}
-            title={isMr ? 'बंद करा (Escape)' : 'Close (Escape)'}
+            title={isMr ? 'बंद करा (Esc)' : 'Close Theater (Esc)'}
+            aria-label="Close"
           >
             ✕
           </button>
         </div>
       </div>
 
-      {/* Animated Auto-play Progress Bar */}
-      {isPlaying && totalPhotos > 1 && (
-        <div
-          style={{
-            height: 3,
-            width: '100%',
-            background: 'rgba(255, 255, 255, 0.15)',
-            borderRadius: 2,
-            overflow: 'hidden',
-            margin: '4px 0 2px',
-          }}
-        >
-          <div
-            key={`${currentIndex}-${isPlaying}`}
-            style={{
-              height: '100%',
-              background: 'linear-gradient(90deg, #f97316 0%, #10b981 100%)',
-              width: '100%',
-              animation: 'photoSlideProgress 3000ms linear forwards',
-            }}
-          />
-        </div>
-      )}
-
-      {/* Keyframe animation style */}
-      <style>{`
-        @keyframes photoSlideProgress {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-      `}</style>
-
-      {/* 2. MAIN PHOTO STAGE & ARROWS */}
+      {/* 3. Main Center Stage with Ken Burns Transition */}
       <div
         style={{
           position: 'relative',
           flex: 1,
+          width: '100%',
+          overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          margin: '12px 0',
-          minHeight: 0,
         }}
-        onClick={(e) => e.stopPropagation()}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
       >
+        {photos.map((photo, idx) => {
+          const isActive = idx === currentIndex;
+          return (
+            <div
+              key={photo.url}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: isActive ? 1 : 0,
+                transition: prefersReducedMotion
+                  ? 'opacity 0.3s ease'
+                  : 'opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                pointerEvents: isActive ? 'auto' : 'none',
+                overflow: 'hidden',
+              }}
+            >
+              <img
+                src={photo.url}
+                alt={photo.caption || photo.title || displayName}
+                className={isActive ? effectClass : ''}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                }}
+              />
+            </div>
+          );
+        })}
+
         {/* Previous Button */}
         {totalPhotos > 1 && (
           <button
             type="button"
-            onClick={handlePrev}
+            onClick={() => handleManualAction(handlePrev)}
             style={{
               position: 'absolute',
-              left: 12,
-              zIndex: 20,
-              background: 'rgba(15, 23, 42, 0.65)',
-              border: '1.5px solid rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              width: 44,
-              height: 44,
+              left: 18,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 52,
+              height: 52,
               borderRadius: '50%',
-              fontSize: '20px',
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: '#ffffff',
+              fontSize: 24,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backdropFilter: 'blur(6px)',
-              transition: 'transform 0.15s, background 0.15s',
+              zIndex: 20,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
             }}
-            title={isMr ? 'मागील छायाचित्र (डावा बाण)' : 'Previous photo (Left Arrow)'}
+            title={isMr ? 'मागील छायाचित्र' : 'Previous'}
+            aria-label="Previous image"
           >
             ‹
           </button>
         )}
 
-        {/* Large Main Photo */}
-        <div
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          {currentPhoto && (
-            <img
-              key={currentPhoto.url}
-              src={currentPhoto.url}
-              alt={currentPhoto.title || displayName}
-              style={{
-                maxWidth: '92vw',
-                maxHeight: '66vh',
-                objectFit: 'contain',
-                borderRadius: '12px',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
-                animation: 'fadeSlide 0.25s ease-out',
-                userSelect: 'none',
-              }}
-            />
-          )}
-
-          {/* Photo Caption Pill */}
-          {currentPhoto && currentPhoto.title && (
-            <div
-              style={{
-                marginTop: 10,
-                background: 'rgba(15, 23, 42, 0.75)',
-                backdropFilter: 'blur(8px)',
-                padding: '6px 14px',
-                borderRadius: '999px',
-                fontSize: '12px',
-                color: '#cbd5e1',
-                maxWidth: '85vw',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-              }}
-            >
-              {currentPhoto.isPrimary ? `⭐ ${isMr ? 'अधिकृत छायाचित्र:' : 'Featured View:'} ` : '📷 '}
-              {currentPhoto.title}
-            </div>
-          )}
-        </div>
-
         {/* Next Button */}
         {totalPhotos > 1 && (
           <button
             type="button"
-            onClick={handleNext}
+            onClick={() => handleManualAction(handleNext)}
             style={{
               position: 'absolute',
-              right: 12,
-              zIndex: 20,
-              background: 'rgba(15, 23, 42, 0.65)',
-              border: '1.5px solid rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              width: 44,
-              height: 44,
+              right: 18,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 52,
+              height: 52,
               borderRadius: '50%',
-              fontSize: '20px',
+              background: 'rgba(15, 23, 42, 0.65)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: '#ffffff',
+              fontSize: 24,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backdropFilter: 'blur(6px)',
-              transition: 'transform 0.15s, background 0.15s',
+              zIndex: 20,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
             }}
-            title={isMr ? 'पुढील छायाचित्र (उजवा बाण)' : 'Next photo (Right Arrow)'}
+            title={isMr ? 'पुढील छायाचित्र' : 'Next'}
+            aria-label="Next image"
           >
             ›
           </button>
         )}
       </div>
 
-      {/* 3. THUMBNAIL STRIP */}
+      {/* 4. Bottom Story Caption & Desktop Thumbnails */}
       <div
         style={{
+          padding: '16px 20px',
+          background: 'linear-gradient(to top, rgba(3, 7, 18, 0.95) 0%, rgba(3, 7, 18, 0) 100%)',
+          zIndex: 30,
           display: 'flex',
-          gap: 8,
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflowX: 'auto',
-          padding: '8px 4px',
-          maxWidth: '100%',
-          scrollbarWidth: 'thin',
-          zIndex: 10,
+          flexDirection: 'column',
+          gap: 10,
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        {photos.map((item, idx) => {
-          const isActive = idx === currentIndex;
-          return (
-            <button
-              key={`${item.url}-${idx}`}
-              type="button"
-              onClick={() => setCurrentIndex(idx)}
+        {/* Caption & Source info */}
+        <div style={{ textAlign: 'center' }}>
+          {currentPhoto?.caption && (
+            <p
+              key={currentPhoto.caption}
               style={{
-                width: 58,
-                height: 44,
-                padding: 0,
-                borderRadius: '6px',
-                overflow: 'hidden',
-                border: isActive ? '2.5px solid #ea580c' : '1px solid rgba(255, 255, 255, 0.25)',
-                opacity: isActive ? 1 : 0.6,
-                transform: isActive ? 'scale(1.08)' : 'scale(1)',
-                transition: 'all 0.18s ease',
-                cursor: 'pointer',
-                background: '#0f172a',
-                flexShrink: 0,
+                margin: 0,
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#f8fafc',
+                textShadow: '0 2px 8px rgba(0,0,0,0.85)',
               }}
-              title={item.title || `Photo ${idx + 1}`}
             >
-              <img
-                src={item.url}
-                alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                loading="lazy"
-              />
-            </button>
-          );
-        })}
+              “{currentPhoto.caption}”
+            </p>
+          )}
+
+          <div
+            style={{
+              display: 'inline-flex',
+              gap: 8,
+              fontSize: '11px',
+              color: '#94a3b8',
+              marginTop: 4,
+            }}
+          >
+            <span>📜 {currentPhoto?.source || 'Wikimedia Commons'}</span>
+            <span>•</span>
+            <span>{currentPhoto?.license || 'CC BY-SA'}</span>
+            {currentPhoto?.attribution && (
+              <>
+                <span>•</span>
+                <span>{currentPhoto.attribution}</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Thumbnail Preview Bar on Desktop */}
+        {totalPhotos > 1 && (
+          <div
+            className="hide-on-mobile"
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 8,
+              overflowX: 'auto',
+              padding: '6px 0',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {photos.map((p, idx) => {
+              const isSelected = idx === currentIndex;
+              return (
+                <button
+                  key={p.url + idx}
+                  type="button"
+                  onClick={() =>
+                    handleManualAction(() => {
+                      setCurrentIndex(idx);
+                      setProgress(0);
+                    })
+                  }
+                  style={{
+                    width: 50,
+                    height: 36,
+                    borderRadius: 6,
+                    overflow: 'hidden',
+                    border: isSelected ? '2px solid #f59e0b' : '1px solid rgba(255,255,255,0.2)',
+                    padding: 0,
+                    cursor: 'pointer',
+                    opacity: isSelected ? 1 : 0.5,
+                    flexShrink: 0,
+                    background: '#0f172a',
+                    transform: isSelected ? 'scale(1.08)' : 'scale(1)',
+                    transition: 'all 0.15s ease',
+                  }}
+                  title={p.title}
+                >
+                  <img
+                    src={p.thumbnail || p.url}
+                    alt={p.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

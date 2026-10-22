@@ -720,46 +720,50 @@ export default function HomeExplorer({
                 const isSaved = savedIds.includes(p.id);
 
                 return (
-                  <article key={p.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <article key={p.id} className="card place-card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>
                     {/* Landmark Photo Banner with Free Wishlist & Audio Pronunciation Actions */}
                     <div
                       className="card-media"
-                      style={{ position: 'relative', cursor: 'pointer', overflow: 'hidden' }}
-                      onClick={() => setSlideshowPlace(p)}
-                      title={isMr ? `${p.name_mr || p.name} छायाचित्र स्लाइडशो उघडा` : `Click to view photo slideshow of ${p.name}`}
+                      style={{ position: 'relative', overflow: 'hidden' }}
                     >
-                      <img
-                        src={p.image_url || badgeImg}
-                        alt={p.name}
-                        loading="lazy"
-                        style={{ transition: 'transform 0.3s ease', display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-
-                      {/* Clickable Slideshow Trigger Badge */}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: 8,
-                          left: 8,
-                          zIndex: 2,
-                          background: 'rgba(15, 23, 42, 0.78)',
-                          backdropFilter: 'blur(6px)',
-                          color: '#ffffff',
-                          fontSize: '11px',
-                          fontWeight: 700,
-                          padding: '3px 8px',
-                          borderRadius: '6px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 4,
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                          transition: 'all 0.15s ease',
-                        }}
+                      <Link
+                        href={`/places/${p.slug}`}
+                        style={{ display: 'block', width: '100%', height: '100%' }}
+                        title={isMr ? `${p.name_mr || p.name} माहिती व थेट छायाचित्र स्लाइडशो` : `View ${p.name} details & automatic slideshow`}
                       >
-                        <span>📸</span>
-                        <span>{isMr ? 'स्लाइडशो पहा' : 'View Photos'}</span>
-                      </div>
+                        <img
+                          src={p.image_url || badgeImg}
+                          alt={p.name}
+                          loading="lazy"
+                          className="place-card-img-zoom"
+                          style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+
+                        {/* Interactive Slideshow Indicator Badge */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: 8,
+                            left: 8,
+                            zIndex: 2,
+                            background: 'rgba(15, 23, 42, 0.78)',
+                            backdropFilter: 'blur(6px)',
+                            color: '#ffffff',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            padding: '3px 8px',
+                            borderRadius: '6px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                          }}
+                        >
+                          <span>📸</span>
+                          <span>{isMr ? 'थेट स्लाइडशो' : 'View Slideshow'}</span>
+                        </div>
+                      </Link>
 
                       {/* Free Audio Pronunciation Tool */}
                       <button
@@ -828,17 +832,28 @@ export default function HomeExplorer({
                     </div>
 
                     {/* Aligned Title Container */}
-                    <div style={{ minHeight: 46, display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0 }}>
+                    <Link
+                      href={`/places/${p.slug}`}
+                      style={{
+                        minHeight: 46,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        minWidth: 0,
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }}
+                    >
                       {isMr && p.name_mr ? (
                         <>
-                          <h2 style={{ fontSize: '17px', fontFamily: 'var(--deva)', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                          <h2 style={{ fontSize: '17px', fontFamily: 'var(--deva)', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word', color: 'var(--ink)' }}>
                             {p.name_mr}
                           </h2>
                           <div style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
                         </>
                       ) : (
                         <>
-                          <h2 style={{ fontSize: '16.5px', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{p.name}</h2>
+                          <h2 style={{ fontSize: '16.5px', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word', color: 'var(--ink)' }}>{p.name}</h2>
                           {p.name_mr && (
                             <p className="mr" style={{ margin: 0, fontSize: '12.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {p.name_mr}
@@ -846,7 +861,7 @@ export default function HomeExplorer({
                           )}
                         </>
                       )}
-                    </div>
+                    </Link>
 
                     {/* Clamped Description */}
                     <p

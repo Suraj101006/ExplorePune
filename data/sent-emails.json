@@ -1,5 +1,31 @@
 [
   {
+    "id": "mail_1792691813986_9f3ks",
+    "timestamp": "2026-10-22T17:56:53.986Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "surajdhok1010@gmail.com",
+    "subject": "Your Custom Pune Itinerary: Plan 1: Classic Heritage & Peshwa History 🗺️ | Prepared for Sahil by ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Classic Heritage & Peshwa History\n\nDear Sahil,\n\nThank you for using Explore Pune! Your custom itinerary starting from My Live GPS at 09:30 has been created.\nTotal Duration: ~2 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Kayani Bakery (Iconic Shrewsbury Biscuits, Camp) (10:20 AM - 10:50 AM) - Stay: 30m\n",
+    "metadata": {
+      "userName": "Sahil",
+      "planTitle": "Plan 1: Classic Heritage & Peshwa History",
+      "stopsCount": 2
+    }
+  },
+  {
+    "id": "mail_1792691543101_gnpan",
+    "timestamp": "2026-10-22T17:52:23.101Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "surajdhok1010@gmail.com",
+    "subject": "Your Custom Pune Itinerary: Plan 1: Classic Heritage & Peshwa History 🗺️ | Prepared for Sahil by ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Classic Heritage & Peshwa History\n\nDear Sahil,\n\nThank you for using Explore Pune! Your custom itinerary starting from My Live GPS at 09:30 has been created.\nTotal Duration: ~2 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Kayani Bakery (Iconic Shrewsbury Biscuits, Camp) (10:20 AM - 10:50 AM) - Stay: 30m\n",
+    "metadata": {
+      "userName": "Sahil",
+      "planTitle": "Plan 1: Classic Heritage & Peshwa History",
+      "stopsCount": 2
+    }
+  },
+  {
     "id": "mail_1792684090139_086zm",
     "timestamp": "2026-10-22T15:48:10.139Z",
     "type": "itinerary_pdf_dispatch",

@@ -1903,3 +1903,91 @@ html.intro-dismissed .intro-overlay {
     font-size: 12px;
   }
 }
+
+/* =========================================================================
+   CINEMATIC PLACE PHOTO SLIDESHOW & KEN BURNS EFFECTS
+   ========================================================================= */
+
+@keyframes kenburns-zoom-in {
+  0% {
+    transform: scale(1.0) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes kenburns-zoom-out {
+  0% {
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.0) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes kenburns-pan-left {
+  0% {
+    transform: scale(1.06) translate3d(1.5%, 0, 0);
+  }
+  100% {
+    transform: scale(1.06) translate3d(-1.5%, 0, 0);
+  }
+}
+
+@keyframes kenburns-pan-right {
+  0% {
+    transform: scale(1.06) translate3d(-1.5%, 0, 0);
+  }
+  100% {
+    transform: scale(1.06) translate3d(1.5%, 0, 0);
+  }
+}
+
+.kenburns-active-zoom-in {
+  animation: kenburns-zoom-in 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+}
+
+.kenburns-active-zoom-out {
+  animation: kenburns-zoom-out 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+}
+
+.kenburns-active-pan-left {
+  animation: kenburns-pan-left 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+}
+
+.kenburns-active-pan-right {
+  animation: kenburns-pan-right 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns-active-zoom-in,
+  .kenburns-active-zoom-out,
+  .kenburns-active-pan-left,
+  .kenburns-active-pan-right {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Place Card Interactive Hover Elevate */
+.place-card-interactive {
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.place-card-interactive:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12), 0 4px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+.place-card-img-zoom {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.place-card-interactive:hover .place-card-img-zoom {
+  transform: scale(1.06) !important;
+}

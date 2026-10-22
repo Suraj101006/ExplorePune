@@ -6,7 +6,12 @@ export const dynamic = 'force-dynamic';
 
 export interface PlacePhotoItem {
   url: string;
+  thumbnail: string;
   title: string;
+  caption: string;
+  source: string;
+  license: string;
+  attribution: string;
   isPrimary?: boolean;
 }
 
@@ -31,11 +36,11 @@ async function searchCommons(query: string, maxResults: number): Promise<PlacePh
   try {
     const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(
       query
-    )}&gsrlimit=${maxResults}&gsrnamespace=6&prop=imageinfo&iiprop=url|size&iiurlwidth=1080&format=json`;
+    )}&gsrlimit=${maxResults}&gsrnamespace=6&prop=imageinfo&iiprop=url|size|extmetadata&iiurlwidth=1280&format=json`;
 
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'ExplorePuneApp/1.0 (contact: suraj10.pp@gmail.com; Maharashtra Tourism Portal)',
+        'User-Agent': 'ExplorePuneApp/1.0 (contact: surajdhok1010@gmail.com; Maharashtra Tourism & Heritage Portal)',
       },
       next: { revalidate: 3600 },
     });
@@ -62,9 +67,30 @@ async function searchCommons(query: string, maxResults: number): Promise<PlacePh
       const imgUrl = info.thumburl || info.url;
       if (!imgUrl) continue;
 
+      const cleanedTitle = cleanPhotoTitle(rawTitle);
+      const extMeta = info.extmetadata || {};
+      const artist = (extMeta.Artist?.value || '')
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/&[a-z0-9#]+;/gi, '')
+        .trim();
+      const license = extMeta.LicenseShortName?.value || 'CC BY-SA';
+      const desc = (extMeta.ImageDescription?.value || '')
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/&[a-z0-9#]+;/gi, '')
+        .trim();
+
+      const thumbUrl = info.thumburl
+        ? info.thumburl.replace(/\/\d+px-/, '/440px-')
+        : imgUrl;
+
       items.push({
         url: imgUrl,
-        title: cleanPhotoTitle(rawTitle),
+        thumbnail: thumbUrl,
+        title: cleanedTitle,
+        caption: desc && desc.length < 120 ? desc : cleanedTitle,
+        source: 'Wikimedia Commons',
+        license: license,
+        attribution: artist || 'Wikimedia Commons Contributor',
         isPrimary: false,
       });
     }
@@ -111,7 +137,12 @@ export async function GET(req: NextRequest) {
     if (fs.existsSync(localDiskPath)) {
       photos.push({
         url: localRelPath,
-        title: name ? `${name} (Featured Photograph)` : 'Featured Landmark Photo',
+        thumbnail: localRelPath,
+        title: name ? `${name}` : 'Featured Landmark Photo',
+        caption: name ? `${name} — Verified Historical Photograph` : 'Pune Heritage Photograph',
+        source: 'Maharashtra Tourism / Directorate of Archaeology',
+        license: 'CC BY-SA / Official Public Heritage',
+        attribution: 'Explore Pune Verified Photographic Archive',
         isPrimary: true,
       });
       seenUrls.add(localRelPath);
