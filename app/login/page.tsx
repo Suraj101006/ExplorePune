@@ -24,6 +24,7 @@ export default function LoginPage() {
   const [msg, setMsg] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [agreePolicy, setAgreePolicy] = useState(false);
 
   async function ensureProfile(uid: string, displayName: string | null) {
     const ref = doc(db, 'profiles', uid);
@@ -41,9 +42,15 @@ export default function LoginPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     setErr('');
     setMsg('');
+
+    if (!agreePolicy) {
+      setErr('Please tick the checkbox to agree to the Privacy Policy & Terms of Service to proceed.');
+      return;
+    }
+
+    setBusy(true);
     try {
       if (mode === 'up') {
         const { user } = await createUserWithEmailAndPassword(auth, email, pw);
@@ -75,6 +82,12 @@ export default function LoginPage() {
   }
 
   async function googleSignIn() {
+    setErr('');
+    setMsg('');
+    if (!agreePolicy) {
+      setErr('Please tick the checkbox to agree to the Privacy Policy & Terms of Service to proceed.');
+      return;
+    }
     try {
       const result = await signInWithPopup(auth, googleProvider);
       await ensureProfile(result.user.uid, result.user.displayName);
@@ -329,6 +342,55 @@ export default function LoginPage() {
             />
           </div>
 
+          {/* Privacy Policy & Terms Agreement Checkbox */}
+          <div style={{ margin: '14px 0 16px' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: 10,
+                fontSize: 12.5,
+                color: 'var(--ink)',
+                cursor: 'pointer',
+                lineHeight: 1.45,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={agreePolicy}
+                onChange={(e) => setAgreePolicy(e.target.checked)}
+                style={{
+                  marginTop: 2,
+                  accentColor: '#059669',
+                  width: 17,
+                  height: 17,
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                }}
+                required
+              />
+              <span>
+                I agree to the{' '}
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  style={{ color: '#059669', fontWeight: 700, textDecoration: 'underline' }}
+                >
+                  Privacy Policy
+                </Link>{' '}
+                and{' '}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  style={{ color: '#059669', fontWeight: 700, textDecoration: 'underline' }}
+                >
+                  Terms of Service
+                </Link>{' '}
+                of ExplorePune.
+              </span>
+            </label>
+          </div>
+
           {err && (
             <p className="note err" role="alert" style={{ marginBottom: 16 }}>
               {err}
@@ -342,13 +404,19 @@ export default function LoginPage() {
 
           <button
             className="btn"
-            disabled={busy}
-            style={{ width: '100%', padding: '12px', fontSize: 15 }}
+            disabled={busy || !agreePolicy}
+            style={{
+              width: '100%',
+              padding: '12px',
+              fontSize: 15,
+              opacity: agreePolicy ? 1 : 0.65,
+              cursor: agreePolicy ? 'pointer' : 'not-allowed',
+            }}
           >
             {busy
               ? 'Please wait…'
               : mode === 'in'
-              ? 'Sign In to PuneTRAIL'
+              ? 'Sign In to ExplorePune'
               : 'Create My Account'}
           </button>
         </form>

@@ -79,6 +79,33 @@ function getTransporter() {
   return null;
 }
 
+export async function saveToEmailOutbox(type: string, to: string, subject: string, bodyText: string, metadata?: any) {
+  try {
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    const filePath = path.join(process.cwd(), 'data', 'sent-emails.json');
+    let existing: any[] = [];
+    try {
+      const content = await fs.readFile(filePath, 'utf-8');
+      existing = JSON.parse(content);
+    } catch {
+      existing = [];
+    }
+    existing.unshift({
+      id: `mail_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      timestamp: new Date().toISOString(),
+      type,
+      to,
+      subject,
+      preview: bodyText.slice(0, 400),
+      metadata,
+    });
+    await fs.writeFile(filePath, JSON.stringify(existing.slice(0, 100), null, 2), 'utf-8');
+  } catch (e) {
+    console.warn('Could not save to sent-emails.json outbox:', e);
+  }
+}
+
 /**
  * 1. SENDS AUTOMATED CONFIRMATION & THANK-YOU EMAIL TO THE USER
  * Acknowledges their feedback, assures that issues will be investigated and resolved by the team,
@@ -236,6 +263,9 @@ ExplorePune Team
 ==================================================
 `;
 
+  // Always record in local outbox
+  await saveToEmailOutbox('user_feedback_thank_you', toEmail, subject, textContent, { rating, type });
+
   const transporter = getTransporter();
 
   if (transporter) {
@@ -352,6 +382,9 @@ Message:
 Feedback ID: ${feedbackId || 'N/A'}
 =========================================
 `;
+
+  // Always record in local outbox
+  await saveToEmailOutbox('admin_feedback_notification', adminEmail, subject, textContent, { userEmail, rating, type, feedbackId });
 
   const transporter = getTransporter();
 
@@ -564,6 +597,9 @@ Suraj Dhok and Sahil Jadhav
 ExplorePune Team
 ==================================================
 `;
+
+  // Always record in local outbox
+  await saveToEmailOutbox('itinerary_pdf_dispatch', toEmail, subject, textContent, { userName, planTitle, stopsCount: itineraryData.stops?.length });
 
   const transporter = getTransporter();
 

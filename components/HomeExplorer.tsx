@@ -963,6 +963,51 @@ export default function HomeExplorer({
                 </button>
               </div>
             )}
+
+            {/* Quick Navigation Strip under Places Cards */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 12,
+                flexWrap: 'wrap',
+                margin: '24px 0 16px',
+              }}
+            >
+              <Link
+                href="/milestones"
+                className="btn outline"
+                style={{
+                  padding: '9px 18px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  borderRadius: '999px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                🏆 {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setIsLocationModalOpen(true)}
+                className="btn outline"
+                style={{
+                  padding: '9px 18px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                📍 {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
+              </button>
+            </div>
           </>
         )}
 
@@ -1028,7 +1073,7 @@ export default function HomeExplorer({
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
             <Link
               href="/planner"
               className="btn"
@@ -1036,30 +1081,65 @@ export default function HomeExplorer({
                 background: '#ffffff',
                 color: '#065f46',
                 fontWeight: 800,
-                padding: '12px 24px',
+                padding: '12px 22px',
                 fontSize: '14px',
                 borderRadius: 999,
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
                 textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
               }}
             >
               ✨ {isMr ? 'सहल प्लॅन करा' : 'Launch Trip Planner'}
             </Link>
+
             <Link
               href="/milestones"
-              className="btn outline"
+              className="btn"
               style={{
-                borderColor: 'rgba(255, 255, 255, 0.4)',
+                background: 'rgba(255, 255, 255, 0.15)',
+                border: '1.5px solid rgba(255, 255, 255, 0.6)',
                 color: '#ffffff',
-                fontWeight: 700,
-                padding: '12px 20px',
+                fontWeight: 800,
+                padding: '12px 22px',
                 fontSize: '14px',
                 borderRadius: 999,
                 textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
+                transition: 'all 0.2s ease',
               }}
             >
               🏆 {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
             </Link>
+
+            <button
+              type="button"
+              onClick={() => setIsLocationModalOpen(true)}
+              className="btn"
+              style={{
+                background: '#ecfdf5',
+                border: '1.5px solid #10b981',
+                color: '#047857',
+                fontWeight: 800,
+                padding: '12px 22px',
+                fontSize: '14px',
+                borderRadius: 999,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s ease',
+              }}
+              title={isMr ? 'शेजारील परिसर निवडा आणि जवळची ठिकाणे शोधा' : 'Select neighborhood and discover nearby attractions'}
+            >
+              📍 {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
+            </button>
           </div>
         </div>
 

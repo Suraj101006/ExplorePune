@@ -15,6 +15,8 @@ export interface UserSavedLocation {
   lat: number;
   lng: number;
   timestamp: number;
+  isGps?: boolean;
+  accuracyRadiusMeters?: number;
   addressDetails?: {
     suburb?: string;
     road?: string;
@@ -257,4 +259,89 @@ export async function searchPuneLivePlaces(query: string): Promise<PuneLocality[
   }
 
   return localResults;
+}
+
+export interface GpsDetectionResult {
+  success: boolean;
+  location?: UserSavedLocation;
+  error?: string;
+  isOutsidePune?: boolean;
+  distanceFromPuneKm?: number;
+  accuracyMeters?: number;
+}
+
+/**
+ * Acquire precise, authentic GPS coordinates using browser Geolocation API.
+ * Uses high-accuracy device GPS sensors with zero caching for fresh satellite fix.
+ */
+export function detectBrowserGps(): Promise<GpsDetectionResult> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
+      resolve({
+        success: false,
+        error: 'Geolocation is not supported by your browser.',
+      });
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude, accuracy } = pos.coords;
+        const distFromCenter = calculateDistanceKm(latitude, longitude, 18.5204, 73.8567);
+        const { locality } = findClosestPuneLocality(latitude, longitude);
+
+        const isOutside = distFromCenter > 45;
+        const localityShortEn = locality.nameEn.split('/')[0].trim();
+        const localityShortMr = locality.nameMr.split('/')[0].trim();
+
+        const nameEn = isOutside
+          ? `Live GPS (~${Math.round(distFromCenter)} km from Pune)`
+          : `Live GPS (Near ${localityShortEn})`;
+        const nameMr = isOutside
+          ? `थेट GPS (पुण्यापासून ~${Math.round(distFromCenter)} किमी)`
+          : `थेट GPS (${localityShortMr} जवळ)`;
+
+        const savedLoc: UserSavedLocation = {
+          id: 'live-gps',
+          nameEn,
+          nameMr,
+          latitude,
+          longitude,
+          lat: latitude,
+          lng: longitude,
+          timestamp: Date.now(),
+          isGps: true,
+          accuracyRadiusMeters: Math.round(accuracy),
+        };
+
+        setStoredUserLocation(savedLoc);
+        resolve({
+          success: true,
+          location: savedLoc,
+          isOutsidePune: isOutside,
+          distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
+          accuracyMeters: Math.round(accuracy),
+        });
+      },
+      (err) => {
+        let msg = 'Could not acquire GPS position.';
+        if (err.code === err.PERMISSION_DENIED) {
+          msg = 'Location permission was denied. Please allow location access in your browser settings.';
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          msg = 'GPS satellite fix or network position is unavailable.';
+        } else if (err.code === err.TIMEOUT) {
+          msg = 'GPS satellite fix timed out. Please check your device location services and try again.';
+        }
+        resolve({
+          success: false,
+          error: msg,
+        });
+      },
+      {
+        enableHighAccuracy: true, // Forces phone hardware GPS
+        timeout: 12000,
+        maximumAge: 0, // Direct real-time reading
+      }
+    );
+  });
 }

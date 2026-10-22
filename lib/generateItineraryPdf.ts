@@ -41,12 +41,18 @@ export interface ItineraryPdfData {
  */
 function safePdfText(str?: string | null, fallback = ''): string {
   if (!str) return fallback;
-  const cleaned = str
+  // If text contains English + Marathi in parentheses, prioritize the English portion for crisp PDF rendering
+  let text = str;
+  if (/[\u0900-\u097F]/.test(text) && /[a-zA-Z]/.test(text)) {
+    text = text.replace(/\([^)]*[\u0900-\u097F][^)]*\)/g, '').trim();
+  }
+  const cleaned = text
     .replace(/[\u{1F300}-\u{1F9FF}]/gu, '') // emoji symbols
     .replace(/[\u{2600}-\u{26FF}]/gu, '')   // misc symbols
     .replace(/[\u{2700}-\u{27BF}]/gu, '')   // dingbats
     .replace(/[\u{FE00}-\u{FE0F}]/gu, '')   // variation selectors
-    .replace(/[^\x20-\x7E\xA0-\xFF]/g, '')  // restrict to Latin-1 range
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, ' ')  // restrict to Latin-1 range
+    .replace(/\s+/g, ' ')
     .trim();
   return cleaned || fallback;
 }
@@ -78,8 +84,8 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
     }
   };
 
-  // 1. TOP HEADER BANNER (Vibrant Pune Clay & Amber)
-  doc.setFillColor(194, 65, 12); // #c2410c
+  // 1. TOP HEADER BANNER (Explore Pune Emerald & Amber)
+  doc.setFillColor(6, 78, 59); // deep emerald #064e3b
   doc.rect(margin, y, contentWidth, 22, 'F');
 
   doc.setFillColor(217, 119, 6); // amber accent line
@@ -88,25 +94,25 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
   // Header Title
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.text('EXPLORE PUNE — OFFICIAL EXPEDITION ITINERARY', margin + 7, y + 9);
+  doc.setFontSize(13.5);
+  doc.text('EXPLORE PUNE -- OFFICIAL EXPEDITION TRAVEL PASS', margin + 7, y + 9);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(254, 240, 138); // light amber text
   doc.text(
-    'Sahyadri Trails, Heritage Citadels & Public Transit Portal | https://punetrail.web.app',
+    'Heritage Citadels, Sahyadri Trails & PMPML / Metro Transit Guide | ExplorePune',
     margin + 7,
     y + 16
   );
 
   // Top-Right Verified Pass Pill
-  doc.setFillColor(255, 237, 213);
+  doc.setFillColor(236, 253, 245);
   doc.roundedRect(margin + contentWidth - 36, y + 6, 30, 8, 2, 2, 'F');
-  doc.setTextColor(154, 52, 18);
+  doc.setTextColor(4, 120, 87);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
-  doc.text('VERIFIED PASS', margin + contentWidth - 21, y + 11.2, { align: 'center' });
+  doc.text('OFFICIAL PASS', margin + contentWidth - 21, y + 11.2, { align: 'center' });
 
   y += 30;
 
@@ -159,7 +165,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9.5);
-  doc.setTextColor(194, 65, 12);
+  doc.setTextColor(6, 95, 70);
   doc.text(planTitleSafe.slice(0, 45), margin + 8, y + 22.5);
 
   doc.setFont('helvetica', 'normal');
@@ -214,7 +220,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
-  doc.setTextColor(194, 65, 12);
+  doc.setTextColor(6, 95, 70);
   doc.text(`INR ${data.estimatedCost} / person`, margin + 5, y + 20.5);
 
   doc.setTextColor(6, 95, 70);
@@ -232,7 +238,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
   checkPageBreak(12);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10.5);
-  doc.setTextColor(194, 65, 12);
+  doc.setTextColor(6, 95, 70);
   doc.text('SCHEDULED ITINERARY STOPS & PUBLIC TRANSIT CONNECTIONS', margin, y);
 
   doc.setDrawColor(253, 186, 116); // light orange divider
@@ -398,7 +404,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
   y += 5.5;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
-  doc.setTextColor(194, 65, 12);
+  doc.setTextColor(6, 95, 70);
   doc.text('Suraj Dhok and Sahil Jadhav', margin, y);
 
   y += 4.5;

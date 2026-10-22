@@ -27,6 +27,7 @@ import {
 import {
   getStoredUserLocation,
   DEFAULT_PUNE_STATIC_LOCATION,
+  detectBrowserGps,
 } from '@/lib/userLocation';
 
 const STARTS: Record<string, { coords: [number, number]; mr: string }> = {
@@ -56,6 +57,10 @@ export default function PlannerPage() {
   const [mode, setMode] = useState('public_transit');
   const [budget, setBudget] = useState('500');
   const [start, setStart] = useState('Central Pune (Shaniwar Wada)');
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocatingGps, setIsLocatingGps] = useState(false);
+  const [gpsErrorMsg, setGpsErrorMsg] = useState('');
+  const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
   const [time, setTime] = useState('09:30');
   const [interests, setInterests] = useState<string[]>([]);
   const [includeUnverified, setIncludeUnverified] = useState(true);
@@ -100,6 +105,25 @@ export default function PlannerPage() {
     return () => window.removeEventListener('explore-pune-active-trip-changed', syncActiveTrip);
   }, []);
 
+  const handleGetGps = async () => {
+    setIsLocatingGps(true);
+    setGpsErrorMsg('');
+    try {
+      const result = await detectBrowserGps();
+      if (result.success && result.location) {
+        setUserCoords({ lat: result.location.lat, lng: result.location.lng });
+        setStart('my-live-gps');
+        setGpsAccuracy(result.accuracyMeters || 10);
+      } else {
+        setGpsErrorMsg(result.error || (isMr ? 'GPS स्थान मिळवता आले नाही.' : 'Could not acquire GPS position.'));
+      }
+    } catch {
+      setGpsErrorMsg(isMr ? 'GPS सेन्सर सुरू करताना त्रुटी आली.' : 'Failed to connect to device GPS.');
+    } finally {
+      setIsLocatingGps(false);
+    }
+  };
+
   async function generate(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -110,9 +134,16 @@ export default function PlannerPage() {
     setIsGuidedMode(false);
 
     const [h, m] = time.split(':').map(Number);
-    const startObj = STARTS[start] || STARTS['Central Pune (Shaniwar Wada)'];
-    const lat = startObj.coords[0];
-    const lng = startObj.coords[1];
+    let lat = 18.5204;
+    let lng = 73.8567;
+    if (start === 'my-live-gps' && userCoords) {
+      lat = userCoords.lat;
+      lng = userCoords.lng;
+    } else {
+      const startObj = STARTS[start] || STARTS['Central Pune (Shaniwar Wada)'];
+      lat = startObj.coords[0];
+      lng = startObj.coords[1];
+    }
 
     try {
       const res = await fetch('/api/v1/itineraries/generate', {
@@ -154,7 +185,10 @@ export default function PlannerPage() {
   // Start Guided Trip from Selected Plan
   const handleStartGuidedTrip = (plan: any) => {
     if (!plan || !plan.stops || plan.stops.length === 0) return;
-    const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
+    const startLabel =
+      start === 'my-live-gps'
+        ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
+        : STARTS[start] && isMr ? STARTS[start].mr : start;
 
     const stops: ActiveTripStop[] = plan.stops.map((s: any, idx: number) => ({
       index: idx + 1,
@@ -342,7 +376,10 @@ export default function PlannerPage() {
         ? planToExport.themeMr || planToExport.themeEn || ''
         : planToExport.themeEn || '';
 
-      const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
+      const startLabel =
+      start === 'my-live-gps'
+        ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
+        : STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
         user?.displayName ||
@@ -418,7 +455,10 @@ export default function PlannerPage() {
         ? planToExport.themeMr || planToExport.themeEn || ''
         : planToExport.themeEn || '';
 
-      const startLabel = STARTS[start] && isMr ? STARTS[start].mr : start;
+      const startLabel =
+      start === 'my-live-gps'
+        ? isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS'
+        : STARTS[start] && isMr ? STARTS[start].mr : start;
 
       const profileName =
         user?.displayName ||
@@ -1128,18 +1168,94 @@ export default function PlannerPage() {
             {t('planner.params')}
           </h2>
 
-          {/* Starting Point Hub */}
+          {/* Starting Point Hub & Device GPS */}
           <div className="field">
-            <label htmlFor="start">
-              {t('planner.startPoint')}
-            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap', gap: 6 }}>
+              <label htmlFor="start" style={{ margin: 0 }}>
+                {t('planner.startPoint')}
+              </label>
+              <button
+                type="button"
+                onClick={handleGetGps}
+                disabled={isLocatingGps}
+                style={{
+                  background: start === 'my-live-gps' ? '#ecfdf5' : '#ffffff',
+                  border: '1px solid #10b981',
+                  color: '#065f46',
+                  fontSize: 11.5,
+                  fontWeight: 700,
+                  cursor: isLocatingGps ? 'wait' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: '3px 10px',
+                  borderRadius: 999,
+                }}
+                title={isMr ? 'डिव्हाइस सेन्सरद्वारे थेट GPS स्थान मिळवा' : 'Acquire live coordinates from device GPS'}
+              >
+                {isLocatingGps ? (
+                  <>⏳ {t('planner.locating')}</>
+                ) : (
+                  <>🎯 {isMr ? 'थेट GPS स्थान वापरा' : 'Use Live Device GPS'}</>
+                )}
+              </button>
+            </div>
+
             <select id="start" value={start} onChange={(e) => setStart(e.target.value)}>
+              {userCoords && (
+                <option value="my-live-gps">
+                  📍 {isMr ? 'माझे थेट GPS स्थान' : 'My Live GPS Location'} ({userCoords.lat.toFixed(4)}, {userCoords.lng.toFixed(4)})
+                </option>
+              )}
               {Object.entries(STARTS).map(([k, val]) => (
                 <option key={k} value={k}>
                   {isMr ? val.mr : k}
                 </option>
               ))}
             </select>
+
+            {userCoords && start === 'my-live-gps' && (
+              <div
+                style={{
+                  marginTop: 6,
+                  padding: '6px 10px',
+                  background: '#ecfdf5',
+                  border: '1px solid #10b981',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: 12,
+                  color: '#065f46',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <span>🎯</span>
+                <span>
+                  <strong>{t('planner.gpsDetected')}:</strong> {userCoords.lat.toFixed(4)}° N, {userCoords.lng.toFixed(4)}° E
+                  {gpsAccuracy && ` (±${Math.round(gpsAccuracy)}m)`}
+                </span>
+              </div>
+            )}
+
+            {gpsErrorMsg && (
+              <div
+                style={{
+                  marginTop: 6,
+                  padding: '6px 10px',
+                  background: '#fef2f2',
+                  border: '1px solid #f87171',
+                  borderRadius: 'var(--radius-sm)',
+                  fontSize: 12,
+                  color: '#dc2626',
+                  display: 'flex',
+                  alignItems: 'start',
+                  gap: 6,
+                }}
+              >
+                <span>⚠️</span>
+                <span>{gpsErrorMsg}</span>
+              </div>
+            )}
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>

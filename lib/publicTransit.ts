@@ -176,7 +176,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'वनाज व आयडियल कॉलनी (अक्वा मार्गिका)',
     busTerminalEn: 'Paud Phata & Kothrud Depot',
     busTerminalMr: 'पौड फाटा व कोथरूड डेपो',
-    popularLocalBuses: ['Bus 36', 'Bus 71', 'Bus 72', 'Bus 100'],
+    popularLocalBuses: [
+      'Bus 102 (Kothrud Depot ↔ Hadapsar Gadital via Swargate)',
+      'Bus 100 (Kothrud ↔ Pune Railway Station via Deccan)',
+      'Bus 36 (Kothrud ↔ Chinchwad Gaon via Bavdhan)',
+      'Bus 71 (Kothrud ↔ Swargate Bus Terminal)',
+    ],
   },
   {
     id: 'hadapsar',
@@ -186,7 +191,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.9259,
     busTerminalEn: 'Hadapsar Gadital PMPML Hub',
     busTerminalMr: 'हडपसर गाडीतळ पीएमपीएमएल डेपो',
-    popularLocalBuses: ['Bus 100', 'Bus 102', 'Bus 103', 'Bus 208'],
+    popularLocalBuses: [
+      'Bus 149 (Hadapsar Gadital ↔ Nigdi Pradhikaran via Kharadi & Pimpri)',
+      'Bus 159 (Hadapsar Gadital ↔ Manapa PMC Bhavan via Pulgate)',
+      'Bus 102 (Hadapsar Gadital ↔ Kothrud Depot via Swargate)',
+      'Bus 208 (Hadapsar Gadital ↔ Katraj Bus Depot via Kondhwa)',
+    ],
   },
   {
     id: 'hinjewadi',
@@ -196,7 +206,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.7389,
     busTerminalEn: 'Hinjewadi Shivaji Chowk Terminal',
     busTerminalMr: 'हिंजवडी शिवाजी चौक टर्मिनल',
-    popularLocalBuses: ['Bus 100', 'Bus 115', 'Bus 256', 'Bus 357'],
+    popularLocalBuses: [
+      'Bus 100 (Hinjewadi Phase 3 ↔ Pune Railway Station via Aundh & Deccan)',
+      'Bus 312 (Hinjewadi Phase 3 ↔ Chinchwad Gaon via Dange Chowk)',
+      'Bus 348 (Hinjewadi Phase 3 ↔ Nigdi Pradhikaran via Wakad)',
+      'Bus 115 (Hinjewadi Phase 1 ↔ Katraj Bus Depot via Highway)',
+    ],
   },
   {
     id: 'viman-nagar',
@@ -208,7 +223,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'रामवाडी मेट्रो (अक्वा मार्गिका)',
     busTerminalEn: 'Viman Nagar Corner / Nagar Rd BRT',
     busTerminalMr: 'विमान नगर कॉर्नर / नगर रोड बीआरटी',
-    popularLocalBuses: ['Bus 132', 'Bus 133', 'Bus 165', 'Bus 167'],
+    popularLocalBuses: [
+      'Bus 174 (Viman Nagar / Airport ↔ Pune Railway Station via Yerawada)',
+      'Bus 149 (Kharadi / Viman Nagar Bypass ↔ Nigdi via Dapodi)',
+      'Bus 165 (Viman Nagar Corner ↔ Wagholi Kesnand Phata)',
+      'Bus 168 (Viman Nagar ↔ Manapa PMC Bhavan)',
+    ],
   },
   {
     id: 'kalyani-nagar',
@@ -220,7 +240,10 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'कल्याणी नगर मेट्रो स्थानक',
     busTerminalEn: 'Kalyani Nagar Bridge / Nagar Rd',
     busTerminalMr: 'कल्याणी नगर पूल / नगर रस्ता',
-    popularLocalBuses: ['Bus 132', 'Bus 165'],
+    popularLocalBuses: [
+      'Bus 174 (Kalyani Nagar ↔ Pune Railway Station)',
+      'Bus 165 (Kalyani Nagar ↔ Wagholi)',
+    ],
   },
   {
     id: 'shivajinagar',
@@ -232,7 +255,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'शिवाजीनगर मेट्रो स्थानक',
     busTerminalEn: 'Shivajinagar Central Bus & ST Stand',
     busTerminalMr: 'शिवाजीनगर मध्यवर्ती बस व एसटी स्थानक',
-    popularLocalBuses: ['Bus 9', 'Bus 10', 'Bus 100', 'Bus 103'],
+    popularLocalBuses: [
+      'Bus 100 (Shivajinagar ↔ Hinjewadi IT Park Phase 3)',
+      'Bus 9 (Shivajinagar ↔ Warje Malwadi)',
+      'Bus 71 (Shivajinagar ↔ Alandi Devachi)',
+      'Bus 148 (Shivajinagar ↔ Pimpri PCMC)',
+    ],
   },
   {
     id: 'swargate',
@@ -244,7 +272,13 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'स्वारगेट मेट्रो स्थानक',
     busTerminalEn: 'Swargate Bus & ST Terminal',
     busTerminalMr: 'स्वारगेट मध्यवर्ती बस व एसटी डेपो',
-    popularLocalBuses: ['Bus 2', 'Bus 24', 'Bus 50', 'Bus 208'],
+    popularLocalBuses: [
+      'Bus 50 (Swargate Bus Terminal ↔ Sinhagad Fort Paytha / Donje)',
+      'Bus 24 (Swargate ↔ Pune Railway Station)',
+      'Bus 71 (Swargate ↔ Alandi Devachi)',
+      'Bus 276 (Swargate ↔ Taljai Hills via Sahakar Nagar)',
+      'Bus 208 (Swargate ↔ Hadapsar Gadital)',
+    ],
   },
   {
     id: 'deccan',
@@ -256,7 +290,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'डेक्कन जिमखाना मेट्रो स्थानक',
     busTerminalEn: 'Deccan Gymkhana Bus Stand',
     busTerminalMr: 'डेक्कन जिमखाना बस स्थानक',
-    popularLocalBuses: ['Bus 9', 'Bus 11', 'Bus 100', 'Bus 103'],
+    popularLocalBuses: [
+      'Bus 100 (Deccan ↔ Hinjewadi Phase 3 & Pune Station)',
+      'Bus 11 (Deccan ↔ Senapati Bapat Road / Vetal Tekdi)',
+      'Bus 9 (Deccan ↔ Warje Malwadi)',
+    ],
   },
   {
     id: 'pune-station',
@@ -268,7 +306,14 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'पुणे रेल्वे स्टेशन मेट्रो स्थानक',
     busTerminalEn: 'Pune Station Bus & ST Depot',
     busTerminalMr: 'पुणे स्टेशन बस व एसटी डेपो',
-    popularLocalBuses: ['Bus 2', 'Bus 3', 'Bus 148', 'Bus 174'],
+    popularLocalBuses: [
+      'Bus 100 (Pune Station ↔ Hinjewadi Maan Phase 3 via Deccan)',
+      'Bus 24 (Pune Station ↔ Katraj Bus Depot via Swargate)',
+      'Bus 148 (Pune Station ↔ Pimpri PCMC via Khadki)',
+      'Bus 174 (Pune Station ↔ Viman Nagar / Pune Airport)',
+      'Bus 144 (Pune Station ↔ NDA Gate / Khadakwasla Dam)',
+      'Bus 165 (Pune Station ↔ Wagholi Kesnand Phata)',
+    ],
   },
   {
     id: 'katraj',
@@ -278,7 +323,12 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.8587,
     busTerminalEn: 'Katraj Bus Depot',
     busTerminalMr: 'कात्रज बस डेपो',
-    popularLocalBuses: ['Bus 2', 'Bus 24', 'Bus 42', 'Bus 298'],
+    popularLocalBuses: [
+      'Bus 24 (Katraj Bus Depot ↔ Pune Railway Station via Swargate)',
+      'Bus 208 (Katraj Depot ↔ Hadapsar Gadital via Kondhwa)',
+      'Bus 42 (Katraj Depot ↔ Nigdi Pradhikaran via Swargate)',
+      'Bus 115 (Katraj ↔ Hinjewadi IT Park Phase 1)',
+    ],
   },
   {
     id: 'sinhagad-road',
@@ -290,7 +340,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'आनंद नगर मेट्रो (२ किमी)',
     busTerminalEn: 'Manik Baug / Hingne Khurd',
     busTerminalMr: 'माणिक बाग / हिंगणे खुर्द',
-    popularLocalBuses: ['Bus 50', 'Bus 51', 'Bus 52'],
+    popularLocalBuses: [
+      'Bus 50 (Manik Baug ↔ Sinhagad Fort Paytha / Donje)',
+      'Bus 51 (Manik Baug ↔ Manapa PMC Bhavan)',
+      'Bus 144 (Sinhagad Road ↔ Khadakwasla Dam)',
+    ],
   },
   {
     id: 'baner',
@@ -300,7 +354,10 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.7868,
     busTerminalEn: 'Baner Phata / Balewadi Stand',
     busTerminalMr: 'बाणेर फाटा / बालेवाडी बस थांबा',
-    popularLocalBuses: ['Bus 100', 'Bus 256'],
+    popularLocalBuses: [
+      'Bus 100 (Baner Phata ↔ Hinjewadi Phase 3 & Pune Station)',
+      'Bus 256 (Balewadi Stadium ↔ Manapa PMC Bhavan)',
+    ],
   },
   {
     id: 'aundh',
@@ -310,7 +367,10 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.8075,
     busTerminalEn: 'Parihar Chowk / Bremen Chowk',
     busTerminalMr: 'परिहार चौक / ब्रेमेन चौक',
-    popularLocalBuses: ['Bus 100', 'Bus 103'],
+    popularLocalBuses: [
+      'Bus 100 (Aundh Bremen Chowk ↔ Hinjewadi & Pune Station)',
+      'Bus 103 (Aundh ↔ Katraj via Swargate)',
+    ],
   },
   {
     id: 'wakad',
@@ -320,7 +380,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.7667,
     busTerminalEn: 'Dange Chowk / Wakad Bridge',
     busTerminalMr: 'डांगे चौक / वाकड ब्रिज',
-    popularLocalBuses: ['Bus 100', 'Bus 357'],
+    popularLocalBuses: [
+      'Bus 149 (Wakad / Dange Chowk ↔ Hadapsar Gadital & Nigdi)',
+      'Bus 312 (Wakad / Dange Chowk ↔ Hinjewadi Phase 3)',
+      'Bus 348 (Wakad ↔ Nigdi Pradhikaran)',
+    ],
   },
   {
     id: 'pimpri',
@@ -332,7 +396,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'पिंपरी महापालिका भवन मेट्रो स्थानक',
     busTerminalEn: 'Pimpri Chowk Bus Terminal',
     busTerminalMr: 'पिंपरी चौक बस टर्मिनल',
-    popularLocalBuses: ['Bus 304', 'Bus 305'],
+    popularLocalBuses: [
+      'Bus 149 (Pimpri ↔ Hadapsar Gadital via Kharadi & Nigdi)',
+      'Bus 148 (Pimpri PCMC ↔ Pune Railway Station via Khadki)',
+      'Bus 304 (Pimpri ↔ Chinchwad Gaon)',
+    ],
   },
   {
     id: 'chinchwad',
@@ -344,7 +412,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'पिंपरी मनपा मेट्रो स्थानक',
     busTerminalEn: 'Chinchwad Gaon / Mahavir Chowk',
     busTerminalMr: 'चिंचवड गाव / महावीर चौक थांबा',
-    popularLocalBuses: ['Bus 304', 'Bus 305'],
+    popularLocalBuses: [
+      'Bus 149 (Chinchwad ↔ Hadapsar Gadital via Kharadi & Nigdi)',
+      'Bus 312 (Chinchwad Gaon ↔ Hinjewadi Phase 3 via Dange Chowk)',
+      'Bus 36 (Chinchwad Gaon ↔ Swargate Bus Terminal)',
+    ],
   },
   {
     id: 'nigdi',
@@ -354,7 +426,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.7745,
     busTerminalEn: 'Bhakti Shakti Nigdi Bus Terminal',
     busTerminalMr: 'भक्ती शक्ती निगडी बस टर्मिनल',
-    popularLocalBuses: ['Bus 305', 'Bus 348'],
+    popularLocalBuses: [
+      'Bus 149 (Nigdi Pradhikaran ↔ Hadapsar Gadital via Chinchwad, Pimpri & Kharadi)',
+      'Bus 348 (Nigdi ↔ Hinjewadi IT Park Phase 3 via Wakad)',
+      'Bus 42 (Nigdi ↔ Katraj Bus Depot via Swargate)',
+    ],
   },
   {
     id: 'bhosari',
@@ -366,7 +442,10 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'भोसरी (नाशिक फाटा) मेट्रो',
     busTerminalEn: 'Nashik Phata PMPML Depot',
     busTerminalMr: 'नाशिक फाटा पीएमपीएमएल डेपो',
-    popularLocalBuses: ['Bus 174', 'Bus 357'],
+    popularLocalBuses: [
+      'Bus 174 (Nashik Phata ↔ Pune Railway Station)',
+      'Bus 357 (Bhosari ↔ Hinjewadi Phase 3)',
+    ],
   },
   {
     id: 'yerwada',
@@ -378,7 +457,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'येरवडा मेट्रो स्थानक',
     busTerminalEn: 'Yerwada Gunjan Chowk',
     busTerminalMr: 'येरवडा गुंजन चौक थांबा',
-    popularLocalBuses: ['Bus 132', 'Bus 165', 'Bus 174'],
+    popularLocalBuses: [
+      'Bus 149 (Yerawada ↔ Hadapsar Gadital & Nigdi)',
+      'Bus 165 (Yerawada ↔ Wagholi Kesnand Phata)',
+      'Bus 174 (Yerawada ↔ Pune Station)',
+    ],
   },
   {
     id: 'warje',
@@ -388,7 +471,11 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.7992,
     busTerminalEn: 'Warje Malwadi Bus Stand',
     busTerminalMr: 'वारजे माळवाडी बस स्थानक',
-    popularLocalBuses: ['Bus 36', 'Bus 72'],
+    popularLocalBuses: [
+      'Bus 9 (Warje Malwadi ↔ Pune Railway Station via Deccan)',
+      'Bus 36 (Warje ↔ Chinchwad Gaon)',
+      'Bus 72 (Warje ↔ Swargate Bus Terminal)',
+    ],
   },
   {
     id: 'kondhwa',
@@ -398,7 +485,10 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     longitude: 73.8960,
     busTerminalEn: 'NIBM Road / Kondhwa Khurd',
     busTerminalMr: 'एनआयबीएम रोड / कोंढवा खुर्द',
-    popularLocalBuses: ['Bus 142', 'Bus 170', 'Bus 298'],
+    popularLocalBuses: [
+      'Bus 208 (Kondhwa ↔ Hadapsar Gadital & Katraj Depot)',
+      'Bus 142 (Kondhwa ↔ Manapa PMC Bhavan)',
+    ],
   },
   {
     id: 'bavdhan',
@@ -410,8 +500,28 @@ export const PUNE_COMMUTE_HUBS: CommuteHub[] = [
     metroStationMr: 'वनाज मेट्रो स्थानक',
     busTerminalEn: 'Chandani Chowk & Bavdhan Phata',
     busTerminalMr: 'चांदणी चौक व बावधन फाटा',
-    popularLocalBuses: ['Bus 36', 'Bus 100'],
+    popularLocalBuses: [
+      'Bus 36 (Bavdhan ↔ Chinchwad Gaon & Kothrud)',
+      'Bus 100 (Chandani Chowk ↔ Hinjewadi & Pune Station)',
+    ],
   },
+];
+
+export const PMPML_OFFICIAL_CORRIDORS = [
+  { busNo: '149', routeEn: 'Bus 149 (Hadapsar Gadital ↔ Nigdi Pradhikaran via Kharadi & Pimpri)', routeMr: 'बस १४९ (हडपसर गाडीतळ ↔ निगडी प्राधिकरण)' },
+  { busNo: '159', routeEn: 'Bus 159 (Hadapsar Gadital ↔ Manapa PMC Bhavan via Pulgate)', routeMr: 'बस १५९ (हडपसर गाडीतळ ↔ मनपा भवन)' },
+  { busNo: '100', routeEn: 'Bus 100 (Hinjewadi Maan Phase 3 ↔ Pune Railway Station via Deccan)', routeMr: 'बस १०० (हिंजवडी फेज ३ ↔ पुणे स्टेशन)' },
+  { busNo: '24', routeEn: 'Bus 24 (Katraj Bus Depot ↔ Pune Railway Station via Swargate)', routeMr: 'बस २४ (कात्रज डेपो ↔ पुणे स्टेशन)' },
+  { busNo: '50', routeEn: 'Bus 50 (Swargate Bus Terminal ↔ Sinhagad Fort Paytha / Donje)', routeMr: 'बस ५० (स्वारगेट ↔ सिंहगड पायथा)' },
+  { busNo: '174', routeEn: 'Bus 174 (Pune Railway Station ↔ Viman Nagar / Pune Airport)', routeMr: 'बस १७४ (पुणे स्टेशन ↔ विमान नगर / विमानतळ)' },
+  { busNo: '312', routeEn: 'Bus 312 (Chinchwad Gaon ↔ Hinjewadi Phase 3 via Dange Chowk)', routeMr: 'बस ३१२ (चिंचवड गाव ↔ हिंजवडी फेज ३)' },
+  { busNo: '102', routeEn: 'Bus 102 (Kothrud Depot ↔ Hadapsar Gadital via Karve Road)', routeMr: 'बस १०२ (कोथरूड डेपो ↔ हडपसर गाडीतळ)' },
+  { busNo: '71', routeEn: 'Bus 71 (Swargate ↔ Alandi Devachi via Shivajinagar)', routeMr: 'बस ७१ (स्वारगेट ↔ आळंदी देवाची)' },
+  { busNo: '144', routeEn: 'Bus 144 (Pune Station ↔ NDA Khadakwasla Dam via Swargate)', routeMr: 'बस १४४ (पुणे स्टेशन ↔ खडकवासला धरण)' },
+  { busNo: '208', routeEn: 'Bus 208 (Hadapsar Gadital ↔ Katraj Bus Depot via Kondhwa)', routeMr: 'बस २०८ (हडपसर ↔ कात्रज डेपो)' },
+  { busNo: '165', routeEn: 'Bus 165 (Pune Station ↔ Wagholi Kesnand Phata)', routeMr: 'बस १६५ (पुणे स्टेशन ↔ वाघोली)' },
+  { busNo: '348', routeEn: 'Bus 348 (Nigdi Pradhikaran ↔ Hinjewadi Phase 3 via Wakad)', routeMr: 'बस ३४८ (निगडी ↔ हिंजवडी फेज ३)' },
+  { busNo: '9', routeEn: 'Bus 9 (Pune Station ↔ Warje Malwadi via Deccan)', routeMr: 'बस ९ (पुणे स्टेशन ↔ वारजे माळवाडी)' },
 ];
 
 // Helper: Haversine distance in kilometers
@@ -1300,14 +1410,18 @@ export function getPublicTransitRoute(
     ? {
         stopNameEn: directRule.nearestStopEn,
         stopNameMr: directRule.nearestStopMr,
-        routeNumbers: directRule.directBuses || ['PMPML Local'],
+        routeNumbers: directRule.directBuses || ['PMPML Local Corridor'],
         distanceKm: 0.3,
         walkingMinutes: 4,
       }
     : {
-        stopNameEn: `${place.name} Stop`,
-        stopNameMr: `${place.name_mr || place.name} थांबा`,
-        routeNumbers: ['PMPML Route'],
+        stopNameEn: `${place.name} PMPML Stop`,
+        stopNameMr: `${place.name_mr || place.name} पीएमपीएमएल थांबा`,
+        routeNumbers: [
+          'Bus 149 (Hadapsar Gadital ↔ Nigdi Pradhikaran)',
+          'Bus 100 (Hinjewadi ↔ Pune Station via Deccan)',
+          'Bus 24 (Katraj ↔ Pune Station via Swargate)',
+        ],
         distanceKm: 0.4,
         walkingMinutes: 5,
       };

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "mail_1792649574715_ryf89",
+    "timestamp": "2026-10-22T06:12:54.715Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "suraj10.pp@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Heritage & Forts Tour 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nHeritage & Forts Tour\n\nDear Suraj Dhok,\n\nThank you for using Explore Pune! Your custom itinerary starting from Pune Station at 09:00 AM has been created.\nTotal Duration: ~6 hrs\nEstimated Entry/Transit Cost: ₹150\n\nStops:\n1. Shaniwar Wada (09:30 AM - 11:00 AM) - Stay: 90m\n\nAttached PDF:\nWe have attached your officia",
+    "metadata": {
+      "userName": "Suraj Dhok",
+      "planTitle": "Heritage & Forts Tour",
+      "stopsCount": 1
+    }
+  },
+  {
+    "id": "mail_1792649539616_tsoan",
+    "timestamp": "2026-10-22T06:12:19.616Z",
+    "type": "admin_feedback_notification",
+    "to": "suraj10.pp@gmail.com",
+    "subject": "[New Feedback] Suraj Test (5★ - Suggestion)",
+    "preview": "\n[New Feedback Received on Explore Pune]\n=========================================\nExplorer: Suraj Test\nEmail: suraj10.pp@gmail.com\nRating: 5/5 (★★★★★)\nCategory: Suggestion\nTime: 22/10/2026, 11:42:19 am IST\n\nMessage:\n\"Explore Pune test feedback message\"\n\nFeedback ID: N/A\n=========================================\n",
+    "metadata": {
+      "userEmail": "suraj10.pp@gmail.com",
+      "rating": 5,
+      "type": "Suggestion",
+      "feedbackId": ""
+    }
+  },
+  {
+    "id": "mail_1792649539611_6oh0o",
+    "timestamp": "2026-10-22T06:12:19.611Z",
+    "type": "user_feedback_thank_you",
+    "to": "suraj10.pp@gmail.com",
+    "subject": "Thank You for Using Explore Pune & Your Valuable Feedback! 🙏 | ExplorePune Team",
+    "preview": "\nExplore Pune | एक्सप्लोर पुणे\n==================================================\nThank You for Using Explore Pune! 🙏\n\nDear Suraj Test,\n\nThank you very much for using Explore Pune and sharing your feedback with us.\n\nOur ExplorePune team has received your message and is actively reviewing it. If you reported any issue or suggested a correction, our team is on it and working hard to resolve it as q",
+    "metadata": {
+      "rating": 5,
+      "type": "Suggestion"
+    }
+  }
+]

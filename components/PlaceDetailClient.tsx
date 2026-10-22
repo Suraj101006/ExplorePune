@@ -20,7 +20,7 @@ import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getPlaceVisitorGuidelines } from '@/lib/visitorGuidelines';
-import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
+import { getStoredUserLocation, UserSavedLocation, detectBrowserGps } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
@@ -78,6 +78,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   const [liveTransit, setLiveTransit] = useState<TransitRouteInfo | null>(null);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedHubId, setSelectedHubId] = useState<string>('central');
+  const [isLocatingGps, setIsLocatingGps] = useState(false);
   const [originName, setOriginName] = useState<string>(
     isMr ? 'मध्यवर्ती पुणे (मनपा/शनिवार वाडा)' : 'Central Pune (PMC Bhavan)'
   );
@@ -155,6 +156,33 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const handlePrint = () => {
     if (typeof window !== 'undefined') window.print();
+  };
+
+  const handleUseLiveGps = async () => {
+    setIsLocatingGps(true);
+    setOriginNotice('');
+    try {
+      const result = await detectBrowserGps();
+      if (result.success && result.location) {
+        setSelectedHubId('live-gps');
+        const name = isMr ? result.location.nameMr : result.location.nameEn;
+        setOriginName(name);
+        setUserCoords({ lat: result.location.lat, lng: result.location.lng });
+        setOriginNotice(
+          isMr
+            ? `✓ थेट GPS जोडले गेले (अचूकता: ±${result.accuracyMeters}m) • ${name} येथून मार्ग निश्चित केला!`
+            : `✓ Live GPS connected (Accuracy: ±${result.accuracyMeters}m) • Transit routed from your location!`
+        );
+        const computed = getPublicTransitRoute(result.location.lat, result.location.lng, place, name);
+        setLiveTransit(computed);
+      } else {
+        setOriginNotice(result.error || (isMr ? 'GPS स्थान मिळवता आले नाही.' : 'Could not acquire GPS position.'));
+      }
+    } catch {
+      setOriginNotice(isMr ? 'GPS सेन्सर सुरू करताना त्रुटी आली.' : 'Failed to connect to device GPS.');
+    } finally {
+      setIsLocatingGps(false);
+    }
   };
 
   const handleSelectHub = (hubId: string) => {
@@ -884,6 +912,32 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   <span>{isMr ? 'सर्व ३५+ परिसर शोधा' : 'Search 35+ Localities'}</span>
                 </button>
 
+                <button
+                  type="button"
+                  onClick={handleUseLiveGps}
+                  disabled={isLocatingGps}
+                  className="btn outline"
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: 11.5,
+                    borderRadius: 999,
+                    background: selectedHubId === 'live-gps' ? '#ecfdf5' : '#ffffff',
+                    borderColor: selectedHubId === 'live-gps' ? '#10b981' : '#cbd5e1',
+                    color: selectedHubId === 'live-gps' ? '#047857' : '#334155',
+                    fontWeight: 700,
+                    cursor: isLocatingGps ? 'wait' : 'pointer',
+                  }}
+                  title={isMr ? 'डिव्हाइसचे थेट अचूक GPS स्थान वापरा' : 'Use accurate device GPS coordinates'}
+                >
+                  <span>{isLocatingGps ? '⏳' : '🎯'}</span>
+                  <span>
+                    {isLocatingGps
+                      ? (isMr ? 'GPS शोधत आहे…' : 'Locating GPS…')
+                      : selectedHubId === 'live-gps'
+                      ? (isMr ? '✓ थेट GPS जोडले' : '✓ Live GPS Active')
+                      : (isMr ? 'थेट GPS वापरा' : 'Use Live GPS')}
+                  </span>
+                </button>
               </div>
             </div>
 

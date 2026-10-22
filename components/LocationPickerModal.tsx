@@ -8,6 +8,7 @@ import {
   setLocationFromLocality,
   setStaticPuneLocation,
   DEFAULT_PUNE_STATIC_LOCATION,
+  detectBrowserGps,
   searchPuneLocalities,
   searchPuneLivePlaces,
   PUNE_ALL_LOCALITIES,
@@ -31,6 +32,8 @@ export default function LocationPickerModal({
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<PuneLocality[]>([]);
   const [isSearchingLive, setIsSearchingLive] = useState(false);
+  const [isLocatingGps, setIsLocatingGps] = useState(false);
+  const [gpsError, setGpsError] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -101,6 +104,32 @@ export default function LocationPickerModal({
       setCurrentLoc(saved);
       onLocationSelected?.(saved);
       onClose();
+    }
+  };
+
+  const handleDetectLiveGps = async () => {
+    setIsLocatingGps(true);
+    setGpsError(null);
+    setFeedbackMessage(null);
+
+    try {
+      const result = await detectBrowserGps();
+      if (result.success && result.location) {
+        setCurrentLoc(result.location);
+        onLocationSelected?.(result.location);
+        setFeedbackMessage(
+          isMr
+            ? `✓ थेट GPS स्थान निश्चित झाले! (अचूकता: ±${result.accuracyMeters}m)`
+            : `✓ Live GPS Location acquired! (Accuracy: ±${result.accuracyMeters}m)`
+        );
+        setTimeout(() => onClose(), 900);
+      } else {
+        setGpsError(result.error || (isMr ? 'GPS स्थान मिळवता आले नाही.' : 'Could not acquire GPS position.'));
+      }
+    } catch {
+      setGpsError(isMr ? 'GPS सेन्सर सुरू करताना त्रुटी आली.' : 'Failed to connect to device GPS sensor.');
+    } finally {
+      setIsLocatingGps(false);
     }
   };
 
@@ -226,36 +255,92 @@ export default function LocationPickerModal({
 
         {/* Body */}
         <div style={{ padding: '18px 22px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {/* Quick Default Button: Central Pune */}
-          <button
-            type="button"
-            onClick={handleSetCentralPune}
-            style={{
-              padding: '12px 16px',
-              borderRadius: 12,
-              border: '1.5px solid #3b82f6',
-              background: '#eff6ff',
-              color: '#1d4ed8',
-              textAlign: 'left',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <span style={{ fontSize: 24 }}>📍</span>
-            <div>
-              <strong style={{ display: 'block', fontSize: 14, color: '#1e40af' }}>
-                {isMr ? 'मध्यवर्ती पुणे (शनिवार वाडा)' : 'Central Pune (Shaniwar Wada)'}
-              </strong>
-              <span style={{ fontSize: 11.5, color: '#3b82f6' }}>
-                {isMr
-                  ? 'पुण्याचा मध्यवर्ती भाग • सर्व मेट्रो व बस मार्गांसाठी सर्वोत्तम'
-                  : 'Central Hub • Ideal for Metro & PMPML routes'}
-              </span>
+          {/* Quick Location Action Buttons */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
+            {/* Live Device GPS */}
+            <button
+              type="button"
+              onClick={handleDetectLiveGps}
+              disabled={isLocatingGps}
+              style={{
+                padding: '12px 14px',
+                borderRadius: 12,
+                border: '1.5px solid #10b981',
+                background: '#ecfdf5',
+                color: '#065f46',
+                textAlign: 'left',
+                cursor: isLocatingGps ? 'wait' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span style={{ fontSize: 24 }}>{isLocatingGps ? '⏳' : '🎯'}</span>
+              <div>
+                <strong style={{ display: 'block', fontSize: 13.5, color: '#047857' }}>
+                  {isLocatingGps
+                    ? (isMr ? 'GPS शोधत आहे…' : 'Acquiring GPS…')
+                    : (isMr ? 'थेट डिव्हाइस GPS' : 'Live Device GPS')}
+                </strong>
+                <span style={{ fontSize: 11, color: '#059669' }}>
+                  {isLocatingGps
+                    ? (isMr ? 'सॅटेलाइट लॉक सुरू आहे' : 'Locking satellite sensors…')
+                    : (isMr ? 'अचूक सेन्सर स्थान वापरा' : 'Accurate device coordinates')}
+                </span>
+              </div>
+            </button>
+
+            {/* Quick Default Button: Central Pune */}
+            <button
+              type="button"
+              onClick={handleSetCentralPune}
+              style={{
+                padding: '12px 14px',
+                borderRadius: 12,
+                border: '1.5px solid #3b82f6',
+                background: '#eff6ff',
+                color: '#1d4ed8',
+                textAlign: 'left',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span style={{ fontSize: 24 }}>📍</span>
+              <div>
+                <strong style={{ display: 'block', fontSize: 13.5, color: '#1e40af' }}>
+                  {isMr ? 'मध्यवर्ती पुणे (शनिवार वाडा)' : 'Central Pune (Shaniwar Wada)'}
+                </strong>
+                <span style={{ fontSize: 11, color: '#3b82f6' }}>
+                  {isMr
+                    ? 'सर्व मेट्रो व बस मार्गांसाठी'
+                    : 'Best for Metro & Transit'}
+                </span>
+              </div>
+            </button>
+          </div>
+
+          {gpsError && (
+            <div
+              style={{
+                padding: '8px 12px',
+                borderRadius: 8,
+                fontSize: 12,
+                color: '#b91c1c',
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span>⚠️</span>
+              <span>{gpsError}</span>
             </div>
-          </button>
+          )}
 
           {/* Feedback Message */}
           {feedbackMessage && (
