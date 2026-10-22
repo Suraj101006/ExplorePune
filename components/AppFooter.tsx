@@ -41,9 +41,6 @@ export default function AppFooter() {
               </>
             )}
           </p>
-          <p style={{ margin: '6px 0 0', fontSize: 12.5, color: 'var(--ink)', fontWeight: 600 }}>
-            @ 2026 right reserved to ExplorePune team
-          </p>
           <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--muted)' }}>
             Maps powered by <strong style={{ color: 'var(--ink)' }}>Google Maps</strong> & Pune Transit Network.
           </p>

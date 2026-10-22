@@ -413,10 +413,6 @@ export default function AboutPage() {
           {isMr ? 'सेवा अटी' : 'Terms of Service'}
         </Link>
       </div>
-
-      <div style={{ textAlign: 'center', marginTop: 18, fontSize: 13, color: 'var(--muted)', fontWeight: 500 }}>
-        @ 2026 right reserved to ExplorePune team • Suraj Dhok, Sahil Jadhav & Ishan Kakade
-      </div>
     </main>
   );
 }
