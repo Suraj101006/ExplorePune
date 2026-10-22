@@ -638,7 +638,7 @@ a:hover {
   border: 0;
   border-radius: var(--radius-md);
   background: var(--primary);
-  color: #ffffff !important;
+  color: #ffffff;
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;

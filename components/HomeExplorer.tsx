@@ -1081,40 +1081,47 @@ export default function HomeExplorer({
                 background: '#ffffff',
                 color: '#065f46',
                 fontWeight: 800,
-                padding: '12px 22px',
-                fontSize: '14px',
+                padding: '12px 24px',
+                fontSize: '14.5px',
                 borderRadius: 999,
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 8,
+                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
               }}
             >
-              ✨ {isMr ? 'सहल प्लॅन करा' : 'Launch Trip Planner'}
+              <span style={{ fontSize: 16 }}>✨</span>
+              <span style={{ color: '#065f46', fontWeight: 800 }}>
+                {isMr ? 'सहल प्लॅन करा' : 'Launch Trip Planner'}
+              </span>
             </Link>
 
             <Link
               href="/milestones"
               className="btn"
               style={{
-                background: 'rgba(255, 255, 255, 0.15)',
-                border: '1.5px solid rgba(255, 255, 255, 0.6)',
+                background: 'rgba(255, 255, 255, 0.18)',
+                border: '1.5px solid rgba(255, 255, 255, 0.75)',
                 color: '#ffffff',
                 fontWeight: 800,
                 padding: '12px 22px',
-                fontSize: '14px',
+                fontSize: '14.5px',
                 borderRadius: 999,
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)',
-                transition: 'all 0.2s ease',
+                gap: 8,
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                transition: 'all 0.15s ease',
               }}
             >
-              🏆 {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
+              <span style={{ fontSize: 16 }}>🏆</span>
+              <span style={{ color: '#ffffff', fontWeight: 800 }}>
+                {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
+              </span>
             </Link>
 
             <button
@@ -1122,23 +1129,26 @@ export default function HomeExplorer({
               onClick={() => setIsLocationModalOpen(true)}
               className="btn"
               style={{
-                background: '#ecfdf5',
-                border: '1.5px solid #10b981',
+                background: '#ffffff',
+                border: '1.5px solid #a7f3d0',
                 color: '#047857',
                 fontWeight: 800,
                 padding: '12px 22px',
-                fontSize: '14px',
+                fontSize: '14.5px',
                 borderRadius: 999,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.2s ease',
+                gap: 8,
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
+                transition: 'all 0.15s ease',
               }}
               title={isMr ? 'शेजारील परिसर निवडा आणि जवळची ठिकाणे शोधा' : 'Select neighborhood and discover nearby attractions'}
             >
-              📍 {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
+              <span style={{ fontSize: 16 }}>📍</span>
+              <span style={{ color: '#047857', fontWeight: 800 }}>
+                {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
+              </span>
             </button>
           </div>
         </div>
