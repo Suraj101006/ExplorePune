@@ -155,7 +155,7 @@ export default function PrivacyPolicyPage() {
           </p>
           <div style={{ background: '#f8fafc', padding: 16, borderRadius: 10, border: '1px solid #e2e8f0', fontSize: 13.5 }}>
             <strong>{isMr ? 'संपर्क पत्ता:' : 'Registered Contact Address:'}</strong> Explore Pune Initiative, Pune, Maharashtra 411047, India.<br />
-            <strong>{isMr ? 'अधिकृत ईमेल:' : 'Official Communications:'}</strong> <a href="mailto:suraj10.pp@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>suraj10.pp@gmail.com</a> • <a href="mailto:sj176644@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>sj176644@gmail.com</a>
+            <strong>{isMr ? 'अधिकृत ईमेल:' : 'Official Communications:'}</strong> <a href="mailto:surajdhok1010@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>surajdhok1010@gmail.com</a> • <a href="mailto:sj176644@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>sj176644@gmail.com</a> • <a href="mailto:1ishankakade@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>1ishankakade@gmail.com</a>
           </div>
         </section>
 
@@ -290,8 +290,8 @@ export default function PrivacyPolicyPage() {
             <strong>{isMr ? 'अधिकारी:' : 'Designated Officer:'}</strong> Suraj Dhok & Sahil Jadhav<br />
             <strong>{isMr ? 'संस्था:' : 'Platform:'}</strong> Explore Pune Initiative<br />
             <strong>{isMr ? 'अधिकृत ईमेल:' : 'Designated Grievance Emails:'}</strong>{' '}
-            <a href="mailto:suraj10.pp@gmail.com" style={{ color: '#047857', fontWeight: 800, textDecoration: 'underline' }}>
-              suraj10.pp@gmail.com
+            <a href="mailto:surajdhok1010@gmail.com" style={{ color: '#047857', fontWeight: 800, textDecoration: 'underline' }}>
+              surajdhok1010@gmail.com
             </a>{' '}&{' '}
             <a href="mailto:sj176644@gmail.com" style={{ color: '#047857', fontWeight: 800, textDecoration: 'underline' }}>
               sj176644@gmail.com

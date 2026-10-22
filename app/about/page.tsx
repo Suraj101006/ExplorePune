@@ -152,10 +152,10 @@ export default function AboutPage() {
           </p>
         </section>
 
-        {/* Founders / Engineering Team */}
+        {/* Founders / Engineering & Advisory Team */}
         <section style={{ marginBottom: 36, borderTop: '1px solid #e2e8f0', paddingTop: 28 }}>
           <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 18 }}>
-            👥 {isMr ? 'संस्थापक व विकासक संघ (Leadership & Engineering Team)' : 'Meet the Founders & Engineering Team'}
+            👥 {isMr ? 'संस्थापक, सल्लागार व विकासक संघ (Leadership & Advisory Team)' : 'Meet the Founders, Advisor & Leadership Team'}
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
@@ -199,8 +199,8 @@ export default function AboutPage() {
               </p>
               <div style={{ fontSize: 13, borderTop: '1px solid #bbf7d0', paddingTop: 10 }}>
                 <strong>Contact Email:</strong>{' '}
-                <a href="mailto:suraj10.pp@gmail.com" style={{ color: '#047857', fontWeight: 700, textDecoration: 'underline' }}>
-                  suraj10.pp@gmail.com
+                <a href="mailto:surajdhok1010@gmail.com" style={{ color: '#047857', fontWeight: 700, textDecoration: 'underline' }}>
+                  surajdhok1010@gmail.com
                 </a>
               </div>
             </div>
@@ -247,6 +247,52 @@ export default function AboutPage() {
                 <strong>Contact Email:</strong>{' '}
                 <a href="mailto:sj176644@gmail.com" style={{ color: '#1d4ed8', fontWeight: 700, textDecoration: 'underline' }}>
                   sj176644@gmail.com
+                </a>
+              </div>
+            </div>
+
+            {/* Ishan Kakade Card (Advisor) */}
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)',
+                border: '1.5px solid #fde68a',
+                borderRadius: 14,
+                padding: '24px 20px',
+                boxShadow: '0 4px 12px rgba(180, 83, 9, 0.06)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+                <div
+                  style={{
+                    width: 52,
+                    height: 52,
+                    borderRadius: '50%',
+                    background: '#b45309',
+                    color: '#ffffff',
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontSize: 22,
+                    fontWeight: 800,
+                  }}
+                >
+                  IK
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 18, color: '#92400e', fontWeight: 800 }}>Ishan Kakade</h3>
+                  <span style={{ fontSize: 13, color: '#b45309', fontWeight: 700 }}>
+                    {isMr ? 'सल्लागार (Advisor & Cultural Consultant)' : 'Advisor & Cultural Consultant'}
+                  </span>
+                </div>
+              </div>
+              <p style={{ fontSize: 13.5, color: '#334155', margin: '0 0 14px', lineHeight: 1.5 }}>
+                {isMr
+                  ? 'पुणे सांस्कृतिक वारसा, नागरिक उपक्रम, पर्यटन विस्तार आणि संस्थात्मक सहकार्यासाठी धोरणात्मक सल्लागार.'
+                  : 'Strategic advisor guiding Pune cultural heritage, civic initiatives, tourism community outreach, and visitor experience.'}
+              </p>
+              <div style={{ fontSize: 13, borderTop: '1px solid #fde68a', paddingTop: 10 }}>
+                <strong>Contact Email:</strong>{' '}
+                <a href="mailto:1ishankakade@gmail.com" style={{ color: '#b45309', fontWeight: 700, textDecoration: 'underline' }}>
+                  1ishankakade@gmail.com
                 </a>
               </div>
             </div>
@@ -318,15 +364,15 @@ export default function AboutPage() {
               : 'For suggestions, historical corrections, partnership proposals, or technical inquiries, reach out directly to our founders:'}
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
               <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
               <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Systems</span>
               <a
-                href="mailto:suraj10.pp@gmail.com"
+                href="mailto:surajdhok1010@gmail.com"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
               >
-                ✉️ suraj10.pp@gmail.com
+                ✉️ surajdhok1010@gmail.com
               </a>
             </div>
 
@@ -338,6 +384,17 @@ export default function AboutPage() {
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#1d4ed8', fontWeight: 800, textDecoration: 'underline' }}
               >
                 ✉️ sj176644@gmail.com
+              </a>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
+              <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
+              <span style={{ fontSize: 12.5, color: '#64748b' }}>Strategic Advisor & Heritage Consultant</span>
+              <a
+                href="mailto:1ishankakade@gmail.com"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}
+              >
+                ✉️ 1ishankakade@gmail.com
               </a>
             </div>
           </div>

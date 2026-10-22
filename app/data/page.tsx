@@ -285,15 +285,15 @@ export default function DataMethodologyPage() {
               : 'Notice a change in venue entry fees, updated metro feeders, or want to contribute a hidden Pune landmark? Reach out directly to our team:'}
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
               <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
               <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Data Engineering</span>
               <a
-                href="mailto:suraj10.pp@gmail.com"
+                href="mailto:surajdhok1010@gmail.com"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
               >
-                ✉️ suraj10.pp@gmail.com
+                ✉️ surajdhok1010@gmail.com
               </a>
             </div>
 
@@ -305,6 +305,17 @@ export default function DataMethodologyPage() {
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#1d4ed8', fontWeight: 800, textDecoration: 'underline' }}
               >
                 ✉️ sj176644@gmail.com
+              </a>
+            </div>
+
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
+              <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
+              <span style={{ fontSize: 12.5, color: '#64748b' }}>Strategic Advisor & Heritage Consultant</span>
+              <a
+                href="mailto:1ishankakade@gmail.com"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}
+              >
+                ✉️ 1ishankakade@gmail.com
               </a>
             </div>
           </div>

@@ -261,8 +261,8 @@ export default function TermsOfServicePage() {
           </p>
           <div style={{ fontSize: 13.5, lineHeight: 1.7 }}>
             <strong>Explore Pune Platform Team</strong><br />
-            Founders: Suraj Dhok & Sahil Jadhav<br />
-            Email: <a href="mailto:suraj10.pp@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>suraj10.pp@gmail.com</a> • <a href="mailto:sj176644@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>sj176644@gmail.com</a><br />
+            Founders: Suraj Dhok & Sahil Jadhav | Advisor: Ishan Kakade<br />
+            Email: <a href="mailto:surajdhok1010@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>surajdhok1010@gmail.com</a> • <a href="mailto:sj176644@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>sj176644@gmail.com</a> • <a href="mailto:1ishankakade@gmail.com" style={{ color: '#047857', fontWeight: 700 }}>1ishankakade@gmail.com</a><br />
             Pune, Maharashtra, India
           </div>
         </section>

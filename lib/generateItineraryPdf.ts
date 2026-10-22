@@ -403,11 +403,17 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
 
   y += 5.5;
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
+  doc.setFontSize(11);
   doc.setTextColor(6, 95, 70);
-  doc.text('Suraj Dhok and Sahil Jadhav', margin, y);
+  doc.text('Suraj Dhok & Sahil Jadhav (Founders)', margin, y);
 
   y += 4.5;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(180, 83, 9);
+  doc.text('Advisor: Ishan Kakade', margin, y);
+
+  y += 4;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(30, 41, 59);
