@@ -117,6 +117,27 @@ export default function HomeExplorer({
     return () => window.removeEventListener('explore-pune-saved-changed', syncSaved);
   }, []);
 
+  // Viewport reveal observer: triggers subtle entrance animation once when scrolled into view
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -25px 0px' }
+    );
+
+    const targets = document.querySelectorAll('.scroll-reveal, .scroll-reveal-group');
+    targets.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleToggleSave = (p: any) => {
     toggleSavedPlace({
       id: p.id,
@@ -189,12 +210,14 @@ export default function HomeExplorer({
       <section className="hero wrap">
         <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
-            <div className="hero-pill" style={{ marginBottom: 0 }}>
+            <div className="hero-pill hero-anim-badge" style={{ marginBottom: 0 }}>
               <span>✨</span> {isMr ? 'पुणे आणि सह्याद्रीच्या ऐतिहासिक वाटा' : 'Discover the Heart of Maharashtra'}
             </div>
-            <WeatherWidget />
+            <div className="hero-anim-weather">
+              <WeatherWidget />
+            </div>
           </div>
-          <h1>
+          <h1 className="hero-anim-title">
             {isMr ? (
               <>
                 पुण्यातील <span className="gradient">ऐतिहासिक किल्ले, वाडे</span> व सह्याद्री दर्शन
@@ -205,13 +228,13 @@ export default function HomeExplorer({
               </>
             )}
           </h1>
-          <p className="lede">
+          <p className="lede hero-anim-desc">
             {isMr
               ? 'तपासलेले प्रवेश शुल्क, अधिकृत वेळ आणि सहल नियोजनासाठी पुण्याचे सर्वात परिपूर्ण डिजिटल मार्गदर्शक.'
               : 'Where heritage meets the rhythm of a modern city — historic forts, Peshwa wadas, sacred temples, verified timings, and custom trip planning.'}
           </p>
 
-          <form className="search" action="/" role="search">
+          <form className="search hero-anim-search" action="/" role="search">
             <input
               name="q"
               value={searchInput}
@@ -220,18 +243,22 @@ export default function HomeExplorer({
               aria-label={t('hero.searchPlaceholder')}
             />
             {currentCat && <input type="hidden" name="cat" value={currentCat} />}
-            <button className="btn">{t('hero.searchBtn')}</button>
+            <button className="btn">
+              <span className="btn-icon">🔍</span>
+              <span>{t('hero.searchBtn')}</span>
+            </button>
           </form>
 
           {/* Quick Search Chips */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginTop: 10, fontSize: 12 }}>
+          <div className="hero-anim-chips-wrap" style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginTop: 10, fontSize: 12 }}>
             <span style={{ color: 'var(--muted)', fontWeight: 600 }}>{isMr ? 'लोकप्रिय:' : 'Popular:'}</span>
-            {POPULAR_SEARCHES.map((item) => (
+            {POPULAR_SEARCHES.map((item, idx) => (
               <Link
                 key={item.query}
                 href={`/?q=${encodeURIComponent(item.query)}`}
-                className="chip"
+                className="chip hero-search-chip hero-anim-chip"
                 style={{
+                  '--chip-i': idx,
                   padding: '2px 9px',
                   fontSize: '11.5px',
                   borderRadius: '999px',
@@ -240,27 +267,32 @@ export default function HomeExplorer({
                   color: 'var(--ink-secondary)',
                   textDecoration: 'none',
                   fontWeight: 600,
-                }}
+                } as React.CSSProperties}
               >
                 {isMr ? item.labelMr : item.label}
               </Link>
             ))}
           </div>
 
-          <div className="hero-actions" style={{ marginTop: 20 }}>
-            <a className="btn clay" href="#explore-places">
-              ⚡ {isMr ? 'सर्व ठिकाणे पहा' : 'Explore Places'}
+          <div className="hero-actions hero-anim-actions" style={{ marginTop: 20 }}>
+            <a className="btn clay btn-explore-places" href="#explore-places">
+              <span className="btn-explore-trail" aria-hidden="true" />
+              <span className="btn-icon">⚡</span>
+              <span>{isMr ? 'सर्व ठिकाणे पहा' : 'Explore Places'}</span>
             </a>
             <Link className="btn outline" href="/planner">
-              🗺️ {isMr ? 'सहल नियोजन करा' : 'Plan My Visit'}
+              <span className="btn-icon">🗺️</span>
+              <span>{isMr ? 'सहल नियोजन करा' : 'Plan My Visit'}</span>
             </Link>
             <Link className="btn outline" href="/milestones">
-              🏆 {isMr ? 'भ्रमंती यशोगाथा पहा' : 'Explorer Milestones'}
+              <span className="btn-icon">🏆</span>
+              <span>{isMr ? 'भ्रमंती यशोगाथा पहा' : 'Explorer Milestones'}</span>
             </Link>
           </div>
 
           {/* Pune Heritage Trust Badges */}
           <div
+            className="hero-anim-trust"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -274,15 +306,15 @@ export default function HomeExplorer({
               fontWeight: 600,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div className="hero-anim-trust-item" style={{ '--trust-i': 0, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
               <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
               <span>{isMr ? '५०+ तपासलेली ऐतिहासिक ठिकाणे' : '50+ Verified Landmarks'}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div className="hero-anim-trust-item" style={{ '--trust-i': 1, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
               <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
               <span>{isMr ? 'पुणे मेट्रो व PMPML मार्ग' : 'Pune Metro & PMPML Transit'}</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div className="hero-anim-trust-item" style={{ '--trust-i': 2, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
               <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
               <span>{isMr ? 'थेट चालू/बंद वेळ व दर' : 'Live Operating Hours & Costs'}</span>
             </div>
@@ -294,7 +326,7 @@ export default function HomeExplorer({
       </section>
 
       {/* Feature Highlights Banner */}
-      <section className="wrap" style={{ marginBottom: '32px' }}>
+      <section className="wrap scroll-reveal-group" style={{ marginBottom: '32px' }}>
         <div
           style={{
             display: 'grid',
@@ -307,7 +339,7 @@ export default function HomeExplorer({
             boxShadow: 'var(--shadow-sm)',
           }}
         >
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="scroll-reveal-child" style={{ '--reveal-i': 0, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
             <Image
               src="/images/cat-forts.png"
               alt="Forts"
@@ -324,7 +356,7 @@ export default function HomeExplorer({
               </span>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="scroll-reveal-child" style={{ '--reveal-i': 1, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
             <Image
               src="/images/cat-heritage.png"
               alt="Heritage"
@@ -341,7 +373,7 @@ export default function HomeExplorer({
               </span>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="scroll-reveal-child" style={{ '--reveal-i': 2, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
             <Image
               src="/images/cat-all.png"
               alt="Day Trips"
@@ -362,7 +394,7 @@ export default function HomeExplorer({
       </section>
 
       {/* Thematic Discovery Trails: Sahyadri Forts, Peshwa Heritage, Sacred Temples, Nature Serenity */}
-      <section className="wrap" style={{ marginBottom: '36px' }}>
+      <section className="wrap scroll-reveal-group" style={{ marginBottom: '36px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
@@ -390,8 +422,9 @@ export default function HomeExplorer({
           {/* Forts Trail */}
           <Link
             href="/?cat=forts"
-            className="trail-card"
+            className="trail-card scroll-reveal-child"
             style={{
+              '--reveal-i': 0,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
@@ -401,9 +434,8 @@ export default function HomeExplorer({
               border: '1.5px solid #fed7aa',
               textDecoration: 'none',
               color: 'inherit',
-              transition: 'all 0.2s ease',
               boxShadow: 'var(--shadow-sm)',
-            }}
+            } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '28px' }}>⚔️</span>
@@ -427,8 +459,9 @@ export default function HomeExplorer({
           {/* Heritage Trail */}
           <Link
             href="/?cat=heritage"
-            className="trail-card"
+            className="trail-card scroll-reveal-child"
             style={{
+              '--reveal-i': 1,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
@@ -438,9 +471,8 @@ export default function HomeExplorer({
               border: '1.5px solid #f5d0fe',
               textDecoration: 'none',
               color: 'inherit',
-              transition: 'all 0.2s ease',
               boxShadow: 'var(--shadow-sm)',
-            }}
+            } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '28px' }}>🏰</span>
@@ -464,8 +496,9 @@ export default function HomeExplorer({
           {/* Temples Trail */}
           <Link
             href="/?cat=temples"
-            className="trail-card"
+            className="trail-card scroll-reveal-child"
             style={{
+              '--reveal-i': 2,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
@@ -475,9 +508,8 @@ export default function HomeExplorer({
               border: '1.5px solid #fef08a',
               textDecoration: 'none',
               color: 'inherit',
-              transition: 'all 0.2s ease',
               boxShadow: 'var(--shadow-sm)',
-            }}
+            } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '28px' }}>🛕</span>
@@ -501,8 +533,9 @@ export default function HomeExplorer({
           {/* Nature & Gardens Trail */}
           <Link
             href="/?cat=nature"
-            className="trail-card"
+            className="trail-card scroll-reveal-child"
             style={{
+              '--reveal-i': 3,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
@@ -512,9 +545,8 @@ export default function HomeExplorer({
               border: '1.5px solid #a7f3d0',
               textDecoration: 'none',
               color: 'inherit',
-              transition: 'all 0.2s ease',
               boxShadow: 'var(--shadow-sm)',
-            }}
+            } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '28px' }}>🌿</span>
@@ -538,7 +570,7 @@ export default function HomeExplorer({
       </section>
 
       {/* Main Content & Place Grid */}
-      <div className="wrap" id="explore-places">
+      <div className="wrap scroll-reveal" id="explore-places">
         {totalCount > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 12 }}>
             <span style={{ color: 'var(--muted)', fontSize: '13.5px', fontWeight: 600 }}>
