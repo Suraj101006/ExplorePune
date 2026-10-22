@@ -119,12 +119,45 @@ export default function JourneyMapAnimation({
     };
   }, [isPlaying, totalSteps, playbackSpeed, places]);
 
-  // Reset step when journey changes
+  // Progressive Auto Draw on Mount & Reset step when journey changes
   useEffect(() => {
-    setCurrentStep(places.length); // Default to full route view
-    setIsPlaying(false);
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced || isOverallMode) {
+      setCurrentStep(places.length);
+      setIsPlaying(false);
+      return;
+    }
+
+    // Progressive Travel Route Draw Sequence (Requirement 2)
+    setCurrentStep(0);
     setActivePopupStop(null);
-  }, [journey?.id, places.length]);
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      setCurrentStep(step);
+      if (places[step - 1]) {
+        setActivePopupStop(places[step - 1]);
+      }
+      if (step >= places.length) {
+        clearInterval(interval);
+      }
+    }, 720);
+
+    return () => clearInterval(interval);
+  }, [journey?.id, places.length, isOverallMode]);
+
+  // Subtle Day -> Evening Atmosphere (Requirement 11)
+  const atmosphereClass = useMemo(() => {
+    const timeStr = journey?.startTime || '09:00';
+    const hour = parseInt(timeStr.split(':')[0], 10) || 9;
+    if (hour >= 6 && hour < 12) return 'travel-atmosphere-morning';
+    if (hour >= 12 && hour < 17) return 'travel-atmosphere-afternoon';
+    if (hour >= 17 && hour < 20) return 'travel-atmosphere-evening';
+    return 'travel-atmosphere-night';
+  }, [journey?.startTime]);
 
   const handlePlayToggle = () => {
     if (isPlaying) {
@@ -166,7 +199,7 @@ export default function JourneyMapAnimation({
 
   return (
     <div
-      className="journey-map-container"
+      className={`journey-map-container ${atmosphereClass}`}
       style={{
         position: 'relative',
         background: 'linear-gradient(145deg, #fbf9f5 0%, #f4ede1 100%)',
@@ -445,7 +478,7 @@ export default function JourneyMapAnimation({
                 strokeDasharray="8,5"
                 strokeLinecap="round"
                 filter="url(#glowFilter)"
-                className="animated-journey-path"
+                className="animated-journey-path travel-route-progressive-path"
               />
             )}
 
@@ -477,6 +510,7 @@ export default function JourneyMapAnimation({
                 <g
                   key={p.placeId || idx}
                   transform={`translate(${pt.x}, ${pt.y})`}
+                  className={isCurrentFocus ? 'travel-pin-drop' : ''}
                   style={{
                     cursor: 'pointer',
                     opacity: isRevealed ? 1 : 0.45,
@@ -489,7 +523,7 @@ export default function JourneyMapAnimation({
                 >
                   {/* Expanding Ripple on Arrival */}
                   {isCurrentFocus && (
-                    <circle r="22" fill="none" stroke="#ea580c" strokeWidth="2" className="arrival-ripple" />
+                    <circle r="22" fill="none" stroke="#ea580c" strokeWidth="2" className="arrival-ripple travel-pin-ripple" />
                   )}
 
                   {/* Marker Pin Circle */}

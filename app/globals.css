@@ -2195,3 +2195,308 @@ html.intro-dismissed .intro-overlay {
     opacity: 1 !important;
   }
 }
+
+/* ==========================================================================
+   EXPLORE PUNE — MASTER TRAVEL ANIMATION SUITE
+   Subtle, Editorial, Purposeful & Calm Motion
+   ========================================================================== */
+
+/* 1. Photo Stack Interaction on Place Cards */
+.travel-photo-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.travel-photo-stack-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  background-color: #cbd5e1;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, box-shadow 0.35s ease;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.travel-photo-stack-layer-2 {
+  z-index: 1;
+  transform: translate(2px, 2px) rotate(1.2deg);
+  opacity: 0.45;
+  filter: brightness(0.92) contrast(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.travel-photo-stack-layer-1 {
+  z-index: 2;
+  transform: translate(-2px, 2px) rotate(-1deg);
+  opacity: 0.65;
+  filter: brightness(0.96);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.travel-photo-stack-main {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .place-card-interactive:hover .travel-photo-stack-layer-2 {
+    transform: translate(7px, -4px) rotate(3deg);
+    opacity: 0.8;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
+  }
+
+  .place-card-interactive:hover .travel-photo-stack-layer-1 {
+    transform: translate(-6px, -2px) rotate(-2.4deg);
+    opacity: 0.88;
+    box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
+  }
+
+  .place-card-interactive:hover .travel-photo-stack-main {
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
+  }
+}
+
+/* 2. Photo -> Place Seamless Flight Transition Overlay */
+.travel-photo-flight-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background: rgba(15, 23, 42, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.travel-photo-flight-overlay.is-active {
+  opacity: 1;
+}
+
+.travel-photo-flight-clone {
+  position: fixed;
+  z-index: 100000;
+  pointer-events: none;
+  object-fit: cover;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.3);
+  transition: all 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, top, left, width, height, border-radius;
+}
+
+/* 3. Travel Route Draw Animation */
+@keyframes routeSegmentDraw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.travel-route-progressive-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: routeSegmentDraw 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: stroke-dashoffset;
+}
+
+/* 4. Map Pin Drop & Arrival Settling */
+@keyframes mapPinDrop {
+  0% {
+    transform: translate3d(0, -22px, 0) scale(0.92);
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(0, 2px, 0) scale(1.04);
+    opacity: 1;
+  }
+  82% {
+    transform: translate3d(0, -1px, 0) scale(0.98);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+.travel-pin-drop {
+  animation: mapPinDrop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes mapPinRipple {
+  0% {
+    r: 6;
+    stroke-opacity: 0.9;
+    stroke-width: 2.5;
+  }
+  100% {
+    r: 26;
+    stroke-opacity: 0;
+    stroke-width: 0.8;
+  }
+}
+
+.travel-pin-ripple {
+  animation: mapPinRipple 1.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+/* 5. Milestone Travel Passport Stamp */
+@keyframes passportStampIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.22) rotate(-8deg);
+  }
+  65% {
+    opacity: 0.95;
+    transform: scale(0.96) rotate(-2deg);
+  }
+  85% {
+    transform: scale(1.03) rotate(-3.5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-3deg);
+  }
+}
+
+.travel-passport-stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #047857;
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #047857;
+  background: rgba(240, 253, 244, 0.85);
+  font-family: monospace, var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(4, 120, 87, 0.15);
+  animation: passportStampIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  user-select: none;
+}
+
+/* 6. Active Journey Stop Pulse & Completion Checkmark */
+@keyframes journeyCurrentPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 6px rgba(234, 88, 12, 0);
+  }
+}
+
+.journey-stop-current-pulse {
+  animation: journeyCurrentPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0) rotate(-25deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.18) rotate(3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.journey-checkmark-pop {
+  animation: checkmarkPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 7. Travel Compass Needle Micro-Interaction */
+.travel-compass-container {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 40%, #f1f5f9 100%);
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.travel-compass-needle {
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* 8. Heritage Timeline Progressive Illumination */
+.heritage-timeline-line {
+  background: linear-gradient(180deg, #047857 0%, #cbd5e1 100%);
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heritage-timeline-marker {
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.heritage-timeline-item:hover .heritage-timeline-marker {
+  transform: scale(1.18);
+  background: #047857 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.25);
+}
+
+/* 9. Day -> Evening Atmospheric Lighting (Editorial & Subtle) */
+.travel-atmosphere-morning {
+  background: radial-gradient(ellipse at top left, rgba(254, 243, 199, 0.35) 0%, transparent 65%);
+}
+
+.travel-atmosphere-afternoon {
+  background: radial-gradient(ellipse at top center, rgba(241, 245, 249, 0.4) 0%, transparent 70%);
+}
+
+.travel-atmosphere-evening {
+  background: radial-gradient(ellipse at top right, rgba(254, 215, 170, 0.3) 0%, rgba(251, 146, 60, 0.08) 60%, transparent 80%);
+}
+
+.travel-atmosphere-night {
+  background: radial-gradient(ellipse at top, rgba(30, 41, 59, 0.05) 0%, transparent 70%);
+}
+
+/* Accessibility Reduced Motion Overrides */
+@media (prefers-reduced-motion: reduce) {
+  .travel-photo-stack-layer-1,
+  .travel-photo-stack-layer-2,
+  .travel-photo-flight-overlay,
+  .travel-photo-flight-clone,
+  .travel-route-progressive-path,
+  .travel-pin-drop,
+  .travel-pin-ripple,
+  .travel-passport-stamp,
+  .journey-stop-current-pulse,
+  .journey-checkmark-pop,
+  .travel-compass-needle,
+  .heritage-timeline-marker {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .travel-photo-stack-layer-1,
+  .travel-photo-stack-layer-2 {
+    display: none !important;
+  }
+}

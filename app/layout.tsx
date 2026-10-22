@@ -4,6 +4,7 @@ import ChatWidget from '@/components/ChatWidget';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
 
 export const metadata: Metadata = {
   title: { default: 'Explore Pune | Historic Forts, Wadas & Trip Planner', template: '%s | Explore Pune' },
@@ -19,10 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <LanguageProvider>
-          <AppHeader />
-          {children}
-          <AppFooter />
-          <ChatWidget />
+          <TravelPhotoTransitionProvider>
+            <AppHeader />
+            {children}
+            <AppFooter />
+            <ChatWidget />
+          </TravelPhotoTransitionProvider>
         </LanguageProvider>
       </body>
     </html>

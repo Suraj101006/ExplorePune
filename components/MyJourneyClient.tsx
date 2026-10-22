@@ -659,95 +659,137 @@ export default function MyJourneyClient() {
                     </strong>
                   </div>
 
-                  {/* Destinations List with Visit Checkboxes */}
-                  {todayJourney.places.map((p, idx) => (
-                    <div
-                      key={p.placeId || idx}
-                      style={{
-                        position: 'relative',
-                        marginBottom: idx === todayJourney.places.length - 1 ? 0 : 20,
-                        background: p.isVisited ? '#f0fdf4' : '#ffffff',
-                        border: p.isVisited ? '1px solid #bbf7d0' : '1px solid var(--line)',
-                        borderRadius: 'var(--radius)',
-                        padding: 14,
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      {/* Step Indicator Dot */}
+                  {/* Destinations List with Visit Checkboxes (Requirement 3 & 9) */}
+                  {todayJourney.places.map((p, idx) => {
+                    const firstUnvisitedIdx = todayJourney.places.findIndex((item) => !item.isVisited);
+                    const isCurrent = idx === firstUnvisitedIdx && !p.isVisited;
+
+                    return (
                       <div
+                        key={p.placeId || idx}
                         style={{
-                          position: 'absolute',
-                          left: -24,
-                          top: 16,
-                          width: 16,
-                          height: 16,
-                          borderRadius: '50%',
-                          background: p.isVisited ? '#10b981' : '#cbd5e1',
-                          border: '3px solid #ffffff',
-                          boxShadow: p.isVisited ? '0 0 0 1px #10b981' : 'none',
-                          color: '#fff',
-                          fontSize: 9,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 800,
+                          position: 'relative',
+                          marginBottom: idx === todayJourney.places.length - 1 ? 0 : 20,
+                          background: p.isVisited ? '#f0fdf4' : isCurrent ? '#fffbeb' : '#ffffff',
+                          border: p.isVisited
+                            ? '1.5px solid #86efac'
+                            : isCurrent
+                            ? '1.5px solid #fde047'
+                            : '1px solid var(--line)',
+                          borderRadius: 'var(--radius)',
+                          padding: 14,
+                          transition: 'all 0.25s ease',
+                          boxShadow: isCurrent ? '0 4px 14px rgba(234, 88, 12, 0.08)' : 'none',
                         }}
                       >
-                        {p.isVisited ? '✓' : ''}
-                      </div>
-
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--clay)', textTransform: 'uppercase' }}>
-                              {idx + 1}. {p.categoryName || p.category}
-                            </span>
-                            {p.arrivalTime && (
-                              <span style={{ fontSize: 11, color: 'var(--muted)' }}>⏰ {p.arrivalTime}</span>
-                            )}
-                          </div>
-                          <h4 style={{ fontSize: 15.5, fontWeight: 800, margin: '4px 0 2px', color: 'var(--ink)' }}>
-                            {isMr && p.placeNameMr ? p.placeNameMr : p.placeName}
-                          </h4>
-                          {p.note && (
-                            <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--muted)', fontStyle: 'italic' }}>
-                              &ldquo;{p.note}&rdquo;
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Interactive Checkbox Button */}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleVisited(p.placeId, p.isVisited)}
+                        {/* Step Indicator Dot */}
+                        <div
+                          className={isCurrent ? 'journey-stop-current-pulse' : p.isVisited ? 'journey-checkmark-pop' : ''}
                           style={{
-                            flexShrink: 0,
-                            padding: '6px 12px',
-                            borderRadius: 999,
-                            border: p.isVisited ? '1px solid #10b981' : '1px solid var(--line)',
-                            background: p.isVisited ? '#ecfdf5' : '#ffffff',
-                            color: p.isVisited ? '#065f46' : 'var(--ink-secondary)',
-                            fontSize: 12,
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
+                            position: 'absolute',
+                            left: -24,
+                            top: 16,
+                            width: 17,
+                            height: 17,
+                            borderRadius: '50%',
+                            background: p.isVisited ? '#047857' : isCurrent ? '#ea580c' : '#cbd5e1',
+                            border: '3px solid #ffffff',
+                            boxShadow: p.isVisited
+                              ? '0 0 0 1.5px #047857'
+                              : isCurrent
+                              ? '0 0 0 2px #ea580c'
+                              : 'none',
+                            color: '#fff',
+                            fontSize: 9.5,
+                            display: 'flex',
                             alignItems: 'center',
-                            gap: 4,
+                            justifyContent: 'center',
+                            fontWeight: 800,
                           }}
                         >
-                          {p.isVisited ? (
-                            <>
-                              <span>✓</span>
-                              <span>{isMr ? 'झाली' : 'Visited'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <span>○</span>
-                              <span>{isMr ? 'भेट नोंदवा' : 'Check In'}</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
+                          {p.isVisited ? '✓' : isCurrent ? '●' : '○'}
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: 11, fontWeight: 800, color: 'var(--clay)', textTransform: 'uppercase' }}>
+                                {idx + 1}. {p.categoryName || p.category}
+                              </span>
+                              {isCurrent && (
+                                <span
+                                  style={{
+                                    fontSize: 10.5,
+                                    fontWeight: 800,
+                                    color: '#c2410c',
+                                    background: '#ffedd5',
+                                    padding: '2px 7px',
+                                    borderRadius: 999,
+                                    border: '1px solid #fed7aa',
+                                  }}
+                                >
+                                  {isMr ? '● सध्याचे ठिकाण' : '● Current Stop'}
+                                </span>
+                              )}
+                              {p.arrivalTime && (
+                                <span style={{ fontSize: 11, color: 'var(--muted)' }}>⏰ {p.arrivalTime}</span>
+                              )}
+                            </div>
+                            <h4 style={{ fontSize: 15.5, fontWeight: 800, margin: '4px 0 2px', color: 'var(--ink)' }}>
+                              {isMr && p.placeNameMr ? p.placeNameMr : p.placeName}
+                            </h4>
+                            {p.note && (
+                              <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--muted)', fontStyle: 'italic' }}>
+                                &ldquo;{p.note}&rdquo;
+                              </p>
+                            )}
+
+                            {/* Milestone Travel Passport Stamp (Requirement 9) */}
+                            {p.isVisited && (
+                              <div style={{ marginTop: 8 }}>
+                                <span className="travel-passport-stamp">
+                                  <span>{isMr ? 'पुणे दर्शन प्रमाणित' : 'PUNE HERITAGE'}</span>
+                                  <span style={{ fontSize: 8.5, opacity: 0.85 }}>VISITED • 2026</span>
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Interactive Checkbox Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleVisited(p.placeId, p.isVisited)}
+                            className={p.isVisited ? 'journey-checkmark-pop' : ''}
+                            style={{
+                              flexShrink: 0,
+                              padding: '6px 14px',
+                              borderRadius: 999,
+                              border: p.isVisited ? '1.5px solid #047857' : isCurrent ? '1.5px solid #ea580c' : '1px solid var(--line)',
+                              background: p.isVisited ? '#ecfdf5' : isCurrent ? '#fff7ed' : '#ffffff',
+                              color: p.isVisited ? '#065f46' : isCurrent ? '#c2410c' : 'var(--ink-secondary)',
+                              fontSize: 12,
+                              fontWeight: 800,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 5,
+                              boxShadow: isCurrent ? '0 2px 6px rgba(234, 88, 12, 0.15)' : 'none',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            {p.isVisited ? (
+                              <>
+                                <span style={{ color: '#047857', fontWeight: 900 }}>✓</span>
+                                <span>{isMr ? 'झाली' : 'Visited'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <span>{isCurrent ? '●' : '○'}</span>
+                                <span>{isMr ? 'भेट नोंदवा' : 'Check In'}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
 
                       <div style={{ marginTop: 8, display: 'flex', gap: 10, alignItems: 'center', fontSize: 12 }}>
                         <Link
@@ -766,8 +808,9 @@ export default function MyJourneyClient() {
                         </a>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
 
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 16, borderTop: '1px solid var(--line)' }}>
                   <Link

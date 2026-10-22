@@ -41,6 +41,7 @@ import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getStoredUserLocation, UserSavedLocation, DEFAULT_PUNE_STATIC_LOCATION } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
+import { useTravelPhotoTransition } from '@/components/TravelPhotoTransition';
 
 const TIER_MR: Record<string, string> = {
   verified: 'तपासलेले अधिकृत तपशील',
@@ -83,6 +84,15 @@ const POPULAR_SEARCHES = [
   { label: 'Aga Khan Palace', labelMr: 'आगाखान पॅलेस', query: 'Aga Khan Palace' },
   { label: 'Pataleshwar Cave', labelMr: 'पाताळेश्वर लेणी', query: 'Pataleshwar' },
   { label: 'Khadakwasla Dam', labelMr: 'खडकवासला धरण', query: 'Khadakwasla' },
+];
+
+export const PUNE_GEOGRAPHIC_ZONES = [
+  { id: 'all', nameEn: 'All Pune Districts', nameMr: 'संपूर्ण पुणे विभाग', emoji: '🚩' },
+  { id: 'peths', nameEn: 'Historic Peths & Wadas', nameMr: 'ऐतिहासिक पेठा व वाडे', emoji: '🏰' },
+  { id: 'deccan', nameEn: 'Deccan & Kothrud', nameMr: 'डेक्कन व कोथरूड', emoji: '🌿' },
+  { id: 'camp', nameEn: 'Pune Camp & Cantonment', nameMr: 'पुणे कॅम्प व लष्कर', emoji: '🎖️' },
+  { id: 'koregaon', nameEn: 'Koregaon Park & Nagar Rd', nameMr: 'कोरेगाव पार्क व परिसर', emoji: '🌳' },
+  { id: 'forts', nameEn: 'Sahyadri Forts & Reservoirs', nameMr: 'सह्याद्री गड-किल्ले', emoji: '⛰️' },
 ];
 
 function getPlaceLocality(place: any, isMr: boolean): string {
@@ -139,6 +149,8 @@ export default function HomeExplorer({
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const [slideshowPlace, setSlideshowPlace] = useState<any | null>(null);
+  const { startTransition: startPhotoTransition } = useTravelPhotoTransition();
+  const [selectedZone, setSelectedZone] = useState<string>('all');
 
   useEffect(() => {
     const loc = getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION;
@@ -225,8 +237,31 @@ export default function HomeExplorer({
         )
       : placesWithDistance;
 
+  const zoneFilteredPlaces =
+    selectedZone === 'all'
+      ? sortedPlaces
+      : sortedPlaces.filter((p) => {
+          const text = `${p.name} ${p.name_mr || ''} ${p.address || ''} ${p.address_mr || ''} ${p.slug} ${p.category_slug || ''}`.toLowerCase();
+          if (selectedZone === 'forts') {
+            return p.category_slug === 'forts' || text.includes('fort') || text.includes('किल्ला') || text.includes('dam') || text.includes('ghat');
+          }
+          if (selectedZone === 'peths') {
+            return text.includes('peth') || text.includes('पेठ') || text.includes('wada') || text.includes('वाडा') || text.includes('mahal');
+          }
+          if (selectedZone === 'deccan') {
+            return text.includes('deccan') || text.includes('kothrud') || text.includes('fergusson') || text.includes('vetal') || text.includes('arai') || text.includes('deshpande') || text.includes('pataleshwar');
+          }
+          if (selectedZone === 'camp') {
+            return text.includes('camp') || text.includes('कॅम्प') || text.includes('cantonment') || text.includes('bund') || text.includes('memorial') || text.includes('shinde');
+          }
+          if (selectedZone === 'koregaon') {
+            return text.includes('koregaon') || text.includes('aga khan') || text.includes('osho') || text.includes('yerawada') || text.includes('nagar');
+          }
+          return true;
+        });
+
   const displayedPlaces =
-    !isDefaultHome || showAll || sortByNearMe ? sortedPlaces : sortedPlaces.slice(0, 6);
+    !isDefaultHome || showAll || sortByNearMe || selectedZone !== 'all' ? zoneFilteredPlaces : zoneFilteredPlaces.slice(0, 6);
 
   const href = (p: number) =>
     `/?${new URLSearchParams({
@@ -1284,6 +1319,65 @@ export default function HomeExplorer({
           </div>
         ) : (
           <>
+            {/* Scroll-Driven Pune Regional Explorer Navigation (Requirement 4) */}
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, flexWrap: 'wrap', gap: 6 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span>🗺️</span>
+                  <span>{isMr ? 'पुणे ऐतिहासिक व भौगोलिक विभाग:' : 'Explore by Pune Heritage Zone:'}</span>
+                </div>
+                {selectedZone !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedZone('all')}
+                    style={{ fontSize: 12, color: '#047857', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, textDecoration: 'underline' }}
+                  >
+                    {isMr ? 'सर्व विभाग दाखवा' : 'Show All Zones'}
+                  </button>
+                )}
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  overflowX: 'auto',
+                  paddingBottom: 6,
+                  scrollbarWidth: 'none',
+                }}
+              >
+                {PUNE_GEOGRAPHIC_ZONES.map((zone) => {
+                  const isSelected = selectedZone === zone.id;
+                  return (
+                    <button
+                      key={zone.id}
+                      type="button"
+                      onClick={() => setSelectedZone(zone.id)}
+                      className="chip"
+                      style={{
+                        flexShrink: 0,
+                        fontSize: 12.5,
+                        fontWeight: isSelected ? 800 : 600,
+                        padding: '6px 14px',
+                        borderRadius: 999,
+                        background: isSelected ? '#047857' : '#ffffff',
+                        color: isSelected ? '#ffffff' : 'var(--ink)',
+                        border: isSelected ? '1px solid #047857' : '1px solid var(--line)',
+                        boxShadow: isSelected ? '0 2px 8px rgba(4, 120, 87, 0.25)' : 'none',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                      }}
+                    >
+                      <span>{zone.emoji}</span>
+                      <span>{isMr ? zone.nameMr : zone.nameEn}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="grid">
               {displayedPlaces.map((p) => {
                 const catObj = p.place_categories?.[0] || { name: p.category_slug || 'Spot' };
@@ -1299,7 +1393,7 @@ export default function HomeExplorer({
 
                 return (
                   <article key={p.id} className="card place-card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>
-                    {/* Landmark Photo Banner */}
+                    {/* Landmark Photo Banner with Tactile Stack & Shared Element Flight Transition */}
                     <div
                       className="card-media"
                       style={{ position: 'relative', overflow: 'hidden' }}
@@ -1308,14 +1402,41 @@ export default function HomeExplorer({
                         href={`/places/${p.slug}`}
                         style={{ display: 'block', width: '100%', height: '100%' }}
                         title={isMr ? `${p.name_mr || p.name} माहिती व थेट छायाचित्र स्लाइडशो` : `View ${p.name} details & automatic slideshow`}
+                        onClick={(e) => {
+                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                          const imgEl = e.currentTarget.querySelector('.place-card-img-zoom') as HTMLElement;
+                          if (imgEl) {
+                            e.preventDefault();
+                            startPhotoTransition({
+                              src: p.image_url || badgeImg,
+                              alt: p.name,
+                              element: imgEl,
+                              targetHref: `/places/${p.slug}`,
+                              slug: p.slug,
+                            });
+                          }
+                        }}
                       >
-                        <img
-                          src={p.image_url || badgeImg}
-                          alt={p.name}
-                          loading="lazy"
-                          className="place-card-img-zoom"
-                          style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
+                        {/* 3-Photo Tactile Print Stack (Requirement 7) */}
+                        <div className="travel-photo-stack">
+                          <div
+                            className="travel-photo-stack-layer travel-photo-stack-layer-2"
+                            style={{ backgroundImage: `url(${p.image_url || badgeImg})` }}
+                          />
+                          <div
+                            className="travel-photo-stack-layer travel-photo-stack-layer-1"
+                            style={{ backgroundImage: `url(${p.image_url || badgeImg})` }}
+                          />
+                          <div className="travel-photo-stack-main">
+                            <img
+                              src={p.image_url || badgeImg}
+                              alt={p.name}
+                              loading="lazy"
+                              className="place-card-img-zoom"
+                              style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </div>
+                        </div>
 
                         {/* Interactive Slideshow Indicator Badge */}
                         <div
@@ -1323,7 +1444,7 @@ export default function HomeExplorer({
                             position: 'absolute',
                             bottom: 8,
                             left: 8,
-                            zIndex: 2,
+                            zIndex: 5,
                             background: 'rgba(15, 23, 42, 0.85)',
                             backdropFilter: 'blur(6px)',
                             color: '#ffffff',

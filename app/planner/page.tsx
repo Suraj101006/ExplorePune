@@ -29,6 +29,23 @@ import {
   DEFAULT_PUNE_STATIC_LOCATION,
   detectBrowserGps,
 } from '@/lib/userLocation';
+import TravelCompass from '@/components/TravelCompass';
+
+function getAtmosphereClass(hourOrTime?: string | number): string {
+  let hour = 12;
+  if (typeof hourOrTime === 'number') {
+    hour = hourOrTime;
+  } else if (typeof hourOrTime === 'string') {
+    const parts = hourOrTime.split(':');
+    if (parts.length > 0) hour = parseInt(parts[0], 10) || 12;
+  } else {
+    hour = new Date().getHours();
+  }
+  if (hour >= 5 && hour < 11) return 'travel-atmosphere-morning';
+  if (hour >= 11 && hour < 17) return 'travel-atmosphere-afternoon';
+  if (hour >= 17 && hour < 20) return 'travel-atmosphere-evening';
+  return 'travel-atmosphere-night';
+}
 
 const STARTS: Record<string, { coords: [number, number]; mr: string }> = {
   'Central Pune (Shaniwar Wada)': { coords: [18.5204, 73.8567], mr: 'मध्यवर्ती पुणे (शनिवार वाडा)' },
@@ -642,6 +659,7 @@ export default function PlannerPage() {
           =================================================================== */}
       {isGuidedMode && activeGuidedTrip && currStop && (
         <section
+          className={getAtmosphereClass(activeGuidedTrip.startTime)}
           style={{
             marginBottom: 36,
             background: '#ffffff',
@@ -958,50 +976,63 @@ export default function PlannerPage() {
                   </Link>
                 </div>
 
-                {/* Timing, Duration & Entry Cost Badges */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, fontSize: 13, marginBottom: 20 }}>
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid var(--line)',
-                      borderRadius: 'var(--radius-sm)',
-                      padding: '8px 12px',
-                    }}
-                  >
-                    <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                      {isMr ? 'वेळ' : 'Schedule'}
-                    </span>
-                    <strong style={{ color: 'var(--clay)' }}>⏰ {currStop.arrivalTime || '--'} - {currStop.departureTime || '--'}</strong>
-                  </div>
+                {/* Timing, Duration & Entry Cost Badges & Bearing Compass */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
+                  {currStop.latitude && currStop.longitude && (
+                    <div style={{ flexShrink: 0 }}>
+                      <TravelCompass
+                        latitude={currStop.latitude}
+                        longitude={currStop.longitude}
+                        targetName={isMr ? currStop.placeNameMr || currStop.placeName : currStop.placeName}
+                        isMarathi={isMr}
+                        size={84}
+                      />
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, fontSize: 13, flex: 1 }}>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid var(--line)',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '8px 12px',
+                      }}
+                    >
+                      <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
+                        {isMr ? 'वेळ' : 'Schedule'}
+                      </span>
+                      <strong style={{ color: 'var(--clay)' }}>⏰ {currStop.arrivalTime || '--'} - {currStop.departureTime || '--'}</strong>
+                    </div>
 
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid var(--line)',
-                      borderRadius: 'var(--radius-sm)',
-                      padding: '8px 12px',
-                    }}
-                  >
-                    <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                      {isMr ? 'भेट कालावधी' : 'Duration'}
-                    </span>
-                    <strong>⏱️ {currStop.visitMinutes} {isMr ? 'मि.' : 'min'}</strong>
-                  </div>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid var(--line)',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '8px 12px',
+                      }}
+                    >
+                      <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
+                        {isMr ? 'भेट कालावधी' : 'Duration'}
+                      </span>
+                      <strong>⏱️ {currStop.visitMinutes} {isMr ? 'मि.' : 'min'}</strong>
+                    </div>
 
-                  <div
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid var(--line)',
-                      borderRadius: 'var(--radius-sm)',
-                      padding: '8px 12px',
-                    }}
-                  >
-                    <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
-                      {isMr ? 'प्रवेश शुल्क' : 'Entry Ticket'}
-                    </span>
-                    <strong style={{ color: '#047857' }}>
-                      🎟️ {currStop.entryCost === 0 ? (isMr ? 'मोफत' : 'Free Entry') : `₹${currStop.entryCost ?? 'N/A'}`}
-                    </strong>
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid var(--line)',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '8px 12px',
+                      }}
+                    >
+                      <span style={{ display: 'block', fontSize: 10.5, color: 'var(--muted)', fontWeight: 700, textTransform: 'uppercase' }}>
+                        {isMr ? 'प्रवेश शुल्क' : 'Entry Ticket'}
+                      </span>
+                      <strong style={{ color: '#047857' }}>
+                        🎟️ {currStop.entryCost === 0 ? (isMr ? 'मोफत' : 'Free Entry') : `₹${currStop.entryCost ?? 'N/A'}`}
+                      </strong>
+                    </div>
                   </div>
                 </div>
 

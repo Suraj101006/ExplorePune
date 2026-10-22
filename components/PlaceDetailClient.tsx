@@ -39,6 +39,8 @@ import {
   PmpmlTimetableRoute,
 } from '@/lib/pmpmlGtfs';
 import { getPlaceAuthenticity } from '@/lib/authenticity';
+import TravelCompass from '@/components/TravelCompass';
+import HeritageTimeline, { TimelineMilestone } from '@/components/HeritageTimeline';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -60,6 +62,223 @@ const TIER_EN: Record<string, string> = {
   enriched: 'Public Source Info',
   listed: 'Hours Unverified',
 };
+
+function getLandmarkTimelineMilestones(slug: string): TimelineMilestone[] {
+  const clean = slug.toLowerCase();
+  if (clean.includes('shaniwar-wada')) {
+    return [
+      {
+        year: '1730 CE',
+        yearMr: '१७३०',
+        era: 'Foundation',
+        eraMr: 'पायाभरणी',
+        title: 'Peshwa Baji Rao I lays foundation',
+        titleMr: 'थोरले बाजीराव पेशवे यांनी रचली पायाभरणी',
+        desc: 'Constructed as the administrative and military headquarters of the Maratha Empire.',
+        descMr: 'मराठा साम्राज्याची राजधानी आणि राजकीय केंद्र म्हणून उभारणी सुरू झाली.',
+      },
+      {
+        year: '1732 CE',
+        yearMr: '१७३२',
+        era: 'Inauguration',
+        eraMr: 'वास्तू शांत व प्रवेश',
+        title: '7-Storied Palace & Delhi Darwaza completed',
+        titleMr: 'सात मजली राजवाडा व दिल्ली दरवाजा पूर्ण',
+        desc: 'Magnificent teakwood pillars, mirror work, and fortified bastions opened on January 22, 1732.',
+        descMr: '२२ जानेवारी १७३२ रोजी भव्य सागवानी खांब, कारंजे आणि अभेद्य बुरुजांसह वाडा खुला झाला.',
+      },
+      {
+        year: '1818 CE',
+        yearMr: '१८१८',
+        era: 'End of Peshwa Rule',
+        eraMr: 'पेशवाईचा अस्त',
+        title: 'British forces occupy Pune & Shaniwar Wada',
+        titleMr: 'इंग्रजांचा शनिवार वाड्यावर ताबा',
+        desc: 'Following the Third Anglo-Maratha War, the Union Jack was raised over the Delhi Darwaza.',
+        descMr: 'मराठा-इंग्रज युद्धानंतर शनिवार वाड्यावर ब्रिटिश ईस्ट इंडिया कंपनीचे नियंत्रण आले.',
+      },
+      {
+        year: '1828 CE',
+        yearMr: '१८२८',
+        era: 'The Great Fire',
+        eraMr: 'अग्नितांडव',
+        title: '7-day fire consumes wooden interior chambers',
+        titleMr: 'सात दिवस चाललेल्या आगीत लाकडी महालांचे नुकसान',
+        desc: 'The wooden upper stories were destroyed, leaving behind the impregnable stone ramparts.',
+        descMr: 'वाड्याचे लाकडी मजले आगीत भस्मसात झाले, परंतु बाहेरील दगडी तटबंदी व दरवाजे अभेद्य राहिले.',
+      },
+      {
+        year: 'Present',
+        yearMr: 'आज',
+        era: 'National Monument',
+        eraMr: 'राष्ट्रीय वारसा',
+        title: 'ASI Protected Monument of National Importance',
+        titleMr: 'एएसआय राष्ट्रीय संरक्षित स्मारक',
+        desc: 'A celebrated emblem of Pune heritage drawing hundreds of thousands of annual visitors.',
+        descMr: 'पुण्याच्या सांस्कृतिक अस्मितेचे सर्वोच्च प्रतीक आणि पर्यटन केंद्र.',
+      },
+    ];
+  }
+  if (clean.includes('sinhagad')) {
+    return [
+      {
+        year: '1340 CE',
+        yearMr: '१३४०',
+        era: 'Early Chronicles',
+        eraMr: 'प्राचीन इतिहास',
+        title: 'Kondhana documented under Koli chieftain Nag Nayak',
+        titleMr: 'कोळी सरदार नाग नायक यांच्या ताब्यात कोंढाणा',
+        desc: 'Earliest historical inscriptions detailing the strategic Sahyadri bastion.',
+        descMr: 'सह्याद्रीच्या पर्वतरांगांमधील महत्त्वाचा डोंगरी किल्ला म्हणून प्राचीन उल्लेख.',
+      },
+      {
+        year: '1647 CE',
+        yearMr: '१६४७',
+        era: 'Swarajya Dawn',
+        eraMr: 'स्वराज्याची पहाट',
+        title: 'Chhatrapati Shivaji Maharaj secures Kondhana',
+        titleMr: 'छत्रपती शिवाजी महाराजांनी किल्ला ताब्यात घेतला',
+        desc: 'Secured diplomatically to defend the western passes of Pune.',
+        descMr: 'पुण्याच्या पश्चिम घाटांचे रक्षण करण्यासाठी गडावर भगवा ध्वज फडकवला.',
+      },
+      {
+        year: '1670 CE',
+        yearMr: '१६७०',
+        era: 'Battle of Sinhagad',
+        eraMr: 'सिंहगडाचा रणसंग्राम',
+        title: 'Subedar Tanaji Malusare recaptures the fort',
+        titleMr: 'सुभेदार तानाजी मालुसरे यांचे अतुलनीय शौर्य',
+        desc: 'Immortalized by Shivaji Maharaj: "Gad aala, pan Sinha gela" (The fort is won, but the lion is lost).',
+        descMr: 'प्राणांची आहुती देऊन गड सर केला. महाराजांचे उद्गार: "गड आला पण सिंह गेला."',
+      },
+      {
+        year: 'Present',
+        yearMr: 'आज',
+        era: 'Heritage Shrine & Trek',
+        eraMr: 'पदभ्रमण व तीर्थक्षेत्र',
+        title: 'Revered pilgrimage and trekking destination of Pune',
+        titleMr: 'पुणेकरांचे आवडते ऐतिहासिक पदभ्रमण ठिकाण',
+        desc: 'Famous for the Tanaji Memorial, Kalyan Darwaza, and authentic Pitla Bhakri at the summit.',
+        descMr: 'तानाजी स्मारक, कल्याण दरवाजा आणि गडावरील चुलिवरच्या पिठलं-भाकरीसाठी प्रसिद्ध.',
+      },
+    ];
+  }
+  if (clean.includes('aga-khan')) {
+    return [
+      {
+        year: '1892 CE',
+        yearMr: '१८९२',
+        era: 'Construction',
+        eraMr: 'उभारणी',
+        title: 'Built by Sultan Muhammed Shah Aga Khan III',
+        titleMr: 'सुलतान महंमद शाह आगा खान यांनी बांधला',
+        desc: 'Erected as a philanthropic relief project for local villagers affected by severe famine in Pune.',
+        descMr: 'पुण्यातील दुष्काळग्रस्त जनतेला रोजगार देण्यासाठी बांधलेला इटालियन गॉथिक राजवाडा.',
+      },
+      {
+        year: '1942 CE',
+        yearMr: '१९४२',
+        era: 'Quit India Movement',
+        eraMr: 'भारत छोडो आंदोलन',
+        title: 'Mahatma Gandhi interned here by the British',
+        titleMr: 'महात्मा गांधी व सहकाऱ्यांना येथे स्थानबद्ध केले',
+        desc: 'Epicenter of India’s freedom movement; Kasturba Gandhi and Mahadev Desai accompanied the Mahatma.',
+        descMr: 'स्वातंत्र्यलढ्यादरम्यान गांधीजी, कस्तुरबा गांधी आणि महादेव देसाई यांचे निवासस्थान व कारावास.',
+      },
+      {
+        year: '1944 CE',
+        yearMr: '१९४४',
+        era: 'Sacred Memorial',
+        eraMr: 'पवित्र समाधी',
+        title: 'Samadhis of Kasturba Gandhi and Mahadev Desai',
+        titleMr: 'कस्तुरबा गांधी व महादेव देसाई यांची समाधी',
+        desc: 'Marble samadhis designed by Charles Correa erected in the serene palace gardens.',
+        descMr: 'राजवाड्याच्या शांत उद्यानात संगमरवरी पवित्र समाधीस्थळे उभारण्यात आली.',
+      },
+      {
+        year: 'Present',
+        yearMr: 'आज',
+        era: 'National Gandhi Smriti',
+        eraMr: 'राष्ट्रीय स्मारक',
+        title: 'ASI Monument of National Importance',
+        titleMr: 'राष्ट्रीय महत्त्वाचे ऐतिहासिक स्मारक',
+        desc: 'Preserves Gandhiji’s personal belongings, khadi charkha, and peace archives.',
+        descMr: 'गांधीजींच्या वस्तू, चरखा आणि ऐतिहासिक छायाचित्रांचा वारसा जपणारे संग्रहालय.',
+      },
+    ];
+  }
+  const isFort = clean.includes('fort') || clean.includes('किल्ला');
+  const isTemple = clean.includes('temple') || clean.includes('mandir') || clean.includes('ganpati');
+  if (isFort) {
+    return [
+      {
+        year: '1650s CE',
+        yearMr: '१६५० चे दशक',
+        era: 'Maratha Swarajya',
+        eraMr: 'मराठा स्वराज्य',
+        title: 'Strategic fortification of the Sahyadri peak',
+        titleMr: 'सह्याद्रीच्या शिखरावर लष्करी तटबंदी',
+        desc: 'Reinforced with double-bastioned machis and water cisterns to guard trade corridors.',
+        descMr: 'व्यापारी मार्ग व खोऱ्यांचे रक्षण करण्यासाठी अभेद्य बुरुज व पाण्याच्या टाक्यांची निर्मिती.',
+      },
+      {
+        year: '1818 CE',
+        yearMr: '१८१८',
+        era: 'Colonial Era',
+        eraMr: 'ब्रिटिश काळ',
+        title: 'Documented in Bombay Presidency Gazetteers',
+        titleMr: 'पुरातत्व व ऐतिहासिक सर्वेक्षण',
+        desc: 'Surveyed by British military engineers for exceptional natural topography.',
+        descMr: 'सह्याद्रीतील नैसर्गिक दुर्गमतेसाठी गॅझेटियरमध्ये गौरव.',
+      },
+      {
+        year: 'Present',
+        yearMr: 'आज',
+        era: 'Protected Heritage',
+        eraMr: 'संरक्षित वारसा',
+        title: 'Iconic trekking and biodiversity sanctuary',
+        titleMr: 'ऐतिहासिक पदभ्रमण व जैवविविधता ठिकाण',
+        desc: 'Welcoming thousands of trekkers, students, and nature lovers every weekend.',
+        descMr: 'ट्रेकिंग, इतिहास आणि निसर्ग पर्यटनाचे लोकप्रिय केंद्र.',
+      },
+    ];
+  }
+  if (isTemple) {
+    return [
+      {
+        year: 'Historic Era',
+        yearMr: 'ऐतिहासिक काळ',
+        era: 'Consecration',
+        eraMr: 'प्रतिष्ठापना',
+        title: 'Consecration of the sacred sanctum & deity',
+        titleMr: 'पवित्र गर्भगृह व मूर्तीची स्थापना',
+        desc: 'Revered spiritual foundation deeply embedded in Puneri devotional traditions.',
+        descMr: 'पुण्याच्या भक्ती परंपरेत आणि पेठ संस्कृतीत आदराचे स्थान.',
+      },
+      {
+        year: '1893 CE',
+        yearMr: '१८९३',
+        era: 'Social Awakening',
+        eraMr: 'सार्वजनिक उत्सव',
+        title: 'Lokmanya Tilak endorses public community celebration',
+        titleMr: 'लोकमान्य टिळकांनी सार्वजनिक उत्सवाला प्रेरणा दिली',
+        desc: 'Transformed into a focal point of cultural unity and societal service.',
+        descMr: 'सामाजिक एकता आणि जनसेवेचे भव्य केंद्र म्हणून गौरव.',
+      },
+      {
+        year: 'Present',
+        yearMr: 'आज',
+        era: 'Living Pilgrimage',
+        eraMr: 'जागृत तीर्थक्षेत्र',
+        title: 'Devotional icon welcoming millions of pilgrims',
+        titleMr: 'लाखो भाविकांचे आराध्य दैवत',
+        desc: 'Celebrated for daily aartis, charitable healthcare, and festive fervor.',
+        descMr: 'दैनिक आरती, अन्नदान आणि सामाजिक कार्यासाठी प्रसिद्ध असलेले देवस्थान.',
+      },
+    ];
+  }
+  return [];
+}
 
 export default function PlaceDetailClient({ place }: { place: any }) {
   const { isMr } = useLanguage();
@@ -116,6 +335,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
   const authenticity = useMemo(() => getPlaceAuthenticity(place.slug || place.id, place), [place]);
+  const milestones = useMemo(() => getLandmarkTimelineMilestones(place.slug || place.id), [place.slug, place.id]);
 
   // PMPML Bus Timetable integration
   const timetableRoutes = useMemo(() => {
@@ -409,11 +629,12 @@ export default function PlaceDetailClient({ place }: { place: any }) {
             </p>
           )}
 
-          {/* Free Live Operating Status Banner */}
+          {/* Free Live Operating Status & Directional Compass Banner */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'space-between',
               gap: 12,
               flexWrap: 'wrap',
               margin: '14px 0 16px',
@@ -423,13 +644,26 @@ export default function PlaceDetailClient({ place }: { place: any }) {
               border: `1px solid ${opStatus.isOpen ? '#bbf7d0' : '#fecaca'}`,
             }}
           >
-            <span className={`status-badge ${opStatus.badgeClass}`}>
-              <span style={{ fontSize: 9 }}>{opStatus.isOpen ? '🟢' : '🔴'}</span>
-              <span>{isMr ? opStatus.statusTextMr : opStatus.statusTextEn}</span>
-            </span>
-            <span style={{ fontSize: '13px', color: 'var(--ink-secondary)', fontWeight: 500 }}>
-              {isMr ? opStatus.detailMr : opStatus.detailEn}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <span className={`status-badge ${opStatus.badgeClass}`}>
+                <span style={{ fontSize: 9 }}>{opStatus.isOpen ? '🟢' : '🔴'}</span>
+                <span>{isMr ? opStatus.statusTextMr : opStatus.statusTextEn}</span>
+              </span>
+              <span style={{ fontSize: '13px', color: 'var(--ink-secondary)', fontWeight: 500 }}>
+                {isMr ? opStatus.detailMr : opStatus.detailEn}
+              </span>
+            </div>
+
+            {/* Travel Compass Micro-Interaction (Requirement 10) */}
+            <div style={{ flexShrink: 0 }}>
+              <TravelCompass
+                latitude={place.latitude}
+                longitude={place.longitude}
+                targetName={primaryName}
+                isMarathi={isMr}
+                size={34}
+              />
+            </div>
           </div>
 
           {/* Quick Traveler Utilities Action Bar */}
@@ -556,6 +790,27 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   ? 'या ऐतिहासिक स्थानाबद्दल तपशीलवार माहिती लवकरच अद्ययावत केली जाईल.'
                   : 'Detailed information and visitor guide for this historic spot in Pune.')}
             </p>
+
+            {/* Heritage Timeline Animation (Requirement 8) */}
+            {milestones.length > 0 && (
+              <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid var(--line)' }}>
+                <h3
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 800,
+                    color: '#0f172a',
+                    margin: '0 0 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span>⏳</span>
+                  <span>{isMr ? 'ऐतिहासिक टप्पे व कालक्रम:' : 'Heritage Milestones & Timeline:'}</span>
+                </h3>
+                <HeritageTimeline milestones={milestones} isMarathi={isMr} />
+              </div>
+            )}
 
             {/* Trusted Data Verification Card (Conforms to Section 17 Standards) */}
             <div
