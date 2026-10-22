@@ -2,11 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { firebaseConfig } from './load-env.mjs';
 
-const app = initializeApp({
-  apiKey: 'AIzaSyBfxzypc2mqyQwPx9WqOsttvGScJOfUHSw',
-  projectId: 'punetrail',
-});
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const placesDir = path.resolve('public/images/places');

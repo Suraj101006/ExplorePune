@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Blocklist for sensitive files, source control metadata, debug and backup paths
 const BLOCKED_PATH_REGEX =
-  /(?:^\/(?:\.env|\.git|\.svn|\.hg|\.well-known\/(?:debug|admin)|debug|test|admin-debug|backup|database\.sql|dump\.sql)(?:\/|$))|(?:\.(?:env|git|sql|bak|backup|key|pem|log|sqlite|db)$)/i;
+  /(?:^\/(?:\.env|\.git|\.svn|\.hg|\.well-known\/(?:debug|admin)|debug|test|admin-debug|backup|database\.sql|dump\.sql|scripts\/|data\/.*\.json)(?:\/|$))|(?:\.(?:env|git|sql|bak|backup|key|pem|log|sqlite|db|ts|tsx|map)$)/i;
 
 const ALLOWED_ORIGIN_PATTERNS = [
   /^http:\/\/localhost(?::\d+)?$/,

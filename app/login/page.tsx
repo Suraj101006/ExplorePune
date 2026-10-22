@@ -50,6 +50,11 @@ export default function LoginPage() {
       return;
     }
 
+    if (mode === 'up' && pw.length < 8) {
+      setErr('For your account security, password must be at least 8 characters.');
+      return;
+    }
+
     setBusy(true);
     try {
       if (mode === 'up') {

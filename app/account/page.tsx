@@ -145,6 +145,10 @@ export default function AccountPage() {
     e.preventDefault();
     setErr('');
     setMsg('');
+    if (pw.length < 8) {
+      setErr('For security, password must be at least 8 characters long.');
+      return;
+    }
     try {
       await updatePassword(user!, pw);
       setMsg('✅ Password updated successfully.');

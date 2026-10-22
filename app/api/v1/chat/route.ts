@@ -21,6 +21,14 @@ const Schema = z.object({
   apiKey: z.string().optional(),
 });
 
+function scrubSensitiveOutput(text: string): string {
+  if (!text) return text;
+  return text
+    .replace(/AIzaSy[A-Za-z0-9_-]{33}/gi, '[REDACTED_KEY]')
+    .replace(/(?:api[_-]?key|secret|password|token)[=:\s]+["']?[a-zA-Z0-9_\-\.]{16,}["']?/gi, '[REDACTED_SECRET]')
+    .replace(/\b(?:SELECT|INSERT|UPDATE|DELETE|DROP|ALTER)\s+[a-zA-Z0-9_*,\s]+FROM\b/gi, '[REDACTED_QUERY]');
+}
+
 export async function POST(req: NextRequest) {
   const isLimiterBypassed =
     process.env.NODE_ENV !== 'production' && process.env.CHAT_RATE_LIMIT_OFF === '1';
@@ -162,7 +170,7 @@ export async function POST(req: NextRequest) {
     }));
 
     return NextResponse.json({
-      reply: result.reply,
+      reply: scrubSensitiveOutput(result.reply),
       places: sanitizedPlaces,
       transit,
       suggestions: result.suggestions,

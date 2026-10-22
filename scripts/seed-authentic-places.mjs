@@ -1,10 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { firebaseConfig } from './load-env.mjs';
 
-const app = initializeApp({
-  apiKey: 'AIzaSyBfxzypc2mqyQwPx9WqOsttvGScJOfUHSw',
-  projectId: 'punetrail',
-});
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const AUTHENTIC_PLACES = [

@@ -2,15 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, writeBatch, collection } from 'firebase/firestore';
 import fs from 'fs';
 import path from 'path';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBfxzypc2mqyQwPx9WqOsttvGScJOfUHSw",
-  authDomain: "punetrail.firebaseapp.com",
-  projectId: "punetrail",
-  storageBucket: "punetrail.firebasestorage.app",
-  messagingSenderId: "783087382799",
-  appId: "1:783087382799:web:ac5de4e4e481863bf44e7a",
-};
+import { firebaseConfig } from './load-env.mjs';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
