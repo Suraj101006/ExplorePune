@@ -4,6 +4,20 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import {
+  Compass,
+  Footprints,
+  Route,
+  Award,
+  BookOpen,
+  Info,
+  Menu,
+  X,
+  User as UserIcon,
+  LogOut,
+  LogIn,
+  Shield,
+} from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
 import AuthNav from '@/components/AuthNav';
@@ -19,12 +33,12 @@ export default function AppHeader() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const navLinks = [
-    { href: '/', label: t('nav.explore'), icon: '🏛️' },
-    { href: '/journey', label: t('nav.journey') || (isMr ? 'माझी सफर' : 'My Journey'), icon: '🧭' },
-    { href: '/planner', label: t('nav.planner'), icon: '🗺️' },
-    { href: '/milestones', label: t('nav.milestones'), icon: '🏆' },
-    { href: '/blogs', label: t('nav.blogs'), icon: '📖' },
-    { href: '/about', label: t('nav.about'), icon: 'ℹ️' },
+    { href: '/', label: t('nav.explore'), Icon: Compass },
+    { href: '/journey', label: t('nav.journey') || (isMr ? 'माझी सफर' : 'My Journey'), Icon: Footprints },
+    { href: '/planner', label: t('nav.planner'), Icon: Route },
+    { href: '/milestones', label: t('nav.milestones'), Icon: Award },
+    { href: '/blogs', label: t('nav.blogs'), Icon: BookOpen },
+    { href: '/about', label: t('nav.about'), Icon: Info },
   ];
 
   const isLinkActive = (href: string) => {
@@ -71,13 +85,14 @@ export default function AppHeader() {
         <nav className="desktop-nav" aria-label="Main Navigation">
           {navLinks.map((item) => {
             const active = isLinkActive(item.href);
+            const { Icon } = item;
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={active ? 'active-nav-link' : ''}
               >
-                <span className="desktop-nav-icon" style={{ fontSize: '14px' }}>{item.icon}</span>
+                <Icon size={14} strokeWidth={2.2} className="desktop-nav-icon" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -114,7 +129,7 @@ export default function AppHeader() {
             aria-label="Toggle Navigation Menu"
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? '✕' : '☰'}
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -151,7 +166,7 @@ export default function AppHeader() {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                  <span style={{ fontSize: 20 }}>👤</span>
+                  <UserIcon size={18} className="text-emerald-700" />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       {isMr ? 'लॉगिन केलेले खाते' : 'Signed In'}
@@ -180,10 +195,14 @@ export default function AppHeader() {
                       color: 'var(--clay)',
                       background: 'rgba(194, 65, 12, 0.1)',
                       padding: '3px 8px',
-                      borderRadius: 999,
+                      borderRadius: 'var(--radius-sm)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    {isMr ? 'प्रशासन' : 'Admin'}
+                    <Shield size={12} />
+                    <span>{isMr ? 'प्रशासन' : 'Admin'}</span>
                   </Link>
                 )}
               </div>
@@ -201,9 +220,13 @@ export default function AppHeader() {
                     justifyContent: 'center',
                     background: '#fff',
                     textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
                   }}
                 >
-                  👤 {isMr ? 'माझे खाते' : 'My Account'}
+                  <UserIcon size={14} />
+                  <span>{isMr ? 'माझे खाते' : 'My Account'}</span>
                 </Link>
                 <button
                   type="button"
@@ -219,9 +242,13 @@ export default function AppHeader() {
                     borderColor: '#fca5a5',
                     color: '#dc2626',
                     cursor: isLoggingOut ? 'wait' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
                   }}
                 >
-                  {isLoggingOut ? '⏳…' : `🚪 ${isMr ? 'लॉगआउट' : 'Logout'}`}
+                  <LogOut size={14} />
+                  <span>{isLoggingOut ? '…' : isMr ? 'लॉगआउट' : 'Logout'}</span>
                 </button>
               </div>
             </div>
@@ -238,9 +265,13 @@ export default function AppHeader() {
                 borderRadius: 'var(--radius-md)',
                 marginBottom: 6,
                 textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
               }}
             >
-              🔑 {isMr ? 'लॉगिन करा / नवीन खाते तयार करा' : 'Sign in / Create Account'}
+              <LogIn size={16} />
+              <span>{isMr ? 'लॉगिन करा / नवीन खाते तयार करा' : 'Sign in / Create Account'}</span>
             </Link>
           )}
 
@@ -248,6 +279,7 @@ export default function AppHeader() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {navLinks.map((item) => {
               const active = isLinkActive(item.href);
+              const { Icon } = item;
               return (
                 <Link
                   key={item.href}
@@ -267,7 +299,7 @@ export default function AppHeader() {
                   }}
                 >
                   <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: '17px' }}>{item.icon}</span>
+                    <Icon size={16} strokeWidth={2} style={{ color: active ? 'var(--primary)' : 'var(--muted)' }} />
                     <span>{item.label}</span>
                   </span>
                   {active && <span style={{ fontSize: '11px', color: 'var(--primary)', fontWeight: 800 }}>●</span>}
@@ -279,13 +311,13 @@ export default function AppHeader() {
           {/* Mobile Quick Actions Row */}
           <div
             style={{
-              borderTop: '1px solid var(--line-light)',
               paddingTop: 12,
-              marginTop: 4,
+              marginTop: 6,
+              borderTop: '1px solid var(--line)',
               display: 'flex',
-              alignItems: 'center',
               justifyContent: 'space-between',
-              gap: 8,
+              alignItems: 'center',
+              gap: 10,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

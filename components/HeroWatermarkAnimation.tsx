@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Shield } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function HeroWatermarkAnimation() {
@@ -27,15 +28,15 @@ export default function HeroWatermarkAnimation() {
       {/* Cultural Heritage Continuation Block: Punyanagari, Sahyadri & Aamch Pune */}
       <div className="hero-pune-cultural-block">
         <div className="hero-pune-cultural-crest">
-          <span className="hero-pune-crest-sparkle" aria-hidden="true">🚩</span>
+          <Shield size={13} style={{ color: '#ea580c' }} aria-hidden="true" />
           <span className="hero-pune-crest-text">
             पुण्यनगरी • सह्याद्री • संस्कृती
           </span>
-          <span className="hero-pune-crest-sparkle" aria-hidden="true">✨</span>
+          <span style={{ fontSize: '11px', color: '#9a3412', fontWeight: 700 }}>•</span>
         </div>
 
         <div className="hero-pune-cultural-sub">
-          {isMr ? 'आमचं पुणे, आमचा अभिमान' : 'Aamch Pune • आमचं पुणे, आमचा अभिमान'}
+          {isMr ? 'आमचं पुणे, आमचा वारसा' : 'Official Pune Heritage & Field Archive'}
         </div>
       </div>
     </div>

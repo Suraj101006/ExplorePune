@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { PlacePhotoItem } from '@/app/api/v1/places/photos/route';
+import { Play, Pause, X, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 
 interface PlacePhotoSlideshowModalProps {
   isOpen: boolean;
@@ -345,7 +346,7 @@ export default function PlacePhotoSlideshowModal({
               }}
               title={isPlaying ? 'Pause' : 'Play'}
             >
-              <span>{isPlaying ? '⏸' : '▶'}</span>
+              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
               <span className="hide-on-mobile">{isPlaying ? (isMr ? 'थांबवा' : 'Pause') : (isMr ? 'सुरू करा' : 'Play')}</span>
             </button>
           )}
@@ -370,7 +371,7 @@ export default function PlacePhotoSlideshowModal({
             title={isMr ? 'बंद करा (Esc)' : 'Close Theater (Esc)'}
             aria-label="Close"
           >
-            ✕
+            <X size={18} />
           </button>
         </div>
       </div>
@@ -450,7 +451,7 @@ export default function PlacePhotoSlideshowModal({
             title={isMr ? 'मागील छायाचित्र' : 'Previous'}
             aria-label="Previous image"
           >
-            ‹
+            <ChevronLeft size={28} />
           </button>
         )}
 
@@ -482,7 +483,7 @@ export default function PlacePhotoSlideshowModal({
             title={isMr ? 'पुढील छायाचित्र' : 'Next'}
             aria-label="Next image"
           >
-            ›
+            <ChevronRight size={28} />
           </button>
         )}
       </div>
@@ -518,13 +519,17 @@ export default function PlacePhotoSlideshowModal({
           <div
             style={{
               display: 'inline-flex',
+              alignItems: 'center',
               gap: 8,
               fontSize: '11px',
               color: '#94a3b8',
               marginTop: 4,
             }}
           >
-            <span>📜 {currentPhoto?.source || 'Wikimedia Commons'}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <ShieldCheck size={12} color="#10b981" />
+              {currentPhoto?.source || 'Maharashtra Tourism / Wikimedia Archive'}
+            </span>
             <span>•</span>
             <span>{currentPhoto?.license || 'CC BY-SA'}</span>
             {currentPhoto?.attribution && (

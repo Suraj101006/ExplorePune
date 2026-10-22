@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { User as UserIcon, LogOut, Shield } from 'lucide-react';
 import { useAuth } from '@/lib/useAuth';
 import { useLanguage } from '@/lib/LanguageContext';
 
@@ -38,13 +39,17 @@ export default function AuthNav() {
           style={{
             color: 'var(--clay)',
             fontWeight: 700,
-            fontSize: '13px',
+            fontSize: '12.5px',
             padding: '4px 8px',
-            borderRadius: '6px',
+            borderRadius: 'var(--radius-sm)',
             textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
           }}
         >
-          {isMr ? 'प्रशासन' : 'Admin'}
+          <Shield size={13} />
+          <span>{isMr ? 'प्रशासन' : 'Admin'}</span>
         </Link>
       )}
 
@@ -62,16 +67,16 @@ export default function AuthNav() {
               background: 'var(--primary-light)',
               color: 'var(--primary)',
               padding: '6px 12px',
-              borderRadius: '999px',
+              borderRadius: 'var(--radius-full)',
               fontWeight: 700,
-              fontSize: '13px',
+              fontSize: '12.5px',
               border: '1px solid var(--primary-border)',
               textDecoration: 'none',
               maxWidth: '140px',
               transition: 'all 0.15s ease',
             }}
           >
-            <span>👤</span>
+            <UserIcon size={13} />
             <span
               style={{
                 overflow: 'hidden',
@@ -89,30 +94,22 @@ export default function AuthNav() {
             onClick={handleLogout}
             disabled={isLoggingOut}
             className="auth-logout-pill"
-            aria-label={isMr ? 'खात्यातून बाहेर पडा' : 'Sign out / Logout'}
-            title={isMr ? 'खात्यातून बाहेर पडा (लॉगआउट)' : 'Sign out of your account'}
+            title={isMr ? 'लॉगआउट' : 'Sign out'}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 5,
-              background: '#fff',
-              color: '#b91c1c',
-              border: '1px solid #fecaca',
-              padding: '6px 11px',
-              borderRadius: '999px',
-              fontWeight: 600,
-              fontSize: '12.5px',
+              justifyContent: 'center',
+              background: '#f8fafc',
+              color: 'var(--muted)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-full)',
+              width: 30,
+              height: 30,
               cursor: isLoggingOut ? 'wait' : 'pointer',
-              transition: 'all 0.18s ease',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              transition: 'all 0.15s ease',
             }}
           >
-            <span style={{ fontSize: '13px' }}>{isLoggingOut ? '⏳' : '🚪'}</span>
-            <span className="auth-logout-label">
-              {isLoggingOut
-                ? (isMr ? 'बाहेर पडत आहे…' : 'Logging out…')
-                : (isMr ? 'लॉगआउट' : 'Logout')}
-            </span>
+            <LogOut size={13} />
           </button>
         </div>
       ) : (
@@ -120,18 +117,14 @@ export default function AuthNav() {
           href="/login"
           className="btn"
           style={{
-            padding: '7px 16px',
-            fontSize: '13px',
-            borderRadius: '999px',
+            padding: '6px 14px',
+            fontSize: '12.5px',
             fontWeight: 700,
+            borderRadius: 'var(--radius-sm)',
             textDecoration: 'none',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
           }}
         >
-          <span>🔑</span>
-          <span>{isMr ? 'लॉगिन' : 'Sign in'}</span>
+          {isMr ? 'साइन इन' : 'Sign in'}
         </Link>
       )}
     </div>

@@ -40,14 +40,14 @@
   --deva: 'Yatra One', 'Noto Serif Devanagari', 'Rozha One', serif;
   --serif: 'Plus Jakarta Sans', system-ui, sans-serif;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-xl: 0 20px 40px -6px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 3px 10px -2px rgba(15, 23, 42, 0.06), 0 1px 3px -1px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-xl: 0 16px 36px -6px rgba(15, 23, 42, 0.1);
   
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-full: 9999px;
   
   color-scheme: light;
@@ -372,32 +372,32 @@ a:hover {
 .hero-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
   background: var(--primary-light);
   border: 1px solid var(--primary-border);
   color: var(--primary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin-bottom: 16px;
 }
 
 .hero h1 {
-  font-size: clamp(38px, 5.5vw, 56px);
+  font-size: clamp(34px, 5vw, 50px);
   margin: 0 0 16px;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #0b291e;
-  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  line-height: 1.16;
 }
 
 .hero h1 span.gradient {
-  background: linear-gradient(135deg, #065f46 0%, #059669 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary);
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
 .lede {
@@ -825,26 +825,10 @@ a:hover {
   box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08) !important;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
 .card:hover {
   border-color: #cbd5e1;
   box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
-
-.card:hover::before {
-  opacity: 1;
+  transform: translateY(-2px);
 }
 
 .card-media {

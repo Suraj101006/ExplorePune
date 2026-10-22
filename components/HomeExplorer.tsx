@@ -4,6 +4,31 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import {
+  Compass,
+  MapPin,
+  Clock,
+  Ticket,
+  ShieldCheck,
+  Volume2,
+  Bookmark,
+  Camera,
+  Search,
+  ArrowRight,
+  Sun,
+  Bus,
+  Mountain,
+  Landmark,
+  BookOpen,
+  History,
+  CheckCircle2,
+  Utensils,
+  Calendar,
+  ChevronRight,
+  Info,
+  ExternalLink,
+  X,
+} from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import HeroWatermarkAnimation from '@/components/HeroWatermarkAnimation';
 import FeedbackSection from '@/components/FeedbackSection';
@@ -18,15 +43,15 @@ import { getStoredUserLocation, UserSavedLocation, DEFAULT_PUNE_STATIC_LOCATION 
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 
 const TIER_MR: Record<string, string> = {
-  verified: 'तपासलेले तपशील',
-  enriched: 'सार्वजनिक माहिती',
-  listed: 'अंदाजे वेळ',
+  verified: 'तपासलेले अधिकृत तपशील',
+  enriched: 'सार्वजनिक शासकीय माहिती',
+  listed: 'नोंदणीकृत ठिकाण',
 };
 
 const TIER_EN: Record<string, string> = {
-  verified: 'Verified Details',
-  enriched: 'Public Source Info',
-  listed: 'Hours Unverified',
+  verified: 'Official Verified Source',
+  enriched: 'Public Heritage Record',
+  listed: 'Listed Heritage Site',
 };
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
@@ -53,12 +78,37 @@ const POPULAR_SEARCHES = [
   { label: 'Sinhagad Fort', labelMr: 'सिंहगड किल्ला', query: 'Sinhagad' },
   { label: 'Shaniwar Wada', labelMr: 'शनिवार वाडा', query: 'Shaniwar Wada' },
   { label: 'Dagdusheth Ganpati', labelMr: 'दगडूशेठ गणपती', query: 'Dagdusheth' },
+  { label: 'Kelkar Museum', labelMr: 'केळकर संग्रहालय', query: 'Kelkar' },
   { label: 'Phule Wada', labelMr: 'महात्मा फुले वाडा', query: 'Phule Wada' },
   { label: 'Aga Khan Palace', labelMr: 'आगाखान पॅलेस', query: 'Aga Khan Palace' },
-  { label: 'Omkareshwar Temple', labelMr: 'ओंकारेश्वर मंदिर', query: 'Omkareshwar' },
-  { label: 'Lenyadri Caves', labelMr: 'लेण्याद्री गणपती', query: 'Lenyadri' },
+  { label: 'Pataleshwar Cave', labelMr: 'पाताळेश्वर लेणी', query: 'Pataleshwar' },
   { label: 'Khadakwasla Dam', labelMr: 'खडकवासला धरण', query: 'Khadakwasla' },
 ];
+
+function getPlaceLocality(place: any, isMr: boolean): string {
+  if (isMr && place.address_mr) {
+    const parts = place.address_mr.split(',');
+    return parts[0]?.trim() || 'पुणे';
+  }
+  if (place.address) {
+    const parts = place.address.split(',');
+    return parts[0]?.trim() || 'Pune';
+  }
+  return isMr ? 'पुणे' : 'Pune';
+}
+
+function formatDuration(minutes?: number, isMr?: boolean): string | null {
+  if (!minutes) return null;
+  if (minutes < 60) return `${minutes} ${isMr ? 'मि.' : 'min'}`;
+  const hrs = Math.round((minutes / 60) * 10) / 10;
+  return `${hrs} ${isMr ? 'तास' : 'hrs'}`;
+}
+
+function formatTicket(price: any, isMr: boolean): string {
+  if (!price) return isMr ? 'प्रवेश माहिती उपलब्ध' : 'Entry info available';
+  if (price.is_free) return isMr ? 'मोफत प्रवेश' : 'Free Entry';
+  return `${isMr ? '₹' : '₹'}${price.amount}${isMr ? ' प्रति व्यक्ती' : ' per person'}`;
+}
 
 interface HomeExplorerProps {
   places: any[];
@@ -91,7 +141,6 @@ export default function HomeExplorer({
   const [slideshowPlace, setSlideshowPlace] = useState<any | null>(null);
 
   useEffect(() => {
-    // Initial saved location sync or fallback to Central Pune static locality
     const loc = getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION;
     setSavedLoc(loc);
     setUserCoords({ lat: loc.lat, lng: loc.lng });
@@ -117,7 +166,6 @@ export default function HomeExplorer({
     return () => window.removeEventListener('explore-pune-saved-changed', syncSaved);
   }, []);
 
-  // Viewport reveal observer: triggers subtle entrance animation once when scrolled into view
   useEffect(() => {
     if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
     const observer = new IntersectionObserver(
@@ -160,20 +208,6 @@ export default function HomeExplorer({
 
   const isDefaultHome = !currentCat && !searchTerm && page === 1;
 
-  const handleNearMeClick = () => {
-    if (sortByNearMe) {
-      setSortByNearMe(false);
-      return;
-    }
-    if (userCoords || savedLoc) {
-      setSortByNearMe(true);
-      setShowAll(true);
-      return;
-    }
-    // If no locality is set yet, open the location picker modal
-    setIsLocationModalOpen(true);
-  };
-
   // Attach distance from selected Pune locality
   const placesWithDistance = places.map((p) => {
     if (userCoords && p.latitude && p.longitude) {
@@ -206,32 +240,51 @@ export default function HomeExplorer({
       {/* 3.5-Second Cinematic Intro Video Overlay (First Visit in Session) */}
       <IntroVideoOverlay />
 
-      {/* Hero Section */}
+      {/* Hero Section: Authoritative Heritage Guide */}
       <section className="hero wrap">
         <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
-            <div className="hero-pill hero-anim-badge" style={{ marginBottom: 0 }}>
-              <span>✨</span> {isMr ? 'पुणे आणि सह्याद्रीच्या ऐतिहासिक वाटा' : 'Discover the Heart of Maharashtra'}
+            <div
+              className="hero-anim-badge"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '4px 12px',
+                borderRadius: '999px',
+                background: '#f8fafc',
+                border: '1px solid var(--line)',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                color: 'var(--ink-secondary)',
+                textTransform: 'uppercase',
+              }}
+            >
+              <ShieldCheck size={13} color="#059669" />
+              <span>{isMr ? 'पुणे अधिकृत वारसा सूची · २०२६' : 'Curated Pune Heritage Field Guide · 2026'}</span>
             </div>
             <div className="hero-anim-weather">
               <WeatherWidget />
             </div>
           </div>
+
           <h1 className="hero-anim-title">
             {isMr ? (
               <>
-                पुण्यातील <span className="gradient">ऐतिहासिक किल्ले, वाडे</span> व सह्याद्री दर्शन
+                पुण्यातील <span className="gradient">ऐतिहासिक किल्ले, वाडे</span> व सांस्कृतिक वारसा
               </>
             ) : (
               <>
-                Explore <span className="gradient">Pune</span>
+                The Curated Field Guide to <span className="gradient">Historic Pune</span>
               </>
             )}
           </h1>
+
           <p className="lede hero-anim-desc">
             {isMr
-              ? 'तपासलेले प्रवेश शुल्क, अधिकृत वेळ आणि सहल नियोजनासाठी पुण्याचे सर्वात परिपूर्ण डिजिटल मार्गदर्शक.'
-              : 'Where heritage meets the rhythm of a modern city — historic forts, Peshwa wadas, sacred temples, verified timings, and custom trip planning.'}
+              ? 'छत्रपती शिवाजी महाराजांचे अजिंक्य किल्ले, पेशवेकालीन वाडे, पवित्र मंदिरे, अधिकृत वेळापत्रक आणि थेट सार्वजनिक वाहतूक मार्गदर्शक.'
+              : 'An authoritative, locally researched field guide to Maratha forts, Peshwa-era wadas, sacred sanctuaries, verified opening hours, and public transit schedules.'}
           </p>
 
           <form className="search hero-anim-search" action="/" role="search">
@@ -243,15 +296,29 @@ export default function HomeExplorer({
               aria-label={t('hero.searchPlaceholder')}
             />
             {currentCat && <input type="hidden" name="cat" value={currentCat} />}
-            <button className="btn">
-              <span className="btn-icon">🔍</span>
+            <button className="btn" type="submit">
+              <span className="btn-icon">
+                <Search size={16} />
+              </span>
               <span>{t('hero.searchBtn')}</span>
             </button>
           </form>
 
           {/* Quick Search Chips */}
-          <div className="hero-anim-chips-wrap" style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginTop: 10, fontSize: 12 }}>
-            <span style={{ color: 'var(--muted)', fontWeight: 600 }}>{isMr ? 'लोकप्रिय:' : 'Popular:'}</span>
+          <div
+            className="hero-anim-chips-wrap"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              flexWrap: 'wrap',
+              marginTop: 12,
+              fontSize: 12,
+            }}
+          >
+            <span style={{ color: 'var(--muted)', fontWeight: 600 }}>
+              {isMr ? 'वारंवार शोधलेले:' : 'Quick lookup:'}
+            </span>
             {POPULAR_SEARCHES.map((item, idx) => (
               <Link
                 key={item.query}
@@ -259,7 +326,7 @@ export default function HomeExplorer({
                 className="chip hero-search-chip hero-anim-chip"
                 style={{
                   '--chip-i': idx,
-                  padding: '2px 9px',
+                  padding: '3px 10px',
                   fontSize: '11.5px',
                   borderRadius: '999px',
                   background: '#f8fafc',
@@ -274,29 +341,35 @@ export default function HomeExplorer({
             ))}
           </div>
 
+          {/* Hero Action CTAs */}
           <div className="hero-actions hero-anim-actions" style={{ marginTop: 20 }}>
             <a className="btn clay btn-explore-places" href="#explore-places">
-              <span className="btn-explore-trail" aria-hidden="true" />
-              <span className="btn-icon">⚡</span>
-              <span>{isMr ? 'सर्व ठिकाणे पहा' : 'Explore Places'}</span>
+              <span className="btn-icon">
+                <Compass size={16} />
+              </span>
+              <span>{isMr ? 'सर्व ठिकाणे पहा' : 'Explore Heritage Places'}</span>
             </a>
             <Link className="btn outline" href="/planner">
-              <span className="btn-icon">🗺️</span>
+              <span className="btn-icon">
+                <Calendar size={16} />
+              </span>
               <span>{isMr ? 'सहल नियोजन करा' : 'Plan My Visit'}</span>
             </Link>
             <Link className="btn outline" href="/milestones">
-              <span className="btn-icon">🏆</span>
+              <span className="btn-icon">
+                <CheckCircle2 size={16} />
+              </span>
               <span>{isMr ? 'भ्रमंती यशोगाथा पहा' : 'Explorer Milestones'}</span>
             </Link>
           </div>
 
-          {/* Pune Heritage Trust Badges */}
+          {/* Source Transparency & Provenance Strip */}
           <div
             className="hero-anim-trust"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 16,
+              gap: 20,
               flexWrap: 'wrap',
               marginTop: 22,
               paddingTop: 16,
@@ -306,120 +379,439 @@ export default function HomeExplorer({
               fontWeight: 600,
             }}
           >
-            <div className="hero-anim-trust-item" style={{ '--trust-i': 0, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
-              <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
-              <span>{isMr ? '५०+ तपासलेली ऐतिहासिक ठिकाणे' : '50+ Verified Landmarks'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <ShieldCheck size={14} color="#059669" />
+              <span>{isMr ? 'महाराष्ट्र पर्यटन व पुरातत्व खात्याकडून प्रमाणित' : 'Maharashtra Tourism & ASI Ground-Truth Data'}</span>
             </div>
-            <div className="hero-anim-trust-item" style={{ '--trust-i': 1, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
-              <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
-              <span>{isMr ? 'पुणे मेट्रो व PMPML मार्ग' : 'Pune Metro & PMPML Transit'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Bus size={14} color="#059669" />
+              <span>{isMr ? 'पुणे मेट्रो व PMPML थेट वेळापत्रक' : 'Integrated Pune Metro & PMPML Transit'}</span>
             </div>
-            <div className="hero-anim-trust-item" style={{ '--trust-i': 2, display: 'flex', alignItems: 'center', gap: 6 } as React.CSSProperties}>
-              <span style={{ color: '#059669', fontSize: 14 }}>✓</span>
-              <span>{isMr ? 'थेट चालू/बंद वेळ व दर' : 'Live Operating Hours & Costs'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Clock size={14} color="#059669" />
+              <span>{isMr ? 'तपासलेले प्रवेश शुल्क आणि वेळ' : 'Verified Operating Hours & Ticket Tariffs'}</span>
             </div>
           </div>
         </div>
 
-        {/* Animated Pune Calligraphy & Royal Jiretop Watermark */}
+        {/* Animated Pune Calligraphy & Royal Crest Watermark */}
         <HeroWatermarkAnimation />
       </section>
 
-      {/* Feature Highlights Banner */}
-      <section className="wrap scroll-reveal-group" style={{ marginBottom: '32px' }}>
+      {/* TODAY IN PUNE: Field Briefing Strip */}
+      <section className="wrap scroll-reveal" style={{ marginBottom: '32px' }}>
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '16px',
             background: 'var(--card)',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-lg)',
             border: '1px solid var(--line)',
-            boxShadow: 'var(--shadow-sm)',
+            borderRadius: 'var(--radius-md)',
+            padding: '18px 24px',
+            boxShadow: 'var(--shadow-xs)',
           }}
         >
-          <div className="scroll-reveal-child" style={{ '--reveal-i': 0, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
-            <Image
-              src="/images/cat-forts.png"
-              alt="Forts"
-              width={38}
-              height={38}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div>
-              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)' }}>
-                {isMr ? 'गड-किल्ले आणि इतिहास' : 'Heritage & Forts'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
-                {isMr ? 'मराठा साम्राज्याचा गौरवशाली वारसा' : 'Maratha history & architectural wonders'}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 14,
+              borderBottom: '1px solid var(--line-light)',
+              paddingBottom: 10,
+              flexWrap: 'wrap',
+              gap: 8,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: '#059669',
+                }}
+              />
+              <span
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 800,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: 'var(--ink-secondary)',
+                }}
+              >
+                {isMr ? 'आजची पुणे भ्रमंती माहिती' : 'Today in Pune · Field Briefing'}
               </span>
             </div>
+            <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 600 }}>
+              {isMr ? 'थेट माहिती अपडेट' : 'Updated Daily for Heritage Visitors'}
+            </span>
           </div>
-          <div className="scroll-reveal-child" style={{ '--reveal-i': 1, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
-            <Image
-              src="/images/cat-heritage.png"
-              alt="Heritage"
-              width={38}
-              height={38}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div>
-              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)' }}>
-                {isMr ? 'अधिकृत वेळ व दर' : 'Verified Timings'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
-                {isMr ? 'तपासलेली वेळ आणि अचूक तिकीट माहिती' : 'Fact-checked opening hours & ticket fees'}
-              </span>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '20px',
+            }}
+          >
+            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <Sun size={20} color="#ea580c" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <strong style={{ display: 'block', fontSize: '13.5px', color: 'var(--ink)', marginBottom: 2 }}>
+                  {isMr ? 'हवामान व भ्रमंती वेळ' : 'Sahyadri Touring Window'}
+                </strong>
+                <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
+                  {isMr
+                    ? 'सिंहगड, राजगड सकाळी ६:०० ते १०:३० या वेळेत उत्तम. शहरातील ऐतिहासिक वाडे व संग्रहालये दुपारी व सायंकाळी सुलभ.'
+                    : 'Best fort hiking window 06:00–10:30 before peak sun. Old City peth walks recommended from 16:00 onwards.'}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="scroll-reveal-child" style={{ '--reveal-i': 2, display: 'flex', gap: '12px', alignItems: 'center' } as React.CSSProperties}>
-            <Image
-              src="/images/cat-all.png"
-              alt="Day Trips"
-              width={38}
-              height={38}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div>
-              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)' }}>
-                {isMr ? 'स्मार्ट सहल नियोजन' : 'Smart Day Trips'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>
-                {isMr ? 'शहरातील वाटा आणि सह्याद्री ट्रेक' : 'City center walks & Sahyadri trails'}
-              </span>
+
+            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <Bus size={20} color="#059669" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <strong style={{ display: 'block', fontSize: '13.5px', color: 'var(--ink)', marginBottom: 2 }}>
+                  {isMr ? 'सार्वजनिक वाहतूक सल्ला' : 'PMPML ₹70 Day Pass'}
+                </strong>
+                <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
+                  {isMr
+                    ? 'PMPML चा ₹७० अमर्याद दिवस-पास सर्व लाल बसेसवर वैध आहे. स्वारगेट ते शनिवारवाडा सहज जोडणी उपलब्ध.'
+                    : 'Unlimited daily ₹70 city pass covers all PMPML red non-AC bus routes across Pune and PCMC limits.'}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <ShieldCheck size={20} color="#0284c7" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <strong style={{ display: 'block', fontSize: '13.5px', color: 'var(--ink)', marginBottom: 2 }}>
+                  {isMr ? 'अधिकृत स्मारक प्रवेश' : 'Monument Hours & Access'}
+                </strong>
+                <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
+                  {isMr
+                    ? 'शनिवार वाडा व केळकर संग्रहालय आज नियमाप्रमाणे सुरू आहेत. पुरातत्व विभागाचे सर्व नियम पाळावेत.'
+                    : 'Shaniwar Wada and Raja Dinkar Kelkar Museum open today. ASI ticketing counters active until 17:30.'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Thematic Discovery Trails: Sahyadri Forts, Peshwa Heritage, Sacred Temples, Nature Serenity */}
+      {/* CURATED HIGHLIGHTS: Editor's Picks */}
       <section className="wrap scroll-reveal-group" style={{ marginBottom: '36px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
-              {isMr ? 'पुणे भ्रमंती वाटा' : 'Curated Pune Trails'}
+              {isMr ? 'संपादकांची निवड' : "Curator's Highlights"}
             </span>
             <h2 style={{ fontSize: '22px', margin: '2px 0 0', fontWeight: 800 }}>
-              {isMr ? 'वैशिष्ट्यपूर्ण सहल वाटा निवडा' : 'Experience Pune by Theme'}
+              {isMr ? 'पुण्याचे चार मानाचे ऐतिहासिक स्तंभ' : 'Four Iconic Pillars of Pune Heritage'}
             </h2>
           </div>
           <Link
-            href="/planner"
-            style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+            href="/milestones"
+            style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
           >
-            {isMr ? 'कस्टम सहल प्लॅन करा →' : 'Custom Itinerary Planner →'}
+            <span>{isMr ? 'वारसा प्रवास यशोगाथा' : 'View Heritage Milestones'}</span>
+            <ArrowRight size={14} />
           </Link>
         </div>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: '16px',
           }}
         >
-          {/* Forts Trail */}
+          {/* Card 1: Sinhagad Fort */}
+          <div
+            className="scroll-reveal-child"
+            style={{
+              '--reveal-i': 0,
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+              <img
+                src="/images/places/sinhagad-fort.jpg"
+                alt="Sinhagad Fort"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  color: '#ffffff',
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {isMr ? 'किल्ले · सह्याद्री' : 'Historic Fort · Donje'}
+              </span>
+            </div>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
+                {isMr ? 'सिंहगड किल्ला (कोंढाणा)' : "Sinhagad Fort (Lion's Fort)"}
+              </strong>
+              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
+                {isMr ? 'सुभेदार तानाजी मालुसरे यांचा पराक्रम · १,३१२ मीटर' : 'Tanaji Malusare 1670 Battleground · 1,312m Ridge'}
+              </span>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+                {isMr
+                  ? 'कल्याण दरवाजा, तानाजी समाधी आणि अप्रतिम सह्याद्री निसर्ग दृश्ये.'
+                  : 'Iconic Sahyadri hill fortress known for Kalyan Darwaza and panoramic valley vistas.'}
+              </p>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <ShieldCheck size={12} />
+                  {isMr ? 'सकाळी ६ ते सायं ६' : '06:00 – 18:00'}
+                </span>
+                <Link
+                  href="/places/sinhagad-fort"
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                >
+                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Shaniwar Wada */}
+          <div
+            className="scroll-reveal-child"
+            style={{
+              '--reveal-i': 1,
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+              <img
+                src="/images/places/shaniwar-wada.jpg"
+                alt="Shaniwar Wada"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  color: '#ffffff',
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {isMr ? 'वाडे · शनिवार पेठ' : 'Peshwa Seat · Shaniwar Peth'}
+              </span>
+            </div>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
+                {isMr ? 'शनिवार वाडा' : 'Shaniwar Wada'}
+              </strong>
+              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
+                {isMr ? 'पेशवे बाजीराव पहिले · १७३२ ची भव्य तटबंदी' : 'Peshwa Baji Rao I · 1732 CE Stone Citadel'}
+              </span>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+                {isMr
+                  ? 'मराठा साम्राज्याची राजधानी, दिल्ली दरवाजा व १६ कमळांचा कारंजा.'
+                  : 'The historic seat of the Peshwa rulers, Delhi Darwaza spikes, and Hazari Karanje.'}
+              </p>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <ShieldCheck size={12} />
+                  {isMr ? 'सकाळी ९:३० ते सायं ५:३०' : '09:30 – 17:30'}
+                </span>
+                <Link
+                  href="/places/shaniwar-wada"
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                >
+                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Raja Dinkar Kelkar Museum */}
+          <div
+            className="scroll-reveal-child"
+            style={{
+              '--reveal-i': 2,
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+              <img
+                src="/images/places/raja-dinkar-kelkar-museum.jpg"
+                alt="Raja Dinkar Kelkar Museum"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  color: '#ffffff',
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {isMr ? 'वस्तुसंग्रहालय · शुक्रवार पेठ' : 'Museum · Shukrawar Peth'}
+              </span>
+            </div>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
+                {isMr ? 'राजा दिनकर केळकर संग्रहालय' : 'Raja Dinkar Kelkar Museum'}
+              </strong>
+              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
+                {isMr ? '२०,०००+ ऐतिहासिक दुर्मिळ वस्तू व मस्तानी महाल' : '20,000+ Maratha Artifacts & Mastani Mahal'}
+              </span>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+                {isMr
+                  ? 'डॉ. दिनकर केळकर यांचा जीवनगौरव संग्रह: वाद्ये, शस्त्रे व हस्तकला.'
+                  : 'Priceless single-collector treasury of 18th-century textiles, instruments, and arms.'}
+              </p>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <ShieldCheck size={12} />
+                  {isMr ? 'सकाळी १० ते सायं ५:३०' : '10:00 – 17:30'}
+                </span>
+                <Link
+                  href="/places/raja-dinkar-kelkar-museum"
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                >
+                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Pataleshwar Cave Temple */}
+          <div
+            className="scroll-reveal-child"
+            style={{
+              '--reveal-i': 3,
+              background: 'var(--card)',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-md)',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+              <img
+                src="/images/places/pataleshwar-cave-temple.jpg"
+                alt="Pataleshwar Cave Temple"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  color: '#ffffff',
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-sm)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {isMr ? 'प्राचीन लेणी · शिवाजीनगर' : 'Rock-Cut Shrine · Shivajinagar'}
+              </span>
+            </div>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
+                {isMr ? 'पाताळेश्वर लेणी मंदिर' : 'Pataleshwar Cave Temple'}
+              </strong>
+              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
+                {isMr ? '८वे शतक · राष्ट्रकूटकालीन अखंड कातळात कोरलेले मंदिर' : '8th-Century Rashtrakuta Monolithic Shrine'}
+              </span>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+                {isMr
+                  ? 'जंगली महाराज रस्त्यावरील बेसाल्ट खडकातील वर्तुळाकार नंदी मंडप व शिवमंदिर.'
+                  : 'Carved out of single basalt rock, featuring a circular Nandi pavilion on JM Road.'}
+              </p>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <ShieldCheck size={12} />
+                  {isMr ? 'सकाळी ८:३० ते सायं ५:३०' : '08:30 – 17:30'}
+                </span>
+                <Link
+                  href="/places/pataleshwar-cave-temple"
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                >
+                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CURATED TRAILS: Explore by Experience */}
+      <section className="wrap scroll-reveal-group" style={{ marginBottom: '36px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
+              {isMr ? 'विषयवार वाटा' : 'Thematic Pune Trails'}
+            </span>
+            <h2 style={{ fontSize: '22px', margin: '2px 0 0', fontWeight: 800 }}>
+              {isMr ? 'अभिरुचीनुसार वारसा मार्ग निवडा' : 'Explore Pune by Cultural Experience'}
+            </h2>
+          </div>
+          <Link
+            href="/planner"
+            style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+          >
+            <span>{isMr ? 'कस्टम सहल प्लॅन करा' : 'Custom Itinerary Planner'}</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '16px',
+          }}
+        >
+          {/* Trail 1: Forts */}
           <Link
             href="/?cat=forts"
             className="trail-card scroll-reveal-child"
@@ -428,35 +820,49 @@ export default function HomeExplorer({
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
-              padding: '18px 20px',
-              background: 'linear-gradient(145deg, #ffffff 0%, #fff7ed 100%)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1.5px solid #fed7aa',
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
               textDecoration: 'none',
               color: 'inherit',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '28px' }}>⚔️</span>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', background: '#ffedd5', padding: '3px 8px', borderRadius: 999 }}>
-                {isMr ? 'सह्याद्री ट्रेक' : 'Sahyadri Treks'}
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#ffedd5',
+                  color: '#c2410c',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Mountain size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', background: '#ffedd5', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? '१२ गड-किल्ले' : '12 Forts'}
               </span>
             </div>
             <div>
-              <strong style={{ display: 'block', fontSize: '15.5px', color: '#9a3412', marginBottom: 4 }}>
-                {isMr ? 'सह्याद्रीचे अजिंक्य किल्ले' : 'Sahyadri Forts Trail'}
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'सह्याद्रीचे अजिंक्य किल्ले' : 'Sahyadri Forts & Bastions'}
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
-                {isMr ? 'सिंहगड, राजगड, तोरणा आणि लोहगड — छत्रपती शिवाजी महाराजांचा पराक्रमी वारसा.' : 'Sinhagad, Rajgad, Torna & Lohagad — historic bastions of Chhatrapati Shivaji Maharaj.'}
+                {isMr ? 'सिंहगड, राजगड, तोरणा आणि लोहगड — छत्रपती शिवाजी महाराजांचा पराक्रमी वारसा.' : 'Sinhagad, Rajgad, Torna & Lohagad — historic mountain strongholds of Shivaji Maharaj.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: '#ea580c' }}>
-              {isMr ? 'किल्ले पहा →' : 'Explore Forts →'}
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'किल्ले सूची पहा' : 'View Forts'}</span>
+              <ChevronRight size={14} />
             </span>
           </Link>
 
-          {/* Heritage Trail */}
+          {/* Trail 2: Heritage Wadas */}
           <Link
             href="/?cat=heritage"
             className="trail-card scroll-reveal-child"
@@ -465,35 +871,49 @@ export default function HomeExplorer({
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
-              padding: '18px 20px',
-              background: 'linear-gradient(145deg, #ffffff 0%, #fdf4ff 100%)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1.5px solid #f5d0fe',
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
               textDecoration: 'none',
               color: 'inherit',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '28px' }}>🏰</span>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#86198f', background: '#fae8ff', padding: '3px 8px', borderRadius: 999 }}>
-                {isMr ? 'पेशवेकालीन वास्तू' : 'Peshwa Era'}
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#fae8ff',
+                  color: '#86198f',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Landmark size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#86198f', background: '#fae8ff', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? '८ ऐतिहासिक वास्तू' : '8 Wadas'}
               </span>
             </div>
             <div>
-              <strong style={{ display: 'block', fontSize: '15.5px', color: '#701a75', marginBottom: 4 }}>
-                {isMr ? 'पेशवेकालीन वाडे व राजवाडे' : 'Peshwa Heritage Trail'}
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'पेशवेकालीन वाडे व राजवाडे' : 'Peshwa Era Wadas & Palaces'}
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
-                {isMr ? 'शनिवार वाडा, लाल महाल आणि विश्रामबाग वाडा — पेशवाईच्या वैभवशाली वास्तू.' : 'Shaniwar Wada, Lal Mahal & Vishrambaug Wada — grand Maratha architecture.'}
+                {isMr ? 'शनिवार वाडा, लाल महाल आणि विश्रामबाग वाडा — पेशवाईच्या वैभवशाली लाकडी वास्तू.' : 'Shaniwar Wada, Lal Mahal & Vishrambaug Wada — signature Peshwa architecture.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: '#a21caf' }}>
-              {isMr ? 'वाडे पहा →' : 'Explore Wadas →'}
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'वाडे सूची पहा' : 'View Wadas'}</span>
+              <ChevronRight size={14} />
             </span>
           </Link>
 
-          {/* Temples Trail */}
+          {/* Trail 3: Sacred Temples */}
           <Link
             href="/?cat=temples"
             className="trail-card scroll-reveal-child"
@@ -502,82 +922,302 @@ export default function HomeExplorer({
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
-              padding: '18px 20px',
-              background: 'linear-gradient(145deg, #ffffff 0%, #fefce8 100%)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1.5px solid #fef08a',
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
               textDecoration: 'none',
               color: 'inherit',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '28px' }}>🛕</span>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#854d0e', background: '#fef9c3', padding: '3px 8px', borderRadius: 999 }}>
-                {isMr ? 'तीर्थक्षेत्रे' : 'Sacred Sites'}
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#fef9c3',
+                  color: '#854d0e',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Sun size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#854d0e', background: '#fef9c3', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? '१० तीर्थक्षेत्रे' : '10 Shrines'}
               </span>
             </div>
             <div>
-              <strong style={{ display: 'block', fontSize: '15.5px', color: '#713f12', marginBottom: 4 }}>
-                {isMr ? 'पुण्यनगरीची पवित्र मंदिरे' : 'Sacred Temples Trail'}
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'पुण्यनगरीची पवित्र मंदिरे' : 'Sacred Sanctuaries & Temples'}
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
-                {isMr ? 'दगडूशेठ हलवाई गणपती, आळंदी, देहू आणि जेजुरी — वारकरी आणि संतांची भूमी.' : 'Dagdusheth Ganpati, Alandi, Dehu & Jejuri — sacred spiritual heritage.'}
+                {isMr ? 'दगडूशेठ हलवाई गणपती, ओंकारेश्वर, आळंदी व देहू — शतकांची वारकरी परंपरा.' : 'Dagdusheth Ganpati, Omkareshwar, Alandi & Dehu — centuries of spiritual devotion.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: '#ca8a04' }}>
-              {isMr ? 'मंदिरे पहा →' : 'Explore Temples →'}
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'मंदिरे सूची पहा' : 'View Temples'}</span>
+              <ChevronRight size={14} />
             </span>
           </Link>
 
-          {/* Nature & Gardens Trail */}
+          {/* Trail 4: Museums & Reformers */}
           <Link
-            href="/?cat=nature"
+            href="/?cat=museums"
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 3,
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
-              padding: '18px 20px',
-              background: 'linear-gradient(145deg, #ffffff 0%, #ecfdf5 100%)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1.5px solid #a7f3d0',
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
               textDecoration: 'none',
               color: 'inherit',
-              boxShadow: 'var(--shadow-sm)',
+              boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '28px' }}>🌿</span>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#065f46', background: '#d1fae5', padding: '3px 8px', borderRadius: 999 }}>
-                {isMr ? 'निसर्ग व तलाव' : 'Nature & Lakes'}
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#e0f2fe',
+                  color: '#0369a1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <BookOpen size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', background: '#e0f2fe', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? '७ वस्तुसंग्रहालये' : '7 Museums'}
               </span>
             </div>
             <div>
-              <strong style={{ display: 'block', fontSize: '15.5px', color: '#064e3b', marginBottom: 4 }}>
-                {isMr ? 'निसर्गरम्य तलाव व उद्याने' : 'Lakes & Scenic Nature'}
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'सुधारक व वस्तुसंग्रहालये' : 'Museums & Social Reformers'}
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
-                {isMr ? 'खडकवासला धरण, ओकायामा फ्रेंडशिप गार्डन आणि पाषाण तलाव — शांत व रम्य निसर्ग.' : 'Khadakwasla Dam, Okayama Friendship Garden & Pashan Lake — serene spots.'}
+                {isMr ? 'महात्मा फुले वाडा, राजा दिनकर केळकर व आगाखान पॅलेस — समाजक्रांतीचे साक्षिदार.' : 'Phule Wada, Kelkar Museum & Aga Khan Palace — freedom struggle & social equity.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: '#059669' }}>
-              {isMr ? 'निसर्गस्थळे पहा →' : 'Explore Nature →'}
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'संग्रहालये पहा' : 'View Museums'}</span>
+              <ChevronRight size={14} />
+            </span>
+          </Link>
+
+          {/* Trail 5: Nature & Lakes */}
+          <Link
+            href="/?cat=nature"
+            className="trail-card scroll-reveal-child"
+            style={{
+              '--reveal-i': 4,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
+              textDecoration: 'none',
+              color: 'inherit',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#d1fae5',
+                  color: '#065f46',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Compass size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#065f46', background: '#d1fae5', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? '६ निसर्गस्थळे' : '6 Nature Sites'}
+              </span>
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'निसर्गरम्य तलाव व उद्याने' : 'Sahyadri Lakes & Serene Parks'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
+                {isMr ? 'खडकवासला धरण, ओकायामा गार्डन व पाषाण तलाव — शांत व निसर्गरम्य वाटा.' : 'Khadakwasla Dam, Okayama Friendship Garden & Pashan Lake — tranquil waters.'}
+              </p>
+            </div>
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'निसर्गस्थळे पहा' : 'View Nature'}</span>
+              <ChevronRight size={14} />
+            </span>
+          </Link>
+
+          {/* Trail 6: Traditional Gastronomy */}
+          <Link
+            href="/?q=misal"
+            className="trail-card scroll-reveal-child"
+            style={{
+              '--reveal-i': 5,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              padding: '20px',
+              background: 'var(--card)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--line)',
+              textDecoration: 'none',
+              color: 'inherit',
+              boxShadow: 'var(--shadow-xs)',
+            } as React.CSSProperties}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 'var(--radius-sm)',
+                  background: '#fee2e2',
+                  color: '#991b1b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Utensils size={20} />
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#991b1b', background: '#fee2e2', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
+                {isMr ? 'पुणेरी चव' : 'Gastronomy'}
+              </span>
+            </div>
+            <div>
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
+                {isMr ? 'पुणेरी खाद्यसंस्कृती' : 'Punekar Food & Culinary Heritage'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
+                {isMr ? 'काटाकिर्र मिसळ, चितळे बाकरवडी, सुजाता मस्तानी आणि वैशालीचा चविष्ट वारसा.' : 'Authentic Puneri misal, Chitale Bakarwadi, Sujata Mastani & FC Road institutions.'}
+              </p>
+            </div>
+            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <span>{isMr ? 'खाद्यसंस्कृती पहा' : 'Explore Food'}</span>
+              <ChevronRight size={14} />
             </span>
           </Link>
         </div>
       </section>
 
-      {/* Main Content & Place Grid */}
-      <div className="wrap scroll-reveal" id="explore-places">
-        {totalCount > 0 && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 12 }}>
-            <span style={{ color: 'var(--muted)', fontSize: '13.5px', fontWeight: 600 }}>
-              {isMr ? `${totalCount} ठिकाणे उपलब्ध` : `Showing ${totalCount} places`}
+      {/* PLAN BY TIME: Duration Planning Matrix */}
+      <section className="wrap scroll-reveal" style={{ marginBottom: '36px' }}>
+        <div
+          style={{
+            background: 'var(--card)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--radius-md)',
+            padding: '24px',
+            boxShadow: 'var(--shadow-xs)',
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
+              {isMr ? 'वेळेनुसार सहल' : 'Plan by Available Time'}
             </span>
+            <h3 style={{ fontSize: '20px', margin: '2px 0 0', fontWeight: 800 }}>
+              {isMr ? 'तुमच्याकडे उपलब्ध वेळेनुसार आदर्श मार्ग' : 'Smart Routing for Every Schedule'}
+            </h3>
           </div>
-        )}
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+              gap: '16px',
+            }}
+          >
+            {/* 2 Hours */}
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0369a1', textTransform: 'uppercase' }}>
+                {isMr ? '२ तास' : '2 Hours'}
+              </span>
+              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
+                {isMr ? 'पेठांमधील पदभ्रमण' : 'Old City Peth Heritage Walk'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.4 }}>
+                {isMr ? 'शनिवार वाडा → लाल महाल → कसबा गणपती पायी फेरी.' : 'Shaniwar Wada → Lal Mahal → Kasba Ganpati walking loop.'}
+              </p>
+            </div>
+
+            {/* Half Day */}
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#c2410c', textTransform: 'uppercase' }}>
+                {isMr ? 'अर्धा दिवस (४–५ तास)' : 'Half Day (4–5 Hours)'}
+              </span>
+              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
+                {isMr ? 'सह्याद्री गडभ्रमण' : 'The Citadel Excursion'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.4 }}>
+                {isMr ? 'सिंहगड किल्ला सकाळची चढाई आणि डोणजे पायथा पिठलं भाकरी.' : 'Sinhagad dawn ascent, Tanaji memorial & Donje ghat food.'}
+              </p>
+            </div>
+
+            {/* Full Day */}
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#059669', textTransform: 'uppercase' }}>
+                {isMr ? 'पूर्ण दिवस (८ तास)' : 'Full Day (8 Hours)'}
+              </span>
+              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
+                {isMr ? 'पुणे महापरिक्रमा' : 'Grand Pune Circuit'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.4 }}>
+                {isMr ? 'शनिवार वाडा + केळकर संग्रहालय + खडकवासला सूर्यास्त.' : 'Shaniwar Wada + Kelkar Museum + Khadakwasla sunset.'}
+              </p>
+            </div>
+
+            {/* Weekend */}
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#7c3aed', textTransform: 'uppercase' }}>
+                {isMr ? '२ दिवसांची सहल' : 'Weekend (2 Days)'}
+              </span>
+              <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
+                {isMr ? 'सह्याद्री व वारकरी पट्टा' : 'Deep Sahyadri & Temple Trail'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.4 }}>
+                {isMr ? 'राजगड किंवा तोरणा ट्रेक + आळंदी आणि देहू तीर्थक्षेत्र.' : 'Rajgad/Torna trek + Alandi & Dehu spiritual heritage.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MAIN CATALOGUE: Fact-Rich Places Grid */}
+      <div className="wrap scroll-reveal" id="explore-places">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
+              {isMr ? 'प्रमाणित ठिकाणे' : 'Verified Directory'}
+            </span>
+            <h2 style={{ fontSize: '22px', margin: '2px 0 0', fontWeight: 800 }}>
+              {isMr ? 'पुण्यातील सर्व ऐतिहासिक व प्रेक्षणीय स्थळे' : 'The Complete Pune Landmark Directory'}
+            </h2>
+          </div>
+          {totalCount > 0 && (
+            <span style={{ color: 'var(--muted)', fontSize: '13px', fontWeight: 600 }}>
+              {isMr ? `एकूण ${totalCount} ठिकाणे उपलब्ध` : `Showing ${totalCount} verified places`}
+            </span>
+          )}
+        </div>
 
         {/* Circular Category Badge Navigation */}
         <nav
@@ -612,7 +1252,7 @@ export default function HomeExplorer({
             }}
             title={isMr ? 'पुणे परिसर निवडा किंवा बदला' : 'Select or change Pune locality'}
           >
-            <span>📍</span>
+            <MapPin size={14} color={savedLoc ? '#059669' : 'currentColor'} />
             <span>
               {savedLoc
                 ? isMr
@@ -639,8 +1279,8 @@ export default function HomeExplorer({
             <Image
               src="/images/logo.svg"
               alt="All Places"
-              width={26}
-              height={26}
+              width={22}
+              height={22}
               className="cat-badge-img"
             />
             <span>{isMr ? 'सर्व ठिकाणे' : 'All Places'}</span>
@@ -666,8 +1306,8 @@ export default function HomeExplorer({
                 <Image
                   src={badgeImg}
                   alt={c.name}
-                  width={26}
-                  height={26}
+                  width={22}
+                  height={22}
                   className="cat-badge-img"
                 />
                 <span>{displayName}</span>
@@ -702,7 +1342,7 @@ export default function HomeExplorer({
                 fontWeight: 600,
               }}
             >
-              <span style={{ fontSize: 18 }}>📍</span>
+              <MapPin size={16} />
               <span>
                 {isMr
                   ? `निवडलेल्या स्थानावरून (${savedLoc ? savedLoc.nameMr : 'मध्यवर्ती पुणे'}) अंतराच्या क्रमाने मांडलेली ठिकाणे`
@@ -721,9 +1361,13 @@ export default function HomeExplorer({
                 border: '1px solid #10b981',
                 color: '#065f46',
                 fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
               }}
             >
-              ✕ {isMr ? 'मूळ क्रम दाखवा' : 'Reset to default order'}
+              <X size={12} />
+              <span>{isMr ? 'मूळ क्रम दाखवा' : 'Reset to default order'}</span>
             </button>
           </div>
         )}
@@ -731,7 +1375,7 @@ export default function HomeExplorer({
         {/* Places Grid */}
         {places.length === 0 ? (
           <div className="panel" style={{ textAlign: 'center', padding: '48px 24px', margin: '24px 0' }}>
-            <span style={{ fontSize: '40px', display: 'block', marginBottom: '12px' }}>🔍</span>
+            <Search size={36} color="var(--muted)" style={{ margin: '0 auto 12px' }} />
             <p style={{ fontSize: '16px', color: 'var(--muted)', margin: '0 0 16px' }}>
               {t('hero.noPlaces')}
             </p>
@@ -745,15 +1389,18 @@ export default function HomeExplorer({
               {displayedPlaces.map((p) => {
                 const catObj = p.place_categories?.[0] || { name: p.category_slug || 'Spot' };
                 const catDisplayName = isMr ? (CATEGORY_NAMES_MR[p.category_slug || ''] || catObj.name) : catObj.name;
-                const tierLabel = isMr ? (TIER_MR[p.data_tier] || p.data_tier) : (TIER_EN[p.data_tier] || p.data_tier);
+                const tierLabel = isMr ? (TIER_MR[p.data_tier] || 'तपासलेले') : (TIER_EN[p.data_tier] || 'Verified');
                 const price = p.place_prices?.[0];
                 const badgeImg = CATEGORY_BADGES[p.category_slug || ''] || '/images/places/shaniwar-wada.jpg';
                 const opStatus = getOperatingStatus(p);
                 const isSaved = savedIds.includes(p.id);
+                const locality = getPlaceLocality(p, isMr);
+                const durationLabel = formatDuration(p.recommended_duration_minutes, isMr);
+                const ticketLabel = formatTicket(price, isMr);
 
                 return (
                   <article key={p.id} className="card place-card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>
-                    {/* Landmark Photo Banner with Free Wishlist & Audio Pronunciation Actions */}
+                    {/* Landmark Photo Banner */}
                     <div
                       className="card-media"
                       style={{ position: 'relative', overflow: 'hidden' }}
@@ -778,26 +1425,26 @@ export default function HomeExplorer({
                             bottom: 8,
                             left: 8,
                             zIndex: 2,
-                            background: 'rgba(15, 23, 42, 0.78)',
+                            background: 'rgba(15, 23, 42, 0.85)',
                             backdropFilter: 'blur(6px)',
                             color: '#ffffff',
                             fontSize: '11px',
                             fontWeight: 700,
                             padding: '3px 8px',
-                            borderRadius: '6px',
+                            borderRadius: 'var(--radius-sm)',
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: 4,
+                            gap: 5,
                             border: '1px solid rgba(255, 255, 255, 0.2)',
                             boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
                           }}
                         >
-                          <span>📸</span>
-                          <span>{isMr ? 'थेट स्लाइडशो' : 'View Slideshow'}</span>
+                          <Camera size={12} />
+                          <span>{isMr ? 'छायाचित्रे' : 'View Photos'}</span>
                         </div>
                       </Link>
 
-                      {/* Free Audio Pronunciation Tool */}
+                      {/* Native Audio Pronunciation Tool */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -808,11 +1455,12 @@ export default function HomeExplorer({
                         className="card-action-btn"
                         style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}
                         title={isMr ? 'पुणेरी उच्चार ऐका' : 'Listen Native Pronunciation'}
+                        aria-label="Listen pronunciation"
                       >
-                        {speakingId === p.id ? '🔊' : '🔈'}
+                        <Volume2 size={15} color={speakingId === p.id ? '#059669' : '#ffffff'} />
                       </button>
 
-                      {/* Free Wishlist / Bookmark Tool */}
+                      {/* Bookmark Tool */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -823,24 +1471,17 @@ export default function HomeExplorer({
                         className={`card-action-btn ${isSaved ? 'active-saved' : ''}`}
                         style={{ position: 'absolute', top: 10, right: 10, zIndex: 3 }}
                         title={isSaved ? (isMr ? 'आवडत्या यादीतून काढा' : 'Remove from Wishlist') : (isMr ? 'आवडत्या यादीत जोडा' : 'Save to Wishlist')}
+                        aria-label="Save place"
                       >
-                        {isSaved ? '❤️' : '🤍'}
+                        <Bookmark size={15} fill={isSaved ? '#ea580c' : 'none'} color={isSaved ? '#ea580c' : '#ffffff'} />
                       </button>
                     </div>
 
-                    {/* Metadata Row: Category & Data Tier */}
-                    <div className="card-top" style={{ minHeight: 28, margin: '4px 0 6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    {/* Metadata Row: Category · Locality & Distance */}
+                    <div className="card-top" style={{ minHeight: 28, margin: '8px 0 4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: '1 1 auto' }}>
-                        <Image
-                          src={badgeImg}
-                          alt=""
-                          width={18}
-                          height={18}
-                          className="cat-badge-img"
-                          style={{ flexShrink: 0 }}
-                        />
-                        <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '140px' }}>
-                          {catDisplayName}
+                        <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                          {catDisplayName} · {locality}
                         </span>
                       </div>
                       <div style={{ display: 'flex', gap: 4, alignItems: 'center', flexShrink: 0 }}>
@@ -856,14 +1497,13 @@ export default function HomeExplorer({
                               padding: '2px 6px',
                             }}
                           >
-                            📍 {p.distanceKm} {isMr ? 'किमी' : 'km'}
+                            {p.distanceKm} {isMr ? 'किमी' : 'km'}
                           </span>
                         )}
-                        <span className={`tier ${p.data_tier}`}>{tierLabel}</span>
                       </div>
                     </div>
 
-                    {/* Aligned Title Container */}
+                    {/* Landmark Title */}
                     <Link
                       href={`/places/${p.slug}`}
                       style={{
@@ -895,13 +1535,13 @@ export default function HomeExplorer({
                       )}
                     </Link>
 
-                    {/* Clamped Description */}
+                    {/* Editorial Description */}
                     <p
                       style={{
                         fontSize: '13px',
                         color: 'var(--muted)',
                         lineHeight: 1.45,
-                        margin: '4px 0 8px',
+                        margin: '4px 0 10px',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
@@ -917,22 +1557,32 @@ export default function HomeExplorer({
                         (isMr ? 'पुण्यातील हे प्रेक्षणीय ठिकाण पाहण्यासारखे आहे.' : 'A wonderful landmark to explore in Pune.')}
                     </p>
 
-                    {/* Free Live Operating Hours Status Badge */}
+                    {/* Operational Details Row: Hours & Visit Duration */}
                     <div style={{ margin: '2px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minWidth: 0, flexWrap: 'wrap' }}>
                       <span className={`status-badge ${opStatus.badgeClass}`} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        <span style={{ fontSize: 9, flexShrink: 0 }}>{opStatus.isOpen ? '🟢' : '🔴'}</span>
+                        <span
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            background: opStatus.isOpen ? '#059669' : '#dc2626',
+                            display: 'inline-block',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {isMr ? opStatus.statusTextMr : opStatus.statusTextEn}
                         </span>
                       </span>
-                      {p.recommended_duration_minutes && (
-                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600, flexShrink: 0 }}>
-                          ⏱️ {p.recommended_duration_minutes} {isMr ? 'मि.' : 'min'}
+                      {durationLabel && (
+                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                          <Clock size={11} />
+                          <span>{durationLabel}</span>
                         </span>
                       )}
                     </div>
 
-                    {/* Aligned Pinned Card Footer */}
+                    {/* Entry Fee & Provenance Footer */}
                     <div
                       style={{
                         marginTop: 'auto',
@@ -943,13 +1593,16 @@ export default function HomeExplorer({
                         alignItems: 'center',
                       }}
                     >
-                      <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--clay)' }}>
-                        {price
-                          ? price.is_free
-                            ? (isMr ? 'मोफत प्रवेश' : 'Free Entry')
-                            : `${isMr ? 'किमान ₹' : 'From ₹'}${price.amount}`
-                          : (isMr ? 'प्रवेश शुल्क' : 'Visitor Info')}
-                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--clay)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                          <Ticket size={13} />
+                          <span>{ticketLabel}</span>
+                        </span>
+                        <span style={{ fontSize: '10.5px', color: 'var(--muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 2 }}>
+                          <ShieldCheck size={11} color="#059669" />
+                          <span>{tierLabel}</span>
+                        </span>
+                      </div>
                       <Link
                         href={`/places/${p.slug}`}
                         className="btn outline"
@@ -971,24 +1624,24 @@ export default function HomeExplorer({
                   onClick={() => setShowAll(true)}
                   className="btn"
                   style={{
-                    padding: '14px 38px',
-                    fontSize: '15px',
+                    padding: '12px 32px',
+                    fontSize: '14px',
                     fontWeight: 700,
-                    borderRadius: '999px',
-                    boxShadow: '0 8px 24px rgba(6, 95, 70, 0.22)',
+                    borderRadius: 'var(--radius-sm)',
+                    boxShadow: 'var(--shadow-sm)',
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '12px',
+                    gap: '10px',
                   }}
                 >
-                  <span>{isMr ? 'पुण्यातील सर्व ठिकाणे पहा' : 'Show All Places in Pune'}</span>
+                  <span>{isMr ? 'पुण्यातील सर्व ठिकाणे पहा' : 'Show All Verified Places'}</span>
                   <span
                     style={{
                       background: 'rgba(255, 255, 255, 0.22)',
-                      padding: '3px 12px',
-                      borderRadius: '999px',
-                      fontSize: '13px',
+                      padding: '2px 8px',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '12px',
                     }}
                   >
                     {totalCount} {isMr ? 'ठिकाणे' : 'Places'} →
@@ -1010,51 +1663,6 @@ export default function HomeExplorer({
                 </button>
               </div>
             )}
-
-            {/* Quick Navigation Strip under Places Cards */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 12,
-                flexWrap: 'wrap',
-                margin: '24px 0 16px',
-              }}
-            >
-              <Link
-                href="/milestones"
-                className="btn outline"
-                style={{
-                  padding: '9px 18px',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  borderRadius: '999px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                🏆 {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
-              </Link>
-              <button
-                type="button"
-                onClick={() => setIsLocationModalOpen(true)}
-                className="btn outline"
-                style={{
-                  padding: '9px 18px',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  borderRadius: '999px',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                📍 {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
-              </button>
-            </div>
           </>
         )}
 
@@ -1077,43 +1685,207 @@ export default function HomeExplorer({
           </div>
         )}
 
-        {/* Smart Trip Planner Interactive Callout */}
+        {/* EDITORIAL FIELD NOTES & HISTORICAL ESSAYS */}
+        <section className="scroll-reveal" style={{ marginTop: '48px', marginBottom: '36px' }}>
+          <div style={{ marginBottom: 16 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
+              {isMr ? 'ऐतिहासिक नोंदी व संदर्भ' : 'Cultural Context & Field Notes'}
+            </span>
+            <h3 style={{ fontSize: '20px', margin: '2px 0 0', fontWeight: 800 }}>
+              {isMr ? 'पुण्याच्या इतिहासातील महत्त्वाचे टप्पे' : 'Stories Behind the Living Heritage'}
+            </h3>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '18px',
+            }}
+          >
+            {/* Note 1 */}
+            <div
+              style={{
+                background: 'var(--card)',
+                border: '1px solid var(--line)',
+                borderRadius: 'var(--radius-md)',
+                padding: '20px',
+                boxShadow: 'var(--shadow-xs)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <History size={16} color="var(--primary)" />
+                <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
+                  {isMr ? 'किल्ले स्थापत्य' : 'Hill Fortress Architecture'}
+                </span>
+              </div>
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 6 }}>
+                {isMr ? 'सह्याद्रीची नैसर्गिक तटबंदी' : 'The Sahyadri Fort System'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '13px', color: 'var(--muted)', lineHeight: 1.5 }}>
+                {isMr
+                  ? 'छत्रपती शिवाजी महाराजांनी सह्याद्रीच्या बेसाल्ट कड्यांचा वापर करून गड उभारले. सिंहगड आणि राजगड या किल्ल्यांवर पाण्याचे टाके आणि कल्याण दरवाजा तत्कालीन उत्कृष्ट दुर्गबांधणीचे उदाहरण आहेत.'
+                  : "Chhatrapati Shivaji Maharaj transformed Sahyadri's volcanic basalt cliffs into unassailable citadels. Rainwater harvesting tanks at Sinhagad and Rajgad remain functional engineering marvels."}
+              </p>
+            </div>
+
+            {/* Note 2 */}
+            <div
+              style={{
+                background: 'var(--card)',
+                border: '1px solid var(--line)',
+                borderRadius: 'var(--radius-md)',
+                padding: '20px',
+                boxShadow: 'var(--shadow-xs)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Landmark size={16} color="var(--primary)" />
+                <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
+                  {isMr ? 'नगररचना' : 'Urban Planning'}
+                </span>
+              </div>
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 6 }}>
+                {isMr ? 'पुण्यातील ऐतिहासिक पेठांची रचना' : 'The Peshwa Peth Settlement System'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '13px', color: 'var(--muted)', lineHeight: 1.5 }}>
+                {isMr
+                  ? '१७ व्या व १८ व्या शतकात शनिवार, रविवार, सोमवार अशा वारांवरून व महापुरुषांच्या नावाने वसविलेल्या १७ पेठा आजही पुण्याचा व्यावसायिक व सांस्कृतिक केंद्रबिंदू आहेत.'
+                  : 'From 1720 onwards, the Peshwas planned 17 dedicated peths, named after days of the week and founders, establishing specialized trading hubs that thrive to this day.'}
+              </p>
+            </div>
+
+            {/* Note 3 */}
+            <div
+              style={{
+                background: 'var(--card)',
+                border: '1px solid var(--line)',
+                borderRadius: 'var(--radius-md)',
+                padding: '20px',
+                boxShadow: 'var(--shadow-xs)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <BookOpen size={16} color="var(--primary)" />
+                <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
+                  {isMr ? 'समाजसुधारणा' : 'Social Renaissance'}
+                </span>
+              </div>
+              <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 6 }}>
+                {isMr ? 'भिडे वाडा व शिक्षणक्रांती' : '1848: The Dawn of Women’s Education'}
+              </strong>
+              <p style={{ margin: 0, fontSize: '13px', color: 'var(--muted)', lineHeight: 1.5 }}>
+                {isMr
+                  ? 'क्रांतिज्योती सावित्रीबाई फुले व महात्मा जोतीराव फुले यांनी १ जानेवारी १८४८ रोजी भिडे वाड्यात मुलींची पहिली शाळा सुरू करून देशात समता व ज्ञानाची मुहूर्तमेढ रोवली.'
+                  : "On 1 January 1848, Savitribai Phule and Mahatma Jyotirao Phule established India's first indigenous school for girls at Bhide Wada, igniting a national social revolution."}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* DATA PROVENANCE & TIER TRANSPARENCY ACCORD */}
+        <section className="scroll-reveal" style={{ marginBottom: '40px' }}>
+          <div
+            style={{
+              background: '#f8fafc',
+              border: '1px solid var(--line)',
+              borderRadius: 'var(--radius-md)',
+              padding: '24px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <ShieldCheck size={20} color="#059669" />
+              <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800 }}>
+                {isMr ? 'माहिती सत्यता आणि स्रोत पडताळणी' : 'Authenticity Framework & Source Transparency'}
+              </h3>
+            </div>
+            <p style={{ margin: '0 0 16px', fontSize: '13px', color: 'var(--muted)', lineHeight: 1.5 }}>
+              {isMr
+                ? 'एक्सप्लोर पुणे मधील प्रत्येक ठिकाण शासकीय पर्यटन संस्था, पुरातत्व विभाग आणि प्रत्यक्ष जागेवरील पडताळणीनुसार प्रमाणित केले आहे.'
+                : 'Every attraction in the Explore Pune directory is verified against strict 3-tier authenticity criteria to prevent commercial spam and ensure accurate visitor guidance.'}
+            </p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '14px',
+                fontSize: '12.5px',
+              }}
+            >
+              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+                <strong style={{ color: '#065f46', display: 'block', marginBottom: 2 }}>
+                  {isMr ? 'स्तर १: अधिकृत पर्यटन व पुरातत्व' : 'Tier 1: Authority & Institutional'}
+                </strong>
+                <span style={{ color: 'var(--muted)' }}>
+                  {isMr
+                    ? 'महाराष्ट्र पर्यटन (MTDC), भारतीय पुरातत्व सर्वेक्षण (ASI) व शासकीय गॅझेटिअर.'
+                    : 'Maharashtra Tourism (MTDC), Archaeological Survey of India (ASI) & State Gazetteers.'}
+                </span>
+              </div>
+              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+                <strong style={{ color: '#0369a1', display: 'block', marginBottom: 2 }}>
+                  {isMr ? 'स्तर २: प्रत्यक्ष भौगोलिक पडताळणी' : 'Tier 2: Geographic & Operational Verification'}
+                </strong>
+                <span style={{ color: 'var(--muted)' }}>
+                  {isMr
+                    ? 'OpenStreetMap, थेट अक्षांश-रेखांश व नियमित वेळेची क्षेत्रीय पडताळणी.'
+                    : 'OpenStreetMap coordinates, PMPML depot routes, and regular operational status checks.'}
+                </span>
+              </div>
+              <div style={{ padding: '12px 14px', background: '#ffffff', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+                <strong style={{ color: '#7c3aed', display: 'block', marginBottom: 2 }}>
+                  {isMr ? 'स्तर ३: ऐतिहासिक संदर्भ' : 'Tier 3: Archival Documentation'}
+                </strong>
+                <span style={{ color: 'var(--muted)' }}>
+                  {isMr
+                    ? 'पुणे विद्यापीठ, भारत इतिहास संशोधक मंडळ (BISM) व अधिकृत ग्रंथ संदर्भ.'
+                    : 'Bharat Itihas Sanshodhak Mandal (BISM), Pune University archives, and verified literature.'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Smart Trip Planner Callout */}
         <div
           style={{
-            marginTop: '48px',
+            marginTop: '20px',
             marginBottom: '40px',
             background: 'linear-gradient(135deg, #064e3b 0%, #065f46 60%, #047857 100%)',
             color: '#ffffff',
-            borderRadius: 'var(--radius-xl)',
-            padding: '36px 32px',
+            borderRadius: 'var(--radius-md)',
+            padding: '32px 28px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             flexWrap: 'wrap',
-            gap: 24,
-            boxShadow: '0 16px 36px rgba(6, 95, 70, 0.22)',
+            gap: 20,
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div style={{ maxWidth: '640px' }}>
             <span
               style={{
-                display: 'inline-block',
-                fontSize: '11.5px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                fontSize: '11px',
                 fontWeight: 800,
                 textTransform: 'uppercase',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.06em',
                 background: 'rgba(255, 255, 255, 0.2)',
-                padding: '4px 12px',
-                borderRadius: 999,
+                padding: '4px 10px',
+                borderRadius: 'var(--radius-sm)',
                 marginBottom: 10,
               }}
             >
-              🗺️ {isMr ? 'मोफत सहल नियोजन' : '100% Free Trip Planner'}
+              <Calendar size={13} />
+              <span>{isMr ? 'मोफत सहल नियोजन' : 'Curated Trip Planning'}</span>
             </span>
-            <h3 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 8px', color: '#ffffff' }}>
-              {isMr ? 'पुणे भ्रमंतीचे स्मार्ट नियोजन करा' : 'Plan Your Perfect Pune Trip in Seconds'}
+            <h3 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 8px', color: '#ffffff' }}>
+              {isMr ? 'पुणे भ्रमंतीचे परिपूर्ण नियोजन करा' : 'Build Your Custom Pune Itinerary'}
             </h3>
-            <p style={{ fontSize: '14.5px', lineHeight: 1.5, opacity: 0.92, margin: 0 }}>
+            <p style={{ fontSize: '14px', lineHeight: 1.5, opacity: 0.92, margin: 0 }}>
               {isMr
                 ? 'किल्ले, वाडे आणि मंदिरांसाठी थेट मेट्रो व पीएमपीएमएल बस मार्गांसह १ किंवा २ दिवसांची आदर्श सहल रूपरेषा तयार करा आणि मोफत PDF डाउनलोड करा.'
                 : 'Generate tailored 1-day or 2-day itineraries complete with real Pune Metro & PMPML bus routes, ticket fares, and downloadable PDF travel schedules.'}
@@ -1128,18 +1900,17 @@ export default function HomeExplorer({
                 background: '#ffffff',
                 color: '#065f46',
                 fontWeight: 800,
-                padding: '12px 24px',
-                fontSize: '14.5px',
-                borderRadius: 999,
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
+                padding: '11px 22px',
+                fontSize: '14px',
+                borderRadius: 'var(--radius-sm)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                transition: 'transform 0.15s ease, box-shadow 0.15s ease',
               }}
             >
-              <span style={{ fontSize: 16 }}>✨</span>
+              <Calendar size={15} color="#065f46" />
               <span style={{ color: '#065f46', fontWeight: 800 }}>
                 {isMr ? 'सहल प्लॅन करा' : 'Launch Trip Planner'}
               </span>
@@ -1150,53 +1921,23 @@ export default function HomeExplorer({
               className="btn"
               style={{
                 background: 'rgba(255, 255, 255, 0.18)',
-                border: '1.5px solid rgba(255, 255, 255, 0.75)',
+                border: '1.5px solid rgba(255, 255, 255, 0.65)',
                 color: '#ffffff',
                 fontWeight: 800,
-                padding: '12px 22px',
-                fontSize: '14.5px',
-                borderRadius: 999,
+                padding: '11px 20px',
+                fontSize: '14px',
+                borderRadius: 'var(--radius-sm)',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                transition: 'all 0.15s ease',
               }}
             >
-              <span style={{ fontSize: 16 }}>🏆</span>
+              <CheckCircle2 size={15} color="#ffffff" />
               <span style={{ color: '#ffffff', fontWeight: 800 }}>
                 {isMr ? 'यशोगाथा पहा' : 'View Milestones'}
               </span>
             </Link>
-
-            <button
-              type="button"
-              onClick={() => setIsLocationModalOpen(true)}
-              className="btn"
-              style={{
-                background: '#ffffff',
-                border: '1.5px solid #a7f3d0',
-                color: '#047857',
-                fontWeight: 800,
-                padding: '12px 22px',
-                fontSize: '14.5px',
-                borderRadius: 999,
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
-                transition: 'all 0.15s ease',
-              }}
-              title={isMr ? 'शेजारील परिसर निवडा आणि जवळची ठिकाणे शोधा' : 'Select neighborhood and discover nearby attractions'}
-            >
-              <span style={{ fontSize: 16 }}>📍</span>
-              <span style={{ color: '#047857', fontWeight: 800 }}>
-                {isMr ? 'शेजारचा परिसर शोधा' : 'Neighbouring Places'}
-              </span>
-            </button>
           </div>
         </div>
 

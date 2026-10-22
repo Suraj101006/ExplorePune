@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Bookmark, X } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { getSavedPlaces, toggleSavedPlace, clearSavedPlaces, SavedPlaceSummary } from '@/lib/savedPlaces';
 
@@ -63,7 +64,7 @@ export default function SavedPlacesDrawer() {
         }}
         title={isMr ? 'माझी आवडती ठिकाणे' : 'My Saved Places'}
       >
-        <span>{saved.length > 0 ? '❤️' : '🤍'}</span>
+        <Bookmark size={13} strokeWidth={2.2} fill={saved.length > 0 ? '#e11d48' : 'none'} />
         <span className="saved-chip-text hide-on-compact-desktop">{isMr ? 'जतन केलेली' : 'Saved'}</span>
         {saved.length > 0 && (
           <span
@@ -152,7 +153,7 @@ export default function SavedPlacesDrawer() {
                   cursor: 'pointer',
                 }}
               >
-                ✕
+                <X size={16} />
               </button>
             </div>
 
@@ -160,7 +161,9 @@ export default function SavedPlacesDrawer() {
             <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
               {saved.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '60px 16px', color: 'var(--muted)' }}>
-                  <span style={{ fontSize: '48px', display: 'block', marginBottom: '12px' }}>🤍</span>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+                    <Bookmark size={40} strokeWidth={1.5} style={{ color: 'var(--muted)' }} />
+                  </div>
                   <strong style={{ display: 'block', fontSize: '16px', color: 'var(--ink)', marginBottom: '6px' }}>
                     {isMr ? 'कोणतेही ठिकाण जतन केलेले नाही' : 'Your wishlist is empty'}
                   </strong>
@@ -252,7 +255,7 @@ export default function SavedPlacesDrawer() {
                         }}
                         title="Remove from saved"
                       >
-                        ✕
+                        <X size={14} />
                       </button>
                     </div>
                   ))}
