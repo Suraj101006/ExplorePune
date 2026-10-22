@@ -1,5 +1,18 @@
 [
   {
+    "id": "mail_1792678974911_qx5e7",
+    "timestamp": "2026-10-22T14:22:54.911Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "surajdhok1010@gmail.com",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Sacred Shrines & Ancient Temples 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Sacred Shrines & Ancient Temples\n\nDear surajdhok1010,\n\nThank you for using Explore Pune! Your custom itinerary starting from My Live GPS at 09:30 has been created.\nTotal Duration: ~2 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Kasba Ganpati Mandir (Gramdaivat of Pune) (10:30 AM - 11:15 AM) - Stay: 45m\n",
+    "metadata": {
+      "userName": "surajdhok1010",
+      "planTitle": "Plan 1: Sacred Shrines & Ancient Temples",
+      "stopsCount": 1
+    }
+  },
+  {
     "id": "mail_1792655779364_iogb1",
     "timestamp": "2026-10-22T07:56:19.364Z",
     "type": "itinerary_pdf_dispatch",
