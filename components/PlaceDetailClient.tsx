@@ -22,6 +22,12 @@ import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getPlaceVisitorGuidelines } from '@/lib/visitorGuidelines';
 import { getStoredUserLocation, UserSavedLocation, detectBrowserGps } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
+import {
+  getLandmarkTimetables,
+  getUpcomingDepartures,
+  formatAmPm,
+  PmpmlTimetableRoute,
+} from '@/lib/pmpmlGtfs';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -92,6 +98,31 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
+
+  // PMPML Bus Timetable integration
+  const timetableRoutes = useMemo(() => {
+    return getLandmarkTimetables(place.slug);
+  }, [place.slug]);
+
+  const [selectedRouteNo, setSelectedRouteNo] = useState<string>('');
+  const [selectedDir, setSelectedDir] = useState<number>(0);
+  const [showFullSchedule, setShowFullSchedule] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (timetableRoutes.length > 0 && (!selectedRouteNo || !timetableRoutes.some((r) => r.routeNo === selectedRouteNo))) {
+      setSelectedRouteNo(timetableRoutes[0].routeNo);
+      setSelectedDir(0);
+    }
+  }, [timetableRoutes, selectedRouteNo]);
+
+  const activeTimetableRoute = useMemo(() => {
+    return timetableRoutes.find((r) => r.routeNo === selectedRouteNo) || timetableRoutes[0];
+  }, [timetableRoutes, selectedRouteNo]);
+
+  const upcomingDepartures = useMemo(() => {
+    if (!activeTimetableRoute) return [];
+    return getUpcomingDepartures(activeTimetableRoute.routeNo, selectedDir, 4);
+  }, [activeTimetableRoute, selectedDir]);
 
   // Sync stored user location if available
   useEffect(() => {
@@ -1226,6 +1257,317 @@ export default function PlaceDetailClient({ place }: { place: any }) {
               </div>
             </div>
           </div>
+
+          {/* PMPML Scheduled Timetable & Real-time Departures */}
+          {timetableRoutes.length > 0 && activeTimetableRoute && (
+            <div
+              style={{
+                marginTop: 16,
+                background: '#ffffff',
+                border: '1px solid #fed7aa',
+                borderRadius: 14,
+                padding: '16px 18px',
+                boxShadow: '0 2px 8px rgba(249, 115, 22, 0.06)',
+              }}
+            >
+              {/* Header */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: 8,
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 20 }}>⏱️</span>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: 14.5, fontWeight: 800, color: '#9a3412' }}>
+                      {isMr ? 'पीएमपीएमएल वेळापत्रक व पुढील बसेस' : 'PMPML Scheduled Departures'}
+                    </h4>
+                    <span style={{ fontSize: 11, color: 'var(--muted)' }}>
+                      {isMr ? 'अधिकृत वेळापत्रक व वारंवारता' : 'Official Timetable & Headway'}
+                    </span>
+                  </div>
+                </div>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 8px',
+                    borderRadius: 999,
+                    background: '#ffedd5',
+                    color: '#c2410c',
+                    border: '1px solid #fdba74',
+                  }}
+                >
+                  {activeTimetableRoute.badge}
+                </span>
+              </div>
+
+              {/* Route Selector Pills (if multiple routes) */}
+              {timetableRoutes.length > 1 && (
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 8,
+                    overflowX: 'auto',
+                    paddingBottom: 8,
+                    marginBottom: 12,
+                    scrollbarWidth: 'none',
+                  }}
+                >
+                  {timetableRoutes.map((r) => {
+                    const isSel = r.routeNo === activeTimetableRoute.routeNo;
+                    return (
+                      <button
+                        key={r.routeNo}
+                        type="button"
+                        onClick={() => {
+                          setSelectedRouteNo(r.routeNo);
+                          setSelectedDir(0);
+                        }}
+                        style={{
+                          padding: '6px 12px',
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                          border: isSel ? '1.5px solid #ea580c' : '1px solid var(--line)',
+                          background: isSel ? '#ea580c' : '#f8fafc',
+                          color: isSel ? '#ffffff' : 'var(--ink)',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        🚌 Bus {r.routeNo}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Route Details Box */}
+              <div
+                style={{
+                  background: '#fff7ed',
+                  borderRadius: 10,
+                  padding: '12px 14px',
+                  border: '1px solid #ffedd5',
+                  marginBottom: 12,
+                }}
+              >
+                <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--ink)', marginBottom: 4 }}>
+                  {activeTimetableRoute.nameEn}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '8px 16px',
+                    fontSize: 12,
+                    color: '#7c2d12',
+                    marginTop: 6,
+                  }}
+                >
+                  <span>
+                    🔄 {isMr ? 'वारंवारता:' : 'Frequency:'}{' '}
+                    <strong>{activeTimetableRoute.frequency}</strong>
+                  </span>
+                  <span>
+                    🌅 {isMr ? 'पहिली बस:' : 'First Bus:'}{' '}
+                    <strong>{activeTimetableRoute.firstBus}</strong>
+                  </span>
+                  <span>
+                    🌙 {isMr ? 'शेवटची बस:' : 'Last Bus:'}{' '}
+                    <strong>{activeTimetableRoute.lastBus}</strong>
+                  </span>
+                  <span>
+                    🎟️ {isMr ? 'तिकीट:' : 'Fare:'}{' '}
+                    <strong>{activeTimetableRoute.fare}</strong>
+                  </span>
+                </div>
+              </div>
+
+              {/* Direction Switcher */}
+              {activeTimetableRoute.directions && activeTimetableRoute.directions.length > 1 && (
+                <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+                  {activeTimetableRoute.directions.map((d, dIdx) => {
+                    const isDirSel = selectedDir === dIdx;
+                    return (
+                      <button
+                        key={dIdx}
+                        type="button"
+                        onClick={() => setSelectedDir(dIdx)}
+                        style={{
+                          flex: 1,
+                          padding: '6px 10px',
+                          borderRadius: 6,
+                          fontSize: 11.5,
+                          fontWeight: isDirSel ? 700 : 500,
+                          cursor: 'pointer',
+                          border: isDirSel ? '1px solid #ea580c' : '1px solid var(--line)',
+                          background: isDirSel ? '#ffffff' : '#f1f5f9',
+                          color: isDirSel ? '#ea580c' : 'var(--muted)',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {dIdx === 0 ? '➡️' : '⬅️'} {isMr ? 'दिशेकडे:' : 'Towards:'}{' '}
+                        <strong>{d.destination}</strong>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Upcoming Live Departures */}
+              <div style={{ marginBottom: 12 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: 6,
+                  }}
+                >
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
+                    🕒 {isMr ? 'पुढील नियोजित बसेस (Upcoming departures):' : 'Next scheduled departures:'}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 10.5,
+                      color: '#16a34a',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: '50%',
+                        background: '#16a34a',
+                        display: 'inline-block',
+                      }}
+                    />
+                    {isMr ? 'थेट वेळ (IST)' : 'Live IST'}
+                  </span>
+                </div>
+                {upcomingDepartures.length > 0 ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {upcomingDepartures.map((u, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          background: idx === 0 ? '#10b981' : '#f8fafc',
+                          color: idx === 0 ? '#ffffff' : 'var(--ink)',
+                          border: idx === 0 ? 'none' : '1px solid var(--line)',
+                          borderRadius: 8,
+                          padding: '6px 10px',
+                          fontSize: 12,
+                          fontWeight: 700,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          minWidth: 80,
+                        }}
+                      >
+                        <span style={{ fontSize: 12.5 }}>{u.timeFormatted}</span>
+                        <span style={{ fontSize: 10, opacity: idx === 0 ? 0.9 : 0.65, fontWeight: 500 }}>
+                          {u.isTomorrow
+                            ? isMr
+                              ? 'उद्या'
+                              : 'Tomorrow'
+                            : u.minutesUntil <= 1
+                            ? isMr
+                              ? 'आताच'
+                              : 'Now'
+                            : isMr
+                            ? `${u.minutesUntil} मि.`
+                            : `in ${u.minutesUntil}m`}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--muted)', fontStyle: 'italic' }}>
+                    {isMr
+                      ? 'आजच्या सेवा संपल्या आहेत. उद्या सकाळी लवकर पहिली बस उपलब्ध होईल.'
+                      : 'Service for today completed. First departure resumes early morning.'}
+                  </div>
+                )}
+              </div>
+
+              {/* Full Schedule Collapsible */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowFullSchedule(!showFullSchedule)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    background: '#f8fafc',
+                    border: '1px dashed #cbd5e1',
+                    borderRadius: 8,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: '#0284c7',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                  }}
+                >
+                  <span>{showFullSchedule ? '▲' : '▼'}</span>
+                  {showFullSchedule
+                    ? isMr
+                      ? 'दिवसभराचे वेळापत्रक लपवा'
+                      : 'Hide full day timetable'
+                    : isMr
+                    ? `सर्व ${activeTimetableRoute.directions[selectedDir]?.departures?.length || 0} नियोजित फेऱ्या पहा`
+                    : `View all ${activeTimetableRoute.directions[selectedDir]?.departures?.length || 0} scheduled departure trips`}
+                </button>
+
+                {showFullSchedule && (
+                  <div
+                    style={{
+                      marginTop: 10,
+                      padding: 12,
+                      background: '#fafafa',
+                      borderRadius: 8,
+                      border: '1px solid var(--line)',
+                      maxHeight: 180,
+                      overflowY: 'auto',
+                    }}
+                  >
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {(activeTimetableRoute.directions[selectedDir]?.departures || []).map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          style={{
+                            padding: '3px 8px',
+                            background: '#ffffff',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: 4,
+                            fontSize: 11.5,
+                            color: 'var(--ink)',
+                            fontFamily: 'monospace',
+                          }}
+                        >
+                          {formatAmPm(t)}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Step by step directions */}
           <div

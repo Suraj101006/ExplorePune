@@ -6,6 +6,7 @@
  */
 
 import gtfsDataRaw from '@/data/pmpml-gtfs.json';
+import timetableDataRaw from '@/data/pmpml-timetable.json';
 
 export interface PmpmlStop {
   stopId: string;
@@ -40,6 +41,47 @@ export interface PmpmlCorridorResult {
   summaryEn: string;
   summaryMr: string;
 }
+
+export interface PmpmlDirectionSchedule {
+  directionId: number;
+  headsign: string;
+  origin: string;
+  destination: string;
+  departures: string[];
+}
+
+export interface PmpmlTimetableRoute {
+  routeNo: string;
+  nameEn: string;
+  terminalA: string;
+  terminalB: string;
+  category: string;
+  categoryLabelEn: string;
+  categoryLabelMr: string;
+  badge: string;
+  frequency: string;
+  fare: string;
+  firstBus: string;
+  lastBus: string;
+  totalDailyTrips: number;
+  directions: PmpmlDirectionSchedule[];
+}
+
+export interface UpcomingDeparture {
+  routeNo: string;
+  destination: string;
+  time24: string;
+  timeFormatted: string;
+  minutesUntil: number;
+  isTomorrow?: boolean;
+}
+
+const timetableData = timetableDataRaw as {
+  generatedAt: string;
+  totalRoutes: number;
+  landmarkRouteMap: Record<string, string[]>;
+  routes: Record<string, PmpmlTimetableRoute>;
+};
 
 const gtfsData = gtfsDataRaw as {
   generatedAt: string;
@@ -163,3 +205,151 @@ export function getPmpmlTransitCorridor(
 
   return null;
 }
+
+/**
+ * Format HH:MM to 12-hour AM/PM string
+ */
+export function formatAmPm(hhmm: string): string {
+  if (!hhmm) return '';
+  const [hStr, mStr] = hhmm.split(':');
+  let h = parseInt(hStr, 10);
+  const suffix = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h.toString().padStart(2, '0')}:${mStr} ${suffix}`;
+}
+
+/**
+ * Get route schedule by route number (e.g., "50", "119", "149", "RATRANI 1")
+ */
+export function getPmpmlRouteSchedule(routeNo: string): PmpmlTimetableRoute | null {
+  if (!routeNo) return null;
+  const clean = routeNo.trim().toUpperCase();
+  return (
+    timetableData.routes[clean] ||
+    timetableData.routes[clean.replace(/^BUS\s*/i, '')] ||
+    null
+  );
+}
+
+/**
+ * Get all timetable routes associated with a landmark slug
+ */
+export function getLandmarkTimetables(landmarkSlug: string): PmpmlTimetableRoute[] {
+  if (!landmarkSlug) return [];
+  const cleanSlug = landmarkSlug.toLowerCase().trim();
+  const routeNumbers = timetableData.landmarkRouteMap[cleanSlug] || [];
+  const results: PmpmlTimetableRoute[] = [];
+
+  for (const rNo of routeNumbers) {
+    const rData = getPmpmlRouteSchedule(rNo);
+    if (rData) results.push(rData);
+  }
+
+  // Also check if nearest stops have buses with timetable data
+  const landmarkStops = getLandmarkPmpmlStops(cleanSlug);
+  if (landmarkStops && landmarkStops.nearestStops) {
+    for (const stop of landmarkStops.nearestStops.slice(0, 3)) {
+      for (const bNo of stop.buses || []) {
+        if (!routeNumbers.includes(bNo)) {
+          const rData = getPmpmlRouteSchedule(bNo);
+          if (rData && !results.some((r) => r.routeNo === rData.routeNo)) {
+            results.push(rData);
+          }
+        }
+      }
+    }
+  }
+
+  return results.slice(0, 6);
+}
+
+/**
+ * Calculate upcoming bus departures for a route based on Indian Standard Time (IST)
+ */
+export function getUpcomingDepartures(
+  routeNo: string,
+  directionId: number = 0,
+  maxCount: number = 4
+): UpcomingDeparture[] {
+  const schedule = getPmpmlRouteSchedule(routeNo);
+  if (!schedule || !schedule.directions || schedule.directions.length === 0) return [];
+
+  const dir = schedule.directions.find((d) => d.directionId === directionId) || schedule.directions[0];
+  const departures = dir.departures || [];
+  if (departures.length === 0) return [];
+
+  // Current Pune time in minutes from midnight
+  const now = new Date();
+  const istTimeStr = now.toLocaleTimeString('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const [nowH, nowM] = istTimeStr.split(':').map((s) => parseInt(s, 10));
+  const currentMinutes = nowH * 60 + nowM;
+
+  const upcoming: UpcomingDeparture[] = [];
+
+  for (const dep of departures) {
+    const [dH, dM] = dep.split(':').map((s) => parseInt(s, 10));
+    const depMinutes = dH * 60 + dM;
+    const diff = depMinutes - currentMinutes;
+
+    if (diff >= 0) {
+      upcoming.push({
+        routeNo: schedule.routeNo,
+        destination: dir.destination,
+        time24: dep,
+        timeFormatted: formatAmPm(dep),
+        minutesUntil: diff,
+        isTomorrow: false,
+      });
+      if (upcoming.length >= maxCount) break;
+    }
+  }
+
+  // If no upcoming buses today (late night / service ended), show first departures tomorrow morning
+  if (upcoming.length < maxCount && departures.length > 0) {
+    for (const dep of departures) {
+      const [dH, dM] = dep.split(':').map((s) => parseInt(s, 10));
+      const depMinutes = dH * 60 + dM;
+      const diffTomorrow = 24 * 60 - currentMinutes + depMinutes;
+
+      upcoming.push({
+        routeNo: schedule.routeNo,
+        destination: dir.destination,
+        time24: dep,
+        timeFormatted: formatAmPm(dep),
+        minutesUntil: diffTomorrow,
+        isTomorrow: true,
+      });
+      if (upcoming.length >= maxCount) break;
+    }
+  }
+
+  return upcoming;
+}
+
+/**
+ * Search timetable routes by keyword (e.g. "Airport", "Sinhagad", "Alandi", "50", "Night")
+ */
+export function searchPmpmlTimetable(query: string): PmpmlTimetableRoute[] {
+  if (!query) return [];
+  const q = query.toLowerCase().trim();
+  const allRoutes = Object.values(timetableData.routes);
+
+  return allRoutes
+    .filter((r) => {
+      return (
+        r.routeNo.toLowerCase().includes(q) ||
+        r.nameEn.toLowerCase().includes(q) ||
+        r.terminalA.toLowerCase().includes(q) ||
+        r.terminalB.toLowerCase().includes(q) ||
+        r.category.toLowerCase().includes(q) ||
+        r.categoryLabelEn.toLowerCase().includes(q)
+      );
+    })
+    .slice(0, 10);
+}
+

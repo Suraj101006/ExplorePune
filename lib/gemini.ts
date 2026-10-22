@@ -7,6 +7,7 @@
 
 import { app } from './firebase';
 import { getPublicTransitRoute, calculateDistanceKm } from './publicTransit';
+import { searchPmpmlTimetable } from './pmpmlGtfs';
 
 export interface ChatHistoryTurn {
   role: 'user' | 'model';
@@ -48,7 +49,20 @@ Your Persona & Mission:
   * Pune Metro: Purple Line 1 (PCMC to Swargate) and Aqua Line 2 (Vanaz to Ramwadi), Civil Court interchange.
   * WhatsApp QR ticketing: Commuters can text "Hi" to +91 94201 01990 for instant tickets.
   * PMPML city bus network and daily passes: ₹70 (PMC + PCMC limits), ₹150 (all PMRDA & rural/ghat routes like Sinhagad).
-  * Always provide practical transit advice when asked how to get anywhere.
+  * Official PMPML Bus Timetable & Key Routes:
+    - Route 50 (Sinhgad Fort Paytha ⇆ Shaniwarwada Stand / Swargate): 06:10 AM to 07:30 PM (every 25–30 mins via Khadakwasla Dam).
+    - Route 119 (Alandi ⇆ Manapa Daphale Garage): 05:30 AM to 11:20 PM (every 10–15 mins).
+    - Route 309 (Dehu Gatha Mandir ⇆ Alandi): 05:05 AM to 11:05 PM (every 30 mins).
+    - Route 210 & 207 (Hadapsar / Swargate ⇆ Jejuri Khandoba & Saswad).
+    - Route 166 (Pune Airport Lohegaon ⇆ Pune Station): 05:20 AM to 10:25 PM (every 15–20 mins).
+    - Route 115 (Pune Station ⇆ Hinjawadi IT Phase 3): 04:30 AM to 01:00 AM (every 15–20 mins).
+    - Route 108 (Pune Station ⇆ Sutardara via Shaniwar Wada): 07:40 AM to 06:35 PM.
+    - Route 149 (Hadapsar Gadital ⇆ Nigdi Pradhikaran via Kharadi): 04:30 AM to 12:00 AM Midnight.
+    - Route 42 & 43 (Katraj Zoo ⇆ Nigdi & Swargate): 05:05 AM to 11:45 PM.
+    - Night Buses (RATRANI 1 to 7): 10:40 PM to 04:45 AM from Swargate, Pune Station, Katraj, and Hadapsar.
+    - Metro Feeder Shuttles (Metro Shuttle 2, 13, 17, 20, 31, 32).
+    - Atal ₹5 City Core Shuttles for quick peth hops.
+  * Always provide practical transit advice and exact departure hours when asked how to get anywhere or when the next bus departs.
 - Renowned spiritual sites: Shreemant Dagdusheth Halwai Ganpati, Kasba Ganpati, Sarasbaug, Parvati Hill, Alandi, Dehu, Jejuri.
 
 Behavioral Guidelines & Website Interactivity:
@@ -68,6 +82,26 @@ export function isGeminiConfigured(clientApiKey?: string): boolean {
     process.env.GOOGLE_GEMINI_API_KEY ||
     process.env.NEXT_PUBLIC_GEMINI_API_KEY
   );
+}
+
+function getTimetableSnippet(message: string): string {
+  const isTransitOrTimetable = /(bus|metro|timetable|schedule|timing|वेळापत्रक|बस|route|फेऱ्या|फेरी|sinhagad|सिंहगड|alandi|आळंदी|airport|विमानतळ|ratrani|रात्रराणी)/i.test(
+    message
+  );
+  if (!isTransitOrTimetable) return '';
+  const matchedRoutes = searchPmpmlTimetable(message);
+  if (matchedRoutes.length === 0) return '';
+  return `\n[Official PMPML Bus Timetable Ground-Truth: ${JSON.stringify(
+    matchedRoutes.slice(0, 4).map((r) => ({
+      route: r.routeNo,
+      name: r.nameEn,
+      frequency: r.frequency,
+      firstBus: r.firstBus,
+      lastBus: r.lastBus,
+      fare: r.fare,
+      sampleDepartures: r.directions[0]?.departures?.slice(0, 6),
+    }))
+  )}]`;
 }
 
 /**
@@ -92,7 +126,7 @@ async function tryFirebaseAi(
       systemInstruction: SYSTEM_PROMPT,
     });
 
-    const userPrompt = `${message}\n\n[Context: Language: ${targetLang}${userLocation ? ` | Coordinates: ${userLocation.lat}, ${userLocation.lng}` : ''}]\n[Website Places Database: ${JSON.stringify(placesContext.slice(0, 30))}]`;
+    const userPrompt = `${message}\n\n[Context: Language: ${targetLang}${userLocation ? ` | Coordinates: ${userLocation.lat}, ${userLocation.lng}` : ''}]\n[Website Places Database: ${JSON.stringify(placesContext.slice(0, 30))}]${getTimetableSnippet(message)}`;
 
     // Map history turns
     const chatHistory = history.slice(-6).map((h) => ({
@@ -127,7 +161,7 @@ async function tryRestGeminiApi(
   placesContext: any[],
   userLocation?: { lat: number; lng: number }
 ): Promise<{ text: string; model: string } | null> {
-  const userPrompt = `${message}\n\n[Context: Language: ${targetLang}${userLocation ? ` | Coordinates: ${userLocation.lat}, ${userLocation.lng}` : ''}]\n[Website Places Database: ${JSON.stringify(placesContext.slice(0, 30))}]`;
+  const userPrompt = `${message}\n\n[Context: Language: ${targetLang}${userLocation ? ` | Coordinates: ${userLocation.lat}, ${userLocation.lng}` : ''}]\n[Website Places Database: ${JSON.stringify(placesContext.slice(0, 30))}]${getTimetableSnippet(message)}`;
 
   const formattedContents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
@@ -224,6 +258,7 @@ function synthesizeWebsiteInteractiveReply(
   const isWadas = /(wada|peshwa|heritage|वाडा|पेशवे|वास्तू)/i.test(lowerMsg);
   const isFood = /(misal|food|eat|restaurant|bakarwadi|mastani|मिसळ|खाद्य|बाकरवडी|मस्तानी|नाश्ता)/i.test(lowerMsg);
   const isTransit = /(metro|bus|pmpml|ticket|pass|मेट्रो|बस|तिकीट|पास|मार्ग|कसे जावे)/i.test(lowerMsg);
+  const isTimetable = /(timetable|time table|schedule|वेळापत्रक|फेऱ्या|पहिली बस|शेवटची बस|first bus|last bus|ratrani|रात्रराणी|टाइम टेबल)/i.test(lowerMsg);
   const isItinerary = /(itinerary|plan|1 day|सहल|नियोजन|१ दिवस)/i.test(lowerMsg);
   const isNearMe = /(near me|nearby|closest|जवळची|माझ्याजवळ)/i.test(lowerMsg);
 
@@ -264,7 +299,21 @@ function synthesizeWebsiteInteractiveReply(
   const first = targetPlaces[0];
 
   if (isMr) {
-    if (first && isTransit && transitData) {
+    if (isTimetable) {
+      reply = `⏱️ **अधिकृत पीएमपीएमएल (PMPML) बस वेळापत्रक व प्रमुख फेऱ्या:**\n\n` +
+        `• 🏛️ **बस क्र. ५० ([सिंहगड किल्ला पायथा](/places/sinhagad-fort) ⇆ शनिवारवाडा / स्वारगेट):**\n` +
+        `  - पहिली बस: **०६:१० AM** | शेवटची बस: **०७:३० PM**\n` +
+        `  - वारंवारता: दर २५ ते ३० मिनिटांनी (खडकवासला धरण मार्गे)\n` +
+        `• 🛕 **बस क्र. ११९ ([आळंदी संत ज्ञानेश्वर समाधी](/places/alandi-dnyaneshwar-mandir) ⇆ मनपा):**\n` +
+        `  - पहिली बस: **०५:३० AM** | शेवटची बस: **११:२० PM** (दर १०-१५ मिनिटांनी)\n` +
+        `• ✈️ **बस क्र. १६६ (लोहगाव विमानतळ ⇆ पुणे स्टेशन):**\n` +
+        `  - वेळ: **०५:२० AM ते १०:२५ PM** (दर १५-२० मिनिटांनी)\n` +
+        `• 💻 **बस क्र. ११५ (पुणे स्टेशन ⇆ हिंजवडी फेज ३):**\n` +
+        `  - वेळ: **०४:३० AM ते ०१:०० AM मध्यरात्री**\n` +
+        `• 🌙 **रात्रराणी बसेस (Ratrani 1 ते 7):**\n` +
+        `  - वेळ: **रात्री १०:४० ते पहाटे ०४:४५** (स्वारगेट, पुणे स्टेशन, कात्रज व हडपसरवरून थेट)\n\n` +
+        `💡 **पास:** अमर्याद प्रवासासाठी पीएमपीएमएलचा **₹७० चा दैनंदिन पास** वापरा. तुम्हाला कोणत्याही विशिष्ट मार्गाचे वेळापत्रक हवे आहे का?`;
+    } else if (first && isTransit && transitData) {
       reply = `🚌 **[${first.name_mr || first.name}](/places/${first.slug}) साठी सार्वजनिक वाहतूक मार्ग:**\n\n` +
         `• **मार्ग संक्षेप:** ${transitData.summaryMr}\n` +
         `• **नजीकचे स्थानक:** ${transitData.nearestMetro ? `${transitData.nearestMetro.stationNameMr} (${transitData.nearestMetro.lineNameMr})` : transitData.nearestBus?.stopNameMr}\n` +
@@ -298,7 +347,21 @@ function synthesizeWebsiteInteractiveReply(
       reply = `नमस्कार! 🙏 मी तुमचा Explore Pune AI मार्गदर्शक आहे. पुण्यातील गड-किल्ले जसे [सिंहगड](/places/sinhagad-fort), ऐतिहासिक वास्तू जसे [शनिवार वाडा](/places/shaniwar-wada), मेट्रो मार्ग किंवा सहल नियोजनाबद्दल काहीही विचारू शकता. आपण आज काय पाहू इच्छिता?`;
     }
   } else {
-    if (first && isTransit && transitData) {
+    if (isTimetable) {
+      reply = `⏱️ **Official PMPML Bus Timetable & Key Corridors:**\n\n` +
+        `• 🏛️ **Route 50 ([Sinhagad Fort Paytha](/places/sinhagad-fort) ⇆ Shaniwarwada Stand / Swargate):**\n` +
+        `  - First Bus: **06:10 AM** | Last Bus: **07:30 PM**\n` +
+        `  - Headway: Every 25–30 mins (via Khadakwasla Dam & Donje Phata)\n` +
+        `• 🛕 **Route 119 ([Alandi Dnyaneshwar Mandir](/places/alandi-dnyaneshwar-mandir) ⇆ Manapa Daphale Garage):**\n` +
+        `  - First Bus: **05:30 AM** | Last Bus: **11:20 PM** (every 10–15 mins)\n` +
+        `• ✈️ **Route 166 (Pune Lohegaon Airport ⇆ Pune Station):**\n` +
+        `  - Timings: **05:20 AM to 10:25 PM** (every 15–20 mins)\n` +
+        `• 💻 **Route 115 (Pune Station ⇆ Hinjawadi IT Phase 3):**\n` +
+        `  - Timings: **04:30 AM to 01:00 AM Midnight** (every 15–20 mins)\n` +
+        `• 🌙 **Night Ratrani Services (Ratrani 1 to 7):**\n` +
+        `  - Timings: **10:40 PM to 04:45 AM** (Connecting Swargate, Pune Station, Katraj & Hadapsar)\n\n` +
+        `💡 **Pro Tip:** Buy PMPML's **₹70 Unlimited Day Pass** (PMC & PCMC limits). Would you like departure times for any specific bus line?`;
+    } else if (first && isTransit && transitData) {
       reply = `🚌 **Public Transit Route to [${first.name}](/places/${first.slug}):**\n\n` +
         `• **Transit Summary:** ${transitData.summaryEn}\n` +
         `• **Nearest Stop:** ${transitData.nearestMetro ? `${transitData.nearestMetro.stationNameEn} (${transitData.nearestMetro.lineNameEn})` : transitData.nearestBus?.stopNameEn}\n` +

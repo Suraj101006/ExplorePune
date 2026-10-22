@@ -530,6 +530,12 @@ export default function ChatWidget() {
                         q: isMr ? 'शनिवार वाडा आणि सिंहगड किल्ल्याबद्दल माहिती सांगा' : 'Tell me about Shaniwar Wada and Sinhagad Fort',
                       },
                       {
+                        label: isMr ? '⏱️ पीएमपीएमएल वेळापत्रक' : '⏱️ PMPML Bus Timetable',
+                        q: isMr
+                          ? 'पीएमपीएमएल बसेसचे वेळापत्रक आणि सिंहगड, विमानतळ, आळंदी बसेसच्या वेळा सांगा'
+                          : 'Show PMPML bus timetables and first/last bus schedules for Sinhagad, Airport, and Alandi',
+                      },
+                      {
                         label: isMr ? '🚇 मेट्रो व बस १४९' : '🚇 Metro & Bus 149',
                         q: isMr ? 'पुणे मेट्रो तिकीट आणि पीएमपीएमएल बस १४९ चा मार्ग कोणता आहे?' : 'How to use Pune Metro and what is PMPML Bus 149 route?',
                       },
