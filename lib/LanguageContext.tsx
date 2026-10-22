@@ -57,9 +57,9 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'card.minVisit': 'min visit',
 
     // Milestones
-    'milestones.badge': 'Explorer Achievements',
-    'milestones.title': 'Pune Explorer Milestones & Badges',
-    'milestones.sub': 'Unlock exclusive badges by scaling Sahyadri hill forts, stepping through Peshwa wadas, and sharing authentic travel journals.',
+    'milestones.badge': 'Punekar Hall of Fame',
+    'milestones.title': 'Pune Heritage Milestones & Explorer Badges',
+    'milestones.sub': 'Earn verified badges, conquer Sahyadri fortresses, unearth Peshwa citadels, and claim your place as an authentic Pune legend.',
 
     // Planner
     'planner.badge': 'Smart Itinerary Builder',
@@ -194,9 +194,9 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     'card.minVisit': 'मि. भेट',
 
     // Milestones
-    'milestones.badge': 'भ्रमंती यशोगाथा',
-    'milestones.title': 'पुणे भ्रमंती यशोगाथा आणि पदके',
-    'milestones.sub': 'सह्याद्रीचे गड-किल्ले सर करा, पेशवेकालीन वास्तूंचा अनुभव घ्या आणि खास पुणे भ्रमंती पदके मिळवा.',
+    'milestones.badge': 'पुणेकर यशोगाथा दालन',
+    'milestones.title': 'पुणे वारसा यशोगाथा व मानाची पदके',
+    'milestones.sub': 'सह्याद्रीचे गड-किल्ले सर करा, पेशवाई वास्तूंचा वेध घ्या आणि अस्सल पुणेकर भ्रमंतीची मानाची पदके संपादन करा.',
 
     // Planner
     'planner.badge': 'स्मार्ट सहल नियोजन',

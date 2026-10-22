@@ -448,7 +448,7 @@ export default function HomeExplorer({
             href="/milestones"
             style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
           >
-            <span>{isMr ? 'वारसा प्रवास यशोगाथा' : 'View Heritage Milestones'}</span>
+            <span>{isMr ? 'पुणेकर यशोगाथा व पदके पहा' : 'Earn Explorer Badges & Milestones'}</span>
             <ArrowRight size={14} />
           </Link>
         </div>
