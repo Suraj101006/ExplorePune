@@ -50,7 +50,10 @@ export default function AppFooter() {
           <Link href="/planner">{t('nav.planner')}</Link>
           <Link href="/milestones">{t('nav.milestones')}</Link>
           <Link href="/blogs">{t('nav.blogs')}</Link>
-          <Link href="/about">{t('nav.about')}</Link>
+          <Link href="/about">{t('nav.about') || (isMr ? 'आमच्याबद्दल' : 'About')}</Link>
+          <Link href="/data">{isMr ? 'डेटा पद्धत' : 'Data'}</Link>
+          <Link href="/privacy">{isMr ? 'गोपनीयता (DPDP)' : 'Privacy'}</Link>
+          <Link href="/terms">{isMr ? 'सेवा अटी' : 'Terms'}</Link>
         </div>
       </div>
     </footer>

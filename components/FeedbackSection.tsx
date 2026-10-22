@@ -373,11 +373,18 @@ export default function FeedbackSection() {
               {isMr ? 'आपल्या बहुमोल मतासाठी मनःपूर्वक धन्यवाद! 🙏' : 'Thank You for Your Valuable Feedback! 🙏'}
             </h3>
 
-            <p style={{ fontSize: 14.5, color: '#334155', lineHeight: 1.6, margin: '0 0 20px' }}>
+            <p style={{ fontSize: 14.5, color: '#334155', lineHeight: 1.6, margin: '0 0 16px' }}>
               {isMr
                 ? 'एक्सप्लोर पुणे अधिक समृद्ध आणि परिपूर्ण बनवण्यासाठी आपल्या विचारपूर्वक दिलेल्या सूचनेचा आम्ही मनापासून आदर करतो. आपली नोंद सुरक्षितपणे जतन करण्यात आली आहे.'
                 : 'We truly appreciate you taking the time to share your feedback and suggestions. Your input is vital in making Explore Pune better and more verified for everyone visiting Pune.'}
             </p>
+
+            <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 8, padding: '10px 14px', marginBottom: 18, fontSize: 13, color: '#065f46', textAlign: 'left' }}>
+              <strong>✉️ {isMr ? 'पुष्टीकरण ईमेल:' : 'Confirmation Email:'}</strong>{' '}
+              {isMr
+                ? 'एक्सप्लोर पुणे टीमकडून (suraj10.pp@gmail.com) आपल्या ईमेलवर आभार संदेश पाठवला गेला आहे.'
+                : 'A Thank-You confirmation has been recorded and dispatched from suraj10.pp@gmail.com (ExplorePune Team).'}
+            </div>
 
             <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: 14, marginBottom: 18, fontSize: 12.5, color: '#64748b' }}>
               {isMr ? 'सस्नेह धन्यवाद,' : 'With sincere appreciation,'}

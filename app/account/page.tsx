@@ -331,9 +331,18 @@ export default function AccountPage() {
 
       {/* Places Visited */}
       <section className="panel">
-        <h2 style={{ fontSize: 18, marginTop: 0, marginBottom: 14 }}>
-          Places Visited ({d.visits.length})
-        </h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
+          <h2 style={{ fontSize: 18, margin: 0 }}>
+            Places Visited ({d.visits.length})
+          </h2>
+          <Link
+            href="/journey"
+            className="btn outline"
+            style={{ padding: '6px 14px', fontSize: 12.5, display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          >
+            🧭 View in My Journey →
+          </Link>
+        </div>
         {d.visits.length === 0 ? (
           <p style={{ color: 'var(--muted)', margin: 0, fontSize: 14 }}>
             No visits recorded yet. When you visit a Pune attraction, mark &quot;I&apos;ve Been Here&quot;!

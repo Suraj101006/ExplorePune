@@ -102,7 +102,7 @@ export function calculateJourneyTotalDistance(j: DayJourney): number {
   return Math.round(dist * 10) / 10;
 }
 
-// Curated authentic historical journey records for Explore Pune
+// Curated authentic historical journey records for Explore Pune (used for guest demo sample preview)
 export const SEED_JOURNEYS: DayJourney[] = [
   // 1. TODAY: 20 October 2026 (Active current journey)
   {
@@ -665,55 +665,246 @@ export const SEED_JOURNEYS: DayJourney[] = [
   },
 ];
 
-// Read all stored journeys (merging seed journeys with any user-created ones)
-export function getAllJourneys(): DayJourney[] {
+// Synthesize authentic DayJourney objects from user's actual Firestore visits
+export function buildUserJourneysFromVisits(
+  visits: any[],
+  placesMap: Map<string, any> = new Map(),
+  activeTrip?: any
+): DayJourney[] {
+  if ((!visits || visits.length === 0) && !activeTrip) {
+    return [];
+  }
+
+  // 1. Group visits by visit date (YYYY-MM-DD)
+  const groupedByDate: Record<string, any[]> = {};
+  for (const v of visits || []) {
+    const rawDate = v.visited_at || v.created_at || '';
+    let dateStr = rawDate.slice(0, 10);
+    // If not standard YYYY-MM-DD, try Date parsing
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      try {
+        const parsed = new Date(rawDate);
+        if (!isNaN(parsed.getTime())) {
+          dateStr = parsed.toISOString().slice(0, 10);
+        } else {
+          dateStr = new Date().toISOString().slice(0, 10);
+        }
+      } catch {
+        dateStr = new Date().toISOString().slice(0, 10);
+      }
+    }
+
+    if (!groupedByDate[dateStr]) {
+      groupedByDate[dateStr] = [];
+    }
+    groupedByDate[dateStr].push(v);
+  }
+
+  const generatedJourneys: DayJourney[] = [];
+
+  for (const [dateStr, dayVisits] of Object.entries(groupedByDate)) {
+    const d = new Date(dateStr);
+    const dateLabelEn = !isNaN(d.getTime())
+      ? d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : dateStr;
+    const dateLabelMr = !isNaN(d.getTime())
+      ? `${d.getDate()} ${d.toLocaleDateString('mr-IN', { month: 'long' })} ${d.getFullYear()}`
+      : dateStr;
+
+    // Build stops for this day
+    const stops: JourneyPlaceStop[] = dayVisits.map((v, idx) => {
+      const p = placesMap.get(v.place_slug) || placesMap.get(v.place_id) || {};
+      const cat = p.category_slug || (Array.isArray(p.place_categories) ? p.place_categories[0]?.slug : p.category) || 'heritage';
+      return {
+        placeId: v.place_id || p.id || `spot-${idx}`,
+        placeSlug: v.place_slug || p.slug || v.place_id || '',
+        placeName: v.place_name || p.name || 'Pune Landmark',
+        placeNameMr: v.place_name_mr || p.name_mr || p.name,
+        category: cat,
+        categoryName: p.category || 'Heritage & Culture',
+        categoryNameMr: p.category_mr || 'वारसा व संस्कृती',
+        image_url: v.image_url || p.image_url || '/images/places/shaniwar-wada.jpg',
+        description: v.notes || p.description || '',
+        latitude: Number(p.latitude) || 18.5204,
+        longitude: Number(p.longitude) || 73.8567,
+        isVisited: true,
+        visitedAt: v.visited_at || v.created_at,
+        note: v.notes || undefined,
+        order: idx + 1,
+      };
+    });
+
+    // Determine representative title from categories
+    const categories = stops.map((s) => s.category);
+    let title = 'Pune Exploration Journey';
+    let titleMr = 'पुणे भ्रमंती सफर';
+    let theme = 'Explored authentic heritage landmarks & places across Pune.';
+    let themeMr = 'पुण्यातील ऐतिहासिक वास्तू व निसर्गरम्य पर्यटन स्थळे.';
+
+    if (categories.includes('forts')) {
+      title = 'Sahyadri Forts & Mountain Expedition';
+      titleMr = 'सह्याद्री गड-किल्ले मोहीम';
+      theme = 'Conquered historical Maratha hill fortresses and mountain bastions.';
+      themeMr = 'ऐतिहासिक दुर्ग आणि सह्याद्रीच्या डोंगररांगांचा थरारक अनुभव.';
+    } else if (categories.includes('temples')) {
+      title = 'Sacred Shrines & Heritage Temples';
+      titleMr = 'पवित्र देवस्थाने व दर्शन यात्रा';
+      theme = 'Visited revered Ganesh temples and ancient sanctums.';
+      themeMr = 'पुण्यातील ग्रामदैवत व प्रसिद्ध देवस्थानांचे दर्शन.';
+    } else if (categories.includes('nature') || categories.includes('parks')) {
+      title = 'Nature Trails & Scenic Lake Walk';
+      titleMr = 'निसर्ग सफर आणि तलाव भ्रमंती';
+      theme = 'Lakeside serenity and lush green views.';
+      themeMr = 'शांत तलाव आणि हिरवेगार निसर्गरम्य वातावरण.';
+    }
+
+    const firstStop = stops[0];
+    const dayJourney: DayJourney = {
+      id: `journey-${dateStr}`,
+      date: dateStr,
+      dateLabelEn,
+      dateLabelMr,
+      title,
+      titleMr,
+      theme,
+      themeMr,
+      startLocation: firstStop ? firstStop.placeName : 'Pune City',
+      startLocationMr: firstStop ? (firstStop.placeNameMr || firstStop.placeName) : 'पुणे शहर',
+      startCoords: firstStop ? { lat: firstStop.latitude, lng: firstStop.longitude } : { lat: 18.5204, lng: 73.8567 },
+      travelMode: 'public_transit',
+      status: 'completed',
+      places: stops,
+      totalDistanceKm: 0,
+      totalDurationMinutes: Math.max(60, stops.length * 60),
+    };
+
+    dayJourney.totalDistanceKm = calculateJourneyTotalDistance(dayJourney);
+    generatedJourneys.push(dayJourney);
+  }
+
+  // 2. Incorporate today's active trip from Planner if active and not already included
+  if (activeTrip && Array.isArray(activeTrip.stops) && activeTrip.stops.length > 0) {
+    const todayIso = new Date().toISOString().slice(0, 10);
+    const existingToday = generatedJourneys.find((j) => j.date === todayIso);
+    if (!existingToday) {
+      const activeStops: JourneyPlaceStop[] = activeTrip.stops.map((s: any, idx: number) => ({
+        placeId: s.placeId,
+        placeSlug: s.placeSlug,
+        placeName: s.placeName,
+        placeNameMr: s.placeNameMr,
+        category: 'heritage',
+        categoryName: 'Planned Itinerary',
+        categoryNameMr: 'नियोजित सहल',
+        image_url: s.image_url,
+        description: '',
+        latitude: s.latitude ?? 18.5204,
+        longitude: s.longitude ?? 73.8567,
+        arrivalTime: s.arrivalTime,
+        departureTime: s.departureTime,
+        visitDurationMinutes: s.visitMinutes,
+        isVisited: Boolean(s.isVisited),
+        order: idx + 1,
+      }));
+
+      const activeDayJourney: DayJourney = {
+        id: `journey-${todayIso}`,
+        date: todayIso,
+        dateLabelEn: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+        dateLabelMr: `${new Date().getDate()} ${new Date().toLocaleDateString('mr-IN', { month: 'long' })} ${new Date().getFullYear()}`,
+        title: activeTrip.titleEn || "Today's Guided Trip",
+        titleMr: activeTrip.titleMr || 'आजची नियोजित सहल',
+        theme: activeTrip.themeEn || 'Active planned itinerary in Pune',
+        themeMr: activeTrip.themeMr || 'पुण्यातील आजचा नियोजित मार्ग',
+        startLocation: activeTrip.startLocation || 'Pune',
+        startLocationMr: activeTrip.startLocation || 'पुणे',
+        startCoords: activeTrip.stops[0]?.latitude ? { lat: activeTrip.stops[0].latitude, lng: activeTrip.stops[0].longitude } : undefined,
+        startTime: activeTrip.startTime,
+        travelMode: (activeTrip.travelMode as any) || 'public_transit',
+        status: activeTrip.isCompleted ? 'completed' : 'active',
+        places: activeStops,
+        totalDistanceKm: 0,
+        totalDurationMinutes: activeTrip.totalDurationMinutes || 180,
+      };
+      activeDayJourney.totalDistanceKm = calculateJourneyTotalDistance(activeDayJourney);
+      generatedJourneys.unshift(activeDayJourney);
+    }
+  }
+
+  // Sort journeys by date descending
+  generatedJourneys.sort((a, b) => b.date.localeCompare(a.date));
+  return generatedJourneys;
+}
+
+// Read all stored journeys.
+// When userId is given: returns ONLY that user's real journeys (NEVER injects seed data!).
+// When userId is undefined: returns seed data in Node/SSR/tests or when allowSeedDemo is true.
+export function getAllJourneys(userId?: string | null, allowSeedDemo: boolean = false): DayJourney[] {
   if (typeof window === 'undefined') return SEED_JOURNEYS;
+
   try {
+    if (userId) {
+      const userKey = `explore_pune_user_journeys_${userId}`;
+      const rawUser = localStorage.getItem(userKey);
+      if (rawUser) {
+        const parsed = JSON.parse(rawUser);
+        if (Array.isArray(parsed)) {
+          parsed.sort((a: DayJourney, b: DayJourney) => b.date.localeCompare(a.date));
+          return parsed as DayJourney[];
+        }
+      }
+      return [];
+    }
+
+    // Anonymous or Demo mode
     const raw = localStorage.getItem(STORAGE_KEY_JOURNEYS);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY_JOURNEYS, JSON.stringify(SEED_JOURNEYS));
-      return SEED_JOURNEYS;
+      if (allowSeedDemo) {
+        localStorage.setItem(STORAGE_KEY_JOURNEYS, JSON.stringify(SEED_JOURNEYS));
+        return SEED_JOURNEYS;
+      }
+      return [];
     }
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) {
-      localStorage.setItem(STORAGE_KEY_JOURNEYS, JSON.stringify(SEED_JOURNEYS));
-      return SEED_JOURNEYS;
+      return allowSeedDemo ? SEED_JOURNEYS : [];
     }
-    // Ensure all seed journeys exist in the list
-    const idMap = new Map(parsed.map((j: DayJourney) => [j.id, j]));
-    for (const seed of SEED_JOURNEYS) {
-      if (!idMap.has(seed.id)) {
-        parsed.push(seed);
+    if (allowSeedDemo) {
+      const idMap = new Map(parsed.map((j: DayJourney) => [j.id, j]));
+      for (const seed of SEED_JOURNEYS) {
+        if (!idMap.has(seed.id)) {
+          parsed.push(seed);
+        }
       }
     }
     parsed.sort((a: DayJourney, b: DayJourney) => b.date.localeCompare(a.date));
     return parsed as DayJourney[];
   } catch (err) {
     console.error('Failed to load journeys:', err);
-    return SEED_JOURNEYS;
+    return allowSeedDemo ? SEED_JOURNEYS : [];
   }
 }
 
 // Get journey for today (matching YYYY-MM-DD or most recent active)
-export function getTodayJourney(): DayJourney | null {
-  const journeys = getAllJourneys();
+export function getTodayJourney(userId?: string | null): DayJourney | null {
+  const journeys = getAllJourneys(userId, !userId);
   const todayIso = new Date().toISOString().slice(0, 10);
-  const foundToday = journeys.find((j) => j.date === todayIso || j.date === '2026-10-20');
+  const foundToday = journeys.find((j) => j.date === todayIso);
   if (foundToday) return foundToday;
   return journeys.find((j) => j.status === 'active') || null;
 }
 
 // Get journey by exact date
-export function getJourneyByDate(dateStr: string): DayJourney | null {
-  const journeys = getAllJourneys();
+export function getJourneyByDate(dateStr: string, userId?: string | null): DayJourney | null {
+  const journeys = getAllJourneys(userId, !userId);
   return journeys.find((j) => j.date === dateStr || j.id === dateStr) || null;
 }
 
-// Save or update a day journey
-export function saveJourney(journey: DayJourney): void {
+// Save or update a day journey for a user
+export function saveJourney(journey: DayJourney, userId?: string | null): void {
   if (typeof window === 'undefined') return;
   try {
-    const list = getAllJourneys();
+    const storageKey = userId ? `explore_pune_user_journeys_${userId}` : STORAGE_KEY_JOURNEYS;
+    const list = getAllJourneys(userId, false);
     const idx = list.findIndex((j) => j.id === journey.id || j.date === journey.date);
     if (idx >= 0) {
       list[idx] = journey;
@@ -721,16 +912,16 @@ export function saveJourney(journey: DayJourney): void {
       list.unshift(journey);
     }
     list.sort((a, b) => b.date.localeCompare(a.date));
-    localStorage.setItem(STORAGE_KEY_JOURNEYS, JSON.stringify(list));
-    window.dispatchEvent(new CustomEvent('explore-pune-journeys-changed', { detail: list }));
+    localStorage.setItem(storageKey, JSON.stringify(list));
+    window.dispatchEvent(new CustomEvent('explore-pune-journeys-changed', { detail: { userId, list } }));
   } catch (err) {
     console.error('Failed to save journey:', err);
   }
 }
 
 // Toggle visited checkmark for a stop in a journey
-export function toggleJourneyStopVisited(journeyId: string, placeId: string, visited: boolean): DayJourney | null {
-  const journeys = getAllJourneys();
+export function toggleJourneyStopVisited(journeyId: string, placeId: string, visited: boolean, userId?: string | null): DayJourney | null {
+  const journeys = getAllJourneys(userId, false);
   const j = journeys.find((item) => item.id === journeyId || item.date === journeyId);
   if (!j) return null;
 
@@ -753,7 +944,7 @@ export function toggleJourneyStopVisited(journeyId: string, placeId: string, vis
     j.status = 'active';
   }
 
-  saveJourney(j);
+  saveJourney(j, userId);
   return j;
 }
 
@@ -799,23 +990,27 @@ export function computeOverallStats(journeys: DayJourney[]): JourneyStats {
   }));
   sortedCats.sort((a, b) => b.count - a.count);
 
-  const dates = journeys.map((j) => j.date).sort();
+  const dates = journeys.map((j) => j.date).filter(Boolean).sort();
 
   return {
     totalPlacesVisited: visitedPlaceIds.size,
     totalJourneys: journeys.length,
     totalDistanceKm: Math.round(totalDist * 10) / 10,
-    totalAreasExplored: Math.max(1, areas.size),
+    totalAreasExplored: visitedPlaceIds.size === 0 ? 0 : Math.max(1, areas.size),
     categoriesExplored: sortedCats,
-    firstJourneyDate: dates[0] || '2026-06-14',
-    latestJourneyDate: dates[dates.length - 1] || '2026-10-20',
-    mostVisitedCategory: sortedCats[0]?.nameEn || 'Heritage',
+    firstJourneyDate: dates[0] || '',
+    latestJourneyDate: dates[dates.length - 1] || '',
+    mostVisitedCategory: sortedCats[0]?.nameEn || 'None yet',
     completionRate: totalPlacesCount > 0 ? Math.round((visitedPlaceIds.size / totalPlacesCount) * 100) : 0,
   };
 }
 
 // Compute journey milestones from real progress
 export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[] {
+  const latestDateFormatted = stats.latestJourneyDate
+    ? new Date(stats.latestJourneyDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    : 'Recently';
+
   return [
     {
       id: 'first-step',
@@ -825,7 +1020,7 @@ export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[
       descEn: 'Explored your first landmark in Pune.',
       descMr: 'पुण्यातील पहिल्या ऐतिहासिक ठिकाणाला भेट दिली.',
       isUnlocked: stats.totalPlacesVisited >= 1,
-      unlockedAt: '14 June 2026',
+      unlockedAt: stats.totalPlacesVisited >= 1 ? latestDateFormatted : undefined,
       progress: Math.min(stats.totalPlacesVisited, 1),
       target: 1,
     },
@@ -837,7 +1032,7 @@ export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[
       descEn: 'Visited 5+ historic wadas and monuments in Pune.',
       descMr: '५ पेक्षा जास्त ऐतिहासिक वास्तू व वाड्यांना भेट दिली.',
       isUnlocked: (stats.categoriesExplored.find((c) => c.category === 'heritage')?.count || 0) >= 5,
-      unlockedAt: '18 October 2026',
+      unlockedAt: (stats.categoriesExplored.find((c) => c.category === 'heritage')?.count || 0) >= 5 ? latestDateFormatted : undefined,
       progress: Math.min(stats.categoriesExplored.find((c) => c.category === 'heritage')?.count || 0, 5),
       target: 5,
     },
@@ -849,7 +1044,7 @@ export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[
       descEn: 'Conquered iconic forts around Pune (Sinhagad, Lohagad).',
       descMr: 'पुण्याभोवतीचे २+ ऐतिहासिक गड-किल्ले सर केले.',
       isUnlocked: (stats.categoriesExplored.find((c) => c.category === 'forts')?.count || 0) >= 2,
-      unlockedAt: '18 October 2026',
+      unlockedAt: (stats.categoriesExplored.find((c) => c.category === 'forts')?.count || 0) >= 2 ? latestDateFormatted : undefined,
       progress: Math.min(stats.categoriesExplored.find((c) => c.category === 'forts')?.count || 0, 2),
       target: 2,
     },
@@ -861,7 +1056,7 @@ export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[
       descEn: 'Explored 10+ distinct landmarks across Pune.',
       descMr: 'पुण्यातील १० हून अधिक विविध प्रेक्षणीय स्थळे अनुभवली.',
       isUnlocked: stats.totalPlacesVisited >= 10,
-      unlockedAt: '20 October 2026',
+      unlockedAt: stats.totalPlacesVisited >= 10 ? latestDateFormatted : undefined,
       progress: Math.min(stats.totalPlacesVisited, 10),
       target: 10,
     },
@@ -873,7 +1068,7 @@ export function computeJourneyMilestones(stats: JourneyStats): JourneyMilestone[
       descEn: 'Completed over 50 km of exploration journeys in Pune.',
       descMr: 'पुणे व परिसरात ५० किमीहून अधिक अंतराची यशस्वी सफर पूर्ण केली.',
       isUnlocked: stats.totalDistanceKm >= 50,
-      unlockedAt: '20 October 2026',
+      unlockedAt: stats.totalDistanceKm >= 50 ? latestDateFormatted : undefined,
       progress: Math.min(Math.round(stats.totalDistanceKm), 50),
       target: 50,
     },

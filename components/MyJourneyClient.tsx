@@ -1,14 +1,19 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useAuth } from '@/lib/useAuth';
+import { db } from '@/lib/firebase';
+import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
+import { getActiveTrip } from '@/lib/activeTrip';
 import JourneyMapAnimation from '@/components/JourneyMapAnimation';
 import {
   DayJourney,
+  buildUserJourneysFromVisits,
+  SEED_JOURNEYS,
   getAllJourneys,
-  getTodayJourney,
   toggleJourneyStopVisited,
   computeOverallStats,
   computeJourneyMilestones,
@@ -16,21 +21,89 @@ import {
 
 export default function MyJourneyClient() {
   const { isMr } = useLanguage();
+  const { user, ready } = useAuth();
+
   const [activeTab, setActiveTab] = useState<'today' | 'history' | 'overall'>('today');
   const [historyViewMode, setHistoryViewMode] = useState<'timeline' | 'calendar'>('timeline');
   const [selectedJourneyId, setSelectedJourneyId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('all');
-  const [journeys, setJourneys] = useState<DayJourney[]>(() => getAllJourneys());
   const [selectedCalendarMonth, setSelectedCalendarMonth] = useState<string>('2026-10'); // YYYY-MM
   const [checkinToast, setCheckinToast] = useState<string>('');
 
-  // Load and subscribe to journeys from storage + parse URL params
+  // Real user data state
+  const [loading, setLoading] = useState(true);
+  const [realVisitsCount, setRealVisitsCount] = useState(0);
+  const [showDemoSample, setShowDemoSample] = useState(false);
+  const [journeys, setJourneys] = useState<DayJourney[]>([]);
+
+  // Load user's authentic journeys from Firestore visits & active planner trips
+  const loadRealJourneys = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (!user) {
+        // Guest mode: show empty by default, or demo sample if explicitly toggled
+        if (showDemoSample) {
+          setJourneys(SEED_JOURNEYS);
+        } else {
+          const guestTrips = getAllJourneys(null, false);
+          setJourneys(guestTrips);
+        }
+        setRealVisitsCount(0);
+        return;
+      }
+
+      // 1. Fetch user's authentic visits from Firestore
+      const visitsSnap = await getDocs(
+        query(collection(db, 'visits'), where('user_id', '==', user.uid))
+      );
+      const visits = visitsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setRealVisitsCount(visits.length);
+
+      // 2. Fetch published places for coordinates, categories, and image metadata
+      const placesMap = new Map<string, any>();
+      try {
+        const placesSnap = await getDocs(
+          query(collection(db, 'places'), where('status', '==', 'published'))
+        );
+        placesSnap.docs.forEach((docSnap) => {
+          const data = docSnap.data();
+          placesMap.set(docSnap.id, data);
+          if (data.slug) placesMap.set(data.slug, data);
+        });
+      } catch (err) {
+        console.warn('Could not fetch places for metadata enrichment:', err);
+      }
+
+      // 3. Load active planner trip if present
+      const activeTrip = getActiveTrip();
+
+      // 4. Synthesize real DayJourneys from actual visits & active trip
+      const realJourneys = buildUserJourneysFromVisits(visits, placesMap, activeTrip);
+
+      // 5. Also load any user-scoped stored journeys
+      const localUserJourneys = getAllJourneys(user.uid, false);
+      const mergedMap = new Map<string, DayJourney>();
+      for (const j of localUserJourneys) mergedMap.set(j.date, j);
+      for (const j of realJourneys) mergedMap.set(j.date, j);
+      const finalJourneys = Array.from(mergedMap.values());
+      finalJourneys.sort((a, b) => b.date.localeCompare(a.date));
+
+      if (showDemoSample) {
+        setJourneys(SEED_JOURNEYS);
+      } else {
+        setJourneys(finalJourneys);
+      }
+    } catch (err) {
+      console.error('Failed to load real user journeys:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, showDemoSample]);
+
+  // Initial load and event listeners
   useEffect(() => {
-    const sync = () => {
-      setJourneys(getAllJourneys());
-    };
-    sync();
+    loadRealJourneys();
 
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -45,11 +118,23 @@ export default function MyJourneyClient() {
       }
     }
 
-    window.addEventListener('explore-pune-journeys-changed', sync);
-    return () => window.removeEventListener('explore-pune-journeys-changed', sync);
-  }, []);
+    const handleSync = () => loadRealJourneys();
+    window.addEventListener('explore-pune-journeys-changed', handleSync);
+    window.addEventListener('explore-pune-visit-logged', handleSync);
+    window.addEventListener('explore-pune-active-trip-changed', handleSync);
 
-  const todayJourney = useMemo(() => getTodayJourney(), []);
+    return () => {
+      window.removeEventListener('explore-pune-journeys-changed', handleSync);
+      window.removeEventListener('explore-pune-visit-logged', handleSync);
+      window.removeEventListener('explore-pune-active-trip-changed', handleSync);
+    };
+  }, [loadRealJourneys]);
+
+  const todayJourney = useMemo(() => {
+    const todayIso = new Date().toISOString().slice(0, 10);
+    return journeys.find((j) => j.date === todayIso || j.status === 'active') || null;
+  }, [journeys]);
+
   const overallStats = useMemo(() => computeOverallStats(journeys), [journeys]);
   const milestones = useMemo(() => computeJourneyMilestones(overallStats), [overallStats]);
 
@@ -89,14 +174,41 @@ export default function MyJourneyClient() {
     });
   }, [journeys, filterCategory, searchQuery]);
 
-  // Handle Mark as Visited for Today's Journey
-  const handleToggleVisited = (placeId: string, currentStatus: boolean) => {
+  // Handle Mark as Visited for Today's Journey & Synchronize with Firestore
+  const handleToggleVisited = async (placeId: string, currentStatus: boolean) => {
     if (!todayJourney) return;
-    const updated = toggleJourneyStopVisited(todayJourney.id, placeId, !currentStatus);
+    const newStatus = !currentStatus;
+    const updated = toggleJourneyStopVisited(todayJourney.id, placeId, newStatus, user?.uid);
     if (updated) {
-      setJourneys(getAllJourneys());
       const p = updated.places.find((item) => item.placeId === placeId);
-      if (!currentStatus) {
+
+      // If user is authenticated and checked in, write to Firestore visits collection
+      if (user && newStatus) {
+        try {
+          const visitId = `${user.uid}_${placeId}_${Date.now()}`;
+          await setDoc(doc(db, 'visits', visitId), {
+            place_id: placeId,
+            place_slug: p?.placeSlug || placeId,
+            place_name: p?.placeName || 'Pune Spot',
+            place_name_mr: p?.placeNameMr || p?.placeName,
+            user_id: user.uid,
+            user_name: user.displayName || user.email?.split('@')[0] || 'Pune Explorer',
+            user_avatar: user.photoURL || null,
+            visited_at: new Date().toISOString().slice(0, 10),
+            notes: p?.note || 'Checked in via My Journey',
+            image_url: p?.image_url || '/images/places/shaniwar-wada.jpg',
+            is_public: false,
+            created_at: new Date().toISOString(),
+          });
+          window.dispatchEvent(new CustomEvent('explore-pune-visit-logged', { detail: { placeId } }));
+        } catch (dbErr) {
+          console.warn('Could not sync checkin to Firestore:', dbErr);
+        }
+      }
+
+      loadRealJourneys();
+
+      if (newStatus) {
         setCheckinToast(
           isMr
             ? `🎉 अभिनंदन! "${p?.placeNameMr || p?.placeName}" येथे भेट नोंदवली!`
@@ -145,6 +257,129 @@ export default function MyJourneyClient() {
             : 'Trace your personal exploration of Pune — from today’s active steps to your complete history across historic wadas, Sahyadri forts, and cultural trails.'}
         </p>
       </section>
+
+      {/* Account Data Mode Indicator */}
+      {user ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 12,
+            padding: '14px 20px',
+            background: showDemoSample ? 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)' : 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)',
+            border: `1.5px solid ${showDemoSample ? '#fde68a' : '#a7f3d0'}`,
+            borderRadius: 14,
+            marginBottom: 28,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 24 }}>{showDemoSample ? '🔬' : '👤'}</span>
+            <div>
+              <strong style={{ display: 'block', fontSize: 14, color: showDemoSample ? '#92400e' : '#065f46' }}>
+                {showDemoSample
+                  ? (isMr ? 'डेमो नमुना सहल डेटा (काल्पनिक प्रदर्शन)' : 'Viewing Sample Demonstration Data')
+                  : (isMr
+                      ? `${user.displayName || user.email?.split('@')[0] || 'प्रवासी मित्र'} - तुमचा प्रत्यक्ष प्रवास डेटा (${realVisitsCount} ठिकाणे भेट)`
+                      : `${user.displayName || user.email?.split('@')[0] || 'Pune Explorer'}'s Authentic Travel Journal (${realVisitsCount} verified visits)`)}
+              </strong>
+              <span style={{ fontSize: 12.5, color: showDemoSample ? '#b45309' : '#047857' }}>
+                {showDemoSample
+                  ? (isMr ? 'हा नमुना डेटा आहे. तुमच्या खात्याचा खरा डेटा पाहण्यासाठी उजवीकडील बटण दाबा.' : 'This sample dataset illustrates a completed travel history across Pune.')
+                  : (isMr ? 'पुण्यातील तुम्ही प्रत्यक्ष भेट दिलेली ठिकाणे व सहलीचा जिवंत नकाशा.' : 'Live synchronized with your Firestore visits and custom planner trips.')}
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={() => setShowDemoSample(!showDemoSample)}
+              className="chip"
+              style={{
+                cursor: 'pointer',
+                padding: '7px 16px',
+                fontSize: 12.5,
+                fontWeight: 700,
+                background: showDemoSample ? '#047857' : '#ffffff',
+                color: showDemoSample ? '#ffffff' : '#1e293b',
+                border: '1px solid #cbd5e1',
+                borderRadius: 999,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {showDemoSample
+                ? (isMr ? '← माझा प्रत्यक्ष डेटा दाखवा' : '← Switch to My Real Visits')
+                : (isMr ? 'डेमो नमुना पहा 🔬' : 'Preview Demo Sample 🔬')}
+            </button>
+            <Link
+              href="/account"
+              className="chip"
+              style={{
+                padding: '7px 14px',
+                fontSize: 12.5,
+                fontWeight: 600,
+                background: '#ffffff',
+                color: '#475569',
+                border: '1px solid #cbd5e1',
+                borderRadius: 999,
+                textDecoration: 'none',
+              }}
+            >
+              ⚙️ {isMr ? 'माझे खाते' : 'Account'}
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 12,
+            padding: '14px 20px',
+            background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)',
+            border: '1.5px solid #bfdbfe',
+            borderRadius: 14,
+            marginBottom: 28,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 24 }}>🔒</span>
+            <div>
+              <strong style={{ display: 'block', fontSize: 14, color: '#1e40af' }}>
+                {isMr ? 'अतिथी मोड • खाजगी प्रवास दैनंदिनी' : 'Guest Mode • Personal Travel Journal'}
+              </strong>
+              <span style={{ fontSize: 12.5, color: '#3b82f6' }}>
+                {isMr
+                  ? 'तुमची स्वतःची भेट दिलेली ठिकाणे, फोटो आणि प्रवास नकाशा जतन करण्यासाठी कृपया साइन इन करा.'
+                  : 'Sign in to record your own visits, save verified photo proofs, and track your personalized route map!'}
+              </span>
+            </div>
+          </div>
+          <Link
+            href="/login"
+            className="btn"
+            style={{
+              padding: '8px 20px',
+              fontSize: 13,
+              fontWeight: 700,
+              background: '#2563eb',
+              color: '#ffffff',
+              borderRadius: 999,
+              textDecoration: 'none',
+              boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+            }}
+          >
+            {isMr ? 'साइन इन करा →' : 'Sign In to ExplorePune →'}
+          </Link>
+        </div>
+      )}
 
       {/* 3 Primary Navigation Level Tabs */}
       <nav

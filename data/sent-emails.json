@@ -1,5 +1,70 @@
 [
   {
+    "id": "mail_1792651524747_vwtvl",
+    "timestamp": "2026-10-22T06:45:24.747Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "suraj.dhok24@mmit.edu.in",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Royal Peshwa Wadas & Palaces 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Royal Peshwa Wadas & Palaces\n\nDear SURAJ DHOK,\n\nThank you for using Explore Pune! Your custom itinerary starting from Central Pune (Shaniwar Wada) at 09:30 has been created.\nTotal Duration: ~2 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Chitale Bandhu Mithaiwale (Bajirao Road) (09:34 AM - 10:04 AM) - S",
+    "metadata": {
+      "userName": "SURAJ DHOK",
+      "planTitle": "Plan 1: Royal Peshwa Wadas & Palaces",
+      "stopsCount": 3
+    }
+  },
+  {
+    "id": "mail_1792651501819_cj054",
+    "timestamp": "2026-10-22T06:45:01.820Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "suraj.dhok24@mmit.edu.in",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Royal Peshwa Wadas & Palaces 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Royal Peshwa Wadas & Palaces\n\nDear SURAJ DHOK,\n\nThank you for using Explore Pune! Your custom itinerary starting from Central Pune (Shaniwar Wada) at 09:30 has been created.\nTotal Duration: ~2 hrs\nEstimated Entry/Transit Cost: ₹0\n\nStops:\n1. Chitale Bandhu Mithaiwale (Bajirao Road) (09:34 AM - 10:04 AM) - S",
+    "metadata": {
+      "userName": "SURAJ DHOK",
+      "planTitle": "Plan 1: Royal Peshwa Wadas & Palaces",
+      "stopsCount": 3
+    }
+  },
+  {
+    "id": "mail_1792650505629_w2rky",
+    "timestamp": "2026-10-22T06:28:25.629Z",
+    "type": "itinerary_pdf_dispatch",
+    "to": "suraj.dhok24@mmit.edu.in",
+    "subject": "Your Custom Pune Itinerary & PDF Guide: Plan 1: Best of Museums 🗺️ | ExplorePune Team",
+    "preview": "\nExplore Pune | Itinerary Planner\n==================================================\nPlan 1: Best of Museums\n\nDear SURAJ DHOK,\n\nThank you for using Explore Pune! Your custom itinerary starting from Central Pune (Shaniwar Wada) at 09:30 has been created.\nTotal Duration: ~1 hrs\nEstimated Entry/Transit Cost: ₹15\n\nStops:\n1. Mahatma Phule Museum (09:35 AM - 10:35 AM) - Stay: 60m\n\nAttached PDF:\nWe have ",
+    "metadata": {
+      "userName": "SURAJ DHOK",
+      "planTitle": "Plan 1: Best of Museums",
+      "stopsCount": 1
+    }
+  },
+  {
+    "id": "mail_1792650299688_yktpw",
+    "timestamp": "2026-10-22T06:24:59.689Z",
+    "type": "admin_feedback_notification",
+    "to": "suraj10.pp@gmail.com",
+    "subject": "[New Feedback] SURAJ DHOK (5★ - Travel Experience & Insights)",
+    "preview": "\n[New Feedback Received on Explore Pune]\n=========================================\nExplorer: SURAJ DHOK\nEmail: suraj.dhok24@mmit.edu.in\nRating: 5/5 (★★★★★)\nCategory: Travel Experience & Insights\nTime: 22/10/2026, 11:54:59 am IST\n\nMessage:\n\"best i love sahil\"\n\nFeedback ID: N/A\n=========================================\n",
+    "metadata": {
+      "userEmail": "suraj.dhok24@mmit.edu.in",
+      "rating": 5,
+      "type": "experience",
+      "feedbackId": ""
+    }
+  },
+  {
+    "id": "mail_1792650299682_03une",
+    "timestamp": "2026-10-22T06:24:59.682Z",
+    "type": "user_feedback_thank_you",
+    "to": "suraj.dhok24@mmit.edu.in",
+    "subject": "Thank You for Using Explore Pune & Your Valuable Feedback! 🙏 | ExplorePune Team",
+    "preview": "\nExplore Pune | एक्सप्लोर पुणे\n==================================================\nThank You for Using Explore Pune! 🙏\n\nDear SURAJ DHOK,\n\nThank you very much for using Explore Pune and sharing your feedback with us.\n\nOur ExplorePune team has received your message and is actively reviewing it. If you reported any issue or suggested a correction, our team is on it and working hard to resolve it as q",
+    "metadata": {
+      "rating": 5,
+      "type": "experience"
+    }
+  },
+  {
     "id": "mail_1792649574715_ryf89",
     "timestamp": "2026-10-22T06:12:54.715Z",
     "type": "itinerary_pdf_dispatch",

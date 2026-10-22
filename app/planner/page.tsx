@@ -1751,8 +1751,54 @@ export default function PlannerPage() {
                     </button>
                   </form>
                   {emailSuccess && (
-                    <div style={{ marginTop: 10, fontSize: 13, fontWeight: 700, color: '#047857' }}>
-                      {emailSuccess}
+                    <div style={{ marginTop: 12, padding: 12, background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 8 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: '#047857', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span>✓</span>
+                        <span>{emailSuccess}</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: '#166534', marginBottom: 10 }}>
+                        {isMr
+                          ? 'एक्सप्लोर पुणे टीम (suraj10.pp@gmail.com) कडून हा ईमेल पाठवला गेला आहे.'
+                          : 'Sent by ExplorePune Team (suraj10.pp@gmail.com). You can also view or send directly in Gmail below:'}
+                      </div>
+                      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                        <a
+                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear Explorer,\n\nHere is your custom Pune itinerary created on Explore Pune (suraj10.pp@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nWarm regards,\nSuraj Dhok (suraj10.pp@gmail.com) and Sahil Jadhav (sj176644@gmail.com)\nExplorePune Team`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn"
+                          style={{
+                            padding: '6px 14px',
+                            fontSize: 12,
+                            fontWeight: 700,
+                            background: '#ea4335',
+                            color: '#ffffff',
+                            borderRadius: 6,
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 6,
+                          }}
+                        >
+                          <span>📬</span> {isMr ? 'Gmail मध्ये उघडा' : 'Open in Gmail (suraj10.pp@gmail.com)'}
+                        </a>
+                        <button
+                          type="button"
+                          onClick={handleDownloadPdf}
+                          className="btn outline"
+                          style={{
+                            padding: '6px 14px',
+                            fontSize: 12,
+                            fontWeight: 700,
+                            borderRadius: 6,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 6,
+                          }}
+                        >
+                          <span>📥</span> {isMr ? 'PDF डाउनलोड करा' : 'Download PDF Guide'}
+                        </button>
+                      </div>
                     </div>
                   )}
                   {emailError && (
