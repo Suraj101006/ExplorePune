@@ -412,15 +412,22 @@ export default function DataMethodologyPage() {
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
-              <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Data Engineering</span>
-              <a
-                href="mailto:surajdhok1010@gmail.com"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
-              >
-                ✉️ surajdhok1010@gmail.com
-              </a>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+              <img
+                src="/images/team/suraj-dhok.jpg"
+                alt="Suraj Dhok"
+                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2px solid #a7f3d0', flexShrink: 0 }}
+              />
+              <div>
+                <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
+                <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Data Engineering</span>
+                <a
+                  href="mailto:surajdhok1010@gmail.com"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
+                >
+                  ✉️ surajdhok1010@gmail.com
+                </a>
+              </div>
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>

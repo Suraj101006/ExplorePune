@@ -172,18 +172,27 @@ export default function AboutPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
                 <div
                   style={{
-                    width: 52,
-                    height: 52,
+                    width: 56,
+                    height: 56,
                     borderRadius: '50%',
-                    background: '#047857',
-                    color: '#ffffff',
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontSize: 22,
-                    fontWeight: 800,
+                    overflow: 'hidden',
+                    border: '2.5px solid #047857',
+                    boxShadow: '0 2px 8px rgba(4, 120, 87, 0.25)',
+                    flexShrink: 0,
+                    position: 'relative',
+                    background: '#d1fae5',
                   }}
                 >
-                  SD
+                  <img
+                    src="/images/team/suraj-dhok.jpg"
+                    alt="Suraj Dhok"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center top',
+                    }}
+                  />
                 </div>
                 <div>
                   <h3 style={{ margin: 0, fontSize: 18, color: '#065f46', fontWeight: 800 }}>Suraj Dhok</h3>
@@ -374,15 +383,22 @@ export default function AboutPage() {
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
-              <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Systems</span>
-              <a
-                href="mailto:surajdhok1010@gmail.com"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
-              >
-                ✉️ surajdhok1010@gmail.com
-              </a>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+              <img
+                src="/images/team/suraj-dhok.jpg"
+                alt="Suraj Dhok"
+                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2px solid #a7f3d0', flexShrink: 0 }}
+              />
+              <div>
+                <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
+                <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Systems</span>
+                <a
+                  href="mailto:surajdhok1010@gmail.com"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 13.5, color: '#047857', fontWeight: 800, textDecoration: 'underline' }}
+                >
+                  ✉️ surajdhok1010@gmail.com
+                </a>
+              </div>
             </div>
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
