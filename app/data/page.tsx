@@ -434,15 +434,22 @@ export default function DataMethodologyPage() {
               </a>
             </div>
 
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
-              <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Quality Assurance (QA) Testing & Documentation</span>
-              <a
-                href="mailto:1ishankakade@gmail.com"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}
-              >
-                ✉️ 1ishankakade@gmail.com
-              </a>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+              <img
+                src="/images/team/ishan-kakade.jpg"
+                alt="Ishan Kakade"
+                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2px solid #fde68a', flexShrink: 0 }}
+              />
+              <div>
+                <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
+                <span style={{ fontSize: 12.5, color: '#64748b' }}>Quality Assurance (QA) Testing & Documentation</span>
+                <a
+                  href="mailto:1ishankakade@gmail.com"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}
+                >
+                  ✉️ 1ishankakade@gmail.com
+                </a>
+              </div>
             </div>
           </div>
         </section>
