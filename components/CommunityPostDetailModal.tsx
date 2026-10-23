@@ -13,6 +13,9 @@ import {
   Calendar,
   Send,
   ExternalLink,
+  UserX,
+  ShieldAlert,
+  AlertCircle,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -25,6 +28,8 @@ import {
   getStoredCommunityPosts,
 } from '@/lib/communityStorage';
 import CommunityReportModal from '@/components/CommunityReportModal';
+import CommunityAppealModal from '@/components/CommunityAppealModal';
+import { blockUser } from '@/lib/userSafety';
 
 interface CommunityPostDetailModalProps {
   post: CommunityPost | null;
@@ -46,13 +51,18 @@ export default function CommunityPostDetailModal({
 
   const [currentPost, setCurrentPost] = useState<CommunityPost | null>(post);
   const [commentInput, setCommentInput] = useState('');
+  const [commentError, setCommentError] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [appealModalOpen, setAppealModalOpen] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
   const [hasVotedHelpful, setHasVotedHelpful] = useState(false);
+  const [helpfulNotice, setHelpfulNotice] = useState('');
+  const [blockToast, setBlockToast] = useState(false);
 
   useEffect(() => {
     setCurrentPost(post);
+    setCommentError('');
     if (post && user) {
       setHasVotedHelpful((post.helpfulUserIds || []).includes(user.uid));
     } else {
@@ -77,10 +87,21 @@ export default function CommunityPostDetailModal({
     .slice(0, 3);
 
   const handleHelpfulClick = () => {
+    setHelpfulNotice('');
     const res = togglePostHelpful({
       postId: currentPost.id,
       userId: currentUserId,
     });
+
+    if (res.reason === 'self_vote') {
+      setHelpfulNotice(
+        isMr
+          ? 'तुम्ही तुमच्या स्वतःच्या पोस्टला उपयुक्त मत देऊ शकत नाही.'
+          : 'You cannot mark your own discussion as helpful.'
+      );
+      setTimeout(() => setHelpfulNotice(''), 3000);
+      return;
+    }
 
     if (res.success) {
       const updated: CommunityPost = {
@@ -96,30 +117,52 @@ export default function CommunityPostDetailModal({
     }
   };
 
+  const handleBlockAuthor = () => {
+    if (!currentPost) return;
+    const confirmMsg = isMr
+      ? `तुम्ही '${currentPost.authorName}' ला ब्लॉक करू इच्छिता का? त्यांचे सर्व मजकूर तुमच्यासाठी लपवले जातील.`
+      : `Block ${currentPost.authorName}? Their discussions and comments will be hidden from your feed.`;
+
+    if (window.confirm(confirmMsg)) {
+      blockUser(currentUserId, currentPost.userId, currentPost.authorName);
+      setBlockToast(true);
+      setTimeout(() => {
+        setBlockToast(false);
+        onClose();
+      }, 1400);
+    }
+  };
+
   const handleAddComment = (e: React.FormEvent) => {
     e.preventDefault();
+    setCommentError('');
     if (!commentInput.trim()) return;
 
     setIsSubmittingComment(true);
-    const newComment = addCommentToPost({
-      postId: currentPost.id,
-      userId: user?.uid || `guest-${Date.now()}`,
-      authorName: user?.displayName || user?.email?.split('@')[0] || (isMr ? 'पुणे पर्यटक' : 'Pune Explorer'),
-      authorAvatar: user?.photoURL || undefined,
-      content: commentInput.trim(),
-    });
+    try {
+      const newComment = addCommentToPost({
+        postId: currentPost.id,
+        userId: user?.uid || `guest-${Date.now()}`,
+        authorName: user?.displayName || user?.email?.split('@')[0] || (isMr ? 'पुणे पर्यटक' : 'Pune Explorer'),
+        authorAvatar: user?.photoURL || undefined,
+        content: commentInput.trim(),
+      });
 
-    if (newComment) {
-      const updated: CommunityPost = {
-        ...currentPost,
-        commentCount: (currentPost.commentCount || 0) + 1,
-        comments: [...(currentPost.comments || []), newComment],
-      };
-      setCurrentPost(updated);
-      setCommentInput('');
-      if (onPostUpdated) onPostUpdated(updated);
+      if (newComment) {
+        const updated: CommunityPost = {
+          ...currentPost,
+          commentCount: (currentPost.commentCount || 0) + 1,
+          comments: [...(currentPost.comments || []), newComment],
+        };
+        setCurrentPost(updated);
+        setCommentInput('');
+        if (onPostUpdated) onPostUpdated(updated);
+      }
+    } catch (err: any) {
+      setCommentError(err?.message || 'Could not post comment.');
+    } finally {
+      setIsSubmittingComment(false);
     }
-    setIsSubmittingComment(false);
   };
 
   const handleShare = () => {
@@ -207,6 +250,48 @@ export default function CommunityPostDetailModal({
 
         {/* Modal Content Scroll Area */}
         <div style={{ flex: 1, overflowY: 'auto', padding: 22 }}>
+          {/* Post Under Review Banner */}
+          {currentPost.status === 'review' && (
+            <div
+              style={{
+                background: '#fef3c7',
+                border: '1px solid #fde68a',
+                borderRadius: 12,
+                padding: '12px 16px',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 8,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#92400e' }}>
+                <ShieldAlert size={16} />
+                <span>
+                  {isMr
+                    ? 'ही पोस्ट सध्या सुरक्षितता पुनरावलोकनाखाली आहे.'
+                    : 'This discussion is currently under community safety review.'}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAppealModalOpen(true)}
+                className="btn outline"
+                style={{
+                  fontSize: 12,
+                  padding: '4px 12px',
+                  borderRadius: 6,
+                  borderColor: '#b45309',
+                  color: '#92400e',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                {isMr ? 'पुनरावलोकन विनंती (Appeal)' : 'Request Review'}
+              </button>
+            </div>
+          )}
           {/* Author Strip & Metadata */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -388,7 +473,7 @@ export default function CommunityPostDetailModal({
               </span>
             </div>
 
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <button
                 type="button"
                 onClick={handleShare}
@@ -430,8 +515,53 @@ export default function CommunityPostDetailModal({
                 <Flag size={13} />
                 <span>{isMr ? 'तक्रार' : 'Report'}</span>
               </button>
+
+              {currentUserId !== currentPost.userId && (
+                <button
+                  type="button"
+                  onClick={handleBlockAuthor}
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    color: '#64748b',
+                    padding: '6px 10px',
+                    borderRadius: 8,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                  title={isMr ? 'या वापरकर्त्यास ब्लॉक करा' : `Block ${currentPost.authorName}`}
+                >
+                  <UserX size={13} />
+                  <span>{isMr ? 'ब्लॉक' : 'Block'}</span>
+                </button>
+              )}
             </div>
           </div>
+
+          {/* Helpful Feedback / Self-vote notice */}
+          {helpfulNotice && (
+            <div
+              style={{
+                background: '#fef3c7',
+                border: '1px solid #fde68a',
+                borderRadius: 8,
+                padding: '8px 12px',
+                color: '#92400e',
+                fontSize: 12.5,
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <AlertCircle size={14} />
+              <span>{helpfulNotice}</span>
+            </div>
+          )}
 
           {/* =================================================================
               COMMENTS SECTION
@@ -440,6 +570,27 @@ export default function CommunityPostDetailModal({
             <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', margin: '0 0 14px' }}>
               💬 {isMr ? 'प्रतिक्रिया व चर्चा' : 'Comments & Discussion'} ({currentPost.comments?.length || 0})
             </h3>
+
+            {/* Comment Error / Moderation Warning */}
+            {commentError && (
+              <div
+                style={{
+                  background: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  color: '#991b1b',
+                  fontSize: 12.5,
+                  marginBottom: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <AlertCircle size={15} />
+                <span>{commentError}</span>
+              </div>
+            )}
 
             {/* Comment Composer */}
             <form onSubmit={handleAddComment} style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
@@ -569,6 +720,38 @@ export default function CommunityPostDetailModal({
         targetType="post"
         targetTitle={currentPost.title}
       />
+
+      {/* Appeal / Request Review Modal */}
+      <CommunityAppealModal
+        isOpen={appealModalOpen}
+        onClose={() => setAppealModalOpen(false)}
+        postId={currentPost.id}
+        postTitle={currentPost.title}
+        currentUserId={currentUserId}
+      />
+
+      {/* Block Confirmation Toast */}
+      {blockToast && (
+        <div
+          role="status"
+          style={{
+            position: 'fixed',
+            bottom: 24,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#0f172a',
+            color: '#ffffff',
+            padding: '10px 20px',
+            borderRadius: 999,
+            fontSize: 13,
+            fontWeight: 600,
+            zIndex: 10002,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+          }}
+        >
+          ✓ {isMr ? 'वापरकर्ता ब्लॉक केला. त्यांचे मजकूर लपवले गेले आहेत.' : 'User blocked. Content hidden from your feed.'}
+        </div>
+      )}
     </div>
   );
 }

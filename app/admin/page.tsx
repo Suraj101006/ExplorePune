@@ -13,6 +13,7 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { useAuth } from '@/lib/useAuth';
+import CommunityModerationDashboard from '@/components/CommunityModerationDashboard';
 
 const slugify = (t: string) =>
   t
@@ -46,6 +47,7 @@ export default function AdminPage() {
 
   const tabs = [
     ['moderate', 'Moderation'],
+    ['community', 'Community Safety & Reports'],
     ['feedback', 'User Feedbacks'],
     ...(isAdmin
       ? [
@@ -68,6 +70,7 @@ export default function AdminPage() {
         ))}
       </nav>
       {tab === 'moderate' && <Moderate />}
+      {tab === 'community' && <CommunityModerationDashboard />}
       {tab === 'feedback' && <FeedbackAdminViewer />}
       {isAdmin && tab === 'places' && <Places />}
       {isAdmin && tab === 'staging' && <Staging />}

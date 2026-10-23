@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Image as ImageIcon, Check, AlertCircle, Camera, Search } from 'lucide-react';
+import { X, Image as ImageIcon, Check, AlertCircle, Camera, Search, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
 import {
@@ -12,6 +12,9 @@ import {
 } from '@/lib/communityStorage';
 import { ALL_STRUCTURED_PLACES, StructuredPlace } from '@/lib/chatKnowledgeEngine';
 import { compressImageFile } from '@/lib/imageUtils';
+import { validateCommunityImageUpload } from '@/lib/communityModeration';
+import { hasAcceptedCommunityGuidelines } from '@/lib/userSafety';
+import CommunityGuidelinesModal from '@/components/CommunityGuidelinesModal';
 
 interface CommunityPostModalProps {
   isOpen: boolean;
@@ -31,6 +34,9 @@ export default function CommunityPostModal({
   const { isMr } = useLanguage();
   const { user } = useAuth();
 
+  const [hasAgreed, setHasAgreed] = useState(false);
+  const [showGuidelines, setShowGuidelines] = useState(false);
+
   const [postType, setPostType] = useState<CommunityPostType>('experience');
   const [selectedPlace, setSelectedPlace] = useState<StructuredPlace | null>(null);
   const [placeSearch, setPlaceSearch] = useState('');
@@ -42,8 +48,20 @@ export default function CommunityPostModal({
   const [imageError, setImageError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [infoMsg, setInfoMsg] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check guidelines acceptance on open
+  useEffect(() => {
+    if (isOpen) {
+      const accepted = hasAcceptedCommunityGuidelines(user?.uid);
+      setHasAgreed(accepted);
+      if (!accepted) {
+        setShowGuidelines(true);
+      }
+    }
+  }, [isOpen, user]);
 
   // Pre-fill user profile info
   useEffect(() => {
@@ -103,8 +121,9 @@ export default function CommunityPostModal({
     }
 
     const file = files[0];
-    if (file.size > 5 * 1024 * 1024) {
-      setImageError(isMr ? 'प्रतिमेचा आकार ५ MB पेक्षा कमी असावा.' : 'Image must be under 5 MB.');
+    const imgValidation = validateCommunityImageUpload(file);
+    if (!imgValidation.valid) {
+      setImageError(isMr ? (imgValidation.errorMr || 'अवैध छायाचित्र.') : (imgValidation.errorEn || 'Invalid image.'));
       return;
     }
 
@@ -175,7 +194,18 @@ export default function CommunityPostModal({
         onPostCreated(newPost);
       }
 
-      handleClose();
+      if (newPost.status === 'review') {
+        setInfoMsg(
+          isMr
+            ? 'तुमची पोस्ट सुरक्षितता पुनरावलोकनासाठी पाठवली आहे. मॉडेरेटरने तपासल्यानंतर ती लगेच प्रकाशित होईल.'
+            : 'Your post was submitted for community safety review and will appear once verified by moderators.'
+        );
+        setTimeout(() => {
+          handleClose();
+        }, 2200);
+      } else {
+        handleClose();
+      }
     } catch (err: any) {
       setErrorMsg(err?.message || 'Failed to publish post. Please try again.');
     } finally {
@@ -184,6 +214,20 @@ export default function CommunityPostModal({
   };
 
   if (!isOpen) return null;
+
+  if (!hasAgreed && showGuidelines) {
+    return (
+      <CommunityGuidelinesModal
+        isOpen={showGuidelines}
+        onClose={handleClose}
+        userId={user?.uid}
+        onAccepted={() => {
+          setHasAgreed(true);
+          setShowGuidelines(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div
@@ -286,6 +330,83 @@ export default function CommunityPostModal({
               <span>{errorMsg}</span>
             </div>
           )}
+
+          {infoMsg && (
+            <div
+              style={{
+                background: '#ecfdf5',
+                border: '1px solid #a7f3d0',
+                borderRadius: 10,
+                padding: '10px 14px',
+                color: '#047857',
+                fontSize: 13,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <Check size={16} />
+              <span>{infoMsg}</span>
+            </div>
+          )}
+
+          {/* Safety & Guidelines Notice Banner */}
+          <div
+            style={{
+              background: 'rgba(194, 65, 12, 0.08)',
+              border: '1px solid rgba(194, 65, 12, 0.2)',
+              borderRadius: 10,
+              padding: '10px 14px',
+              fontSize: 12.5,
+              color: 'var(--brand-terracotta, #c2410c)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              lineHeight: 1.4,
+            }}
+          >
+            <ShieldCheck size={16} style={{ flexShrink: 0 }} />
+            <span>
+              {isMr
+                ? 'आदरयुक्त व्हा. व्यक्तींवर नव्हे तर ठिकाणे व प्रवासावर चर्चा करा. फोन नंबर किंवा खाजगी माहिती टाळा.'
+                : 'Be respectful. Discuss places & travel experiences, not people. Never share private phone numbers or contact details.'}
+            </span>
+          </div>
+
+          {/* Author Display Name (Rule 3: No Anonymous Posting) */}
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: 12,
+                fontWeight: 700,
+                color: '#334155',
+                marginBottom: 6,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+              }}
+            >
+              {isMr ? 'सार्वजनिक नाव (निनावी पोस्टिंग बंद आहे)' : 'Display Name (No Anonymous Posting)'}
+            </label>
+            <input
+              type="text"
+              value={authorName}
+              onChange={(e) => setAuthorName(e.target.value)}
+              placeholder={isMr ? 'तुमचे नाव (उदा. सुरज ढोक)' : 'Your display name (e.g. Suraj Dhok)'}
+              required
+              maxLength={50}
+              style={{
+                width: '100%',
+                padding: '9px 12px',
+                borderRadius: 8,
+                border: '1px solid #cbd5e1',
+                fontSize: 13.5,
+                background: '#ffffff',
+                color: '#0f172a',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
 
           {/* Post Type Selector */}
           <div>

@@ -20,6 +20,10 @@ import {
   ArrowRight,
   X,
   ExternalLink,
+  UserX,
+  HeartHandshake,
+  ShieldCheck,
+  ShieldAlert,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -34,6 +38,7 @@ import {
   formatCommunityTime,
 } from '@/lib/communityStorage';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
+import { blockUser, getBlockedUserIds } from '@/lib/userSafety';
 import CommunityPostModal from '@/components/CommunityPostModal';
 import CommunityPostDetailModal from '@/components/CommunityPostDetailModal';
 import CommunityReportModal from '@/components/CommunityReportModal';
@@ -81,6 +86,7 @@ function CommunityContent() {
   const [selectedDetailPost, setSelectedDetailPost] = useState<CommunityPost | null>(null);
   const [reportingPost, setReportingPost] = useState<CommunityPost | null>(null);
   const [shareToast, setShareToast] = useState(false);
+  const [blockToast, setBlockToast] = useState(false);
 
   // Load initial posts from storage and listen to storage updates
   useEffect(() => {
@@ -112,7 +118,7 @@ function CommunityContent() {
     if (qType && POST_TYPE_META[qType]) setSelectedPostType(qType);
   }, [searchParams]);
 
-  // Filtered & sorted posts
+  // Filtered & sorted posts (filters out blocked users & private reviews)
   const filteredPosts = useMemo(() => {
     return filterCommunityPosts({
       posts,
@@ -121,8 +127,9 @@ function CommunityContent() {
       categorySlug: selectedCategory,
       postType: selectedPostType,
       sortOption: selectedSort,
+      currentUserId: user?.uid,
     });
-  }, [posts, searchQuery, selectedPlaceId, selectedCategory, selectedPostType, selectedSort]);
+  }, [posts, searchQuery, selectedPlaceId, selectedCategory, selectedPostType, selectedSort, user?.uid]);
 
   // Compute counts per category
   const categoryCounts = useMemo(() => {
@@ -317,6 +324,57 @@ function CommunityContent() {
             <span>•</span>
             <div>
               <span style={{ color: '#047857' }}>✓ {isMr ? '१००% अस्सल पुणे माहिती' : '100% Authentic Pune Insights'}</span>
+            </div>
+          </div>
+
+          {/* Subtle Guidelines & Dignity Banner (Rule 27 & 28) */}
+          <div
+            style={{
+              marginTop: 18,
+              padding: '12px 18px',
+              borderRadius: 14,
+              background: 'rgba(255, 255, 255, 0.75)',
+              border: '1px solid var(--line)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 12,
+              fontSize: 13,
+              boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+              <HeartHandshake size={18} color="var(--brand-terracotta, #c2410c)" style={{ flexShrink: 0 }} />
+              <strong style={{ color: 'var(--ink)', fontSize: 13.5 }}>
+                {isMr
+                  ? 'आदराने प्रवास करा. जबाबदारीने माहिती शेअर करा. इतरांना पुणे अधिक चांगल्या प्रकारे अनुभवण्यास मदत करा.'
+                  : 'Travel respectfully. Share responsibly. Help others explore Pune better.'}
+              </strong>
+            </div>
+
+            {/* Source Separation Distinction (Rule 28) */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                fontSize: 12,
+                color: 'var(--muted)',
+                flexWrap: 'wrap',
+              }}
+            >
+              <span title="Administrative & historical data verified by Explore Pune team">
+                <strong style={{ color: '#047857' }}>✓ {isMr ? 'अधिकृत माहिती' : 'Official Info'}</strong>
+              </span>
+              <span>•</span>
+              <span title="Real traveler experiences and crowd tips">
+                <strong style={{ color: 'var(--brand-terracotta, #c2410c)' }}>👥 {isMr ? 'समुदाय' : 'Community'}</strong>
+              </span>
+              <span>•</span>
+              <span title="AI travel assistant for contextual queries">
+                <strong style={{ color: '#2563eb' }}>🤖 {isMr ? 'एआय सहाय्यक' : 'AI Assistant'}</strong>
+              </span>
             </div>
           </div>
         </div>
@@ -902,21 +960,41 @@ function CommunityContent() {
                     </div>
 
                     {/* Post Type Badge */}
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 5,
-                        background: meta.bg,
-                        color: meta.color,
-                        padding: '4px 10px',
-                        borderRadius: 8,
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                    >
-                      <span>{meta.icon}</span>
-                      <span>{isMr ? meta.labelMr : meta.labelEn}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      {post.status === 'review' && (
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            background: '#fef3c7',
+                            color: '#92400e',
+                            padding: '3px 8px',
+                            borderRadius: 6,
+                            fontSize: 11,
+                            fontWeight: 700,
+                          }}
+                        >
+                          <ShieldAlert size={12} />
+                          <span>{isMr ? 'पुनरावलोकनाखाली' : 'Under Safety Review'}</span>
+                        </span>
+                      )}
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 5,
+                          background: meta.bg,
+                          color: meta.color,
+                          padding: '4px 10px',
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fontWeight: 600,
+                        }}
+                      >
+                        <span>{meta.icon}</span>
+                        <span>{isMr ? meta.labelMr : meta.labelEn}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -1146,6 +1224,38 @@ function CommunityContent() {
                       >
                         <Flag size={15} />
                       </button>
+
+                      {/* Block User Button */}
+                      {user?.uid && user.uid !== post.userId && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const confirmMsg = isMr
+                              ? `तुम्ही '${post.authorName}' ला ब्लॉक करू इच्छिता का? त्यांचे सर्व मजकूर तुमच्यासाठी लपवले जातील.`
+                              : `Block ${post.authorName}? Their posts will be hidden from your community feed.`;
+                            if (window.confirm(confirmMsg)) {
+                              blockUser(user.uid, post.userId, post.authorName);
+                              setBlockToast(true);
+                              setTimeout(() => setBlockToast(false), 2400);
+                            }
+                          }}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'var(--muted)',
+                            padding: 6,
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                          title={isMr ? 'या वापरकर्त्यास ब्लॉक करा' : 'Block user'}
+                          aria-label="Block user"
+                        >
+                          <UserX size={15} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -1315,6 +1425,28 @@ function CommunityContent() {
           }}
         >
           ✓ {isMr ? 'चर्चेची लिंक कॉपी झाली!' : 'Discussion link copied to clipboard!'}
+        </div>
+      )}
+
+      {blockToast && (
+        <div
+          role="status"
+          style={{
+            position: 'fixed',
+            bottom: 28,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'var(--ink, #111827)',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: 999,
+            fontSize: 13,
+            fontWeight: 500,
+            zIndex: 9999,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+          }}
+        >
+          ✓ {isMr ? 'वापरकर्ता ब्लॉक केला. त्यांचे मजकूर लपवले गेले आहेत.' : 'User blocked. Their posts have been hidden.'}
         </div>
       )}
     </main>

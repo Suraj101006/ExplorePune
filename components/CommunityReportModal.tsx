@@ -24,7 +24,9 @@ export default function CommunityReportModal({
   const { isMr } = useLanguage();
   const { user } = useAuth();
 
-  const [reason, setReason] = useState<CommunityReport['reason']>('spam');
+  const [reason, setReason] = useState<
+    'spam' | 'harassment' | 'hate' | 'false_info' | 'inappropriate' | 'privacy' | 'scam' | 'other'
+  >('spam');
   const [details, setDetails] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -114,12 +116,12 @@ export default function CommunityReportModal({
           <div style={{ padding: '32px 20px', textAlign: 'center' }}>
             <CheckCircle2 size={44} color="#059669" style={{ margin: '0 auto 12px' }} />
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 6px', color: '#065f46' }}>
-              {isMr ? 'तक्रार नोंदवली गेली आहे' : 'Report Received'}
+              {isMr ? 'तक्रार नोंदवली गेली आहे' : 'Report Submitted'}
             </h3>
-            <p style={{ fontSize: 13, color: '#475569', margin: 0 }}>
+            <p style={{ fontSize: 13.5, color: '#475569', margin: 0 }}>
               {isMr
-                ? 'माहिती दिल्याबद्दल धन्यवाद. आमची नियंत्रण टीम याचे पुनरावलोकन करेल.'
-                : 'Thank you for keeping our community safe. Our moderation team will review this.'}
+                ? 'धन्यवाद. तुमची तक्रार पुनरावलोकनासाठी पाठवण्यात आली आहे.'
+                : 'Thanks. Your report has been submitted for review.'}
             </p>
           </div>
         ) : (
@@ -146,14 +148,14 @@ export default function CommunityReportModal({
                   outline: 'none',
                 }}
               >
-                <option value="spam">{isMr ? 'स्पॅम किंवा जाहिरात (Spam)' : 'Spam or advertising'}</option>
-                <option value="false_info">{isMr ? 'चुकीची किंवा दिशाभूल करणारी माहिती (False info)' : 'False or misleading travel information'}</option>
-                <option value="harassment">{isMr ? 'अपमानकारक / आक्षेपार्ह भाषा (Harassment)' : 'Harassment or offensive language'}</option>
-                <option value="offensive">{isMr ? 'अयोग्य सामग्री (Offensive content)' : 'Inappropriate or offensive content'}</option>
-                <option value="scam">{isMr ? 'फसवणूक किंवा घोटाळा (Scam)' : 'Scam or commercial solicitation'}</option>
-                <option value="privacy">{isMr ? 'वैयक्तिक माहिती उघड करणे (Privacy)' : 'Violates privacy / personal contact details'}</option>
-                <option value="copyright">{isMr ? 'कॉपीराइट उल्लंघन (Copyright)' : 'Copyright infringement'}</option>
-                <option value="other">{isMr ? 'इतर (Other)' : 'Other issue'}</option>
+                <option value="spam">{isMr ? 'स्पॅम (Spam)' : 'Spam'}</option>
+                <option value="harassment">{isMr ? 'छळ किंवा धमकी (Harassment)' : 'Harassment'}</option>
+                <option value="hate">{isMr ? 'द्वेष किंवा भेदभाव (Hate/Discrimination)' : 'Hate/Discrimination'}</option>
+                <option value="false_info">{isMr ? 'खोटी माहिती (False Information)' : 'False Information'}</option>
+                <option value="inappropriate">{isMr ? 'अयोग्य सामग्री (Inappropriate Content)' : 'Inappropriate Content'}</option>
+                <option value="privacy">{isMr ? 'गोपनीयता उल्लंघन / फोन नंबर (Privacy Violation)' : 'Privacy Violation'}</option>
+                <option value="scam">{isMr ? 'घोटाळा किंवा फसवणूक (Scam/Fraud)' : 'Scam/Fraud'}</option>
+                <option value="other">{isMr ? 'इतर (Other)' : 'Other'}</option>
               </select>
             </div>
 

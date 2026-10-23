@@ -5,6 +5,17 @@
  */
 
 import rawPlaces from '@/data/backup_places_pre_audit_20261023.json';
+import {
+  moderateCommunityContent,
+  sanitizeUserText,
+} from './communityModeration';
+import {
+  checkUserPostingAllowed,
+  recordUserPost,
+  checkUserCommentingAllowed,
+  recordUserComment,
+  getBlockedUserIds,
+} from './userSafety';
 
 export type CommunityPostType =
   | 'experience'
@@ -49,7 +60,7 @@ export interface CommunityPost {
   commentCount: number;
   comments: CommunityComment[];
   tags: string[];
-  status: 'published' | 'reported' | 'hidden';
+  status: 'published' | 'review' | 'reported' | 'hidden';
   createdAt: string; // ISO date
   updatedAt: string;
 }
@@ -58,15 +69,16 @@ export interface CommunityReport {
   id: string;
   targetType: 'post' | 'comment';
   targetId: string;
+  targetTitle?: string;
   reporterUserId: string;
   reason:
     | 'spam'
-    | 'false_info'
     | 'harassment'
-    | 'offensive'
-    | 'scam'
+    | 'hate'
+    | 'false_info'
+    | 'inappropriate'
     | 'privacy'
-    | 'copyright'
+    | 'scam'
     | 'other';
   details?: string;
   createdAt: string;
@@ -526,6 +538,8 @@ export function filterCommunityPosts({
   categorySlug,
   postType,
   sortOption = 'latest',
+  currentUserId,
+  blockedUserIds,
 }: {
   posts: CommunityPost[];
   searchQuery?: string;
@@ -533,8 +547,26 @@ export function filterCommunityPosts({
   categorySlug?: string;
   postType?: CommunityPostType | 'all';
   sortOption?: CommunitySortOption;
+  currentUserId?: string;
+  blockedUserIds?: string[];
 }): CommunityPost[] {
-  let filtered = posts.filter((p) => p.status !== 'hidden');
+  // Resolve blocked user IDs if not provided
+  const blocked = blockedUserIds || (currentUserId ? getBlockedUserIds(currentUserId) : []);
+
+  let filtered = posts.filter((p) => {
+    // Hide hidden posts
+    if (p.status === 'hidden') return false;
+
+    // Filter out posts from blocked users (Rule 8: Block User)
+    if (blocked.length > 0 && blocked.includes(p.userId)) return false;
+
+    // Posts under review are visible only to their author until approved by moderators
+    if (p.status === 'review') {
+      return Boolean(currentUserId && p.userId === currentUserId);
+    }
+
+    return true;
+  });
 
   // 1. Place filter
   if (placeId && placeId !== 'all') {
@@ -591,7 +623,7 @@ export function filterCommunityPosts({
 }
 
 /**
- * Toggle Helpful on a post (1 vote per user)
+ * Toggle Helpful on a post (1 vote per user, self-voting prohibited)
  */
 export function togglePostHelpful({
   postId,
@@ -599,10 +631,20 @@ export function togglePostHelpful({
 }: {
   postId: string;
   userId: string;
-}): { success: boolean; helpfulCount: number; hasVoted: boolean } {
+}): { success: boolean; helpfulCount: number; hasVoted: boolean; reason?: string } {
   const posts = getStoredCommunityPosts();
   const post = posts.find((p) => p.id === postId);
-  if (!post) return { success: false, helpfulCount: 0, hasVoted: false };
+  if (!post) return { success: false, helpfulCount: 0, hasVoted: false, reason: 'not_found' };
+
+  // Rule 11: Prevent Fake Engagement - No self-voting
+  if (post.userId === userId && userId !== 'guest-user') {
+    return {
+      success: false,
+      helpfulCount: post.helpfulCount,
+      hasVoted: false,
+      reason: 'self_vote',
+    };
+  }
 
   const userIds = post.helpfulUserIds || [];
   const existingIdx = userIds.indexOf(userId);
@@ -627,7 +669,7 @@ export function togglePostHelpful({
 }
 
 /**
- * Add comment to a post
+ * Add comment to a post with rate limits & moderation
  */
 export function addCommentToPost({
   postId,
@@ -646,13 +688,30 @@ export function addCommentToPost({
   const post = posts.find((p) => p.id === postId);
   if (!post) return null;
 
+  // Rule 3: No Anonymous Posting
+  const sanitizedAuthor = sanitizeUserText(authorName) || 'Pune Explorer';
+  const sanitizedContent = sanitizeUserText(content);
+  if (!sanitizedContent) return null;
+
+  // Rule 9: Commenting rate limits
+  const rateCheck = checkUserCommentingAllowed(userId);
+  if (!rateCheck.allowed) {
+    throw new Error(rateCheck.reasonEn || 'Rate limit reached');
+  }
+
+  // Rule 4: Content Moderation
+  const moderation = moderateCommunityContent('', sanitizedContent);
+  if (moderation.outcome === 'blocked') {
+    throw new Error(moderation.reasonEn);
+  }
+
   const newComment: CommunityComment = {
     id: `c-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
     postId,
     userId,
-    authorName,
+    authorName: sanitizedAuthor,
     authorAvatar,
-    content: content.trim(),
+    content: sanitizedContent,
     createdAt: new Date().toISOString(),
   };
 
@@ -661,33 +720,68 @@ export function addCommentToPost({
   post.commentCount = post.comments.length;
   post.updatedAt = new Date().toISOString();
 
+  recordUserComment(userId);
   saveCommunityPosts(posts);
   return newComment;
 }
 
 /**
- * Create a new community post
+ * Create a new community post with 3-tier moderation & rate limiting
  */
 export function createCommunityPost(
   newPost: Omit<
     CommunityPost,
     'id' | 'helpfulCount' | 'helpfulUserIds' | 'commentCount' | 'comments' | 'status' | 'createdAt' | 'updatedAt'
-  >
+  > & {
+    status?: 'published' | 'review' | 'reported' | 'hidden';
+  }
 ): CommunityPost {
   const posts = getStoredCommunityPosts();
 
+  // Rule 3: No Anonymous Posting
+  const sanitizedAuthor = sanitizeUserText(newPost.authorName);
+  if (!sanitizedAuthor) {
+    throw new Error('A display name is required to participate in the community.');
+  }
+
+  const cleanTitle = sanitizeUserText(newPost.title);
+  const cleanContent = sanitizeUserText(newPost.content);
+  if (!cleanTitle || !cleanContent) {
+    throw new Error('Title and content are required.');
+  }
+
+  // Rule 9: Rate limiting & cooldowns
+  const rateCheck = checkUserPostingAllowed(newPost.userId);
+  if (!rateCheck.allowed) {
+    throw new Error(rateCheck.reasonEn || 'Posting limit reached.');
+  }
+
+  // Rule 4 & 5: Three-tier moderation
+  const modResult = moderateCommunityContent(cleanTitle, cleanContent);
+  if (modResult.outcome === 'blocked') {
+    throw new Error(modResult.reasonEn);
+  }
+
+  // Determine initial status based on moderation outcome
+  const initialStatus =
+    newPost.status || (modResult.outcome === 'review' ? 'review' : 'published');
+
   const post: CommunityPost = {
     ...newPost,
+    title: cleanTitle,
+    content: cleanContent,
+    authorName: sanitizedAuthor,
     id: `post-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
     helpfulCount: 0,
     helpfulUserIds: [],
     commentCount: 0,
     comments: [],
-    status: 'published',
+    status: initialStatus,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
+  recordUserPost(newPost.userId);
   posts.unshift(post);
   saveCommunityPosts(posts);
   return post;
@@ -715,9 +809,58 @@ export function submitCommunityReport(
   reports.push(fullReport);
   try {
     localStorage.setItem(STORAGE_REPORTS_KEY, JSON.stringify(reports));
+    window.dispatchEvent(new CustomEvent('explore-pune-report-submitted', { detail: fullReport }));
   } catch {}
 
   return fullReport;
+}
+
+/**
+ * Retrieve all reports for moderator dashboard
+ */
+export function getStoredCommunityReports(): CommunityReport[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_REPORTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Resolve report in moderator dashboard
+ */
+export function resolveCommunityReport(
+  reportId: string,
+  action: 'keep' | 'remove' | 'dismiss'
+): void {
+  const reports = getStoredCommunityReports();
+  const report = reports.find((r) => r.id === reportId);
+  if (!report) return;
+
+  report.status = action === 'dismiss' ? 'dismissed' : 'resolved';
+  try {
+    localStorage.setItem(STORAGE_REPORTS_KEY, JSON.stringify(reports));
+  } catch {}
+
+  // If removing target post
+  if (action === 'remove' && report.targetType === 'post') {
+    updatePostStatus(report.targetId, 'hidden');
+  }
+}
+
+/**
+ * Update post status (e.g. approve held review post, or hide violating post)
+ */
+export function updatePostStatus(postId: string, status: CommunityPost['status']): void {
+  const posts = getStoredCommunityPosts();
+  const post = posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  post.status = status;
+  post.updatedAt = new Date().toISOString();
+  saveCommunityPosts(posts);
 }
 
 /**

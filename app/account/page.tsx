@@ -19,6 +19,7 @@ import { useAuth } from '@/lib/useAuth';
 import { useLanguage } from '@/lib/LanguageContext';
 import ProfileAvatar from '@/components/ProfileAvatar';
 import ProfileAvatarModal from '@/components/ProfileAvatarModal';
+import { getBlockedUsers, unblockUser, hasAcceptedCommunityGuidelines } from '@/lib/userSafety';
 
 const STATUS: Record<string, string> = {
   pending: 'Waiting for review',
@@ -38,6 +39,13 @@ export default function AccountPage() {
   const [busy, setBusy] = useState(false);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [isPhotoUpdated, setIsPhotoUpdated] = useState(false);
+  const [blockedUsersList, setBlockedUsersList] = useState<any[]>([]);
+
+  const refreshBlockedUsers = useCallback(() => {
+    if (user) {
+      setBlockedUsersList(getBlockedUsers(user.uid));
+    }
+  }, [user]);
 
   const load = useCallback(async () => {
     if (!user) return;
@@ -99,7 +107,14 @@ export default function AccountPage() {
 
   useEffect(() => {
     load();
-  }, [load]);
+    refreshBlockedUsers();
+
+    const handleBlockedUpdated = () => refreshBlockedUsers();
+    window.addEventListener('explore-pune-blocked-users-updated', handleBlockedUpdated);
+    return () => {
+      window.removeEventListener('explore-pune-blocked-users-updated', handleBlockedUpdated);
+    };
+  }, [load, refreshBlockedUsers]);
 
   if (!ready) {
     return (
@@ -675,6 +690,90 @@ export default function AccountPage() {
           </div>
         )}
       </section>
+
+      {/* Community Safety & Privacy Settings (Rule 25) */}
+      <section className="panel">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <h2 style={{ fontSize: 18, margin: 0 }}>
+            🛡️ {isMr ? 'समुदाय सुरक्षितता व गोपनीयता सेटिंग्ज' : 'Community Safety & Privacy Settings'}
+          </h2>
+          <span
+            style={{
+              fontSize: 11.5,
+              fontWeight: 700,
+              padding: '2px 8px',
+              borderRadius: 999,
+              background: '#ecfdf5',
+              color: '#065f46',
+            }}
+          >
+            ✓ {isMr ? 'मार्गदर्शक तत्त्वे मान्य' : 'Guidelines Compliant'}
+          </span>
+        </div>
+
+        <p style={{ color: 'var(--muted)', fontSize: 13.5, margin: '0 0 16px' }}>
+          {isMr
+            ? 'एक्सप्लोर पुणे समुदाय हा पर्यटनासाठी सुरक्षित, आदरयुक्त व जबाबदार मंच आहे. येथे तुम्ही ब्लॉक केलेल्या वापरकर्त्यांचे व्यवस्थापन करू शकता.'
+            : 'Explore Pune Community is a travel-focused, respectful platform. You have full control over who can interact with you.'}
+        </p>
+
+        {/* Blocked Users Sub-panel */}
+        <div
+          style={{
+            background: 'var(--bg)',
+            border: '1px solid var(--line)',
+            borderRadius: 12,
+            padding: 16,
+          }}
+        >
+          <h3 style={{ fontSize: 14.5, fontWeight: 700, margin: '0 0 8px', color: 'var(--ink)' }}>
+            🚫 {isMr ? 'ब्लॉक केलेले वापरकर्ते' : 'Blocked Users'} ({blockedUsersList.length})
+          </h3>
+
+          {blockedUsersList.length === 0 ? (
+            <p style={{ margin: 0, fontSize: 13, color: 'var(--muted)' }}>
+              {isMr
+                ? 'तुम्ही कोणत्याही वापरकर्त्याला ब्लॉक केलेले नाही.'
+                : 'You have not blocked any users. If someone is harassing or posting spam, you can block them directly from their discussion card.'}
+            </p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+              {blockedUsersList.map((blocked) => (
+                <div
+                  key={blocked.userId}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '8px 12px',
+                    borderRadius: 8,
+                    background: 'var(--surface)',
+                    border: '1px solid var(--line)',
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)' }}>
+                    {blocked.displayName}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (user) {
+                        unblockUser(user.uid, blocked.userId);
+                        refreshBlockedUsers();
+                      }
+                    }}
+                    className="chip"
+                    style={{ fontSize: 11.5, padding: '3px 10px', color: '#047857' }}
+                  >
+                    {isMr ? 'अनब्लॉक करा' : 'Unblock'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Profile Avatar Upload & Crop Modal */}
       <ProfileAvatarModal
         isOpen={isAvatarModalOpen}
