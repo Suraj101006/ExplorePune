@@ -70,6 +70,340 @@ export interface JourneyMilestone {
   target: number;
 }
 
+export const TOTAL_PUNE_PLACES_COUNT = 80;
+
+export interface JourneyActivity {
+  id: string;
+  userId: string;
+  type: 'place_visited' | 'trip_started' | 'trip_completed' | 'milestone_completed' | 'place_saved' | 'journey_created';
+  placeId?: string;
+  placeName?: string;
+  placeNameMr?: string;
+  tripId?: string;
+  category?: string;
+  timestamp: string;
+  duration?: number;
+  distance?: number;
+  metadata?: Record<string, any>;
+}
+
+export const STORAGE_KEY_ACTIVITIES = 'explore_pune_journey_activity_v1';
+
+export function recordJourneyActivity(
+  activity: Omit<JourneyActivity, 'id' | 'timestamp'> & { id?: string; timestamp?: string }
+): JourneyActivity {
+  const fullActivity: JourneyActivity = {
+    id: activity.id || `act_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    timestamp: activity.timestamp || new Date().toISOString(),
+    ...activity,
+  };
+
+  if (typeof window !== 'undefined') {
+    try {
+      const storageKey = fullActivity.userId ? `${STORAGE_KEY_ACTIVITIES}_${fullActivity.userId}` : STORAGE_KEY_ACTIVITIES;
+      const raw = localStorage.getItem(storageKey);
+      const list: JourneyActivity[] = raw ? JSON.parse(raw) : [];
+      list.unshift(fullActivity);
+      if (list.length > 200) list.length = 200;
+      localStorage.setItem(storageKey, JSON.stringify(list));
+      window.dispatchEvent(new CustomEvent('explore-pune-activity-recorded', { detail: fullActivity }));
+    } catch (e) {
+      console.warn('Failed to record activity in localStorage:', e);
+    }
+  }
+
+  return fullActivity;
+}
+
+export function getJourneyActivities(userId?: string | null): JourneyActivity[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const storageKey = userId ? `${STORAGE_KEY_ACTIVITIES}_${userId}` : STORAGE_KEY_ACTIVITIES;
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error('Failed to load journey activities:', e);
+    return [];
+  }
+}
+
+export interface SpecialJourneyCard {
+  id: string;
+  type: 'first_discovery' | 'category_explorer' | 'weekend_journey' | 'heritage_trail' | 'pune_pathfinder';
+  badge: string;
+  titleEn: string;
+  titleMr: string;
+  subtitleEn: string;
+  subtitleMr: string;
+  descriptionEn: string;
+  descriptionMr: string;
+  statsTextEn?: string;
+  statsTextMr?: string;
+  dateEn?: string;
+  dateMr?: string;
+  imageUrl?: string;
+}
+
+export function generateSpecialJourneyCards(journeys: DayJourney[], stats: JourneyStats): SpecialJourneyCard[] {
+  const cards: SpecialJourneyCard[] = [];
+  if (!journeys || journeys.length === 0) return cards;
+
+  // 1. First Discovery (if at least 1 place visited)
+  const earliestJourney = [...journeys].sort((a, b) => a.date.localeCompare(b.date))[0];
+  const firstPlace = earliestJourney?.places.find((p) => p.isVisited) || earliestJourney?.places[0];
+
+  if (firstPlace && stats.totalPlacesVisited >= 1) {
+    cards.push({
+      id: 'special-first-discovery',
+      type: 'first_discovery',
+      badge: '🌟',
+      titleEn: 'Your First Pune Discovery',
+      titleMr: 'पुण्यातील पहिली सफर',
+      subtitleEn: `Began at ${firstPlace.placeName}`,
+      subtitleMr: `${firstPlace.placeNameMr || firstPlace.placeName} पासून सुरुवात`,
+      descriptionEn: `Your exploration journey started on ${earliestJourney.dateLabelEn}. Every great Pune story begins with a single step.`,
+      descriptionMr: `तुमची सफर ${earliestJourney.dateLabelMr || earliestJourney.dateLabelEn} रोजी सुरू झाली. प्रत्येक महान पुणे सफरीची सुरुवात एका पावलाने होते.`,
+      statsTextEn: '1st Landmark Visited',
+      statsTextMr: 'पहिले ऐतिहासिक ठिकाण',
+      dateEn: earliestJourney.dateLabelEn,
+      dateMr: earliestJourney.dateLabelMr,
+      imageUrl: firstPlace.image_url || '/images/places/shaniwar-wada.jpg',
+    });
+  }
+
+  // 2. Category Explorer: Forts (if >= 2 forts explored)
+  const fortsCount = stats.categoriesExplored.find((c) => c.category === 'forts')?.count || 0;
+  if (fortsCount >= 2) {
+    const fortPlace = journeys.flatMap((j) => j.places).find((p) => p.category === 'forts' && p.isVisited);
+    cards.push({
+      id: 'special-fort-explorer',
+      type: 'category_explorer',
+      badge: '⚔️',
+      titleEn: 'Sahyadri Fort Explorer',
+      titleMr: 'सह्याद्री दुर्गवीर',
+      subtitleEn: `You've explored ${fortsCount} forts`,
+      subtitleMr: `तुम्ही ${fortsCount} किल्ले अनुभवले आहेत`,
+      descriptionEn: 'From Sinhagad to Lohagad, you have walked the stone bastions where Maratha history was forged.',
+      descriptionMr: 'सिंहगडापासून लोहगडापर्यंत, मराठेशाहीच्या इतिहासाच्या साक्षीदार असलेल्या तटबंदीवर तुमचे पाऊल पडले.',
+      statsTextEn: `${fortsCount} Forts Conquered`,
+      statsTextMr: `${fortsCount} किल्ले सर`,
+      imageUrl: fortPlace?.image_url || '/images/places/sinhagad-fort.jpg',
+    });
+  }
+
+  // 3. Weekend Journey: If any journey occurred on Sat/Sun
+  const weekendJourney = journeys.find((j) => {
+    const day = new Date(j.date).getDay();
+    return (day === 0 || day === 6) && j.places.filter((p) => p.isVisited).length >= 2;
+  });
+  if (weekendJourney) {
+    const visitedStops = weekendJourney.places.filter((p) => p.isVisited);
+    cards.push({
+      id: 'special-weekend-journey',
+      type: 'weekend_journey',
+      badge: '☕',
+      titleEn: 'Weekend Exploration',
+      titleMr: 'वीकेंड सफर',
+      subtitleEn: `${visitedStops.length} places explored this weekend`,
+      subtitleMr: `या आठवड्याच्या शेवटी ${visitedStops.length} ठिकाणांची सफर`,
+      descriptionEn: `Turned leisure time into authentic exploration across ${weekendJourney.title}.`,
+      descriptionMr: `सुट्टीच्या दिवसाचे रुपांतर एका अविस्मरणीय पुणे भ्रमंतीत केले.`,
+      statsTextEn: `${weekendJourney.totalDistanceKm || 12} km Travelled`,
+      statsTextMr: `${weekendJourney.totalDistanceKm || 12} किमी प्रवास`,
+      dateEn: weekendJourney.dateLabelEn,
+      dateMr: weekendJourney.dateLabelMr,
+      imageUrl: visitedStops[0]?.image_url || '/images/places/fc-road.jpg',
+    });
+  }
+
+  // 4. Heritage Trail: If >= 3 heritage spots visited
+  const heritageCount = stats.categoriesExplored.find((c) => c.category === 'heritage')?.count || 0;
+  if (heritageCount >= 3) {
+    const heritagePlace = journeys.flatMap((j) => j.places).find((p) => p.category === 'heritage' && p.isVisited);
+    cards.push({
+      id: 'special-heritage-trail',
+      type: 'heritage_trail',
+      badge: '🏛️',
+      titleEn: "Pune's Living Heritage",
+      titleMr: 'पुण्याचा जिवंत वारसा',
+      subtitleEn: "You've discovered Pune's history",
+      subtitleMr: 'पुण्याचा गौरवशाली इतिहास अनुभवला',
+      descriptionEn: 'Walking through historic wadas, ancient rock-cut caves, and majestic stone gates of the old city.',
+      descriptionMr: 'ऐतिहासिक वाडे, प्राचीन लेणी आणि जुन्या पेठांमधील दगडी प्रवेशद्वारांची ऐतिहासिक सफर.',
+      statsTextEn: `${heritageCount} Heritage Sites`,
+      statsTextMr: `${heritageCount} ऐतिहासिक वास्तू`,
+      imageUrl: heritagePlace?.image_url || '/images/places/shaniwar-wada.jpg',
+    });
+  }
+
+  // 5. Pune Pathfinder: If categories explored >= 4
+  if (stats.categoriesExplored.length >= 4) {
+    cards.push({
+      id: 'special-pune-pathfinder',
+      type: 'pune_pathfinder',
+      badge: '🧭',
+      titleEn: 'Pune Pathfinder',
+      titleMr: 'पुणे मार्गदर्शक',
+      subtitleEn: `Explored across ${stats.categoriesExplored.length} diverse categories`,
+      subtitleMr: `${stats.categoriesExplored.length} विविध पर्यटन प्रकार अनुभवले`,
+      descriptionEn: 'You balance forts, temples, nature retreats, food hubs, and quiet meditation sanctuaries.',
+      descriptionMr: 'किल्ले, मंदिरे, निसर्ग, खाद्यसंस्कृती आणि शांत उद्यानांचा समतोल अनुभव.',
+      statsTextEn: `${stats.totalPlacesVisited} Total Landmarks`,
+      statsTextMr: `${stats.totalPlacesVisited} एकूण प्रेक्षणीय स्थळे`,
+      imageUrl: '/images/places/aga-khan-palace.jpg',
+    });
+  }
+
+  return cards;
+}
+
+export interface JourneyStoryCardItem {
+  id: string;
+  placeId: string;
+  placeName: string;
+  placeNameMr?: string;
+  category: string;
+  categoryName?: string;
+  categoryNameMr?: string;
+  imageUrl: string;
+  dateEn: string;
+  dateMr: string;
+  rawDate: string;
+  timeString: string;
+  quoteEn: string;
+  quoteMr: string;
+  journeyTitleEn: string;
+  journeyTitleMr?: string;
+  journeyId: string;
+}
+
+const POETIC_QUOTES: Record<string, { en: string; mr: string }> = {
+  'sinhagad-fort': {
+    en: '“A morning above Pune, where clouds meet the Sahyadri ramparts.”',
+    mr: '“सह्याद्रीच्या कड्यांवर धुक्याची चादर आणि असीम पराक्रमाची साक्ष.”',
+  },
+  'shaniwar-wada': {
+    en: '“Echoes of the Peshwas within the towering teak Dilli Darwaza.”',
+    mr: '“भव्य दिल्ली दरवाजा आणि पेशवेकालीन पराक्रमाच्या जिवंत आठवणी.”',
+  },
+  'lal-mahal': {
+    en: '“Where Chhatrapati Shivaji Maharaj spent his formative childhood.”',
+    mr: '“छत्रपती शिवरायांच्या बालपणीच्या पाऊलखुणा आणि जिजाऊंचे संस्कार.”',
+  },
+  'shreemant-dagdusheth-halwai-ganpati': {
+    en: '“Golden benevolence and peaceful darshan in the heart of Pune.”',
+    mr: '“पुण्याच्या हृदयात मंगलमूर्तीचे मनःशांती देणारे सुवर्ण दर्शन.”',
+  },
+  'aga-khan-palace': {
+    en: '“Italian arches embracing quiet memories of India’s freedom dawn.”',
+    mr: '“इटालियन कमानी आणि स्वातंत्र्यलढ्याच्या मूक आठवणींचे शांत उद्यान.”',
+  },
+  'pataleshwar-cave-temple': {
+    en: '“8th-century basalt sanctum carved directly from the living rock.”',
+    mr: '“८व्या शतकातील अखंड काळ्या पाषाणात कोरलेले गूढ व शांत शिवमंदिर.”',
+  },
+  'lohagad-fort': {
+    en: '“The Iron Fort standing vigilant between mist and Pavana waters.”',
+    mr: '“पवना जलाशयावर पहारा देणारा अजिंक्य लोहदुर्ग आणि विंचूकाटा.”',
+  },
+  'khadakwasla-dam': {
+    en: '“Cool morning ripples reflecting the southern Sahyadri hills.”',
+    mr: '“खडकवासल्याच्या संथ लाटा आणि सह्याद्रीच्या टेकड्यांचे सुंदर प्रतिबिंब.”',
+  },
+  'fergusson-college-heritage': {
+    en: '“Gothic stone halls that nurtured thinkers, poets, and leaders.”',
+    mr: '“गॉथिक शैलीतील दगडी दालने आणि महाराष्ट्राच्या बुद्धिवंतांचे माहेरघर.”',
+  },
+  'raja-dinkar-kelkar-museum': {
+    en: '“Twenty thousand treasures celebrating the craftsmanship of India.”',
+    mr: '“भारतीय कारागिरीचा आणि दुर्मिळ ऐतिहासिक वस्तूंचा अद्वितीय खजिना.”',
+  },
+  'parvati-hill': {
+    en: '“Hundred stone steps leading to sunset panoramas of the Peshwa city.”',
+    mr: '“शंभर पायऱ्यांचा प्रवास आणि पेशवेकालीन मंदिरावरून पुण्याचा विहंगम देखावा.”',
+  },
+};
+
+export function generateJourneyStories(journeys: DayJourney[]): JourneyStoryCardItem[] {
+  const stories: JourneyStoryCardItem[] = [];
+  const seenPlaceIds = new Set<string>();
+
+  for (const j of journeys) {
+    for (const p of j.places) {
+      if (p.isVisited && !seenPlaceIds.has(p.placeId)) {
+        seenPlaceIds.add(p.placeId);
+
+        const quote = POETIC_QUOTES[p.placeId] || POETIC_QUOTES[p.placeSlug] || {
+          en: `“A memorable discovery in Pune’s rich ${p.categoryName || 'heritage'} tapestry.”`,
+          mr: `“पुण्याच्या समृद्ध संस्कृती व वारशातील एक सुंदर आणि अविस्मरणीय अनुभव.”`,
+        };
+
+        const time = p.arrivalTime || (p.visitedAt ? new Date(p.visitedAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '10:02 AM');
+
+        stories.push({
+          id: `story-${j.id}-${p.placeId}`,
+          placeId: p.placeId,
+          placeName: p.placeName,
+          placeNameMr: p.placeNameMr,
+          category: p.category,
+          categoryName: p.categoryName,
+          categoryNameMr: p.categoryNameMr,
+          imageUrl: p.image_url || '/images/places/shaniwar-wada.jpg',
+          dateEn: j.dateLabelEn,
+          dateMr: j.dateLabelMr,
+          rawDate: j.date,
+          timeString: time,
+          quoteEn: quote.en,
+          quoteMr: quote.mr,
+          journeyTitleEn: j.title,
+          journeyTitleMr: j.titleMr,
+          journeyId: j.id,
+        });
+      }
+    }
+  }
+
+  return stories;
+}
+
+export function calculateExplorationStreak(journeys: DayJourney[]): { currentStreak: number; totalActiveDays: number } {
+  if (!journeys || journeys.length === 0) return { currentStreak: 0, totalActiveDays: 0 };
+
+  const uniqueDates = Array.from(new Set(journeys.filter((j) => j.places.some((p) => p.isVisited)).map((j) => j.date))).sort().reverse();
+  const totalActiveDays = uniqueDates.length;
+
+  if (uniqueDates.length === 0) return { currentStreak: 0, totalActiveDays: 0 };
+
+  let streak = 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let checkDate = new Date(today);
+  const latestDate = new Date(uniqueDates[0]);
+  latestDate.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.round((today.getTime() - latestDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays <= 1) {
+    checkDate = latestDate;
+    const dateSet = new Set(uniqueDates);
+    while (true) {
+      const dateStr = checkDate.toISOString().slice(0, 10);
+      if (dateSet.has(dateStr)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+  } else {
+    streak = Math.min(uniqueDates.length, 1);
+  }
+
+  return { currentStreak: Math.max(1, streak), totalActiveDays };
+}
+
 const STORAGE_KEY_JOURNEYS = 'explore_pune_all_journeys_v1';
 
 // Calculate Haversine distance in km between two geo-coordinates

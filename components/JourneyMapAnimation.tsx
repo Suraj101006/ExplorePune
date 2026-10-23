@@ -9,6 +9,7 @@ interface JourneyMapAnimationProps {
   allJourneys?: DayJourney[];
   isOverallMode?: boolean;
   selectedDateId?: string;
+  savedPlaces?: Array<{ id: string; name: string; name_mr?: string; latitude?: number; longitude?: number }>;
   onSelectDate?: (dateId: string) => void;
   onStopClick?: (stop: JourneyPlaceStop, index: number) => void;
   isMr?: boolean;
@@ -58,6 +59,7 @@ export default function JourneyMapAnimation({
   allJourneys = [],
   isOverallMode = false,
   selectedDateId,
+  savedPlaces = [],
   onSelectDate,
   onStopClick,
   isMr = false,
@@ -446,6 +448,19 @@ export default function JourneyMapAnimation({
                       />
                     );
                   })}
+                </g>
+              );
+            })}
+
+            {/* Distinct Saved Locations (Requirement 9) */}
+            {savedPlaces.map((sp) => {
+              if (!sp.latitude || !sp.longitude) return null;
+              const pt = projectCoord(sp.latitude, sp.longitude);
+              return (
+                <g key={`saved-${sp.id}`} transform={`translate(${pt.x}, ${pt.y})`} style={{ cursor: 'pointer' }}>
+                  <circle r="7" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
+                  <circle r="3.5" fill="#d97706" />
+                  <title>{sp.name} (Saved)</title>
                 </g>
               );
             })}

@@ -3535,6 +3535,165 @@ html.intro-dismissed .intro-overlay {
   animation: celebrationBurstParticle 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ==========================================================================
+   24. Explore Pune Journey — Visual Travel Story System
+   ========================================================================== */
+
+/* Ken Burns Slow Cinematic Zoom (Requirement 4 & 6) */
+@keyframes kenBurnsSlow {
+  0% {
+    transform: scale(1.00) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate(-0.8%, -0.5%);
+  }
+  100% {
+    transform: scale(1.00) translate(0, 0);
+  }
+}
+
+.ken-burns-slow {
+  animation: kenBurnsSlow 14s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+  will-change: transform;
+}
+
+/* Today Hero Cinematic Introduction (Requirement 3) */
+@keyframes heroMapFadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes heroMarkerDrop {
+  0% { opacity: 0; transform: translateY(-20px) scale(0.6); }
+  70% { transform: translateY(2px) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes heroRouteLineDraw {
+  from { stroke-dashoffset: 400; opacity: 0; }
+  50% { opacity: 1; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes heroPlaceCardSlide {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroTimelineGrow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.today-hero-map-bg {
+  animation: heroMapFadeIn 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.today-hero-marker {
+  animation: heroMarkerDrop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.today-hero-route-line {
+  stroke-dasharray: 400;
+  animation: heroRouteLineDraw 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.today-hero-card {
+  animation: heroPlaceCardSlide 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.today-hero-stem {
+  transform-origin: top;
+  animation: heroTimelineGrow 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Visual Story Cards (Requirement 4) */
+.story-card-container {
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.story-card-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(6, 95, 70, 0.16);
+}
+
+.story-card-container:hover .story-card-img {
+  transform: scale(1.045);
+}
+
+.story-card-img {
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Automatic Journey Reel / Video Modal (Requirements 5, 6, 7) */
+.journey-reel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 15, 20, 0.92);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 250ms ease forwards;
+}
+
+.journey-reel-player {
+  position: relative;
+  width: min(92vw, 480px);
+  height: min(88vh, 820px);
+  border-radius: 24px;
+  background: #0f172a;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+.reel-progress-segment {
+  flex: 1;
+  height: 3.5px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.reel-progress-fill {
+  height: 100%;
+  background: #ffffff;
+  transition: width 120ms linear;
+}
+
+/* Exploration Progress Ring (Requirement 17) */
+.exploration-progress-ring-circle {
+  transition: stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* Special Journey Badge Shimmer (Requirement 12) */
+@keyframes specialBadgeGlow {
+  0%, 100% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.2); }
+  50% { box-shadow: 0 0 24px rgba(245, 158, 11, 0.5); }
+}
+
+.special-badge-pulse {
+  animation: specialBadgeGlow 3s ease-in-out infinite;
+}
+
+/* Memory Moment Cinematic Flash (Requirement 16) */
+@keyframes memoryReveal {
+  0% { opacity: 0; transform: scale(0.96) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.memory-reveal-animate {
+  animation: memoryReveal 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* Accessibility Reduced Motion Overrides (Requirement 21) */
 @media (prefers-reduced-motion: reduce) {
   .travel-photo-stack-layer-1,
@@ -3575,7 +3734,15 @@ html.intro-dismissed .intro-overlay {
   .micro-sparkle,
   .summary-highlight-shimmer,
   .timeline-current-pulse,
-  .inline-route-updating-pill {
+  .inline-route-updating-pill,
+  .ken-burns-slow,
+  .today-hero-map-bg,
+  .today-hero-marker,
+  .today-hero-route-line,
+  .today-hero-card,
+  .today-hero-stem,
+  .special-badge-pulse,
+  .memory-reveal-animate {
     animation: none !important;
     transition: opacity 150ms ease, background-color 150ms ease, border-color 150ms ease !important;
     transform: none !important;

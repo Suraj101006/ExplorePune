@@ -6,6 +6,10 @@ import {
   getJourneyByDate,
   computeOverallStats,
   computeJourneyMilestones,
+  generateSpecialJourneyCards,
+  generateJourneyStories,
+  calculateExplorationStreak,
+  TOTAL_PUNE_PLACES_COUNT,
 } from '@/lib/journeyStorage';
 
 describe('My Pune Journey Engine', () => {
@@ -58,5 +62,33 @@ describe('My Pune Journey Engine', () => {
     expect(milestones.length).toBeGreaterThanOrEqual(5);
     const firstStep = milestones.find((m) => m.id === 'first-step');
     expect(firstStep?.isUnlocked).toBe(true);
+  });
+
+  it('generates special journey cards from authentic activity', () => {
+    const journeys = getAllJourneys();
+    const stats = computeOverallStats(journeys);
+    const specialCards = generateSpecialJourneyCards(journeys, stats);
+    expect(specialCards.length).toBeGreaterThan(0);
+
+    const firstDisc = specialCards.find((c) => c.type === 'first_discovery');
+    expect(firstDisc).toBeDefined();
+    expect(firstDisc?.titleEn).toBe('Your First Pune Discovery');
+  });
+
+  it('generates poetic journey stories from visited landmarks', () => {
+    const journeys = getAllJourneys();
+    const stories = generateJourneyStories(journeys);
+    expect(stories.length).toBeGreaterThan(0);
+    expect(stories[0].imageUrl).toBeDefined();
+    expect(stories[0].quoteEn).toBeDefined();
+    expect(stories[0].placeName).toBeDefined();
+  });
+
+  it('calculates healthy exploration streak', () => {
+    const journeys = getAllJourneys();
+    const streak = calculateExplorationStreak(journeys);
+    expect(streak.totalActiveDays).toBeGreaterThan(0);
+    expect(streak.currentStreak).toBeGreaterThanOrEqual(1);
+    expect(TOTAL_PUNE_PLACES_COUNT).toBe(80);
   });
 });
