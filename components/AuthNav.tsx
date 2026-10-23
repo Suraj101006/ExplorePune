@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User as UserIcon, LogOut, Shield } from 'lucide-react';
+import { LogOut, Shield } from 'lucide-react';
 import { useAuth } from '@/lib/useAuth';
 import { useLanguage } from '@/lib/LanguageContext';
+import ProfileAvatar from '@/components/ProfileAvatar';
 
 export default function AuthNav() {
   const { user, isStaff, ready, logout } = useAuth();
@@ -66,17 +67,22 @@ export default function AuthNav() {
               gap: 6,
               background: 'var(--primary-light)',
               color: 'var(--primary)',
-              padding: '6px 12px',
+              padding: '4px 10px 4px 6px',
               borderRadius: 'var(--radius-full)',
               fontWeight: 700,
               fontSize: '12.5px',
               border: '1px solid var(--primary-border)',
               textDecoration: 'none',
-              maxWidth: '140px',
+              maxWidth: '150px',
               transition: 'all 0.15s ease',
             }}
           >
-            <UserIcon size={13} />
+            <ProfileAvatar
+              photoUrl={user.photoURL || (typeof window !== 'undefined' ? localStorage.getItem(`explore_pune_avatar_${user.uid}`) : null)}
+              name={user.displayName}
+              email={user.email}
+              size={22}
+            />
             <span
               style={{
                 overflow: 'hidden',

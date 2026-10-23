@@ -24,6 +24,7 @@ import AuthNav from '@/components/AuthNav';
 import LanguageToggle from '@/components/LanguageToggle';
 import SavedPlacesDrawer from '@/components/SavedPlacesDrawer';
 import EmergencyHelplineModal from '@/components/EmergencyHelplineModal';
+import ProfileAvatar from '@/components/ProfileAvatar';
 
 export default function AppHeader() {
   const { t, isMr } = useLanguage();
@@ -208,8 +209,13 @@ export default function AppHeader() {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                  <UserIcon size={18} className="text-emerald-700" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                  <ProfileAvatar
+                    photoUrl={user.photoURL || (typeof window !== 'undefined' ? localStorage.getItem(`explore_pune_avatar_${user.uid}`) : null)}
+                    name={user.displayName}
+                    email={user.email}
+                    size={36}
+                  />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       {isMr ? 'लॉगिन केलेले खाते' : 'Signed In'}
