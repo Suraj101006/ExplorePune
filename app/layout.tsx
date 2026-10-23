@@ -5,6 +5,7 @@ import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
+import PageTransition from '@/components/PageTransition';
 
 export const metadata: Metadata = {
   title: { default: 'Explore Pune | Historic Forts, Wadas & Trip Planner', template: '%s | Explore Pune' },
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LanguageProvider>
           <TravelPhotoTransitionProvider>
             <AppHeader />
-            {children}
+            <PageTransition>{children}</PageTransition>
             <AppFooter />
             <ChatWidget />
           </TravelPhotoTransitionProvider>

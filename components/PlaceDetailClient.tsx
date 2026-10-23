@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import PlaceActions from '@/components/PlaceActions';
@@ -331,6 +331,30 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   const [copiedShare, setCopiedShare] = useState(false);
   const [slideshowOpen, setSlideshowOpen] = useState(false);
   const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [poppingBookmark, setPoppingBookmark] = useState(false);
+
+  // Scroll Reveal for Place Information Sections (Requirement 8)
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target); // Animate once per section
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    const sections = document.querySelectorAll('.place-section-reveal');
+    sections.forEach((sec) => observer.observe(sec));
+
+    return () => observer.disconnect();
+  }, []);
 
   const guidelines = useMemo(() => getPlaceVisitorGuidelines(place), [place]);
   const opStatus = getOperatingStatus(place);
@@ -392,6 +416,10 @@ export default function PlaceDetailClient({ place }: { place: any }) {
   };
 
   const handleToggleSave = () => {
+    const willBeSaved = !isSaved;
+    setPoppingBookmark(true);
+    setTimeout(() => setPoppingBookmark(false), 300);
+
     toggleSavedPlace({
       id: place.id,
       slug: place.slug || place.id,
@@ -402,6 +430,16 @@ export default function PlaceDetailClient({ place }: { place: any }) {
       category: place.category,
       data_tier: place.data_tier,
     });
+
+    const msg = willBeSaved
+      ? (isMr ? `✓ "${primaryName}" आवडत्या यादीत जोडले` : `✓ Added "${primaryName}" to your Pune collection`)
+      : (isMr ? `"${primaryName}" यादीतून काढले` : `Removed "${primaryName}" from collection`);
+
+    setToastMessage(msg);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 2400);
   };
 
   const handleShare = () => {
@@ -538,9 +576,9 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           }}
         />
 
-        {/* Hero Header */}
+        {/* Hero Header (Requirement 8) */}
         <header
-          className="panel"
+          className="panel scroll-reveal place-section-reveal"
           style={{
             marginBottom: 24,
             padding: '32px',
@@ -763,8 +801,8 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
         {/* About & Visitor Info */}
         <div className="stack" style={{ marginBottom: 24 }}>
-          {/* Overview & History Section */}
-          <section className="panel">
+          {/* Overview & History Section (Requirement 8) */}
+          <section className="panel scroll-reveal place-section-reveal">
             <h2
               style={{
                 fontSize: '19px',
@@ -1013,8 +1051,8 @@ export default function PlaceDetailClient({ place }: { place: any }) {
             </div>
           </section>
 
-          {/* Visitor Intel Section */}
-          <section className="panel">
+          {/* Visitor Intel Section (Requirement 8) */}
+          <section className="panel scroll-reveal place-section-reveal">
             <h2
               style={{
                 fontSize: '19px',
@@ -1132,9 +1170,9 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           </section>
         </div>
 
-        {/* Comprehensive Visitor Guidelines & How to Visit */}
+        {/* Comprehensive Visitor Guidelines & How to Visit (Requirement 8) */}
         <section
-          className="panel"
+          className="panel scroll-reveal place-section-reveal"
           style={{
             marginBottom: 24,
             border: '1.5px solid #fed7aa',
@@ -1449,9 +1487,9 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           )}
         </section>
 
-        {/* Public Transit & Directions Section */}
+        {/* Public Transit & Directions Section (Requirement 8) */}
         <section
-          className="panel"
+          className="panel scroll-reveal place-section-reveal"
           style={{
             marginBottom: 24,
             border: '1.5px solid #bbf7d0',
@@ -2274,8 +2312,8 @@ export default function PlaceDetailClient({ place }: { place: any }) {
           />
         </section>
 
-        {/* Location & Map Section */}
-        <section className="panel" style={{ marginBottom: 28 }}>
+        {/* Location & Map Section (Requirement 8) */}
+        <section className="panel scroll-reveal place-section-reveal" style={{ marginBottom: 28 }}>
           <h2
             style={{
               fontSize: '19px',
@@ -2328,6 +2366,14 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         place={place}
         initialIndex={slideshowIndex}
       />
+
+      {/* Tiny Bookmark Confirmation Toast (Requirement 14) */}
+      {toastMessage && (
+        <div className="pune-toast-pill" role="status" aria-live="polite">
+          <span>🔖</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </main>
   );
 }

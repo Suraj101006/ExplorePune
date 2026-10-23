@@ -49,6 +49,20 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-full: 9999px;
+
+  /* Centralized Professional Motion Tokens (Requirement 1 & 23) */
+  --motion-micro: 180ms;
+  --motion-fast: 180ms;
+  --motion-tab: 350ms;
+  --motion-normal: 350ms;
+  --motion-section: 450ms;
+  --motion-slow: 500ms;
+  --motion-image: 600ms;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   
   color-scheme: light;
 }
@@ -121,10 +135,21 @@ a:hover {
   -webkit-backdrop-filter: blur(16px);
   background: rgba(255, 255, 255, 0.88);
   border-bottom: 1px solid var(--line);
-  transition: all 0.2s ease;
+  transition: background var(--motion-tab) var(--ease-standard),
+              box-shadow var(--motion-tab) var(--ease-standard),
+              border-color var(--motion-tab) var(--ease-standard);
   width: 100%;
   max-width: 100%;
   overflow-x: clip;
+}
+
+/* Navbar Scroll Animation (Requirement 15) */
+.site-header.site-header-scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
 }
 
 .site-header .wrap {
@@ -136,6 +161,11 @@ a:hover {
   flex-wrap: nowrap;
   max-width: 1380px;
   width: 100%;
+  transition: min-height var(--motion-tab) var(--ease-standard);
+}
+
+.site-header.site-header-scrolled .wrap {
+  min-height: 60px;
 }
 
 .brand {
@@ -168,8 +198,9 @@ a:hover {
   margin-left: 2px;
 }
 
-/* Properly Arranged Desktop Navigation Bar */
+/* Properly Arranged Desktop Navigation Bar with Moving Active Indicator (Requirement 2) */
 .desktop-nav {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -180,7 +211,24 @@ a:hover {
   flex-shrink: 1;
 }
 
+.desktop-nav-indicator {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--primary-border);
+  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.12);
+  transition: left var(--motion-tab) var(--ease-standard),
+              width var(--motion-tab) var(--ease-standard),
+              opacity var(--motion-fast) ease;
+  pointer-events: none;
+}
+
 .desktop-nav a {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -190,21 +238,23 @@ a:hover {
   font-weight: 600;
   color: var(--ink-secondary);
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: color var(--motion-fast) var(--ease-standard),
+              transform var(--motion-fast) var(--ease-standard);
   white-space: nowrap;
 }
 
 .desktop-nav a:hover {
   color: var(--primary);
-  background: rgba(255, 255, 255, 0.85);
+}
+
+.desktop-nav a:active {
+  transform: scale(0.97);
 }
 
 .desktop-nav a.active-nav-link {
   color: var(--primary);
-  background: #ffffff;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.12);
-  border: 1px solid var(--primary-border);
+  /* Visual highlight provided seamlessly by .desktop-nav-indicator */
 }
 
 /* Header Action Utilities Group */
@@ -260,6 +310,22 @@ a:hover {
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
+}
+
+.mobile-nav-panel {
+  animation: mobileNavSlideDown var(--motion-tab) var(--ease-standard) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes mobileNavSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .auth-user-pill:hover {
@@ -592,7 +658,7 @@ a:hover {
   flex-wrap: wrap;
 }
 
-/* Search bar */
+/* Search bar (Requirement 12) */
 .search {
   display: flex;
   gap: 10px;
@@ -602,14 +668,18 @@ a:hover {
   background: #ffffff;
   padding: 6px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border: 1.5px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--motion-fast) var(--ease-standard),
+              box-shadow var(--motion-fast) var(--ease-standard),
+              transform var(--motion-fast) var(--ease-standard);
+  will-change: transform, box-shadow;
 }
 
 .search:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(6, 95, 70, 0.12), var(--shadow-md);
+  box-shadow: 0 6px 20px -2px rgba(6, 95, 70, 0.12), 0 0 0 3px rgba(6, 95, 70, 0.08);
+  transform: translateY(-1px);
 }
 
 .search input {
@@ -628,7 +698,7 @@ a:hover {
   color: #94a3b8;
 }
 
-/* Buttons */
+/* Primary & Secondary Buttons (Requirement 18) */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -644,28 +714,32 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(6, 95, 70, 0.2);
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background 0.15s ease, border-color 0.15s ease;
+  transition: transform var(--motion-micro) var(--ease-standard),
+              box-shadow var(--motion-micro) var(--ease-standard),
+              background var(--motion-micro) ease,
+              border-color var(--motion-micro) ease;
   will-change: transform;
 }
 
 .btn:hover {
   background: var(--primary-hover);
-  box-shadow: 0 5px 14px rgba(6, 95, 70, 0.28);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 95, 70, 0.25);
+  transform: translateY(-1px);
 }
 
 .btn:active {
   transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(6, 95, 70, 0.2);
 }
 
 .btn .btn-icon {
   display: inline-block;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--motion-fast) var(--ease-standard);
   will-change: transform;
 }
 
 .btn:hover .btn-icon {
-  transform: translateX(2.5px);
+  transform: translateX(3px);
 }
 
 /* Explore Places Special Travel Micro-Animation */
@@ -716,8 +790,12 @@ a:hover {
 
 .btn.clay:hover {
   background: linear-gradient(135deg, #9a3412 0%, #c2410c 100%);
-  box-shadow: 0 5px 15px rgba(194, 65, 12, 0.35);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.32);
+  transform: translateY(-1px);
+}
+
+.btn.clay:active {
+  transform: scale(0.98);
 }
 
 .btn.outline {
@@ -731,14 +809,33 @@ a:hover {
   border-color: var(--primary);
   color: var(--primary) !important;
   background: var(--primary-light);
+  transform: translateY(-1px);
 }
 
-/* Category Chips */
+.btn.outline:active {
+  transform: scale(0.98);
+}
+
+/* Category & Filter Chips (Requirement 4 & 13) */
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 12px 0 28px;
+}
+
+.category-nav-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 2px 10px;
+}
+
+.category-nav-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .chip {
@@ -755,7 +852,10 @@ a:hover {
   color: var(--ink-secondary);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.15s ease, background 0.15s ease;
+  transition: transform var(--motion-micro) var(--ease-standard),
+              box-shadow var(--motion-micro) var(--ease-standard),
+              border-color var(--motion-micro) ease,
+              background var(--motion-micro) ease;
   will-change: transform;
 }
 
@@ -763,18 +863,25 @@ a:hover {
   border-color: var(--primary);
   color: var(--primary);
   background: var(--primary-light);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+}
+
+.chip:active {
+  transform: scale(0.98);
 }
 
 .hero-search-chip {
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.15s ease, background 0.15s ease !important;
+  transition: transform var(--motion-micro) var(--ease-standard),
+              box-shadow var(--motion-micro) var(--ease-standard),
+              border-color var(--motion-micro) ease,
+              background var(--motion-micro) ease !important;
   will-change: transform;
 }
 
 .hero-search-chip:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06) !important;
   border-color: rgba(6, 95, 70, 0.35) !important;
 }
 
@@ -782,10 +889,11 @@ a:hover {
   background: var(--primary);
   border-color: var(--primary);
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.25);
+  box-shadow: 0 3px 10px rgba(6, 95, 70, 0.22);
+  transform: scale(1.02);
 }
 
-/* Grid & Cards */
+/* Grid & Cards (Requirement 3 & 5) */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -803,7 +911,9 @@ a:hover {
   text-decoration: none;
   color: var(--ink);
   box-shadow: var(--shadow-sm);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--motion-normal) var(--ease-standard),
+              box-shadow var(--motion-normal) var(--ease-standard),
+              border-color var(--motion-fast) ease;
   position: relative;
   overflow: hidden;
   word-break: break-word;
@@ -811,24 +921,45 @@ a:hover {
   min-width: 0;
 }
 
+.place-card-interactive {
+  animation: cardStaggerIn var(--motion-normal) var(--ease-standard) both;
+  animation-delay: calc(var(--card-i, 0) * 50ms);
+  will-change: transform, opacity;
+}
+
+@keyframes cardStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card:hover,
+.place-card-interactive:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-4px);
+}
+
 .trail-card {
   min-width: 0;
   word-break: break-word;
   overflow-wrap: break-word;
   overflow: hidden;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important;
+  transition: transform var(--motion-normal) var(--ease-standard),
+              box-shadow var(--motion-normal) var(--ease-standard),
+              border-color var(--motion-fast) ease !important;
   will-change: transform;
 }
 
 .trail-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08) !important;
-}
-
-.card:hover {
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.12) !important;
+  border-color: #cbd5e1 !important;
 }
 
 .card-media {
@@ -846,12 +977,24 @@ a:hover {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--motion-normal) var(--ease-standard);
   will-change: transform;
 }
 
-.card:hover .card-media img {
+.card:hover .card-media img,
+.place-card-interactive:hover .card-media img {
   transform: scale(1.03);
+}
+
+.card-arrow-icon {
+  display: inline-block;
+  transition: transform var(--motion-fast) var(--ease-standard);
+  will-change: transform;
+}
+
+.card:hover .card-arrow-icon,
+.place-card-interactive:hover .card-arrow-icon {
+  transform: translateX(4px);
 }
 
 .card h2 {
@@ -1965,13 +2108,13 @@ html.intro-dismissed .intro-overlay {
     transform: scale(1.0) translate3d(0, 0, 0);
   }
   100% {
-    transform: scale(1.08) translate3d(0, 0, 0);
+    transform: scale(1.03) translate3d(0, 0, 0);
   }
 }
 
 @keyframes kenburns-zoom-out {
   0% {
-    transform: scale(1.08) translate3d(0, 0, 0);
+    transform: scale(1.03) translate3d(0, 0, 0);
   }
   100% {
     transform: scale(1.0) translate3d(0, 0, 0);
@@ -1980,39 +2123,39 @@ html.intro-dismissed .intro-overlay {
 
 @keyframes kenburns-pan-left {
   0% {
-    transform: scale(1.06) translate3d(1.5%, 0, 0);
+    transform: scale(1.025) translate3d(1%, 0, 0);
   }
   100% {
-    transform: scale(1.06) translate3d(-1.5%, 0, 0);
+    transform: scale(1.025) translate3d(-1%, 0, 0);
   }
 }
 
 @keyframes kenburns-pan-right {
   0% {
-    transform: scale(1.06) translate3d(-1.5%, 0, 0);
+    transform: scale(1.025) translate3d(-1%, 0, 0);
   }
   100% {
-    transform: scale(1.06) translate3d(1.5%, 0, 0);
+    transform: scale(1.025) translate3d(1%, 0, 0);
   }
 }
 
 .kenburns-active-zoom-in {
-  animation: kenburns-zoom-in 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: kenburns-zoom-in 5.5s var(--ease-smooth) forwards;
   will-change: transform;
 }
 
 .kenburns-active-zoom-out {
-  animation: kenburns-zoom-out 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: kenburns-zoom-out 5.5s var(--ease-smooth) forwards;
   will-change: transform;
 }
 
 .kenburns-active-pan-left {
-  animation: kenburns-pan-left 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: kenburns-pan-left 5.5s var(--ease-smooth) forwards;
   will-change: transform;
 }
 
 .kenburns-active-pan-right {
-  animation: kenburns-pan-right 5.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: kenburns-pan-right 5.5s var(--ease-smooth) forwards;
   will-change: transform;
 }
 
@@ -2476,7 +2619,194 @@ html.intro-dismissed .intro-overlay {
   background: radial-gradient(ellipse at top, rgba(30, 41, 59, 0.05) 0%, transparent 70%);
 }
 
-/* Accessibility Reduced Motion Overrides */
+/* 10. Unified Page Transition System (Requirement 19) */
+.page-transition-wrap {
+  animation: pageEnter var(--motion-normal) var(--ease-standard) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 11. Scroll Reveal for Sections (Requirement 8) */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity var(--motion-section) var(--ease-standard),
+              transform var(--motion-section) var(--ease-standard);
+  will-change: transform, opacity;
+}
+
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 12. Bookmark / Favorite Pop & Toast (Requirement 14) */
+@keyframes bookmarkPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bookmark-btn-pop {
+  animation: bookmarkPop 220ms var(--ease-standard) forwards;
+}
+
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pune-toast-pill {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 10000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #065f46;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(6, 95, 70, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: toastSlideIn var(--motion-tab) var(--ease-standard) forwards;
+  pointer-events: none;
+}
+
+/* 13. GPS Subtle Pulse (Requirement 11) */
+@keyframes gpsPulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.gps-pulse-outer {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid #10b981;
+  animation: gpsPulseRing 2s var(--ease-smooth) infinite;
+  pointer-events: none;
+}
+
+/* 14. Subtle Skeleton Shimmer (Requirement 17) */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* 15. Trip Route & Itinerary Stop Entrance (Requirement 9 & 10) */
+@keyframes itineraryStopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.itinerary-stop-card {
+  animation: itineraryStopIn var(--motion-tab) var(--ease-standard) both;
+  animation-delay: calc(var(--stop-i, 0) * 60ms);
+  will-change: transform, opacity;
+}
+
+/* Planning Step Progress Ticker Animation */
+@keyframes plannerPulseStep {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.planner-step-active {
+  animation: plannerPulseStep 1.2s var(--ease-smooth) infinite;
+}
+
+/* Mobile Animation Adjustments (Requirement 20) */
+@media (max-width: 768px) {
+  @keyframes pageEnter {
+    0% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cardStaggerIn {
+    0% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .scroll-reveal {
+    transform: translateY(8px);
+  }
+
+  .pune-toast-pill {
+    bottom: 20px;
+    right: 16px;
+    left: 16px;
+    justify-content: center;
+  }
+}
+
+/* Accessibility Reduced Motion Overrides (Requirement 21) */
 @media (prefers-reduced-motion: reduce) {
   .travel-photo-stack-layer-1,
   .travel-photo-stack-layer-2,
@@ -2489,10 +2819,23 @@ html.intro-dismissed .intro-overlay {
   .journey-stop-current-pulse,
   .journey-checkmark-pop,
   .travel-compass-needle,
-  .heritage-timeline-marker {
+  .heritage-timeline-marker,
+  .page-transition-wrap,
+  .place-card-interactive,
+  .scroll-reveal,
+  .bookmark-btn-pop,
+  .pune-toast-pill,
+  .gps-pulse-outer,
+  .skeleton-shimmer,
+  .itinerary-stop-card,
+  .planner-step-active {
     animation: none !important;
     transition: none !important;
     transform: none !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1 !important;
   }
 
   .travel-photo-stack-layer-1,

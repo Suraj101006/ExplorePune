@@ -119,8 +119,8 @@ export default function LocationPickerModal({
         onLocationSelected?.(result.location);
         setFeedbackMessage(
           isMr
-            ? `✓ थेट GPS स्थान निश्चित झाले! (अचूकता: ±${result.accuracyMeters}m)`
-            : `✓ Live GPS Location acquired! (Accuracy: ±${result.accuracyMeters}m)`
+            ? `✓ स्थान निश्चित झाले! (Location found ✓)`
+            : `✓ Location found ✓ (Accuracy: ±${result.accuracyMeters}m)`
         );
         setTimeout(() => onClose(), 900);
       } else {
@@ -257,12 +257,13 @@ export default function LocationPickerModal({
         <div style={{ padding: '18px 22px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Quick Location Action Buttons */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
-            {/* Live Device GPS */}
+            {/* Live Device GPS (Requirement 11) */}
             <button
               type="button"
               onClick={handleDetectLiveGps}
               disabled={isLocatingGps}
               style={{
+                position: 'relative',
                 padding: '12px 14px',
                 borderRadius: 12,
                 border: '1.5px solid #10b981',
@@ -273,19 +274,20 @@ export default function LocationPickerModal({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
-                transition: 'all 0.15s ease',
+                transition: 'all 0.18s var(--ease-standard)',
               }}
             >
-              <span style={{ fontSize: 24 }}>{isLocatingGps ? '⏳' : '🎯'}</span>
+              {isLocatingGps && <div className="gps-pulse-outer" />}
+              <span style={{ fontSize: 22, position: 'relative' }}>{isLocatingGps ? '🛰️' : '🎯'}</span>
               <div>
                 <strong style={{ display: 'block', fontSize: 13.5, color: '#047857' }}>
                   {isLocatingGps
-                    ? (isMr ? 'GPS शोधत आहे…' : 'Acquiring GPS…')
+                    ? (isMr ? 'स्थान शोधत आहे…' : 'Detecting location…')
                     : (isMr ? 'थेट डिव्हाइस GPS' : 'Live Device GPS')}
                 </strong>
                 <span style={{ fontSize: 11, color: '#059669' }}>
                   {isLocatingGps
-                    ? (isMr ? 'सॅटेलाइट लॉक सुरू आहे' : 'Locking satellite sensors…')
+                    ? (isMr ? 'सॅटेलाइट लॉक सुरू आहे' : 'Locking satellite signal…')
                     : (isMr ? 'अचूक सेन्सर स्थान वापरा' : 'Accurate device coordinates')}
                 </span>
               </div>

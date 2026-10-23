@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -31,6 +31,15 @@ export default function AppHeader() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Shared moving active indicator for desktop tabs (Requirement 2 & 15)
+  const navRef = useRef<HTMLElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState<{ left: number; width: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
 
   const navLinks = [
     { href: '/', label: t('nav.explore'), Icon: Compass },
@@ -46,6 +55,31 @@ export default function AppHeader() {
     return pathname.startsWith(href);
   };
 
+  // Passive scroll listener for compact navbar & elevation (Requirement 15)
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Update active tab sliding indicator position
+  useEffect(() => {
+    if (!navRef.current) return;
+    const activeLink = navRef.current.querySelector('.active-nav-link') as HTMLElement | null;
+    if (activeLink) {
+      setIndicatorStyle({
+        left: activeLink.offsetLeft,
+        width: activeLink.offsetWidth,
+        opacity: 1,
+      });
+    } else {
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+    }
+  }, [pathname]);
+
   const handleMobileLogout = async () => {
     setIsLoggingOut(true);
     try {
@@ -59,7 +93,7 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${isScrolled ? 'site-header-scrolled' : ''}`}>
       <div className="wrap site-header-inner">
         {/* Brand Identity */}
         <Link href="/" className="brand">
@@ -81,8 +115,17 @@ export default function AppHeader() {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="desktop-nav" aria-label="Main Navigation">
+        {/* Desktop Navigation Links with Shared Moving Indicator */}
+        <nav ref={navRef} className="desktop-nav" aria-label="Main Navigation">
+          {/* Moving Active Pill Indicator (Requirement 2) */}
+          <div
+            className="desktop-nav-indicator"
+            style={{
+              left: indicatorStyle.left,
+              width: indicatorStyle.width,
+              opacity: indicatorStyle.opacity,
+            }}
+          />
           {navLinks.map((item) => {
             const active = isLinkActive(item.href);
             const { Icon } = item;

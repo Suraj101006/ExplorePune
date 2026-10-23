@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -170,6 +170,9 @@ export default function HomeExplorer({
   const [slideshowPlace, setSlideshowPlace] = useState<any | null>(null);
   const { startTransition: startPhotoTransition } = useTravelPhotoTransition();
   const [selectedZone, setSelectedZone] = useState<string>('all');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [poppingBookmarkId, setPoppingBookmarkId] = useState<string | null>(null);
 
   useEffect(() => {
     const loc = getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION;
@@ -218,6 +221,10 @@ export default function HomeExplorer({
   }, []);
 
   const handleToggleSave = (p: any) => {
+    const isCurrentlySaved = savedIds.includes(p.id);
+    setPoppingBookmarkId(p.id);
+    setTimeout(() => setPoppingBookmarkId(null), 300);
+
     toggleSavedPlace({
       id: p.id,
       slug: p.slug || p.id,
@@ -228,6 +235,17 @@ export default function HomeExplorer({
       category: p.category,
       data_tier: p.data_tier,
     });
+
+    const placeTitle = isMr && p.name_mr ? p.name_mr : p.name;
+    const msg = !isCurrentlySaved
+      ? (isMr ? `✓ "${placeTitle}" आवडत्या यादीत जोडले` : `✓ Added "${placeTitle}" to your Pune collection`)
+      : (isMr ? `"${placeTitle}" यादीतून काढले` : `Removed "${placeTitle}" from collection`);
+
+    setToastMessage(msg);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 2400);
   };
 
   const handleSpeak = (p: any) => {
@@ -1172,9 +1190,9 @@ export default function HomeExplorer({
           )}
         </div>
 
-        {/* Circular Category Badge Navigation */}
+        {/* Circular Category Badge Navigation with Native Smooth Scrolling (Requirement 4) */}
         <nav
-          className="chips"
+          className="chips category-nav-scroll"
           aria-label="Categories"
           style={{
             display: 'flex',
@@ -1416,7 +1434,7 @@ export default function HomeExplorer({
             </div>
 
             <div className="grid">
-              {displayedPlaces.map((p) => {
+              {displayedPlaces.map((p, idx) => {
                 const catObj = p.place_categories?.[0] || { name: p.category_slug || 'Spot' };
                 const catDisplayName = isMr ? (CATEGORY_NAMES_MR[p.category_slug || ''] || catObj.name) : catObj.name;
                 const tierLabel = isMr ? (TIER_MR[p.data_tier] || 'तपासलेले') : (TIER_EN[p.data_tier] || 'Verified');
@@ -1429,7 +1447,15 @@ export default function HomeExplorer({
                 const ticketLabel = formatTicket(p, isMr);
 
                 return (
-                  <article key={p.id} className="card place-card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>
+                  <article
+                    key={p.id}
+                    className="card place-card-interactive"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      '--card-i': Math.min(idx, 5),
+                    } as React.CSSProperties}
+                  >
                     {/* Landmark Photo Banner with Tactile Stack & Shared Element Flight Transition */}
                     <div
                       className="card-media"
@@ -1517,7 +1543,7 @@ export default function HomeExplorer({
                         <Volume2 size={15} color={speakingId === p.id ? '#059669' : '#ffffff'} />
                       </button>
 
-                      {/* Bookmark Tool */}
+                      {/* Bookmark Tool (Requirement 14) */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -1525,7 +1551,7 @@ export default function HomeExplorer({
                           e.stopPropagation();
                           handleToggleSave(p);
                         }}
-                        className={`card-action-btn ${isSaved ? 'active-saved' : ''}`}
+                        className={`card-action-btn ${isSaved ? 'active-saved' : ''} ${poppingBookmarkId === p.id ? 'bookmark-btn-pop' : ''}`}
                         style={{ position: 'absolute', top: 10, right: 10, zIndex: 3 }}
                         title={isSaved ? (isMr ? 'आवडत्या यादीतून काढा' : 'Remove from Wishlist') : (isMr ? 'आवडत्या यादीत जोडा' : 'Save to Wishlist')}
                         aria-label="Save place"
@@ -1958,6 +1984,14 @@ export default function HomeExplorer({
         onClose={() => setSlideshowPlace(null)}
         place={slideshowPlace}
       />
+
+      {/* Tiny Bookmark Confirmation Toast (Requirement 14) */}
+      {toastMessage && (
+        <div className="pune-toast-pill" role="status" aria-live="polite">
+          <span>🔖</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </>
   );
 }

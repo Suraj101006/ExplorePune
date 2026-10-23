@@ -49,14 +49,27 @@ export default function CinematicPlaceSlideshow({
   const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
   const failedUrlsRef = useRef<Set<string>>(new Set());
 
-  // Check reduced motion preference
+  // Check reduced motion preference & pause when tab is hidden (Requirement 7 & 21)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
       setPrefersReducedMotion(mq.matches);
       const listener = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
       mq.addEventListener('change', listener);
-      return () => mq.removeEventListener('change', listener);
+
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'hidden') {
+          setIsPlaying(false);
+        } else {
+          setIsPlaying(true);
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      return () => {
+        mq.removeEventListener('change', listener);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      };
     }
   }, []);
 
@@ -228,6 +241,8 @@ export default function CinematicPlaceSlideshow({
   return (
     <section
       aria-label={`${primaryTitle} Automated Photo Slideshow`}
+      onMouseEnter={() => setIsPlaying(false)}
+      onMouseLeave={() => setIsPlaying(true)}
       style={{
         position: 'relative',
         width: '100%',

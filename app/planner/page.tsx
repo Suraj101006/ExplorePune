@@ -87,6 +87,7 @@ export default function PlannerPage() {
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [pdfSuccess, setPdfSuccess] = useState('');
+  const [planningStep, setPlanningStep] = useState(0);
 
   // Email Itinerary / PDF Dispatch State
   const [emailModalOpen, setEmailModalOpen] = useState(false);
@@ -148,11 +149,17 @@ export default function PlannerPage() {
   async function generate(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setPlanningStep(0);
     setError('');
     setResult(null);
     setSelectedPlanIndex(0);
     setPdfSuccess('');
     setIsGuidedMode(false);
+
+    const startTime = Date.now();
+    const progressTimer = setInterval(() => {
+      setPlanningStep((prev) => (prev < 4 ? prev + 1 : prev));
+    }, 140);
 
     const [h, m] = time.split(':').map(Number);
     let lat = 18.5204;
@@ -181,6 +188,13 @@ export default function PlannerPage() {
         }),
       });
       const json = await res.json();
+
+      // Ensure calm 650ms progress animation so user sees the step sequence (Requirement 9)
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 650) {
+        await new Promise((resolve) => setTimeout(resolve, 650 - elapsed));
+      }
+
       if (json.data) {
         setResult(json.data);
       } else {
@@ -192,6 +206,8 @@ export default function PlannerPage() {
     } catch {
       setError(isMr ? 'संपर्क त्रुटी आली. कृपया इंटरनेट तपासा.' : 'Connection failure. Check your network connection.');
     } finally {
+      clearInterval(progressTimer);
+      setPlanningStep(4);
       setLoading(false);
     }
   }
@@ -1413,6 +1429,73 @@ export default function PlannerPage() {
         <div aria-live="polite" style={{ display: 'grid', gap: 16 }}>
           {error && <p className="note err">{error}</p>}
 
+          {/* Short Professional Planning Animation (Requirement 9) */}
+          {loading && (
+            <div
+              className="panel"
+              style={{
+                padding: '36px 24px',
+                textAlign: 'center',
+                background: '#ffffff',
+                border: '1.5px solid var(--primary-border)',
+                borderRadius: 'var(--radius)',
+                boxShadow: '0 8px 24px rgba(6, 95, 70, 0.08)',
+              }}
+            >
+              <div style={{ fontSize: 32, marginBottom: 12 }}>🧭</div>
+              <h3 style={{ margin: '0 0 6px', fontSize: 18, color: 'var(--primary)', fontWeight: 800 }}>
+                {isMr ? 'पुणे सहल आराखडा तयार करत आहे…' : 'Generating Custom Pune Itinerary…'}
+              </h3>
+              <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--muted)' }}>
+                {isMr ? 'अचूक बस व मेट्रो कॉरिडॉर, वेळा आणि विश्रांती नियोजन' : 'Mapping transit routes, opening hours, and visit schedules'}
+              </p>
+
+              {/* Moving Step Progress Indicator (Location -> Places -> Route -> Time -> Final Itinerary) */}
+              <div style={{ maxWidth: 480, margin: '0 auto 20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 700, marginBottom: 8, gap: 4 }}>
+                  <span style={{ color: planningStep >= 0 ? 'var(--primary)' : 'var(--muted)', fontWeight: planningStep === 0 ? 800 : 600 }}>
+                    📍 {isMr ? 'स्थान' : 'Location'}
+                  </span>
+                  <span>→</span>
+                  <span style={{ color: planningStep >= 1 ? 'var(--primary)' : 'var(--muted)', fontWeight: planningStep === 1 ? 800 : 600 }}>
+                    🏛️ {isMr ? 'ठिकाणे' : 'Places'}
+                  </span>
+                  <span>→</span>
+                  <span style={{ color: planningStep >= 2 ? 'var(--primary)' : 'var(--muted)', fontWeight: planningStep === 2 ? 800 : 600 }}>
+                    🚌 {isMr ? 'मार्ग' : 'Route'}
+                  </span>
+                  <span>→</span>
+                  <span style={{ color: planningStep >= 3 ? 'var(--primary)' : 'var(--muted)', fontWeight: planningStep === 3 ? 800 : 600 }}>
+                    ⏱️ {isMr ? 'वेळ' : 'Time'}
+                  </span>
+                  <span>→</span>
+                  <span style={{ color: planningStep >= 4 ? 'var(--primary)' : 'var(--muted)', fontWeight: planningStep === 4 ? 800 : 600 }}>
+                    🏁 {isMr ? 'आराखडा' : 'Itinerary'}
+                  </span>
+                </div>
+                {/* Moving Progress Bar */}
+                <div
+                  style={{
+                    height: 6,
+                    background: '#e2e8f0',
+                    borderRadius: 999,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${Math.min(100, (planningStep + 1) * 20)}%`,
+                      background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+                      borderRadius: 999,
+                      transition: 'width 180ms var(--ease-standard)',
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {!result && !error && !loading && (
             <div
               className="panel"
@@ -1950,21 +2033,22 @@ export default function PlannerPage() {
                 </div>
               )}
 
-              {/* Stops Timeline with Public Transit Info */}
-              <div style={{ display: 'grid', gap: 14 }}>
-                <h3 style={{ margin: '8px 0 0', fontSize: 16 }}>
-                  {t('planner.routeItinerary')} ({activePlan.stops?.length || 0} {isMr ? 'ठिकाणे' : 'Stops'})
-                </h3>
-                {activePlan.stops.map((s: any, i: number) => (
-                  <div
-                    key={s.placeId}
-                    className="panel"
-                    style={{
-                      padding: 16,
-                      border: '1px solid var(--line)',
-                      borderRadius: 'var(--radius)',
-                    }}
-                  >
+                {/* Stops Timeline with Progressive Entrance (Requirement 10) */}
+                <div style={{ display: 'grid', gap: 14 }}>
+                  <h3 style={{ margin: '8px 0 0', fontSize: 16 }}>
+                    {t('planner.routeItinerary')} ({activePlan.stops?.length || 0} {isMr ? 'ठिकाणे' : 'Stops'})
+                  </h3>
+                  {activePlan.stops.map((s: any, i: number) => (
+                    <div
+                      key={s.placeId}
+                      className="panel itinerary-stop-card"
+                      style={{
+                        padding: 16,
+                        border: '1px solid var(--line)',
+                        borderRadius: 'var(--radius)',
+                        '--stop-i': i,
+                      } as React.CSSProperties}
+                    >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: s.transitDetails ? 12 : 0 }}>
                       <span
                         style={{
