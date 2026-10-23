@@ -251,7 +251,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Ishan Kakade Card (Advisor) */}
+            {/* Ishan Kakade Card (QA & Documentation) */}
             <div
               style={{
                 background: 'linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)',
@@ -280,14 +280,14 @@ export default function AboutPage() {
                 <div>
                   <h3 style={{ margin: 0, fontSize: 18, color: '#92400e', fontWeight: 800 }}>Ishan Kakade</h3>
                   <span style={{ fontSize: 13, color: '#b45309', fontWeight: 700 }}>
-                    {isMr ? 'सल्लागार (Advisor & Cultural Consultant)' : 'Advisor & Cultural Consultant'}
+                    {isMr ? 'गुणवत्ता हमी (QA) चाचणी आणि दस्तऐवजीकरण' : 'Quality Assurance (QA) Testing & Documentation'}
                   </span>
                 </div>
               </div>
               <p style={{ fontSize: 13.5, color: '#334155', margin: '0 0 14px', lineHeight: 1.5 }}>
                 {isMr
-                  ? 'पुणे सांस्कृतिक वारसा, नागरिक उपक्रम, पर्यटन विस्तार आणि संस्थात्मक सहकार्यासाठी धोरणात्मक सल्लागार.'
-                  : 'Strategic advisor guiding Pune cultural heritage, civic initiatives, tourism community outreach, and visitor experience.'}
+                  ? 'व्यासपीठाची गुणवत्ता हमी, विविध उपकरणांवरील कार्यप्रणाली चाचणी (QA) आणि पर्यटन माहितीचे अचूक दस्तऐवजीकरण.'
+                  : 'Leading quality assurance, functional QA testing, and comprehensive documentation for tourist guidance and platform reliability.'}
               </p>
               <div style={{ fontSize: 13, borderTop: '1px solid #fde68a', paddingTop: 10 }}>
                 <strong>Contact Email:</strong>{' '}
@@ -389,7 +389,7 @@ export default function AboutPage() {
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
               <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Strategic Advisor & Heritage Consultant</span>
+              <span style={{ fontSize: 12.5, color: '#64748b' }}>Quality Assurance (QA) Testing & Documentation</span>
               <a
                 href="mailto:1ishankakade@gmail.com"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}

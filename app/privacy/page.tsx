@@ -145,11 +145,11 @@ export default function PrivacyPolicyPage() {
           <p>
             {isMr ? (
               <>
-                DPDP कायदा २०२३ च्या कलम २(i) नुसार, <strong>Explore Pune</strong> हे व्यासपीठ डेटा फिड्युशियरी (Data Fiduciary) म्हणून काम करते. हे व्यासपीठ <strong>सुरज ढोक (Suraj Dhok)</strong>, <strong>साहिल जाधव (Sahil Jadhav)</strong> आणि सल्लागार <strong>ईशान काकडे (Ishan Kakade)</strong> (ExplorePune team) यांच्या सहकार्याने पुणे पर्यटन, वारसा आणि सार्वजनिक वाहतूक मार्गदर्शनासाठी संचालित केले जाते.
+                DPDP कायदा २०२३ च्या कलम २(i) नुसार, <strong>Explore Pune</strong> हे व्यासपीठ डेटा फिड्युशियरी (Data Fiduciary) म्हणून काम करते. हे व्यासपीठ <strong>सुरज ढोक (Suraj Dhok)</strong>, <strong>साहिल जाधव (Sahil Jadhav)</strong> आणि गुणवत्ता हमी (QA) व दस्तऐवजीकरण प्रमुख <strong>ईशान काकडे (Ishan Kakade)</strong> (ExplorePune team) यांच्या सहकार्याने पुणे पर्यटन, वारसा आणि सार्वजनिक वाहतूक मार्गदर्शनासाठी संचालित केले जाते.
               </>
             ) : (
               <>
-                Pursuant to Section 2(i) of the Digital Personal Data Protection Act, 2023, <strong>Explore Pune</strong> operates as the Data Fiduciary responsible for determining the purpose and means of processing personal data. The platform is founded and engineered by <strong>Suraj Dhok</strong>, <strong>Sahil Jadhav</strong>, and strategic advisor <strong>Ishan Kakade</strong> (ExplorePune team) for public tourism, heritage education, and civic transit navigation in Pune, Maharashtra.
+                Pursuant to Section 2(i) of the Digital Personal Data Protection Act, 2023, <strong>Explore Pune</strong> operates as the Data Fiduciary responsible for determining the purpose and means of processing personal data. The platform is founded and engineered by <strong>Suraj Dhok</strong>, <strong>Sahil Jadhav</strong>, and quality assurance & documentation lead <strong>Ishan Kakade</strong> (ExplorePune team) for public tourism, heritage education, and civic transit navigation in Pune, Maharashtra.
               </>
             )}
           </p>

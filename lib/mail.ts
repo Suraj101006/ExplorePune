@@ -213,7 +213,7 @@ export async function sendFeedbackConfirmationEmail(params: FeedbackEmailParams)
         </p>
       </div>
 
-      <!-- Mandatory Signature from Suraj Dhok & Sahil Jadhav (Advisory: Ishan Kakade) -->
+      <!-- Mandatory Signature from Suraj Dhok & Sahil Jadhav (QA & Documentation: Ishan Kakade) -->
       <div style="margin-top: 28px; padding-top: 20px; border-top: 1.5px solid #e2e8f0;">
         <p style="font-size: 14px; margin: 0 0 4px; color: #64748b;">
           ${isMarathi ? 'सस्नेह नमस्कार,' : 'Warm regards,'}
@@ -222,7 +222,7 @@ export async function sendFeedbackConfirmationEmail(params: FeedbackEmailParams)
           Suraj Dhok and Sahil Jadhav
         </p>
         <p style="font-size: 12.5px; font-weight: 700; color: #b45309; margin: 2px 0 0;">
-          ${isMarathi ? 'सल्लागार: इशान काकडे (Ishan Kakade)' : 'Advisor: Ishan Kakade'}
+          ${isMarathi ? 'गुणवत्ता हमी (QA) व दस्तऐवजीकरण: इशान काकडे (Ishan Kakade)' : 'QA Testing & Documentation: Ishan Kakade'}
         </p>
         <p style="font-size: 13px; font-weight: 700; color: #475569; margin: 3px 0 0;">
           ExplorePune Team
@@ -264,7 +264,7 @@ Feedback Details:
 
 Warm regards / सस्नेह नमस्कार,
 Suraj Dhok & Sahil Jadhav (Founders)
-Ishan Kakade (Advisor)
+Ishan Kakade (QA & Documentation)
 ExplorePune Team
 ==================================================
 `;
@@ -565,7 +565,7 @@ export async function sendItineraryEmail(params: ItineraryEmailParams) {
       </h3>
       ${stopsHtml}
 
-      <!-- Mandatory Signature from Suraj Dhok & Sahil Jadhav (Advisory: Ishan Kakade) -->
+      <!-- Mandatory Signature from Suraj Dhok & Sahil Jadhav (QA & Documentation: Ishan Kakade) -->
       <div style="margin-top: 28px; padding-top: 20px; border-top: 1.5px solid #e2e8f0;">
         <p style="font-size: 14px; margin: 0 0 4px; color: #64748b;">
           ${isMarathi ? 'सस्नेह नमस्कार,' : 'Warm regards,'}
@@ -574,7 +574,7 @@ export async function sendItineraryEmail(params: ItineraryEmailParams) {
           Suraj Dhok and Sahil Jadhav
         </p>
         <p style="font-size: 12.5px; font-weight: 700; color: #b45309; margin: 2px 0 0;">
-          ${isMarathi ? 'सल्लागार: इशान काकडे (Ishan Kakade)' : 'Advisor: Ishan Kakade'}
+          ${isMarathi ? 'गुणवत्ता हमी (QA) व दस्तऐवजीकरण: इशान काकडे (Ishan Kakade)' : 'QA Testing & Documentation: Ishan Kakade'}
         </p>
         <p style="font-size: 13px; font-weight: 700; color: #475569; margin: 3px 0 0;">
           ExplorePune Team
@@ -615,7 +615,7 @@ We have attached your official PDF guide to this email (Explore_Pune_Itinerary.p
 
 Warm regards / सस्नेह नमस्कार,
 Suraj Dhok & Sahil Jadhav (Founders)
-Ishan Kakade (Advisor)
+Ishan Kakade (QA & Documentation)
 ExplorePune Team
 ==================================================
 `;

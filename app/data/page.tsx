@@ -436,7 +436,7 @@ export default function DataMethodologyPage() {
 
             <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
               <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Strategic Advisor & Heritage Consultant</span>
+              <span style={{ fontSize: 12.5, color: '#64748b' }}>Quality Assurance (QA) Testing & Documentation</span>
               <a
                 href="mailto:1ishankakade@gmail.com"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#b45309', fontWeight: 800, textDecoration: 'underline' }}

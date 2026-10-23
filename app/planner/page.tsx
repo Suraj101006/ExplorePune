@@ -1894,7 +1894,7 @@ export default function PlannerPage() {
                       </div>
                       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                         <a
-                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear ${itineraryUserName.trim() || 'Explorer'},\n\nHere is your custom Pune itinerary created on Explore Pune (explorepune232@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nPrepared for: ${itineraryUserName.trim() || 'Explorer'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nOfficial PDF Attached: Explore_Pune_${(itineraryUserName.trim() || 'Explorer').replace(/[^a-zA-Z0-9]/g, '_')}_Itinerary.pdf\n\nWarm regards,\nSuraj Dhok & Sahil Jadhav (Founders), Ishan Kakade (Advisor)\nExplorePune Team`)}`}
+                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${encodeURIComponent(`Your Explore Pune Itinerary: ${activePlan.titleEn || 'Custom Tour'} 🗺️`)}&body=${encodeURIComponent(`Dear ${itineraryUserName.trim() || 'Explorer'},\n\nHere is your custom Pune itinerary created on Explore Pune (explorepune232@gmail.com):\nPlan: ${activePlan.titleEn || 'Custom Tour'}\nPrepared for: ${itineraryUserName.trim() || 'Explorer'}\nStart: ${start === 'my-live-gps' ? 'My Live Location' : (start || 'Central Pune')}\nDuration: ~${Math.round((activePlan.totalDurationMinutes || 180)/60)} hours\n\nStops:\n${(activePlan.stops || []).map((s: any, i: number) => `${i+1}. ${s.placeName} (${s.arrivalTime || ''} - ${s.departureTime || ''})`).join('\n')}\n\nOfficial PDF Attached: Explore_Pune_${(itineraryUserName.trim() || 'Explorer').replace(/[^a-zA-Z0-9]/g, '_')}_Itinerary.pdf\n\nWarm regards,\nSuraj Dhok & Sahil Jadhav (Founders), Ishan Kakade (QA & Documentation)\nExplorePune Team`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn"
@@ -2135,7 +2135,7 @@ export default function PlannerPage() {
                     Suraj Dhok & Sahil Jadhav
                   </div>
                   <div style={{ fontSize: 12.5, fontWeight: 700, color: '#b45309', marginTop: 2 }}>
-                    {isMr ? 'सल्लागार: इशान काकडे (Ishan Kakade)' : 'Advisor: Ishan Kakade'}
+                    {isMr ? 'गुणवत्ता हमी (QA) व दस्तऐवजीकरण: इशान काकडे (Ishan Kakade)' : 'QA Testing & Documentation: Ishan Kakade'}
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 2 }}>
                     {isMr

@@ -411,7 +411,7 @@ export function generateItineraryPdf(data: ItineraryPdfData): jsPDF {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(180, 83, 9);
-  doc.text('Advisor: Ishan Kakade', margin, y);
+  doc.text('QA & Documentation: Ishan Kakade', margin, y);
 
   y += 4;
   doc.setFont('helvetica', 'bold');
