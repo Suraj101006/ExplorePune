@@ -17,6 +17,7 @@ import {
   LogOut,
   LogIn,
   Shield,
+  Users,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -46,6 +47,7 @@ export default function AppHeader() {
     { href: '/', label: t('nav.explore'), Icon: Compass },
     { href: '/journey', label: t('nav.journey') || (isMr ? 'माझी सफर' : 'My Journey'), Icon: Footprints },
     { href: '/planner', label: t('nav.planner'), Icon: Route },
+    { href: '/community', label: isMr ? 'समुदाय' : 'Community', Icon: Users },
     { href: '/milestones', label: t('nav.milestones'), Icon: Award },
     { href: '/blogs', label: t('nav.blogs'), Icon: BookOpen },
     { href: '/about', label: t('nav.about'), Icon: Info },

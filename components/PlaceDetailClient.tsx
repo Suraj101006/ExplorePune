@@ -42,6 +42,7 @@ import { getPlaceAuthenticity } from '@/lib/authenticity';
 import TravelCompass from '@/components/TravelCompass';
 import HeritageTimeline, { TimelineMilestone } from '@/components/HeritageTimeline';
 import { openDirectionsModal } from '@/lib/navigationService';
+import PlaceCommunitySection from '@/components/PlaceCommunitySection';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -2407,6 +2408,13 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
         {/* Community Visitor Photo Gallery */}
         <CommunityGallery placeId={place.id} placeName={primaryName} />
+
+        {/* Dedicated Community Discussions & Local Tips */}
+        <PlaceCommunitySection
+          placeId={place.id}
+          placeSlug={place.slug}
+          placeName={primaryName}
+        />
 
         {/* Reviews Section */}
         <Reviews placeId={place.id} />
