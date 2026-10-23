@@ -33,11 +33,20 @@ export default async function HomePage({
     allPlaces = allPlaces.filter((p) => p.status === 'published');
 
     if (cat) {
-      allPlaces = allPlaces.filter((p) =>
-        p.place_categories?.some((c: any) => c.slug === cat) ||
-        p.category_slug === cat ||
-        p.category === cat
-      );
+      if (cat === 'free') {
+        // Strict verification: general visitor entry must be verified as ₹0 with fee_status === 'free'
+        // Under no circumstances show unverified, unknown, or paid places
+        allPlaces = allPlaces.filter(
+          (p) => p.fee_status === 'free' && (p.entry_fee === 0 || p.place_prices?.[0]?.amount === 0)
+        );
+      } else {
+        allPlaces = allPlaces.filter(
+          (p) =>
+            p.place_categories?.some((c: any) => c.slug === cat) ||
+            p.category_slug === cat ||
+            p.category === cat
+        );
+      }
     }
 
     if (term) {

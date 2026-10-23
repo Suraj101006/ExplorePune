@@ -114,10 +114,29 @@ function formatDuration(minutes?: number, isMr?: boolean): string | null {
   return `${hrs} ${isMr ? 'तास' : 'hrs'}`;
 }
 
-function formatTicket(price: any, isMr: boolean): string {
-  if (!price) return isMr ? 'प्रवेश माहिती उपलब्ध' : 'Entry info available';
-  if (price.is_free) return isMr ? 'मोफत प्रवेश' : 'Free Entry';
-  return `${isMr ? '₹' : '₹'}${price.amount}${isMr ? ' प्रति व्यक्ती' : ' per person'}`;
+function formatTicket(place: any, isMr: boolean): string {
+  if (!place) return isMr ? 'प्रवेश माहिती उपलब्ध' : 'Entry info available';
+  const price = place.place_prices?.[0];
+  // Case 1: Verified Free Entry (₹0 confirmed by authoritative sources)
+  if (place.fee_status === 'free' || place.entry_fee === 0) {
+    return isMr ? 'मोफत प्रवेश (₹०)' : 'Free Entry (₹0)';
+  }
+  // Case 2: Verified Paid Entry
+  if (place.fee_status === 'paid' || (typeof place.entry_fee === 'number' && place.entry_fee > 0)) {
+    const amount = place.entry_fee ?? price?.amount;
+    return `₹${amount}${isMr ? ' प्रति व्यक्ती' : ' per person'}`;
+  }
+  if (price && typeof price.amount === 'number' && price.amount > 0) {
+    return `₹${price.amount}${isMr ? ' प्रति व्यक्ती' : ' per person'}`;
+  }
+  if (price && price.is_free && place.fee_status !== 'paid') {
+    return isMr ? 'मोफत प्रवेश (₹०)' : 'Free Entry (₹0)';
+  }
+  // Case 3: Unknown / Not Verified - NEVER convert to ₹0
+  if (place.fee_status === 'not_verified' || place.entry_fee === null) {
+    return isMr ? 'प्रवेश शुल्क अधिकृतपणे पुष्टी नाही' : 'Fee info not officially confirmed';
+  }
+  return isMr ? 'प्रवेश माहिती उपलब्ध' : 'Entry info available';
 }
 
 interface HomeExplorerProps {
@@ -1220,6 +1239,24 @@ export default function HomeExplorer({
             <span>{isMr ? 'सर्व ठिकाणे' : 'All Places'}</span>
           </Link>
 
+          {/* Verified Free Entry Filter (₹0 Only) */}
+          <Link
+            className="chip"
+            href="/?cat=free"
+            aria-current={currentCat === 'free'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '6px 14px',
+              borderRadius: '999px',
+              fontWeight: currentCat === 'free' ? 700 : 500,
+            }}
+          >
+            <span style={{ fontSize: '14px', lineHeight: 1 }}>🎟️</span>
+            <span>{isMr ? 'मोफत प्रवेश (₹०)' : 'Free Entry (₹0)'}</span>
+          </Link>
+
           {categories.map((c) => {
             const badgeImg = CATEGORY_BADGES[c.slug] || '/images/places/shaniwar-wada.jpg';
             const displayName = isMr ? (CATEGORY_NAMES_MR[c.slug] || c.name) : c.name;
@@ -1389,7 +1426,7 @@ export default function HomeExplorer({
                 const isSaved = savedIds.includes(p.id);
                 const locality = getPlaceLocality(p, isMr);
                 const durationLabel = formatDuration(p.recommended_duration_minutes, isMr);
-                const ticketLabel = formatTicket(price, isMr);
+                const ticketLabel = formatTicket(p, isMr);
 
                 return (
                   <article key={p.id} className="card place-card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>

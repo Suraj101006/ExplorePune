@@ -996,14 +996,18 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                     {isMr ? 'अधिकृत संदर्भ (Sources):' : 'Sources:'}
                   </strong>{' '}
                   <span>
-                    {authenticity.sourcesList?.length > 0
+                    {place.verification?.sources?.length > 0
+                      ? place.verification.sources.map((s: any) => s.name || s).join(' • ')
+                      : authenticity.sourcesList?.length > 0
                       ? authenticity.sourcesList.join(' • ')
                       : 'Archaeological Survey of India (ASI) • Maharashtra Tourism (MTDC) • PMC Heritage'}
                   </span>
                 </div>
                 <div style={{ color: '#64748b', fontSize: 11.5 }}>
                   {isMr ? 'अंतिम पडताळणी:' : 'Last verified:'}{' '}
-                  <strong style={{ color: '#334155' }}>{authenticity.lastVerified || '22 October 2026'}</strong>
+                  <strong style={{ color: '#334155' }}>
+                    {place.verification?.lastChecked || authenticity.lastVerified || '23 October 2026'}
+                  </strong>
                 </div>
               </div>
             </div>
@@ -1040,18 +1044,33 @@ export default function PlaceDetailClient({ place }: { place: any }) {
                   {isMr ? 'प्रवेश शुल्क' : 'Admission Fee'}
                 </span>
                 <p style={{ fontSize: '15px', fontWeight: 700, margin: 0, color: 'var(--clay)' }}>
-                  {price
-                    ? price.is_free
-                      ? isMr
-                        ? 'विनामूल्य प्रवेश (सर्वांसाठी मोफत)'
-                        : 'Free Admission for everyone'
-                      : isMr
-                      ? `₹${price.amount} प्रति व्यक्ती`
-                      : `₹${price.amount} per person`
-                    : isMr
-                    ? 'स्थानिक नियमांनुसार विनामूल्य किंवा सवलत'
-                    : 'Free or nominal local fee'}
+                  {(() => {
+                    if (place.fee_status === 'free' || place.entry_fee === 0 || (price?.is_free && place.fee_status !== 'paid')) {
+                      return isMr ? 'विनामूल्य प्रवेश (सर्व पर्यटकांसाठी ₹०)' : 'Verified Free Entry (₹0 for all visitors)';
+                    }
+                    if (place.fee_status === 'paid' || (typeof place.entry_fee === 'number' && place.entry_fee > 0)) {
+                      const amount = place.entry_fee ?? price?.amount;
+                      return isMr ? `₹${amount} प्रति व्यक्ती (अधिकृत तिकीट)` : `₹${amount} per person (Official ticket)`;
+                    }
+                    if (price && typeof price.amount === 'number' && price.amount > 0) {
+                      return isMr ? `₹${price.amount} प्रति व्यक्ती` : `₹${price.amount} per person`;
+                    }
+                    if (place.fee_status === 'not_verified' || place.entry_fee === null) {
+                      return isMr ? 'प्रवेश शुल्क अधिकृतपणे पुष्टी नाही' : 'Fee info not officially confirmed';
+                    }
+                    return isMr ? 'प्रवेश माहिती उपलब्ध' : 'Entry info available';
+                  })()}
                 </p>
+                {place.fee_details?.notes && (
+                  <p style={{ fontSize: '12px', color: 'var(--muted)', marginTop: 4, marginBottom: 0, lineHeight: 1.4 }}>
+                    ℹ️ {isMr ? (place.fee_details.notes_mr || place.fee_details.notes) : place.fee_details.notes}
+                  </p>
+                )}
+                {place.fee_details?.parking && (
+                  <p style={{ fontSize: '11.5px', color: 'var(--muted)', marginTop: 2, marginBottom: 0 }}>
+                    🚗 {place.fee_details.parking}
+                  </p>
+                )}
               </div>
 
               {/* Best Time to Visit */}

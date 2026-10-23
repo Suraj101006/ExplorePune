@@ -506,46 +506,46 @@ export const LANDMARK_SPECIFIC_FOOD: Record<string, { en: string[]; mr: string[]
       'टिळक रस्ता चितळे बंधू — बाकरवडी',
     ],
   },
-  'chitale-bandhu-mithaiwale': {
+  'ohel-david-synagogue': {
     en: [
-      'Chitale Bandhu Counter Specials — freshly packed crispy Bakarwadi (spiced spiral rolls), Amba Barfi (mango fudge), and Shrikhand',
-      'Sujata Mastani (Bajirao Road, 200m away) — world-famous Mango Mastani ice cream drink',
-      'Vaidya Upahar Gruha (Budhwar Peth, 250m) — historic 1910 Sanzi Misal',
-      'Tulshibaug SPDP & street chaat',
+      'Dorabjee & Sons (Dastur Meher Road, Camp, 700m away) — legendary Parsi Dhansak, Chicken Farcha, and Mutton Cutlets since 1878',
+      'Marz-O-Rin (MG Road, Camp, 600m away) — iconic green chutney sandwich, chicken burger & cold coffee in a heritage bakery building',
+      'Pasteur Bakery & Ice Cream (MG Road, Camp) — historic softy ice creams, pastries & rolls',
+      'Kayani Bakery (East Street, Camp, 800m away) — historic Shrewsbury biscuits and mawa cake',
     ],
     mr: [
-      'चितळे बंधू काऊंटर — ताजी कुरकुरीत बाकरवडी, आंबा बर्फी आणि केशर श्रीखंड',
-      'सुजाता मस्तानी (बाजीराव रस्ता, २०० मीटर) — प्रसिद्ध मॅंगो मस्तानी',
-      'वैद्य उपहार गृह (बुधवार पेठ) — ११० वर्षांची जुनी सांजा मिसळ',
-      'तुळशीबाग — अस्सल पुणेरी एसपीडीपी',
+      'दोराबजी अँड सन्स (दस्तुरी मेहेर रस्ता, कॅम्प, १८७८ ची स्थापना) — प्रसिद्ध अस्सल पारशी धनसाक, मटन कटलेट व चिकन फरचा',
+      'मारझो-रीन (एम.जी. रस्ता, कॅम्प, १९४४) — हेरिटेज वास्तूतील प्रसिद्ध ग्रीन चटणी सँडविच, मॅकरोनी व कोल्ड कॉफी',
+      'पाश्चर बेकरी व आईस्क्रीम (एम.जी. रस्ता) — पारंपारिक मऊ आईस्क्रीम व रोल्स',
+      'कयानी बेकरी (ईस्ट स्ट्रीट, कॅम्प) — सुप्रसिद्ध श्रुजबरी बिस्किटे व मावा केक',
     ],
   },
-  'sujata-mastani-heritage': {
+  'st-marys-church': {
     en: [
-      'Sujata Mastani Original Flavors — Mango Mastani, Kesar Pista Mastani, Chocolate Mastani & Anjeer Mastani',
-      'Shri Krishna Bhuvan (Tulshibaug, 150m away) — historic 1941 Poha Misal with spicy tarri',
-      'Chitale Bandhu Mithaiwale (Bajirao Road, 200m) — fresh Bakarwadi',
-      'Appa Balwant Chowk snacks & Pohe',
+      'George Restaurant (East Street, Camp, 300m away) — celebrated Biryani, Irani Kheema Pav, and Caramel Custard',
+      'Marz-O-Rin & Pasteur Bakery (MG Road, Camp, 500m away) — heritage bakery snacks, sandwiches & coffee',
+      'Dorabjee & Sons (Dastur Meher Road, Camp) — legendary 1878 Parsi cuisine (Dhansak and Sali Boti)',
+      'Cafe Yezdan (Sharbatwala Chowk) — authentic Irani chai and bun maska',
     ],
     mr: [
-      'सुजाता मस्तानी खास प्रकार — अस्सल मॅंगो मस्तानी, केशर पिस्ता, अंजिर व चॉकलेट मस्तानी',
-      'श्रीकृष्ण भुवन (तुळशीबाग) — १९४१ ची पारंपारिक पोहा मिसळ व झणझणीत कट',
-      'चितळे बंधू — बाकरवडी आणि आंबा बर्फी',
-      'आप्पा बळवंत चौक — चहा आणि पोहे',
+      'जॉर्ज रेस्टॉरंट (ईस्ट स्ट्रीट, कॅम्प) — प्रसिद्ध दम बिर्याणी, इराणी खिमा पाव आणि कॅरॅमल कस्टर्ड',
+      'मारझो-रीन व पाश्चर (एम.जी. रस्ता, कॅम्प) — हेरिटेज बेकरी स्नॅक्स, सँडविच आणि कॉफी',
+      'दोराबजी अँड सन्स (कॅम्प) — १८७८ पासूनचे पारंपारिक पारशी जेवण',
+      'कॅफे येझदान (शरबतवाला चौक) — कडक इराणी चहा व मस्का पाव',
     ],
   },
-  'kayani-bakery-camp': {
+  'darshan-museum': {
     en: [
-      'Kayani Bakery signature items — authentic Shrewsbury Butter Biscuits, Mawa Cake, Brazil Nut Cookies, and Walnut Cake',
-      'Dorabjee & Sons (Dastur Meher Road, Camp, 300m away) — legendary Parsi Chicken Farcha, Dhansak & Mutton Cutlets since 1878',
-      'Marz-O-Rin (MG Road, 400m away) — green chutney sandwich, chicken burger, macaroni & cold coffee since 1944',
-      'Cafe Yezdan (Sharbatwala Chowk) — authentic Irani Chai and Brun Maska',
+      'Sadhu Vaswani Mission Canteen (Adjacent to museum) — pristine, hygienic vegetarian sattvic refreshments & herbal tea',
+      'Dorabjee & Sons (Camp, 1 km away) — authentic historic Parsi thali and dhansak since 1878',
+      'George Restaurant & Kayani Bakery (East Street, 1.2 km away) — historic Camp delicacies and Shrewsbury cookies',
+      'Marz-O-Rin (MG Road, 1.3 km away) — famous cold coffee and chutney sandwiches',
     ],
     mr: [
-      'कयानी बेकरी विशेष — अस्सल श्रुजबरी बटर बिस्किटे, मावा केक, ब्राझील नट कुकीज आणि वॉलनट केक',
-      'दोराबजी अँड सन्स (कॅम्प, १८७८ ची स्थापना) — प्रसिद्ध पारशी चिकन धनसाक, मटन कटलेट व बिर्याणी',
-      'मारझो-रीन (एम.जी. रस्ता, १९४४ ची स्थापना) — प्रसिद्ध ग्रीन चटणी सँडविच, मकरोनी आणि कोल्ड कॉफी',
-      'कॅफे येझदान (शरबतवाला चौक) — अस्सल कडक इराणी चहा व ब्रून मस्का',
+      'साधू वासवानी मिशन कॅन्टीन (म्युझियम शेजारी) — अत्यंत स्वच्छ सात्विक शाकाहारी नाश्ता आणि हर्बल चहा',
+      'दोराबजी अँड सन्स (कॅम्प) — १८७८ ची ऐतिहासिक पारशी थाळी व धनसाक',
+      'जॉर्ज रेस्टॉरंट व कयानी बेकरी (ईस्ट स्ट्रीट) — कॅम्पमधील प्रसिद्ध बिर्याणी व श्रुजबरी बिस्किटे',
+      'मारझो-रीन (एम.जी. रस्ता) — प्रसिद्ध कोल्ड कॉफी आणि चटणी सँडविच',
     ],
   },
   'malhargad-fort': {
