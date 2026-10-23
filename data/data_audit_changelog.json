@@ -1,0 +1,47 @@
+[
+  {
+    "place": "Sinhagad Fort (Lion's Fort)",
+    "field": "entry_fee",
+    "oldValue": 50,
+    "newValue": 0,
+    "reason": "Separated vehicle toll from visitor admission. General admission for pedestrians/trekkers is ₹0 confirmed. ₹50/₹100 is Forest Dept vehicle road toll at Golewadi.",
+    "source": "Maharashtra Forest Department (Pune Division) & Joint Forest Management Committee",
+    "dateChecked": "2026-10-23"
+  },
+  {
+    "place": "Sinhagad Fort (Lion's Fort)",
+    "field": "fee_status",
+    "oldValue": "paid",
+    "newValue": "free",
+    "reason": "Eligible for Free category because general visitor admission is ₹0 confirmed.",
+    "source": "Maharashtra Tourism & Maharashtra Forest Department",
+    "dateChecked": "2026-10-23"
+  },
+  {
+    "place": "Lal Mahal (Red Palace)",
+    "field": "entry_fee",
+    "oldValue": 10,
+    "newValue": 5,
+    "reason": "PMC official civic museum rate is ₹5 for adults and ₹3 for children.",
+    "source": "Pune Municipal Corporation (PMC Heritage & Garden Cell)",
+    "dateChecked": "2026-10-23"
+  },
+  {
+    "place": "Mahatma Phule Museum (Ghole Road)",
+    "field": "entry_fee",
+    "oldValue": 15,
+    "newValue": 20,
+    "reason": "Directorate of Archaeology & Museums official state museum entry ticket is ₹20 for adults.",
+    "source": "Directorate of Archaeology & Museums, Govt of Maharashtra",
+    "dateChecked": "2026-10-23"
+  },
+  {
+    "place": "Pu La Deshpande Garden (Okayama Garden)",
+    "field": "entry_fee",
+    "oldValue": 20,
+    "newValue": 10,
+    "reason": "PMC Garden Dept official ticket rate is ₹10 for adults and ₹5 for children.",
+    "source": "Pune Municipal Corporation (Garden Department)",
+    "dateChecked": "2026-10-23"
+  }
+]

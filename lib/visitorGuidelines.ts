@@ -1192,6 +1192,204 @@ export const LANDMARK_SPECIFIC_FOOD: Record<string, { en: string[]; mr: string[]
       'बालगंधर्व कॅन्टीन — नाटक रसिकांचा लाडका साबुदाणा वडा व कटिंग चहा',
     ],
   },
+  'chavand-fort': {
+    en: [
+      'Chavandwadi base village mess — hot Bajra Bhakri, Shengdana Thecha & Pithla with sliced onions',
+      'Junnar town famous fresh sugarcane juice and Peda prasad',
+      'Kukadi riverfront dhabas — authentic Maharashtrian rural thali',
+    ],
+    mr: [
+      'चावंडवाडी पायथ्याशी चुलीवरचे गरमागरम बाजरीची भाकरी, शेंगदाणा ठेचा व पिठलं',
+      'जुन्नर परिसरातील प्रसिद्ध ताजा उसाचा रस आणि खव्याचे पेढे',
+      'कुकडी नदीकाठचे अस्सल ग्रामीण शाकाहारी जेवण',
+    ],
+  },
+  'hadsar-fort': {
+    en: [
+      'Hadsar village rustic snacks — freshly fried Kanda Bhaji and ginger chai',
+      'Junnar highway dhabas — spicy Shev Bhaji and hot Jowar Bhakri',
+      'Local farm-fresh guavas and seasonal figs',
+    ],
+    mr: [
+      'हडसर गावातील गरमागरम कांदा भजी व आल्याचा चहा',
+      'जुन्नर महामार्गावरील झणझणीत शेवभाजी व ज्वारीची भाकरी',
+      'परिसरातील ताजी पेरू व अंजीर फळे',
+    ],
+  },
+  'jivdhan-fort': {
+    en: [
+      'Ghatghar village trekker huts — stone-ground Thecha, warm Pitla Bhakri and fresh buttermilk',
+      'Naneghat plateau tea stalls — hot cutting chai and poha',
+      'Local wild honey and seasonal berries',
+    ],
+    mr: [
+      'घाटघर पायथ्याशी पाटा-वरवंट्यावरचा हिरवा ठेचा, गरमागरम पिठलं-भाकरी व ताक',
+      'नाणेघाट पठारावरील वाफाळलेला चहा आणि कांदे पोहे',
+      'स्थानिक शुद्ध मध व रानमेवा',
+    ],
+  },
+  'naneghat-pass-caves': {
+    en: [
+      'Ghatghar mountain dhabas — Pithla Bhakri with freshly pounded green chili Thecha',
+      'Plateau viewpoint stalls — piping hot Maggie, Kanda Bhaji and adrak masala chai',
+      'Authentic village jaggery tea and spiced buttermilk',
+    ],
+    mr: [
+      'घाटघर ढाब्यांवरील अस्सल चुलीवरची पिठलं-भाकरी आणि मिरचीचा ठेचा',
+      'पठारावरील गरमागरम कांदा भजी व आल्याचा चहा',
+      'गावरान गुळाचा चहा आणि पाचक ताक',
+    ],
+  },
+  'nana-wada': {
+    en: [
+      'Vaidya Upahar Gruha (Budhwar Peth, 150m) — historic 1910 Sanzi Misal',
+      'Shri Krishna Bhuvan (Tulshibaug) — authentic 1941 Poha Misal with spicy sample',
+      'Chitale Bandhu Mithaiwale (Bajirao Road, 300m) — crispy Bakarwadi & Amba Barfi',
+      'Tulshibaug famous SPDP and Sev Puri',
+    ],
+    mr: [
+      'वैद्य उपहार गृह (बुधवार पेठ) — ११० वर्षांची जुनी सांजा मिसळ',
+      'श्रीकृष्ण भुवन (तुळशीबाग) — १९४१ ची प्रसिद्ध पोहा मिसळ व झणझणीत कट',
+      'चितळे बंधू (बाजीराव रस्ता) — बाकरवडी व आंबा बर्फी',
+      'तुळशीबाग — प्रसिद्ध पुणेरी एसपीडीपी आणि भेळ',
+    ],
+  },
+  'bhandarkar-oriental-research-institute': {
+    en: [
+      'Cafe Goodluck (FC Road Deccan, 800m) — iconic 1935 Bun Maska & Irani Chai',
+      'Wadeshwar (Law College Road branch, 300m) — Ghee Podi Idli & Filter Coffee',
+      'Vaishali (FC Road) — celebrated Mysore Masala Dosa and SPDP',
+      'Roopali (FC Road) — peaceful garden breakfast: Upma & Sheera',
+    ],
+    mr: [
+      'कॅफे गडलक (डेक्कन, १९३५) — प्रसिद्ध बन मस्का व कडक इराणी चहा',
+      'वादेश्वर (लॉ कॉलेज रस्ता) — साजूक तुपातील पोडी इडली व फिल्टर कॉफी',
+      'वैशाली (एफसी रस्ता) — म्हैसूर मसाला डोसा आणि एसपीडीपी',
+      'रूपाली (एफसी रस्ता) — हिरवळीतील गरमागरम उपमा आणि मऊ शिरा',
+    ],
+  },
+  'bharat-itihas-sanshodhak-mandal': {
+    en: [
+      'Badshahi Boarding House (Tilak Road, 350m) — authentic Maharashtrian Thali since 1933',
+      'New Sweet Home (Kumthekar Road) — Sabudana Vada and Thalipeeth with white butter',
+      'Sujata Mastani (Sadashiv Peth branch) — iconic Mango Mastani',
+      'Appa Balwant Chowk authentic Pohe and Batata Vada',
+    ],
+    mr: [
+      'बादशाही बोर्डिंग (टिळक रस्ता, १९३३) — सात्विक अस्सल महाराष्ट्रीयन शाकाहारी थाळी',
+      'न्यू स्वीट होम (कुंटेकर रस्ता) — साबुदाणा वडा आणि लोण्यासह थालीपीठ',
+      'सुजाता मस्तानी (सदाशिव पेठ) — प्रसिद्ध मॅंगो मस्तानी',
+      'आप्पा बळवंत चौक — कांदे पोहे आणि बटाटा वडा',
+    ],
+  },
+  'ojas-ganpati-ozar': {
+    en: [
+      'Ozar Temple Trust Prasad — fresh sweet Boondi Ladoo and pedas',
+      'Kukadi riverbank eateries — pure vegetarian Maharashtrian meals',
+      'Sugarcane juice stalls with lemon and ginger',
+    ],
+    mr: [
+      'ओझर देवस्थान महाप्रसाद — ताजे बुंदी लाडू व पेढे',
+      'कुकडी नदीकाठची सात्विक शाकाहारी भोजनालये',
+      'ताजा गव्हाचा व उसाचा रस',
+    ],
+  },
+  'siddhatek-siddhivinayak-ganpati': {
+    en: [
+      'Siddhatek Devasthan Bhojanalaya — consecrated noon Mahaprasad',
+      'Bhima riverfront stalls — warm Peda prasad and tea',
+      'Daund junction local snacks and fresh milk sweets',
+    ],
+    mr: [
+      'सिद्धटेक देवस्थान अन्नछत्र — दुपारचा महाप्रसाद',
+      'भीमा नदीकाठचे पेढे व चहाचे स्टॉल्स',
+      'दौंड परिसरातील पारंपरिक नाश्ता व दुग्धजन्य पदार्थ',
+    ],
+  },
+  'banneshwar-temple-nasrapur': {
+    en: [
+      'Nasrapur highway dhabas — Chulivarchi Pitla Bhakri, Shengdana Thecha & Solkadhi',
+      'Bhor royal sweets — authentic authentic Puran Poli with pure ghee',
+      'Fresh tender coconut and spiced buttermilk',
+    ],
+    mr: [
+      'नसरापूर महामार्गावरील चुलीवरचे पिठलं-भाकरी, शेंगदाणा ठेचा व सोलकढी',
+      'भोर परिसरातील साजूक तुपातील अस्सल पुरणपोळी',
+      'ताजे शहाळे पाणी व मसाला ताक',
+    ],
+  },
+  'katraj-jain-temple-agam-mandir': {
+    en: [
+      'Katraj Dairy Parlor (Ghat road) — fresh Basundi, Shrikhand & Matka Kulfi',
+      'Katraj Tirth Bhojanalaya — pure, hygienic Sattvic Jain lunch and dinner',
+      'Kondhwa-Katraj road South Indian breakfast hubs',
+    ],
+    mr: [
+      'कात्रज डेअरी पार्लर — ताजी बासुंदी, श्रीखंड आणि मटका कुल्फी',
+      'कात्रज तीर्थ सात्विक जैन भोजनालय — शुद्ध सात्विक भोजन',
+      'कात्रज परिसरातील पारंपरिक नाश्ता केंद्र',
+    ],
+  },
+  'blades-of-glory-cricket-museum': {
+    en: [
+      'Katakirr Misal (Satara Road, 800m away) — legendary fiery Puneri Kolhapuri Misal with extra tarri',
+      'Padmavati Bhel & Chaat hubs — authentic Puneri Matki Bhel and SPDP',
+      'Marz-O-Rin & Kayani Camp (2.5 km away) — sandwiches and Shrewsbury cookies',
+    ],
+    mr: [
+      'काटाकिर्र मिसळ (सातारा रस्ता) — अत्यंत प्रसिद्ध झणझणीत पुणेरी मिसळ व कट',
+      'पद्मावती भेळ — अस्सल पुणेरी मटकी भेळ आणि शेवपुरी',
+      'कॅम्प परिसर — सँडविच व श्रुजबरी बिस्किटे',
+    ],
+  },
+  'vikram-pendse-cycles-museum': {
+    en: [
+      'Karve Nagar Wadeshwar (Cummins College road) — Ghee Podi Idli and Filter Coffee',
+      'Kothrud Bhel & Chaat stalls — sweet and spicy SPDP',
+      'Chitale Bandhu (Karve Road branch) — fresh Bakarwadi and Shrikhand',
+    ],
+    mr: [
+      'कर्वे नगर वादेश्वर — साजूक तुपातील पोडी इडली व फिल्टर कॉफी',
+      'कोथरूड भेळ — प्रसिद्ध एसपीडीपी व पाणीपुरी',
+      'चितळे बंधू (कर्वे रस्ता) — कुरकुरीत बाकरवडी व श्रीखंड',
+    ],
+  },
+  'pune-rail-museum': {
+    en: [
+      'Dorabjee & Sons (Camp, 1 km away) — legendary 1878 Parsi cuisine (Dhansak and Mutton Cutlets)',
+      'Marz-O-Rin (MG Road, 1.2 km away) — famous cold coffee and chutney sandwiches',
+      'George Restaurant (East Street) — authentic Biryani and Caramel Custard',
+    ],
+    mr: [
+      'दोराबजी अँड सन्स (कॅम्प) — १८७८ पासूनचे प्रसिद्ध पारशी जेवण (धनसाक व मटन कटलेट)',
+      'मारझो-रीन (एम.जी. रस्ता) — प्रसिद्ध कोल्ड कॉफी आणि चटणी सँडविच',
+      'जॉर्ज रेस्टॉरंट (ईस्ट स्ट्रीट) — दम बिर्याणी व कॅरॅमल कस्टर्ड',
+    ],
+  },
+  'kune-falls-viewpoint': {
+    en: [
+      'Maganlal Chikki (Lonavala) — authentic crushed peanut, cashew, and dry fruit chikki',
+      'Golden Vada Pav (Old Mumbai-Pune Highway) — piping hot spicy Vada Pav with green chutney',
+      'German Bakery Wunderbar (Khandala) — hot cappuccino and bakery desserts',
+    ],
+    mr: [
+      'मगनलाल चिक्की (लोणावळा) — प्रसिद्ध शेंगदाणा, काजू व ड्रायफ्रूट चिक्की',
+      'गोल्डन वडापाव (जुना महामार्ग) — गरमागरम झणझणीत वडापाव व हिरवी चटणी',
+      'जर्मन बेकरी वंडरबार (खंडाळा) — ताजी पेस्ट्री व कॉफी',
+    ],
+  },
+  'varasgaon-dam': {
+    en: [
+      'Varasgaon & Panshet lakeside village huts — piping hot Kanda Bhaji with adrak chai',
+      'Rustic farmer mess — Chulivarchi Pitla Bhakri with freshly ground thecha',
+      'Locally caught fresh freshwater fish rassa and rice bhakri',
+    ],
+    mr: [
+      'वरसगाव व पानशेत जलाशय काठचे कुरकुरीत कांदा भजी व आल्याचा चहा',
+      'ग्रामीण चुलीवरचे पिठलं भाकरी व मिरचीचा ठेचा',
+      'ताजे गोड्या पाण्यातील माशांचे कालवण व तांदळाची भाकरी',
+    ],
+  },
 };
 
 export function getPlaceVisitorGuidelines(place: {
