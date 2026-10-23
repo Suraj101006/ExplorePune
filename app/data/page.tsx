@@ -416,7 +416,7 @@ export default function DataMethodologyPage() {
               <img
                 src="/images/team/suraj-dhok.jpg"
                 alt="Suraj Dhok"
-                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #a7f3d0', boxShadow: '0 2px 6px rgba(4, 120, 87, 0.2)', flexShrink: 0 }}
+                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #a7f3d0', boxShadow: '0 2px 6px rgba(4, 120, 87, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
                 <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
@@ -434,7 +434,7 @@ export default function DataMethodologyPage() {
               <img
                 src="/images/team/sahil-jadhav.jpg"
                 alt="Sahil Jadhav"
-                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #bfdbfe', boxShadow: '0 2px 6px rgba(29, 78, 216, 0.2)', flexShrink: 0 }}
+                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #bfdbfe', boxShadow: '0 2px 6px rgba(29, 78, 216, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
                 <strong style={{ display: 'block', fontSize: 15, color: '#1d4ed8' }}>Sahil Jadhav</strong>
@@ -452,7 +452,7 @@ export default function DataMethodologyPage() {
               <img
                 src="/images/team/ishan-kakade.jpg"
                 alt="Ishan Kakade"
-                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #fde68a', boxShadow: '0 2px 6px rgba(180, 83, 9, 0.2)', flexShrink: 0 }}
+                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #fde68a', boxShadow: '0 2px 6px rgba(180, 83, 9, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
                 <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
