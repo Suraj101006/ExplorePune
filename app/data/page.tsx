@@ -411,15 +411,15 @@ export default function DataMethodologyPage() {
               : 'Notice a change in venue entry fees, updated metro feeders, or want to contribute a hidden Pune landmark? Reach out directly to our team:'}
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
               <img
                 src="/images/team/suraj-dhok.jpg"
                 alt="Suraj Dhok"
-                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #a7f3d0', boxShadow: '0 2px 6px rgba(4, 120, 87, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
+                style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', objectPosition: '50% 8%', border: '2.5px solid #a7f3d0', boxShadow: '0 3px 8px rgba(4, 120, 87, 0.18)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
-                <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
+                <strong style={{ display: 'block', fontSize: 15.5, color: '#047857' }}>Suraj Dhok</strong>
                 <span style={{ fontSize: 12.5, color: '#64748b' }}>Technical Architecture & Data Engineering</span>
                 <a
                   href="mailto:surajdhok1010@gmail.com"
@@ -430,14 +430,14 @@ export default function DataMethodologyPage() {
               </div>
             </div>
 
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
               <img
                 src="/images/team/sahil-jadhav.jpg"
                 alt="Sahil Jadhav"
-                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #bfdbfe', boxShadow: '0 2px 6px rgba(29, 78, 216, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
+                style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', objectPosition: '50% 12%', border: '2.5px solid #bfdbfe', boxShadow: '0 3px 8px rgba(29, 78, 216, 0.18)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
-                <strong style={{ display: 'block', fontSize: 15, color: '#1d4ed8' }}>Sahil Jadhav</strong>
+                <strong style={{ display: 'block', fontSize: 15.5, color: '#1d4ed8' }}>Sahil Jadhav</strong>
                 <span style={{ fontSize: 12.5, color: '#64748b' }}>Heritage Research & Community Sourcing</span>
                 <a
                   href="mailto:sj176644@gmail.com"
@@ -448,14 +448,14 @@ export default function DataMethodologyPage() {
               </div>
             </div>
 
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
               <img
                 src="/images/team/ishan-kakade.jpg"
                 alt="Ishan Kakade"
-                style={{ width: 58, height: 58, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center 20%', border: '2.5px solid #fde68a', boxShadow: '0 2px 6px rgba(180, 83, 9, 0.2)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
+                style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', objectPosition: '50% 10%', border: '2.5px solid #fde68a', boxShadow: '0 3px 8px rgba(180, 83, 9, 0.18)', imageRendering: '-webkit-optimize-contrast', flexShrink: 0 }}
               />
               <div>
-                <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
+                <strong style={{ display: 'block', fontSize: 15.5, color: '#b45309' }}>Ishan Kakade</strong>
                 <span style={{ fontSize: 12.5, color: '#64748b' }}>Quality Assurance (QA) Testing & Documentation</span>
                 <a
                   href="mailto:1ishankakade@gmail.com"
