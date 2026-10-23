@@ -8,6 +8,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 import LocationPickerModal from '@/components/LocationPickerModal';
 import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
 import { resolveLocalKnowledge, StructuredPlace } from '@/lib/chatKnowledgeEngine';
+import { openDirectionsModal } from '@/lib/navigationService';
 
 interface TransitData {
   hasTransit: boolean;
@@ -983,18 +984,50 @@ export default function ChatWidget() {
                               display: 'flex',
                               justifyContent: 'space-between',
                               alignItems: 'center',
+                              gap: 6,
                               marginTop: 2,
                               paddingTop: 6,
                               borderTop: '1px solid var(--line)',
+                              flexWrap: 'wrap',
                             }}
                           >
                             <Link
                               href={`/places/${p.slug}`}
                               className="btn outline"
-                              style={{ padding: '4px 10px', fontSize: 11.5, textDecoration: 'none' }}
+                              style={{ padding: '4px 8px', fontSize: 11, textDecoration: 'none' }}
                             >
-                              {isMr ? 'तपशील पहा →' : 'View Details →'}
+                              {isMr ? 'तपशील' : 'Details'}
                             </Link>
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                openDirectionsModal({
+                                  id: p.id,
+                                  name: p.name,
+                                  nameMr: p.name_mr,
+                                  latitude: p.latitude,
+                                  longitude: p.longitude,
+                                  address: p.address,
+                                  slug: p.slug,
+                                  imageUrl: p.image_url,
+                                })
+                              }
+                              className="btn outline"
+                              style={{
+                                padding: '4px 8px',
+                                fontSize: 11,
+                                borderColor: '#10b981',
+                                color: '#065f46',
+                                background: '#ecfdf5',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                              }}
+                              title={isMr ? `${p.name_mr || p.name} चा थेट मार्ग मिळवा` : `Get directions to ${p.name}`}
+                            >
+                              📍 {isMr ? 'मार्ग मिळवा' : 'Directions'}
+                            </button>
+
                             <button
                               type="button"
                               onClick={() =>
@@ -1005,9 +1038,9 @@ export default function ChatWidget() {
                                 )
                               }
                               className="btn clay"
-                              style={{ padding: '4px 10px', fontSize: 11.5 }}
+                              style={{ padding: '4px 8px', fontSize: 11 }}
                             >
-                              🚌 {isMr ? 'वाहतूक मार्ग' : 'Transit'}
+                              🚌 {isMr ? 'वाहतूक' : 'Transit'}
                             </button>
                           </div>
                         </div>

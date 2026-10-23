@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ChatWidget from '@/components/ChatWidget';
+import DirectionsModal from '@/components/DirectionsModal';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
 import { LanguageProvider } from '@/lib/LanguageContext';
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PageTransition>{children}</PageTransition>
             <AppFooter />
             <ChatWidget />
+            <DirectionsModal />
           </TravelPhotoTransitionProvider>
         </LanguageProvider>
       </body>

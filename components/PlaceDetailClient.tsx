@@ -41,6 +41,7 @@ import {
 import { getPlaceAuthenticity } from '@/lib/authenticity';
 import TravelCompass from '@/components/TravelCompass';
 import HeritageTimeline, { TimelineMilestone } from '@/components/HeritageTimeline';
+import { openDirectionsModal } from '@/lib/navigationService';
 
 const CATEGORY_NAMES_MR: Record<string, string> = {
   forts: 'किल्ले व गड',
@@ -706,6 +707,43 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
           {/* Quick Traveler Utilities Action Bar */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
+            {/* Prominent GPS Get Directions Button (Requirement 1) */}
+            <button
+              type="button"
+              onClick={() =>
+                openDirectionsModal({
+                  id: place.id,
+                  name: place.name,
+                  nameMr: place.name_mr,
+                  latitude: place.latitude,
+                  longitude: place.longitude,
+                  address: place.address,
+                  addressMr: place.address_mr,
+                  slug: place.slug,
+                  imageUrl: place.image_url,
+                  category: place.category_slug,
+                })
+              }
+              className="btn"
+              style={{
+                background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+                color: '#ffffff',
+                padding: '7px 16px',
+                fontSize: '12.5px',
+                fontWeight: 800,
+                borderRadius: 'var(--radius-sm)',
+                boxShadow: '0 2px 8px rgba(4, 120, 87, 0.25)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                cursor: 'pointer',
+              }}
+              title={isMr ? `${primaryName} चा थेट मार्ग मिळवा` : `Navigate to ${primaryName}`}
+            >
+              <span>📍</span>
+              <span>{isMr ? `${primaryName} चा मार्ग मिळवा` : `Get Directions`}</span>
+            </button>
+
             {/* Free Speech Audio Pronunciation */}
             <button
               type="button"
@@ -1157,14 +1195,48 @@ export default function PlaceDetailClient({ place }: { place: any }) {
             </div>
 
             <div style={{ marginTop: 20, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() =>
+                  openDirectionsModal({
+                    id: place.id,
+                    name: place.name,
+                    nameMr: place.name_mr,
+                    latitude: place.latitude,
+                    longitude: place.longitude,
+                    address: place.address,
+                    addressMr: place.address_mr,
+                    slug: place.slug,
+                    imageUrl: place.image_url,
+                    category: place.category_slug,
+                  })
+                }
+                className="btn"
+                style={{
+                  background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+                  color: '#ffffff',
+                  padding: '10px 20px',
+                  fontSize: '13.5px',
+                  fontWeight: 800,
+                  borderRadius: 10,
+                  boxShadow: '0 4px 14px rgba(4, 120, 87, 0.25)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  cursor: 'pointer',
+                }}
+              >
+                <span>📍</span>
+                <span>{isMr ? 'थेट GPS नेव्हिगेशन सुरू करा' : `Get Directions to ${primaryName}`}</span>
+              </button>
               <a
                 href={mapsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="btn outline"
-                style={{ padding: '8px 18px', fontSize: 13 }}
+                style={{ padding: '10px 18px', fontSize: 13 }}
               >
-                📍 {isMr ? 'गुगल मॅप्सवर रस्ता शोधा ↗' : 'Navigate on Google Maps ↗'}
+                🗺️ {isMr ? 'गुगल मॅप्सवर उघडा ↗' : 'Open in Google Maps ↗'}
               </a>
             </div>
           </section>

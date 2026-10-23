@@ -30,6 +30,7 @@ import {
   detectBrowserGps,
 } from '@/lib/userLocation';
 import TravelCompass from '@/components/TravelCompass';
+import { openDirectionsModal } from '@/lib/navigationService';
 
 function getAtmosphereClass(hourOrTime?: string | number): string {
   let hour = 12;
@@ -1052,6 +1053,63 @@ export default function PlannerPage() {
                   </div>
                 </div>
 
+                {/* Next Destination Navigation Card (Requirement 17) */}
+                <div
+                  style={{
+                    background: '#ecfdf5',
+                    border: '1.5px solid #a7f3d0',
+                    borderRadius: 12,
+                    padding: '12px 16px',
+                    marginBottom: 16,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 10,
+                  }}
+                >
+                  <div>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      {isMr ? 'पुढील गंतव्यस्थान:' : 'Next destination:'}
+                    </span>
+                    <strong style={{ display: 'block', fontSize: 15, color: '#065f46' }}>
+                      {isMr ? currStop.placeNameMr || currStop.placeName : currStop.placeName}
+                    </strong>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openDirectionsModal({
+                        id: currStop.placeId,
+                        name: currStop.placeName,
+                        nameMr: currStop.placeNameMr,
+                        latitude: currStop.latitude,
+                        longitude: currStop.longitude,
+                        slug: currStop.placeSlug,
+                        imageUrl: currStop.image_url,
+                      })
+                    }
+                    className="btn"
+                    style={{
+                      background: '#047857',
+                      color: '#ffffff',
+                      padding: '8px 18px',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      borderRadius: 8,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      boxShadow: '0 2px 8px rgba(4, 120, 87, 0.2)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span>📍</span>
+                    <span>{isMr ? 'नेव्हिगेशन सुरू करा (Navigate)' : 'Navigate'}</span>
+                  </button>
+                </div>
+
                 {/* Primary Check-In Action Button */}
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <button
@@ -1073,15 +1131,24 @@ export default function PlannerPage() {
                       : `✅ ${isMr ? 'येथे भेट दिली (Check In & Next)' : 'Mark as Visited & Advance'}`}
                   </button>
 
-                  <a
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${currStop.latitude || 18.5204},${currStop.longitude || 73.8567}&travelmode=${mode === 'public_transit' ? 'transit' : mode}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openDirectionsModal({
+                        id: currStop.placeId,
+                        name: currStop.placeName,
+                        nameMr: currStop.placeNameMr,
+                        latitude: currStop.latitude,
+                        longitude: currStop.longitude,
+                        slug: currStop.placeSlug,
+                        imageUrl: currStop.image_url,
+                      })
+                    }
                     className="btn outline"
                     style={{ padding: '12px 20px', fontSize: 13.5, fontWeight: 700 }}
                   >
-                    🗺️ {isMr ? 'Google Maps वर नेव्हिगेशन ↗' : 'Navigate on Google Maps ↗'}
-                  </a>
+                    🗺️ {isMr ? 'GPS मार्ग व नेव्हिगेशन' : 'Get Directions & GPS'}
+                  </button>
                 </div>
               </div>
             </div>
@@ -2098,13 +2165,42 @@ export default function PlannerPage() {
                           )}
                         </div>
                       </div>
-                      <Link
-                        href={`/places/${s.placeSlug}`}
-                        className="btn outline"
-                        style={{ padding: '6px 14px', fontSize: 12 }}
-                      >
-                        {isMr ? 'तपशील →' : 'View →'}
-                      </Link>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            openDirectionsModal({
+                              id: s.placeId,
+                              name: s.placeName,
+                              nameMr: s.placeName_mr,
+                              latitude: s.latitude,
+                              longitude: s.longitude,
+                              slug: s.placeSlug,
+                              imageUrl: s.image_url,
+                            })
+                          }
+                          className="btn outline"
+                          style={{
+                            padding: '6px 10px',
+                            fontSize: 11.5,
+                            borderColor: '#10b981',
+                            color: '#065f46',
+                            background: '#ecfdf5',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                          }}
+                          title={isMr ? `${s.placeName} चा थेट मार्ग मिळवा` : `Navigate to ${s.placeName}`}
+                        >
+                          📍 {isMr ? 'मार्ग' : 'Route'}
+                        </button>
+                        <Link
+                          href={`/places/${s.placeSlug}`}
+                          className="btn outline"
+                          style={{ padding: '6px 14px', fontSize: 12 }}
+                        >
+                          {isMr ? 'तपशील →' : 'View →'}
+                        </Link>
+                      </div>
                     </div>
 
                     {/* Detailed Public Transit Card for this leg */}

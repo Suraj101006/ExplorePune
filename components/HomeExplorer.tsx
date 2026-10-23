@@ -42,6 +42,7 @@ import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getStoredUserLocation, UserSavedLocation, DEFAULT_PUNE_STATIC_LOCATION } from '@/lib/userLocation';
 import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 import { useTravelPhotoTransition } from '@/components/TravelPhotoTransition';
+import { openDirectionsModal } from '@/lib/navigationService';
 
 const TIER_MR: Record<string, string> = {
   verified: 'तपासलेले अधिकृत तपशील',
@@ -1686,13 +1687,51 @@ export default function HomeExplorer({
                           <span>{tierLabel}</span>
                         </span>
                       </div>
-                      <Link
-                        href={`/places/${p.slug}`}
-                        className="btn outline"
-                        style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 700 }}
-                      >
-                        {t('card.view')} →
-                      </Link>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openDirectionsModal({
+                              id: p.id,
+                              name: p.name,
+                              nameMr: p.name_mr,
+                              latitude: p.latitude,
+                              longitude: p.longitude,
+                              address: p.address,
+                              addressMr: p.address_mr,
+                              slug: p.slug,
+                              imageUrl: p.image_url,
+                              category: p.category_slug,
+                            });
+                          }}
+                          className="btn outline"
+                          style={{
+                            padding: '6px 10px',
+                            fontSize: '11.5px',
+                            fontWeight: 700,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            borderColor: '#10b981',
+                            color: '#065f46',
+                            background: '#ecfdf5',
+                            cursor: 'pointer',
+                          }}
+                          title={isMr ? `${p.name_mr || p.name} चा मार्ग शोधा` : `Get directions to ${p.name}`}
+                        >
+                          <span>📍</span>
+                          <span>{isMr ? 'मार्ग' : 'Route'}</span>
+                        </button>
+                        <Link
+                          href={`/places/${p.slug}`}
+                          className="btn outline"
+                          style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 700 }}
+                        >
+                          {t('card.view')} →
+                        </Link>
+                      </div>
                     </div>
                   </article>
                 );

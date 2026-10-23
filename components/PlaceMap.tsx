@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { detectBrowserGps } from '@/lib/userLocation';
 import { calculateDistanceKm } from '@/lib/publicTransit';
+import { openDirectionsModal } from '@/lib/navigationService';
 
 interface PlaceMapProps {
   latitude: number;
@@ -321,6 +322,33 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
         </button>
 
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() =>
+              openDirectionsModal({
+                name,
+                latitude: lat,
+                longitude: lng,
+              })
+            }
+            className="btn"
+            style={{
+              padding: '6px 14px',
+              fontSize: 12,
+              borderRadius: 999,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              background: '#047857',
+              color: '#ffffff',
+              fontWeight: 700,
+              cursor: 'pointer',
+              border: 'none',
+            }}
+          >
+            <span>📍</span>
+            <span>Get Directions</span>
+          </button>
           <a
             href={gmapsDirectionsUrl}
             target="_blank"
