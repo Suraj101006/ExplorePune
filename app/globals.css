@@ -3118,6 +3118,423 @@ html.intro-dismissed .intro-overlay {
   border-color: #fca5a5;
 }
 
+/* =========================================================================
+   EXPLORE PUNE — TRIP PLANNER PREMIUM JOURNEY ANIMATION SYSTEM
+   ========================================================================= */
+
+/* 1. Header & Planner Controls Entrance */
+@keyframes plannerHeaderIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.planner-header-entrance {
+  animation: plannerHeaderIn 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes plannerSectionStaggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.planner-section-stagger {
+  animation: plannerSectionStaggerIn 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--stagger-i, 0) * 50ms);
+}
+
+/* 2. Smooth Time Slider & Track */
+.planner-time-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  outline: none;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.planner-time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #047857;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(4, 120, 87, 0.35);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 180ms ease;
+}
+
+.planner-time-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 14px rgba(4, 120, 87, 0.45);
+}
+
+.planner-time-slider::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+.planner-time-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #047857;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(4, 120, 87, 0.35);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 3. Category Card Interactive & Checkmark Draw */
+@keyframes checkmarkStrokeDraw {
+  from {
+    stroke-dashoffset: 24;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.category-card-interactive {
+  transition: border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, border-color;
+}
+
+.category-card-interactive:hover {
+  transform: translateY(-1.5px);
+}
+
+.category-card-interactive .category-icon {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  display: inline-block;
+}
+
+.category-card-interactive.selected .category-icon {
+  transform: scale(1.14);
+}
+
+.category-checkmark-svg path {
+  stroke-dasharray: 24;
+  animation: checkmarkStrokeDraw 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 4. Preference Pill Selection */
+@keyframes preferenceSelectPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+.preference-pill-interactive {
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.preference-pill-interactive.just-selected {
+  animation: preferenceSelectPulse 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 5. Start Planning Button CTA */
+.btn-plan-trip-cta {
+  position: relative;
+  overflow: hidden;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 250ms ease;
+}
+
+.btn-plan-trip-cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.28);
+}
+
+.btn-plan-trip-cta:hover:not(:disabled) .cta-arrow {
+  transform: translateX(4px);
+}
+
+.btn-plan-trip-cta:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.cta-arrow {
+  display: inline-block;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 6 & 7. Planning Sequence & Building Your Journey Visual */
+@keyframes routeStrokeDash {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.journey-building-line {
+  stroke-dasharray: 6 5;
+  animation: routeStrokeDash 1.2s linear infinite;
+}
+
+@keyframes stepFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.planning-step-item {
+  animation: stepFadeSlide 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 8, 9 & 20. Result Transition, Trip Summary Shimmer & Sparkles */
+@keyframes resultsExpandFade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.planner-results-wrapper {
+  animation: resultsExpandFade 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes statHighlightSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.summary-highlight-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: statHighlightSweep 2.8s infinite;
+}
+
+@keyframes microSparkleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.4);
+  }
+}
+
+.micro-sparkle {
+  position: absolute;
+  pointer-events: none;
+  animation: microSparkleFloat 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* 10, 11 & 12. Vertical Journey Timeline & Stop Card Reveal */
+@keyframes timelineLineDraw {
+  from {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.timeline-vertical-stem {
+  animation: timelineLineDraw 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes timelineNodePop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.timeline-node-circle {
+  animation: timelineNodePop 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes currentStopPulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(4, 120, 87, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(4, 120, 87, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(4, 120, 87, 0);
+  }
+}
+
+.timeline-current-pulse {
+  animation: currentStopPulseRing 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (hover: hover) {
+  .itinerary-stop-card-hover {
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 200ms ease;
+  }
+  .itinerary-stop-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    border-color: #a7f3d0 !important;
+  }
+  .itinerary-stop-card-hover:hover .stop-thumb-img {
+    transform: scale(1.025);
+  }
+}
+
+.stop-thumb-img {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 15, 16 & 17. Reorder, Remove and Add Place Animations */
+@keyframes removeStopCollapse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    max-height: 400px;
+    margin-bottom: 14px;
+  }
+  40% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+}
+
+.stop-card-removing {
+  animation: removeStopCollapse 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes addStopFadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stop-card-just-added {
+  animation: addStopFadeSlideUp 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 18. Inline Route Updating Toast/Pill */
+@keyframes routeUpdateFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.inline-route-updating-pill {
+  animation: routeUpdateFadeIn 200ms ease both;
+}
+
+/* 19. Travel Mode Tabs Button */
+.mode-tab-button {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 150ms ease;
+}
+
+.mode-tab-button:hover:not(.active) {
+  background-color: #f1f5f9;
+}
+
+.mode-tab-button:active {
+  transform: scale(0.97);
+}
+
+/* 23. Trip Completion Radial Progress Ring & Burst */
+@keyframes completionRadialFill {
+  from { stroke-dashoffset: 283; }
+  to { stroke-dashoffset: 0; }
+}
+
+.completion-ring-circle {
+  stroke-dasharray: 283;
+  animation: completionRadialFill 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes celebrationBurstParticle {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--burst-x, 20px), var(--burst-y, -30px)) scale(0);
+  }
+}
+
+.celebration-burst-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: celebrationBurstParticle 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* Accessibility Reduced Motion Overrides (Requirement 21) */
 @media (prefers-reduced-motion: reduce) {
   .travel-photo-stack-layer-1,
@@ -3144,9 +3561,23 @@ html.intro-dismissed .intro-overlay {
   .avatar-img-loaded,
   .avatar-img-updated,
   .avatar-modal-backdrop,
-  .avatar-modal-card {
+  .avatar-modal-card,
+  .planner-header-entrance,
+  .planner-section-stagger,
+  .planner-results-wrapper,
+  .stop-card-just-added,
+  .itinerary-stop-card-hover,
+  .timeline-node-circle,
+  .timeline-vertical-stem,
+  .journey-building-line,
+  .completion-ring-circle,
+  .celebration-burst-dot,
+  .micro-sparkle,
+  .summary-highlight-shimmer,
+  .timeline-current-pulse,
+  .inline-route-updating-pill {
     animation: none !important;
-    transition: none !important;
+    transition: opacity 150ms ease, background-color 150ms ease, border-color 150ms ease !important;
     transform: none !important;
   }
 
