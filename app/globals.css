@@ -1512,18 +1512,109 @@ a:hover {
   padding: 12px 14px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  transition: all 0.2s ease;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .chat-place-card:hover {
   border-color: #10b981;
   box-shadow: 0 8px 18px -4px rgba(4, 120, 87, 0.15);
+  transform: translateY(-2px);
+}
+
+.chat-place-header-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.chat-place-thumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  background: var(--line-light);
+}
+
+.chat-plan-card {
+  margin-top: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+  border: 1.5px solid #a7f3d0;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(6, 95, 70, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-plan-btn {
+  background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.2);
+  transition: all 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chat-plan-btn:hover {
+  background: linear-gradient(135deg, #044e39 0%, #065f46 100%);
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(6, 95, 70, 0.28);
+}
+
+.chat-new-msg-pill {
+  position: absolute;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: #ffffff;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: modalSlideUp 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.chat-new-msg-pill:hover {
+  background: #1e293b;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.chat-error-card {
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #991b1b;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .chat-transit-card {

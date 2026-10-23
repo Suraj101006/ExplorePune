@@ -5,6 +5,7 @@ import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { isLimited } from '@/lib/rateLimit';
 import { getPublicTransitRoute, calculateDistanceKm } from '@/lib/publicTransit';
 import { generateGeminiReply } from '@/lib/gemini';
+import { resolveLocalKnowledge } from '@/lib/chatKnowledgeEngine';
 
 const Schema = z.object({
   message: z.string().min(1).max(1000),
@@ -126,6 +127,24 @@ export async function POST(req: NextRequest) {
         suggestions: isMr
           ? ['पुणे मेट्रो तिकीट कसे काढावे?', '१ दिवसाची सहल आखा', 'सिंहगड किल्ला मार्ग']
           : ['How to book Pune Metro ticket', 'Plan 1-day itinerary', 'Directions to Sinhagad'],
+      });
+    }
+
+    // Check Local Knowledge Engine first to reduce unnecessary external API calls (Requirement 4)
+    const localResult = resolveLocalKnowledge(message, {
+      userLocation,
+      lang: isMr ? 'mr' : 'en',
+    });
+
+    if (localResult.handled) {
+      return NextResponse.json({
+        reply: scrubSensitiveOutput(localResult.reply),
+        places: localResult.places,
+        transit: localResult.transit,
+        suggestions: localResult.suggestions,
+        planPayload: localResult.planPayload,
+        isGemini: false,
+        model: 'explore-pune-knowledge-engine',
       });
     }
 
