@@ -172,12 +172,12 @@ export default function AboutPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
+                    width: 68,
+                    height: 68,
                     borderRadius: '50%',
                     overflow: 'hidden',
                     border: '2.5px solid #047857',
-                    boxShadow: '0 2px 8px rgba(4, 120, 87, 0.25)',
+                    boxShadow: '0 3px 10px rgba(4, 120, 87, 0.25)',
                     flexShrink: 0,
                     position: 'relative',
                     background: '#d1fae5',
@@ -227,18 +227,27 @@ export default function AboutPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
                 <div
                   style={{
-                    width: 52,
-                    height: 52,
+                    width: 68,
+                    height: 68,
                     borderRadius: '50%',
-                    background: '#1d4ed8',
-                    color: '#ffffff',
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontSize: 22,
-                    fontWeight: 800,
+                    overflow: 'hidden',
+                    border: '2.5px solid #1d4ed8',
+                    boxShadow: '0 3px 10px rgba(29, 78, 216, 0.25)',
+                    flexShrink: 0,
+                    position: 'relative',
+                    background: '#dbeafe',
                   }}
                 >
-                  SJ
+                  <img
+                    src="/images/team/sahil-jadhav.jpg"
+                    alt="Sahil Jadhav"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center top',
+                    }}
+                  />
                 </div>
                 <div>
                   <h3 style={{ margin: 0, fontSize: 18, color: '#1e40af', fontWeight: 800 }}>Sahil Jadhav</h3>
@@ -273,12 +282,12 @@ export default function AboutPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
+                    width: 68,
+                    height: 68,
                     borderRadius: '50%',
                     overflow: 'hidden',
                     border: '2.5px solid #b45309',
-                    boxShadow: '0 2px 8px rgba(180, 83, 9, 0.25)',
+                    boxShadow: '0 3px 10px rgba(180, 83, 9, 0.25)',
                     flexShrink: 0,
                     position: 'relative',
                     background: '#fef3c7',
@@ -383,11 +392,11 @@ export default function AboutPage() {
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
               <img
                 src="/images/team/suraj-dhok.jpg"
                 alt="Suraj Dhok"
-                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2px solid #a7f3d0', flexShrink: 0 }}
+                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #a7f3d0', boxShadow: '0 2px 6px rgba(4, 120, 87, 0.2)', flexShrink: 0 }}
               />
               <div>
                 <strong style={{ display: 'block', fontSize: 15, color: '#047857' }}>Suraj Dhok</strong>
@@ -401,22 +410,29 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16 }}>
-              <strong style={{ display: 'block', fontSize: 15, color: '#1d4ed8' }}>Sahil Jadhav</strong>
-              <span style={{ fontSize: 12.5, color: '#64748b' }}>Product & Community Outreach</span>
-              <a
-                href="mailto:sj176644@gmail.com"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 13.5, color: '#1d4ed8', fontWeight: 800, textDecoration: 'underline' }}
-              >
-                ✉️ sj176644@gmail.com
-              </a>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
+              <img
+                src="/images/team/sahil-jadhav.jpg"
+                alt="Sahil Jadhav"
+                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #bfdbfe', boxShadow: '0 2px 6px rgba(29, 78, 216, 0.2)', flexShrink: 0 }}
+              />
+              <div>
+                <strong style={{ display: 'block', fontSize: 15, color: '#1d4ed8' }}>Sahil Jadhav</strong>
+                <span style={{ fontSize: 12.5, color: '#64748b' }}>Product & Community Outreach</span>
+                <a
+                  href="mailto:sj176644@gmail.com"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4, fontSize: 13.5, color: '#1d4ed8', fontWeight: 800, textDecoration: 'underline' }}
+                >
+                  ✉️ sj176644@gmail.com
+                </a>
+              </div>
             </div>
 
-            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
               <img
                 src="/images/team/ishan-kakade.jpg"
                 alt="Ishan Kakade"
-                style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2px solid #fde68a', flexShrink: 0 }}
+                style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', objectPosition: 'center top', border: '2.5px solid #fde68a', boxShadow: '0 2px 6px rgba(180, 83, 9, 0.2)', flexShrink: 0 }}
               />
               <div>
                 <strong style={{ display: 'block', fontSize: 15, color: '#b45309' }}>Ishan Kakade</strong>
