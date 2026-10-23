@@ -171,16 +171,16 @@ export default function AboutPage() {
                 flexDirection: 'column',
               }}
             >
-              {/* Circular Avatar (Moderate size, calibrated framing) */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+              {/* Circular Avatar (Small, compact, clearly visible) */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
                 <div
                   style={{
-                    width: 124,
-                    height: 124,
+                    width: 96,
+                    height: 96,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '3.5px solid #047857',
-                    boxShadow: '0 4px 14px rgba(4, 120, 87, 0.22)',
+                    border: '3px solid #047857',
+                    boxShadow: '0 4px 12px rgba(4, 120, 87, 0.22)',
                     position: 'relative',
                     background: '#d1fae5',
                     flexShrink: 0,
@@ -246,16 +246,16 @@ export default function AboutPage() {
                 flexDirection: 'column',
               }}
             >
-              {/* Circular Avatar (Moderate size, calibrated framing) */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+              {/* Circular Avatar (Small, compact, clearly visible) */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
                 <div
                   style={{
-                    width: 124,
-                    height: 124,
+                    width: 96,
+                    height: 96,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '3.5px solid #1d4ed8',
-                    boxShadow: '0 4px 14px rgba(29, 78, 216, 0.22)',
+                    border: '3px solid #1d4ed8',
+                    boxShadow: '0 4px 12px rgba(29, 78, 216, 0.22)',
                     position: 'relative',
                     background: '#dbeafe',
                     flexShrink: 0,
@@ -321,16 +321,16 @@ export default function AboutPage() {
                 flexDirection: 'column',
               }}
             >
-              {/* Circular Avatar (Moderate size, calibrated framing) */}
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+              {/* Circular Avatar (Small, compact, clearly visible) */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
                 <div
                   style={{
-                    width: 124,
-                    height: 124,
+                    width: 96,
+                    height: 96,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '3.5px solid #b45309',
-                    boxShadow: '0 4px 14px rgba(180, 83, 9, 0.22)',
+                    border: '3px solid #b45309',
+                    boxShadow: '0 4px 12px rgba(180, 83, 9, 0.22)',
                     position: 'relative',
                     background: '#fef3c7',
                     flexShrink: 0,
