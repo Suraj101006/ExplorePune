@@ -126,30 +126,16 @@ a:hover {
   width: 100%;
 }
 
-/* Header & Navigation */
+/* Header & Navigation - Static navbar (Not movable) */
 .site-header {
-  position: sticky;
-  top: 0;
+  position: static !important;
+  top: auto !important;
   z-index: 50;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.88);
+  background: #ffffff;
   border-bottom: 1px solid var(--line);
-  transition: background var(--motion-tab) var(--ease-standard),
-              box-shadow var(--motion-tab) var(--ease-standard),
-              border-color var(--motion-tab) var(--ease-standard);
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
-}
-
-/* Navbar Scroll Animation (Requirement 15) */
-.site-header.site-header-scrolled {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom-color: rgba(226, 232, 240, 0.85);
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+  box-shadow: none;
 }
 
 .site-header .wrap {
@@ -161,11 +147,6 @@ a:hover {
   flex-wrap: nowrap;
   max-width: 1380px;
   width: 100%;
-  transition: min-height var(--motion-tab) var(--ease-standard);
-}
-
-.site-header.site-header-scrolled .wrap {
-  min-height: 60px;
 }
 
 .brand {
@@ -198,7 +179,7 @@ a:hover {
   margin-left: 2px;
 }
 
-/* Properly Arranged Desktop Navigation Bar with Moving Active Indicator (Requirement 2) */
+/* Properly Arranged Desktop Navigation Bar (Static tabs) */
 .desktop-nav {
   position: relative;
   display: flex;
@@ -212,18 +193,7 @@ a:hover {
 }
 
 .desktop-nav-indicator {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  z-index: 1;
-  background: #ffffff;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--primary-border);
-  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.12);
-  transition: left var(--motion-tab) var(--ease-standard),
-              width var(--motion-tab) var(--ease-standard),
-              opacity var(--motion-fast) ease;
-  pointer-events: none;
+  display: none !important;
 }
 
 .desktop-nav a {
@@ -232,29 +202,32 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 11px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-secondary);
   text-decoration: none;
   transition: color var(--motion-fast) var(--ease-standard),
-              transform var(--motion-fast) var(--ease-standard);
+              background-color var(--motion-fast) var(--ease-standard);
   white-space: nowrap;
 }
 
 .desktop-nav a:hover {
   color: var(--primary);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .desktop-nav a:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .desktop-nav a.active-nav-link {
   color: var(--primary);
   font-weight: 700;
-  /* Visual highlight provided seamlessly by .desktop-nav-indicator */
+  background: #ffffff;
+  border: 1px solid var(--primary-border);
+  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.12);
 }
 
 /* Header Action Utilities Group */
