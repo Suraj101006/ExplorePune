@@ -105,7 +105,11 @@ export default function LoginPage() {
       await ensureProfile(result.user.uid, result.user.displayName);
       router.push(getReturnUrl());
     } catch (error: any) {
-      if (error?.code !== 'auth/popup-closed-by-user') {
+      const code = error?.code ?? '';
+      if (code === 'auth/unauthorized-domain') {
+        const domain = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+        setErr(`Domain "${domain}" is not authorized in Firebase Console. Go to Firebase Console → Authentication → Settings → Authorized domains and add "${domain}".`);
+      } else if (code !== 'auth/popup-closed-by-user') {
         setErr(error?.message ?? 'Google sign-in failed.');
       }
     }
