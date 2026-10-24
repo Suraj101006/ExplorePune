@@ -23,6 +23,7 @@ import {
   Sliders,
   CheckCircle2,
   Play,
+  Film,
   Pause,
   Upload,
   Trash2,
@@ -319,16 +320,18 @@ export default function CreateJourneyReelModal({
         className="create-reel-modal-card"
         style={{
           position: 'relative',
-          width: 'min(94vw, 560px)',
+          width: 'min(94vw, 620px)',
           maxHeight: 'min(90dvh, 760px)',
           margin: 'auto',
-          borderRadius: 24,
+          borderRadius: 20,
           background: '#0f172a',
           color: '#ffffff',
-          boxShadow: '0 25px 70px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.1)',
+          boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.5)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          animation: 'modalSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -337,38 +340,38 @@ export default function CreateJourneyReelModal({
             =================================================================== */}
         <div
           style={{
-            padding: '20px 24px 16px',
+            padding: '16px 20px',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
             <div
               style={{
                 width: 38,
                 height: 38,
-                borderRadius: 12,
+                borderRadius: 10,
                 background: 'rgba(16, 185, 129, 0.2)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
+                color: '#34d399',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
+                flexShrink: 0,
               }}
             >
-              🎬
+              <Film size={20} />
             </div>
-            <div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#ffffff' }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isMr ? 'पुणे प्रवास रील' : 'Explore Pune One-Reel'}
+              </div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {isMr ? 'पुणे प्रवास रील तयार करा' : 'Create Pune Journey Reel'}
               </h2>
-              <div style={{ fontSize: 12, color: '#94a3b8' }}>
-                {currentStep === 'journey_select' && (isMr ? 'पायरी १: सफर व ठिकाणे निवडा' : 'Step 1: Choose Journey & Places')}
-                {currentStep === 'photos_review' && (isMr ? 'पायरी २: फोटो तपासा व अपलोड करा' : 'Step 2: Review & Add Photos')}
-                {currentStep === 'style_music' && (isMr ? 'पायरी ३: शैली व संगीत निवडा' : 'Step 3: Reel Style & Place Music')}
-                {currentStep === 'generating' && (isMr ? 'रील निर्मिती सुरू आहे...' : 'Generating Your Travel Reel...')}
-              </div>
             </div>
           </div>
 
@@ -378,19 +381,20 @@ export default function CreateJourneyReelModal({
               onClick={onClose}
               style={{
                 background: 'rgba(255, 255, 255, 0.1)',
-                border: 'none',
-                color: '#cbd5e1',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#ffffff',
                 width: 32,
                 height: 32,
-                borderRadius: '50%',
+                borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
+                flexShrink: 0,
               }}
               aria-label="Close"
             >
-              <X size={17} />
+              <X size={18} />
             </button>
           )}
         </div>

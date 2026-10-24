@@ -141,58 +141,81 @@ export default function ShareJourneyModal({
         onClick={(e) => e.stopPropagation()}
         style={{
           position: 'relative',
-          width: 'min(94vw, 560px)',
-          maxHeight: '90vh',
-          borderRadius: 24,
+          width: 'min(94vw, 620px)',
+          maxHeight: '92vh',
+          borderRadius: 20,
           background: '#ffffff',
           color: 'var(--ink)',
-          boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.4)',
-          overflowY: 'auto',
-          padding: 24,
+          boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.35)',
+          border: '1px solid #e2e8f0',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          animation: 'modalSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div
+          style={{
+            padding: '16px 20px',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+            color: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
             <div
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'rgba(16, 185, 129, 0.12)',
+                width: 38,
+                height: 38,
+                borderRadius: 10,
+                background: 'rgba(16, 185, 129, 0.2)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
+                color: '#34d399',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#059669',
+                flexShrink: 0,
               }}
             >
               <Share2 size={20} />
             </div>
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, color: 'var(--ink)' }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isMr ? 'पुणे प्रवास आठवण' : 'Explore Pune Journey'}
+              </div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {isMr ? 'सफर शेअर करा' : 'Share Your Pune Journey'}
               </h2>
-              <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-                {isMr ? 'सुंदर दृश्य कार्ड तयार करा आणि शेअर करा' : 'Create a polished visual share card'}
-              </span>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--muted)',
-              cursor: 'pointer',
-              padding: 6,
-            }}
             aria-label="Close"
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: 8,
+              width: 32,
+              height: 32,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
           >
-            <X size={22} />
+            <X size={18} />
           </button>
         </div>
 
+        {/* Modal Scrollable Body */}
+        <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1 }}>
         {/* Aspect Ratio Switcher */}
         <div style={{ marginBottom: 18 }}>
           <label style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: 'var(--muted)', marginBottom: 8 }}>
@@ -433,6 +456,7 @@ export default function ShareJourneyModal({
             {isMr ? 'समुदायात शेअर' : 'Post to Community'}
           </Link>
         </div>
+        </div>{/* end scrollable body */}
       </div>
     </div>
   );

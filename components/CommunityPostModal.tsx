@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Image as ImageIcon, Check, AlertCircle, Camera, Search, ShieldCheck } from 'lucide-react';
+import { X, Image as ImageIcon, Check, AlertCircle, Camera, Search, ShieldCheck, PenSquare } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
 import {
@@ -271,22 +271,38 @@ export default function CommunityPostModal({
         <div
           style={{
             padding: '16px 20px',
-            background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 22 }}>✍️</span>
-            <div>
-              <h2 id="community-modal-title" style={{ fontSize: 17, fontWeight: 800, margin: 0, color: '#ffffff' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 10,
+                background: 'rgba(16, 185, 129, 0.2)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
+                color: '#34d399',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <PenSquare size={20} />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isMr ? 'पुणे समुदाय अनुभव' : 'Explore Pune Community'}
+              </div>
+              <h2 id="community-modal-title" style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {isMr ? 'पुणे समुदायात अनुभव शेअर करा' : 'Share with Pune Community'}
               </h2>
-              <span style={{ fontSize: 11.5, opacity: 0.9 }}>
-                {isMr ? 'पर्यटक व पुणेकरांसाठी माहितीपूर्ण सल्ला द्या' : 'Tips, reviews & experiences for fellow travelers'}
-              </span>
             </div>
           </div>
 
@@ -295,16 +311,17 @@ export default function CommunityPostModal({
             onClick={handleClose}
             aria-label="Close"
             style={{
-              background: 'rgba(255, 255, 255, 0.15)',
-              border: 'none',
-              color: '#ffffff',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: 8,
               width: 32,
               height: 32,
-              borderRadius: 8,
-              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              color: '#ffffff',
+              cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             <X size={18} />

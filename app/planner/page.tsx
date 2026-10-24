@@ -28,6 +28,7 @@ import TravelCompass from '@/components/TravelCompass';
 import { openDirectionsModal } from '@/lib/navigationService';
 import JourneyMapAnimation from '@/components/JourneyMapAnimation';
 import { calculateDistanceKm } from '@/lib/publicTransit';
+import { X as LucideX, Plus as LucidePlus } from 'lucide-react';
 
 // =========================================================================
 // CUSTOM COUNT-UP ANIMATION HOOK (Requirement 9 & 28)
@@ -2790,30 +2791,82 @@ export default function PlannerPage() {
           <div
             style={{
               background: '#ffffff',
-              borderRadius: 14,
-              padding: 24,
-              maxWidth: 520,
+              borderRadius: 20,
+              maxWidth: 560,
               width: '100%',
               margin: 'auto',
-              maxHeight: '85vh',
-              overflowY: 'auto',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
-              animation: 'modalSlideUp 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
+              maxHeight: '88vh',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.35)',
+              border: '1px solid #e2e8f0',
+              animation: 'modalSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-              <h3 style={{ margin: 0, fontSize: 18, color: 'var(--ink)', fontWeight: 800 }}>
-                ➕ {isMr ? 'मार्गामध्ये नवीन ठिकाण जोडा' : 'Add a Verified Landmark'}
-              </h3>
+            {/* Modal Header */}
+            <div
+              style={{
+                padding: '16px 20px',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                    color: '#34d399',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <LucidePlus size={20} />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    {isMr ? 'सहल आराखडा' : 'Explore Pune Route'}
+                  </div>
+                  <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {isMr ? 'मार्गामध्ये नवीन ठिकाण जोडा' : 'Add a Verified Landmark'}
+                  </h2>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setAddPlaceModalOpen(false)}
-                style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: 'var(--muted)' }}
+                aria-label="Close"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: 8,
+                  width: 32,
+                  height: 32,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                }}
               >
-                ✕
+                <LucideX size={18} />
               </button>
             </div>
+
+            {/* Scrollable Body */}
+            <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1 }}>
 
             <input
               type="text"
@@ -2890,6 +2943,7 @@ export default function PlannerPage() {
                 })}
               </div>
             )}
+            </div>{/* end scrollable body */}
           </div>
         </div>
       )}

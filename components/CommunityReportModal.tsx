@@ -107,49 +107,87 @@ export default function CommunityReportModal({
       <div
         style={{
           width: '100%',
-          maxWidth: 480,
+          maxWidth: 520,
           margin: 'auto',
           background: '#ffffff',
-          borderRadius: 18,
-          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.4)',
+          borderRadius: 20,
+          boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.35)',
+          border: '1px solid #e2e8f0',
           overflow: 'hidden',
-          animation: 'modalSlideUp 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
+          display: 'flex',
+          flexDirection: 'column',
+          animation: 'modalSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Header Bar */}
         <div
           style={{
             padding: '16px 20px',
-            background: '#991b1b',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, fontWeight: 700 }}>
-            <AlertTriangle size={19} />
-            <span>
-              {activeMode === 'user'
-                ? (isMr ? 'वापरकर्ता खात्याची तक्रार करा' : 'Report User Account')
-                : (isMr ? 'मजकुराची तक्रार करा' : 'Report Discussion Content')}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 10,
+                background: 'rgba(239, 68, 68, 0.2)',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                color: '#f87171',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <AlertTriangle size={20} />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isMr ? 'पुणे समुदाय सुरक्षा' : 'Pune Community Safety'}
+              </div>
+              <h2
+                style={{
+                  fontSize: 17,
+                  fontWeight: 800,
+                  margin: 0,
+                  color: '#ffffff',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {activeMode === 'user'
+                  ? (isMr ? 'वापरकर्ता खात्याची तक्रार करा' : 'Report User Account')
+                  : (isMr ? 'मजकुराची तक्रार करा' : 'Report Discussion Content')}
+              </h2>
+            </div>
           </div>
           <button
             type="button"
             onClick={handleClose}
             aria-label="Close"
             style={{
-              background: 'rgba(255, 255, 255, 0.15)',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: 8,
+              width: 32,
+              height: 32,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               color: '#ffffff',
               cursor: 'pointer',
-              display: 'flex',
-              padding: 6,
-              borderRadius: 8,
+              flexShrink: 0,
             }}
           >
-            <X size={17} />
+            <X size={18} />
           </button>
         </div>
 

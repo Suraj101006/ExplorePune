@@ -461,12 +461,12 @@ export default function JourneyReelPlayerModal({
               type="button"
               onClick={onClose}
               style={{
-                background: 'rgba(0, 0, 0, 0.55)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                background: 'rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
                 color: '#ffffff',
                 width: 32,
                 height: 32,
-                borderRadius: '50%',
+                borderRadius: 8,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -475,7 +475,7 @@ export default function JourneyReelPlayerModal({
               }}
               aria-label="Close"
             >
-              <X size={17} />
+              <X size={18} />
             </button>
           </div>
         </div>

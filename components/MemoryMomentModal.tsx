@@ -65,12 +65,15 @@ export default function MemoryMomentModal({
         style={{
           position: 'relative',
           width: 'min(92vw, 520px)',
-          borderRadius: 24,
+          margin: 'auto',
+          borderRadius: 20,
           background: 'linear-gradient(165deg, #0f172a 0%, #064e3b 100%)',
           color: '#ffffff',
           overflow: 'hidden',
-          boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.7)',
+          boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.5)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           padding: '36px 28px 28px',
+          animation: 'modalSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         {/* Close Button */}
@@ -81,12 +84,12 @@ export default function MemoryMomentModal({
             position: 'absolute',
             top: 16,
             right: 16,
-            background: 'rgba(255, 255, 255, 0.1)',
-            border: 'none',
+            background: 'rgba(255, 255, 255, 0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             color: '#ffffff',
             width: 32,
             height: 32,
-            borderRadius: '50%',
+            borderRadius: 8,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
