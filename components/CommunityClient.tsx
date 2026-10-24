@@ -872,6 +872,8 @@ function CommunityContent() {
                     cursor: 'pointer',
                     transition: 'transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-2px)';
@@ -927,7 +929,7 @@ function CommunityContent() {
 
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <span style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--ink)' }}>
+                          <span style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>
                             {post.authorName}
                           </span>
                           {post.isExplorePuneVerified ? (
@@ -1163,7 +1165,7 @@ function CommunityContent() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginTop: 16,
+                      marginTop: 'auto',
                       paddingTop: 12,
                       borderTop: '1px solid var(--line)',
                       fontSize: 13,

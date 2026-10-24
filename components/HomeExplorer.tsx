@@ -487,13 +487,7 @@ export default function HomeExplorer({
           </Link>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '16px',
-          }}
-        >
+        <div className="grid">
           {/* Card 1: Sinhagad Fort */}
           <div
             className="scroll-reveal-child"
@@ -772,13 +766,7 @@ export default function HomeExplorer({
           </Link>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '16px',
-          }}
-        >
+        <div className="grid">
           {/* Trail 1: Forts */}
           <Link
             href="/?cat=forts"
