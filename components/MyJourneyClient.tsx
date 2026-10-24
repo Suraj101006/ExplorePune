@@ -12,6 +12,8 @@ import { getSavedPlaces, SavedPlaceSummary } from '@/lib/savedPlaces';
 import JourneyMapAnimation from '@/components/JourneyMapAnimation';
 import TodayHeroAnimation from '@/components/TodayHeroAnimation';
 import JourneyReelPlayerModal from '@/components/JourneyReelPlayerModal';
+import CreateJourneyReelModal from '@/components/CreateJourneyReelModal';
+import { JourneyReelData } from '@/lib/journeyReel';
 import ShareJourneyModal from '@/components/ShareJourneyModal';
 import MemoryMomentModal from '@/components/MemoryMomentModal';
 import {
@@ -58,6 +60,9 @@ export default function MyJourneyClient() {
 
   // Modal states (Requirements 5, 14, 16)
   const [reelJourney, setReelJourney] = useState<DayJourney | null>(null);
+  const [customReelData, setCustomReelData] = useState<JourneyReelData | null>(null);
+  const [isCreateReelOpen, setIsCreateReelOpen] = useState(false);
+  const [createReelMode, setCreateReelMode] = useState<'today' | 'overall'>('today');
   const [shareJourney, setShareJourney] = useState<DayJourney | null>(null);
   const [memoryJourney, setMemoryJourney] = useState<DayJourney | null>(null);
 
@@ -534,7 +539,32 @@ export default function MyJourneyClient() {
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCreateReelMode('today');
+                      setIsCreateReelOpen(true);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      padding: '10px 18px',
+                      borderRadius: 14,
+                      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                      color: '#ffffff',
+                      border: 'none',
+                      fontWeight: 700,
+                      fontSize: 13.5,
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)',
+                    }}
+                  >
+                    <Sparkles size={15} />
+                    {isMr ? '✨ रील तयार करा' : '✨ Create Journey Reel'}
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => {
@@ -547,17 +577,16 @@ export default function MyJourneyClient() {
                       gap: 8,
                       padding: '10px 18px',
                       borderRadius: 14,
-                      background: '#10b981',
-                      color: '#ffffff',
-                      border: 'none',
+                      background: 'rgba(16, 185, 129, 0.12)',
+                      color: '#065f46',
+                      border: '1.5px solid rgba(16, 185, 129, 0.3)',
                       fontWeight: 700,
                       fontSize: 13.5,
                       cursor: 'pointer',
-                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
                     }}
                   >
-                    <Play size={15} fill="#ffffff" />
-                    {isMr ? '🎬 प्रवास रील्स पहा' : '🎬 Watch Journey Reel'}
+                    <Play size={15} fill="#065f46" />
+                    {isMr ? '🎬 रील पहा' : '🎬 Watch Journey Reel'}
                   </button>
 
                   <button
@@ -825,6 +854,90 @@ export default function MyJourneyClient() {
           )}
         </section>
       )}
+
+      {/* ===================================================================
+          🎬 REQUIREMENT 19: REEL WAITING CALLOUT / ONE REEL CREATION BANNER
+          =================================================================== */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #064e3b 0%, #0f172a 100%)',
+          borderRadius: 20,
+          padding: '24px 28px',
+          color: '#ffffff',
+          marginTop: 36,
+          marginBottom: 36,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 20,
+          boxShadow: '0 10px 30px rgba(6, 78, 59, 0.25)',
+          border: '1px solid rgba(52, 211, 153, 0.3)',
+        }}
+      >
+        <div style={{ maxWidth: 540 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <span style={{ fontSize: 22 }}>🎬</span>
+            <h3 style={{ margin: 0, fontSize: 18.5, fontWeight: 800, color: '#6ee7b7' }}>
+              {isMr ? 'तुमची पुणे सफर वाट पाहत आहे 🎬' : 'Your Journey Is Waiting 🎬'}
+            </h3>
+          </div>
+          <p style={{ margin: 0, fontSize: 14, color: '#e2e8f0', lineHeight: 1.5 }}>
+            {isMr
+              ? `तुम्ही ${Math.max(overallStats.totalPlacesVisited, 3)} ठिकाणे पाहिली आहेत. तुमचे फोटो जोडून एका सुंदर, सिनेमॅटिक प्रवासात रूपांतरित करा.`
+              : `You have explored ${Math.max(overallStats.totalPlacesVisited, 3)} places. Add your photos and turn your Pune memories into one beautiful journey reel.`}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => {
+              setCreateReelMode('overall');
+              setIsCreateReelOpen(true);
+            }}
+            style={{
+              padding: '12px 22px',
+              borderRadius: 14,
+              background: '#10b981',
+              color: '#ffffff',
+              border: 'none',
+              fontWeight: 800,
+              fontSize: 13.5,
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(16, 185, 129, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <Sparkles size={16} />
+            {isMr ? 'माझा रील तयार करा' : 'Create My Reel'}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setCustomReelData(null);
+              setReelJourney(todayJourney || journeys[0] || SEED_JOURNEYS[0]);
+            }}
+            style={{
+              padding: '12px 18px',
+              borderRadius: 14,
+              background: 'rgba(255, 255, 255, 0.14)',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              fontWeight: 700,
+              fontSize: 13.5,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+            }}
+          >
+            <Play size={14} fill="#ffffff" />
+            {isMr ? 'सध्याचा रील पहा' : 'Watch One Reel'}
+          </button>
+        </div>
+      </div>
 
       {/* ===================================================================
           ✨ JOURNEY STORIES SHOWCASE (Requirements 1, 4, 12, 13)
@@ -1617,11 +1730,16 @@ export default function MyJourneyClient() {
       {/* ===================================================================
           MODALS
           =================================================================== */}
-      {/* 1. Journey Video Reel Player Modal (Requirements 5, 6, 7) */}
+      {/* 1. Journey Video Reel Player Modal (Requirements 1, 2, 10, 12, 14) */}
       <JourneyReelPlayerModal
         isOpen={Boolean(reelJourney)}
-        onClose={() => setReelJourney(null)}
+        onClose={() => {
+          setReelJourney(null);
+          setCustomReelData(null);
+        }}
         journey={reelJourney}
+        reelData={customReelData}
+        userName={user?.displayName || user?.email?.split('@')[0] || 'Suraj'}
         isMr={isMr}
         onShare={() => {
           const toShare = reelJourney;
@@ -1630,7 +1748,22 @@ export default function MyJourneyClient() {
         }}
       />
 
-      {/* 2. Share Journey Modal (Requirements 14 & 19) */}
+      {/* 2. Create Journey Reel Modal (Requirements 2, 3, 4, 5, 6, 7, 17, 20) */}
+      <CreateJourneyReelModal
+        isOpen={isCreateReelOpen}
+        onClose={() => setIsCreateReelOpen(false)}
+        journeys={journeys}
+        todayJourney={todayJourney}
+        userName={user?.displayName || user?.email?.split('@')[0] || 'Suraj'}
+        isMr={isMr}
+        initialMode={createReelMode}
+        onReelGenerated={(reel) => {
+          setCustomReelData(reel);
+          setReelJourney(todayJourney || journeys[0] || SEED_JOURNEYS[0]);
+        }}
+      />
+
+      {/* 3. Share Journey Modal (Requirements 14 & 19) */}
       <ShareJourneyModal
         isOpen={Boolean(shareJourney)}
         onClose={() => setShareJourney(null)}

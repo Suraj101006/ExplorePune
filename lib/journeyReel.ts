@@ -1,0 +1,520 @@
+'use client';
+
+import { DayJourney, JourneyPlaceStop } from '@/lib/journeyStorage';
+
+export interface JourneyReelMusicTrack {
+  id: string;
+  title: string;
+  titleMr?: string;
+  artist: string;
+  mood: 'adventure' | 'heritage' | 'spiritual' | 'ambient' | 'nature';
+  license: 'Royalty-Free CC0' | 'Royalty-Free Open' | 'Original Authentic';
+  source: string;
+  attributionRequired: boolean;
+  audioGeneratorType: 'fort_adventure' | 'heritage_classical' | 'peaceful_flute' | 'lakeside_chill' | 'pune_ambient';
+  descriptionEn: string;
+  descriptionMr: string;
+}
+
+export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
+  {
+    id: 'track-sahydri-adventure',
+    title: 'Sahyadri Bastion Trail',
+    titleMr: 'सह्याद्री दुर्ग नाद',
+    artist: 'Explore Pune Studio',
+    mood: 'adventure',
+    license: 'Royalty-Free CC0',
+    source: 'Built-in Authentic Ambient Synth',
+    attributionRequired: false,
+    audioGeneratorType: 'fort_adventure',
+    descriptionEn: 'Epic mountain winds, deep rhythmic cadence, and heroic Sahyadri adventure atmosphere.',
+    descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसे वीररस संगीत.',
+  },
+  {
+    id: 'track-peshwa-heritage',
+    title: 'Peshwa Royal Raga',
+    titleMr: 'पेशवेकालीन राजदरबार',
+    artist: 'Pune Cultural Heritage Ensemble',
+    mood: 'heritage',
+    license: 'Royalty-Free CC0',
+    source: 'Built-in Authentic Classical Acoustic',
+    attributionRequired: false,
+    audioGeneratorType: 'heritage_classical',
+    descriptionEn: 'Warm acoustic sitar and tanpura harmonics echoing Pune’s historic 18th-century wadas.',
+    descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार व तानपुरा सूर.',
+  },
+  {
+    id: 'track-sacred-peace',
+    title: 'Sacred Sanctum Flute',
+    titleMr: 'पवित्र बासरी व घंटानाद',
+    artist: 'Deccan Spiritual Soundscapes',
+    mood: 'spiritual',
+    license: 'Royalty-Free CC0',
+    source: 'Built-in Authentic Meditative Acoustic',
+    attributionRequired: false,
+    audioGeneratorType: 'peaceful_flute',
+    descriptionEn: 'Peaceful bansuri flute notes and tranquil chimes for sacred shrines and rock-cut caves.',
+    descriptionMr: 'दगडूशेठ व पाताळेश्वरसाठी मनःशांती देणारी मंजुळ बासरी आणि घंटानाद.',
+  },
+  {
+    id: 'track-lakeside-chill',
+    title: 'Khadakwasla Ripple Breeze',
+    titleMr: 'खडकवासला संथ लाटा',
+    artist: 'Sahyadri Nature Waves',
+    mood: 'nature',
+    license: 'Royalty-Free CC0',
+    source: 'Built-in Nature Waves & Piano',
+    attributionRequired: false,
+    audioGeneratorType: 'lakeside_chill',
+    descriptionEn: 'Gentle acoustic piano chords and soft water ripple resonance for lakes, dams, and nature.',
+    descriptionMr: 'तलाव, धरण आणि हिरवेगार टेकड्यांच्या भ्रमंतीसाठी सुखद व शांत संगीत.',
+  },
+  {
+    id: 'track-pune-ambient',
+    title: 'Pune Morning Panorama',
+    titleMr: 'पुणे प्रभात धून',
+    artist: 'Explore Pune Collective',
+    mood: 'ambient',
+    license: 'Royalty-Free CC0',
+    source: 'Built-in Morning Acoustic Shimmer',
+    attributionRequired: false,
+    audioGeneratorType: 'pune_ambient',
+    descriptionEn: 'Bright, balanced travel acoustic melodies suitable for all city landmarks and street walks.',
+    descriptionMr: 'पुण्याच्या विविध पेठा व सांस्कृतिक ठिकाणांसाठी प्रसन्न प्रभात धून.',
+  },
+];
+
+export interface ReelPlaceItem {
+  placeId: string;
+  placeSlug: string;
+  placeName: string;
+  placeNameMr?: string;
+  category: string;
+  categoryName?: string;
+  categoryNameMr?: string;
+  locationSubtitle?: string;
+  elevation?: string;
+  visitedAt?: string;
+  quoteEn?: string;
+  quoteMr?: string;
+  photos: string[];
+}
+
+export type ReelVisualScene =
+  | {
+      type: 'intro';
+      title: string;
+      titleMr?: string;
+      dateLabel: string;
+      dateLabelMr?: string;
+      placesCount: number;
+      totalDistanceKm: number;
+    }
+  | {
+      type: 'place_intro';
+      place: ReelPlaceItem;
+      placeIndex: number;
+      totalPlaces: number;
+    }
+  | {
+      type: 'place_photo';
+      place: ReelPlaceItem;
+      photoUrl: string;
+      photoIndex: number;
+      totalPhotosInPlace: number;
+      placeIndex: number;
+      totalPlaces: number;
+    }
+  | {
+      type: 'outro';
+      journeyTitle: string;
+      journeyTitleMr?: string;
+      dateLabel: string;
+      placesCount: number;
+      totalDistanceKm: number;
+      placesSummary: string[];
+    };
+
+export interface JourneyReelData {
+  id: string;
+  journeyId: string;
+  title: string;
+  titleMr?: string;
+  type: 'today' | 'overall' | 'custom';
+  date: string;
+  places: ReelPlaceItem[];
+  reel: {
+    duration: number; // in seconds
+    music: JourneyReelMusicTrack;
+    style: 'cinematic' | 'adventure' | 'heritage' | 'minimal';
+    generatedAt: string;
+  };
+}
+
+const STORAGE_KEY_REELS = 'explore_pune_generated_reels_v1';
+const STORAGE_KEY_PLACE_PHOTOS = 'explore_pune_place_photos_v1';
+
+// Default place location details & poetic descriptions
+const PLACE_METADATA_EXTRAS: Record<
+  string,
+  {
+    subtitle: string;
+    elevation?: string;
+    quoteEn: string;
+    quoteMr: string;
+  }
+> = {
+  'sinhagad-fort': {
+    subtitle: 'Sahyadri Fortress • Pune, MH',
+    elevation: 'Elevation 1,312 m',
+    quoteEn: '“Where mountain winds whisper centuries of Maratha valour.”',
+    quoteMr: '“सह्याद्रीच्या कड्यांवर धुक्याची चादर आणि असीम पराक्रमाची साक्ष.”',
+  },
+  'shaniwar-wada': {
+    subtitle: 'Historic Peshwa Seat • Pune, MH',
+    elevation: 'Built 1732 AD',
+    quoteEn: '“Echoes of the Peshwa court standing tall through the teak gates.”',
+    quoteMr: '“भव्य दिल्ली दरवाजा आणि पेशवेकालीन पराक्रमाच्या जिवंत आठवणी.”',
+  },
+  'lal-mahal': {
+    subtitle: 'Childhood Home of Chhatrapati Shivaji Maharaj',
+    elevation: 'Kasba Peth, Pune',
+    quoteEn: '“Sacred grounds where Shivaji Maharaj spent his formative youth.”',
+    quoteMr: '“छत्रपती शिवरायांच्या बालपणीच्या पाऊलखुणा आणि जिजाऊंचे संस्कार.”',
+  },
+  'aga-khan-palace': {
+    subtitle: 'Freedom Heritage & Italian Arches • Pune, MH',
+    elevation: 'Built 1892 AD',
+    quoteEn: '“Italian arches embracing quiet memories of India’s freedom dawn.”',
+    quoteMr: '“इटालियन कमानी आणि स्वातंत्र्यलढ्याच्या मूक आठवणींचे शांत उद्यान.”',
+  },
+  'pataleshwar-cave-temple': {
+    subtitle: '8th-Century Rock-Cut Monolith • JM Road',
+    elevation: 'Rashtrakuta Dynasty',
+    quoteEn: '“Carved directly from living basalt stone twelve centuries ago.”',
+    quoteMr: '“८व्या शतकातील अखंड काळ्या पाषाणात कोरलेले गूढ व शांत शिवमंदिर.”',
+  },
+  'khadakwasla-dam': {
+    subtitle: 'Serene Foothills & Lake • Pune, MH',
+    elevation: 'Basin of Sinhagad',
+    quoteEn: '“Cool morning ripples reflecting southern Sahyadri ridge lines.”',
+    quoteMr: '“खडकवासल्याच्या संथ लाटा आणि सह्याद्रीच्या टेकड्यांचे सुंदर प्रतिबिंब.”',
+  },
+  'shreemant-dagdusheth-halwai-ganpati': {
+    subtitle: 'Beloved City Deity • Budhwar Peth',
+    elevation: 'Established 1893 AD',
+    quoteEn: '“Golden benevolence and peaceful darshan in the heart of Pune.”',
+    quoteMr: '“पुण्याच्या हृदयात मंगलमूर्तीचे मनःशांती देणारे सुवर्ण दर्शन.”',
+  },
+  'lohagad-fort': {
+    subtitle: 'The Iron Fortress • Pavana Basin',
+    elevation: 'Elevation 1,033 m',
+    quoteEn: '“Vinchukata fortification guarding the historic trade routes.”',
+    quoteMr: '“पवना जलाशयावर पहारा देणारा अजिंक्य लोहदुर्ग आणि विंचूकाटा.”',
+  },
+  'raja-dinkar-kelkar-museum': {
+    subtitle: '20,000 Rare Artifacts • Shukrawar Peth',
+    elevation: 'Established 1962 AD',
+    quoteEn: '“Extraordinary collection of carved teak, instruments, and Mastani Mahal.”',
+    quoteMr: '“भारतीय कारागिरीचा आणि दुर्मिळ ऐतिहासिक वस्तूंचा अद्वितीय खजिना.”',
+  },
+};
+
+/**
+ * Smart Place-Based Music Recommendation Scoring Engine
+ * Scoring: Place Category + Journey Mood + Photo Count
+ */
+export function getRecommendedMusic(
+  places: Array<{ category: string; placeId?: string; placeSlug?: string }>,
+  preferredMood?: string
+): { recommended: JourneyReelMusicTrack; alternatives: JourneyReelMusicTrack[] } {
+  if (preferredMood) {
+    const matched = REEL_MUSIC_TRACKS.find((t) => t.mood === preferredMood);
+    if (matched) {
+      return {
+        recommended: matched,
+        alternatives: REEL_MUSIC_TRACKS.filter((t) => t.id !== matched.id),
+      };
+    }
+  }
+
+  // Count categories
+  let fortCount = 0;
+  let heritageCount = 0;
+  let templeCount = 0;
+  let natureCount = 0;
+
+  for (const p of places) {
+    const cat = (p.category || '').toLowerCase();
+    const id = (p.placeId || p.placeSlug || '').toLowerCase();
+
+    if (cat.includes('fort') || id.includes('fort') || id.includes('sinhagad') || id.includes('lohagad')) {
+      fortCount += 2;
+    } else if (cat.includes('temple') || cat.includes('sacred') || id.includes('ganpati') || id.includes('pataleshwar')) {
+      templeCount += 2;
+    } else if (cat.includes('heritage') || cat.includes('palace') || cat.includes('museum') || id.includes('wada')) {
+      heritageCount += 2;
+    } else if (cat.includes('nature') || cat.includes('lake') || cat.includes('dam') || cat.includes('park')) {
+      natureCount += 2;
+    }
+  }
+
+  let recommendedTrack = REEL_MUSIC_TRACKS[4]; // Pune Ambient fallback
+
+  if (fortCount >= Math.max(heritageCount, templeCount, natureCount) && fortCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[0]; // Sahyadri Adventure
+  } else if (heritageCount >= Math.max(templeCount, natureCount) && heritageCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[1]; // Peshwa Heritage
+  } else if (templeCount >= natureCount && templeCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[2]; // Sacred Peace Flute
+  } else if (natureCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[3]; // Lakeside Chill
+  }
+
+  const alternatives = REEL_MUSIC_TRACKS.filter((t) => t.id !== recommendedTrack.id);
+
+  return { recommended: recommendedTrack, alternatives };
+}
+
+/**
+ * Builds ReelPlaceItem array from DayJourney or JourneyPlaceStop[]
+ */
+export function buildReelPlacesFromJourney(journey: DayJourney): ReelPlaceItem[] {
+  const customPhotosMap = getStoredCustomPhotosMap();
+  const rawStops = journey.places && journey.places.length > 0 ? journey.places : [];
+
+  // Filter to visited stops, or if none visited yet, use all planned stops
+  const targetStops = rawStops.some((p) => p.isVisited)
+    ? rawStops.filter((p) => p.isVisited)
+    : rawStops;
+
+  return targetStops.map((stop) => {
+    const slug = stop.placeSlug || stop.placeId || 'pune-landmark';
+    const extra = PLACE_METADATA_EXTRAS[slug] || PLACE_METADATA_EXTRAS[stop.placeId] || {
+      subtitle: `${stop.categoryName || 'Heritage Landmark'} • Pune, MH`,
+      elevation: undefined,
+      quoteEn: stop.note || '“An authentic, unforgettable exploration in the cultural capital of Maharashtra.”',
+      quoteMr: stop.noteMr || '“पुण्याच्या समृद्ध संस्कृती व इतिहासातील एक सुंदर आणि अविस्मरणीय अनुभव.”',
+    };
+
+    // Photos: Check custom uploaded photos, then stop photos, then primary image_url
+    const userUploaded = customPhotosMap[stop.placeId] || customPhotosMap[slug] || [];
+    const stopPhotos = stop.photos || [];
+    const fallbackImage = stop.image_url || '/images/places/shaniwar-wada.jpg';
+
+    const combinedPhotos = Array.from(new Set([...userUploaded, ...stopPhotos, fallbackImage])).filter(Boolean);
+
+    return {
+      placeId: stop.placeId,
+      placeSlug: slug,
+      placeName: stop.placeName,
+      placeNameMr: stop.placeNameMr || stop.placeName,
+      category: stop.category,
+      categoryName: stop.categoryName || 'Pune Landmark',
+      categoryNameMr: stop.categoryNameMr || 'पुणे प्रेक्षणीय स्थळ',
+      locationSubtitle: extra.subtitle,
+      elevation: extra.elevation,
+      visitedAt: stop.visitedAt || stop.arrivalTime,
+      quoteEn: extra.quoteEn,
+      quoteMr: extra.quoteMr,
+      photos: combinedPhotos.length > 0 ? combinedPhotos : [fallbackImage],
+    };
+  });
+}
+
+/**
+ * Builds the complete One-Reel Scene List
+ * Structure:
+ * 1. Intro (0-2.5 sec)
+ * 2. For each place:
+ *    - Place intro billboard (1.8 sec)
+ *    - Place photo(s) (2.8 sec each)
+ * 3. Outro recap (3.5 sec)
+ */
+export function buildOneReelSceneSequence(
+  reelData: JourneyReelData
+): { scenes: ReelVisualScene[]; totalScenes: number; estimatedDurationSeconds: number } {
+  const scenes: ReelVisualScene[] = [];
+  const places = reelData.places || [];
+
+  // 1. Opening Intro Scene
+  scenes.push({
+    type: 'intro',
+    title: reelData.title || 'My Pune Journey',
+    titleMr: reelData.titleMr || 'माझा पुणे प्रवास',
+    dateLabel: reelData.date,
+    placesCount: places.length,
+    totalDistanceKm: places.length * 5.2, // estimated
+  });
+
+  // 2. Sequential Place Introductions and Photos
+  places.forEach((place, placeIdx) => {
+    // Elegant Place Introduction Screen (e.g. "SINHAGAD / Pune, Maharashtra")
+    scenes.push({
+      type: 'place_intro',
+      place,
+      placeIndex: placeIdx + 1,
+      totalPlaces: places.length,
+    });
+
+    // Place Photos
+    const photosToDisplay = place.photos && place.photos.length > 0 ? place.photos : ['/images/places/shaniwar-wada.jpg'];
+    // Limit to 3 photos max per place to prevent reels from becoming endlessly long
+    const cappedPhotos = photosToDisplay.slice(0, 3);
+
+    cappedPhotos.forEach((photoUrl, photoIdx) => {
+      scenes.push({
+        type: 'place_photo',
+        place,
+        photoUrl,
+        photoIndex: photoIdx + 1,
+        totalPhotosInPlace: cappedPhotos.length,
+        placeIndex: placeIdx + 1,
+        totalPlaces: places.length,
+      });
+    });
+  });
+
+  // 3. Closing Outro Scene
+  scenes.push({
+    type: 'outro',
+    journeyTitle: reelData.title,
+    journeyTitleMr: reelData.titleMr,
+    dateLabel: reelData.date,
+    placesCount: places.length,
+    totalDistanceKm: places.length * 5.2,
+    placesSummary: places.map((p) => p.placeName),
+  });
+
+  // Calculate estimated duration
+  // Intro: 2.5s, each place_intro: 1.8s, each photo: 2.8s, Outro: 3.5s
+  let duration = 2.5 + 3.5;
+  for (const s of scenes) {
+    if (s.type === 'place_intro') duration += 1.8;
+    if (s.type === 'place_photo') duration += 2.8;
+  }
+
+  return {
+    scenes,
+    totalScenes: scenes.length,
+    estimatedDurationSeconds: Math.round(duration),
+  };
+}
+
+/**
+ * LocalStorage Helpers for Generated Reels
+ */
+export function saveGeneratedReel(reel: JourneyReelData, userId?: string | null): void {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return;
+  try {
+    const key = userId ? `${STORAGE_KEY_REELS}_${userId}` : STORAGE_KEY_REELS;
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(key) : null;
+    const list: JourneyReelData[] = raw ? JSON.parse(raw) : [];
+
+    // Replace if id exists, or unshift
+    const idx = list.findIndex((r) => r.id === reel.id || r.journeyId === reel.journeyId);
+    if (idx >= 0) {
+      list[idx] = reel;
+    } else {
+      list.unshift(reel);
+    }
+    if (list.length > 20) list.length = 20;
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('explore-pune-reel-saved', { detail: reel }));
+    }
+  } catch (err) {
+    console.warn('Failed to save generated reel:', err);
+  }
+}
+
+export function getSavedReels(userId?: string | null): JourneyReelData[] {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return [];
+  try {
+    const key = userId ? `${STORAGE_KEY_REELS}_${userId}` : STORAGE_KEY_REELS;
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(key) : null;
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function getLatestReelForJourney(journeyId: string, userId?: string | null): JourneyReelData | null {
+  const reels = getSavedReels(userId);
+  return reels.find((r) => r.journeyId === journeyId) || null;
+}
+
+/**
+ * LocalStorage for user-uploaded custom place photos
+ */
+function getStoredCustomPhotosMap(): Record<string, string[]> {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return {};
+  try {
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY_PLACE_PHOTOS) : null;
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveCustomPlacePhotos(placeId: string, photos: string[]): void {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return;
+  try {
+    const map = getStoredCustomPhotosMap();
+    map[placeId] = photos;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY_PLACE_PHOTOS, JSON.stringify(map));
+    }
+  } catch (err) {
+    console.warn('Failed to store place photos:', err);
+  }
+}
+
+/**
+ * Client-side Canvas Image Compressor
+ * Converts File to web-friendly optimized JPEG data URL to prevent localStorage exhaustion
+ */
+export async function compressUploadedPhoto(file: File, maxDim = 1200, quality = 0.82): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Failed to read image file'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Failed to decode image'));
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(e.target?.result as string);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedDataUrl);
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+}

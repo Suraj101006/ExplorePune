@@ -1,76 +1,192 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { DayJourney } from '@/lib/journeyStorage';
-import { X, Play, Pause, ChevronLeft, ChevronRight, Share2, Sparkles, Trophy, MapPin } from 'lucide-react';
+import {
+  JourneyReelData,
+  ReelVisualScene,
+  buildReelPlacesFromJourney,
+  buildOneReelSceneSequence,
+  getRecommendedMusic,
+} from '@/lib/journeyReel';
+import { getReelAudioEngine } from '@/lib/reelAudioEngine';
+import { X, Play, Pause, Volume2, VolumeX, Share2, Sparkles, RotateCcw, MapPin, Compass } from 'lucide-react';
+import { shareOrCopy } from '@/lib/shareUtils';
 
 interface JourneyReelPlayerModalProps {
   isOpen: boolean;
   onClose: () => void;
   journey: DayJourney | null;
+  reelData?: JourneyReelData | null;
   isMr?: boolean;
-  milestoneTitle?: string;
   onShare?: () => void;
+  userName?: string;
 }
 
 export default function JourneyReelPlayerModal({
   isOpen,
   onClose,
   journey,
+  reelData,
   isMr = false,
-  milestoneTitle,
   onShare,
+  userName = 'Suraj',
 }: JourneyReelPlayerModalProps) {
-  const [currentScene, setCurrentScene] = useState(0);
+  // Construct dynamic One-Reel data
+  const finalReelData = useMemo<JourneyReelData | null>(() => {
+    if (reelData) return reelData;
+    if (!journey) return null;
+
+    const places = buildReelPlacesFromJourney(journey);
+    const { recommended } = getRecommendedMusic(places);
+
+    const titleEn = userName ? `${userName}'s Pune Journey` : journey.title || 'My Pune Journey';
+    const titleMr = userName ? `${userName} ची पुणे सफर` : journey.titleMr || 'माझा पुणे प्रवास';
+
+    return {
+      id: `reel-${journey.id}`,
+      journeyId: journey.id,
+      title: titleEn,
+      titleMr,
+      type: journey.id.includes('today') ? 'today' : 'overall',
+      date: journey.dateLabelEn || journey.date,
+      places,
+      reel: {
+        duration: 30,
+        music: recommended,
+        style: 'cinematic',
+        generatedAt: new Date().toISOString(),
+      },
+    };
+  }, [reelData, journey, userName]);
+
+  // Construct Scene sequence
+  const { scenes, totalScenes } = useMemo(() => {
+    if (!finalReelData) return { scenes: [], totalScenes: 0, estimatedDurationSeconds: 0 };
+    return buildOneReelSceneSequence(finalReelData);
+  }, [finalReelData]);
+
+  const [currentSceneIdx, setCurrentSceneIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [sceneProgress, setSceneProgress] = useState(0); // 0 to 100
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const [shareSuccess, setShareSuccess] = useState(false);
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const hideControlsTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioEngine = useRef(getReelAudioEngine());
 
-  const places = journey?.places || [];
-  const firstPlace = places[0];
-  const secondPlace = places[1] || places[0];
-  const totalDistance = journey?.totalDistanceKm || 12.4;
-  const totalPlaces = places.length;
+  // Determine duration for current scene
+  const currentScene = scenes[currentSceneIdx];
+  const sceneDurationMs = useMemo(() => {
+    if (!currentScene) return 3000;
+    if (currentScene.type === 'intro') return 2500;
+    if (currentScene.type === 'place_intro') return 1900;
+    if (currentScene.type === 'place_photo') return 2800;
+    if (currentScene.type === 'outro') return 4500;
+    return 3000;
+  }, [currentScene]);
 
-  const totalScenes = 6;
-  const SCENE_DURATION_MS = 2800; // ~16.8 seconds total
+  // Prevent background page scrolling strictly & restore on close
+  useEffect(() => {
+    if (!isOpen) return;
 
-  // Reset playback whenever modal opens or new journey is loaded
+    const scrollY = window.scrollY;
+    const origBodyOverflow = document.body.style.overflow;
+    const origBodyPosition = document.body.style.position;
+    const origBodyTop = document.body.style.top;
+    const origBodyWidth = document.body.style.width;
+    const origHtmlOverflow = document.documentElement.style.overflow;
+
+    // Apply viewport lock
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.documentElement.style.overflow = 'hidden';
+
+    // Touch event interceptor to prevent iOS Safari bounce/scroll leak
+    const preventBackdropTouchMove = (e: TouchEvent) => {
+      if (!(e.target as HTMLElement)?.closest('.reel-touchable')) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('touchmove', preventBackdropTouchMove, { passive: false });
+
+    return () => {
+      document.body.style.overflow = origBodyOverflow;
+      document.body.style.position = origBodyPosition;
+      document.body.style.top = origBodyTop;
+      document.body.style.width = origBodyWidth;
+      document.documentElement.style.overflow = origHtmlOverflow;
+      window.removeEventListener('touchmove', preventBackdropTouchMove);
+      window.scrollTo(0, scrollY);
+    };
+  }, [isOpen]);
+
+  // Audio lifecycle
+  useEffect(() => {
+    if (isOpen && finalReelData) {
+      const musicStyle = finalReelData.reel.music.audioGeneratorType || 'pune_ambient';
+      audioEngine.current.start(musicStyle);
+      audioEngine.current.setMuted(isMuted);
+    } else {
+      audioEngine.current.stop();
+    }
+
+    return () => {
+      audioEngine.current.stop();
+    };
+  }, [isOpen, finalReelData, isMuted]);
+
+  // Reset states on open
   useEffect(() => {
     if (isOpen) {
-      setCurrentScene(0);
+      setCurrentSceneIdx(0);
       setSceneProgress(0);
       setIsPaused(false);
+      setControlsVisible(true);
     }
-  }, [isOpen, journey?.id]);
+  }, [isOpen, finalReelData?.id]);
 
-  // Scene transition timer
+  // Navigation handlers
+  const goToNextScene = useCallback(() => {
+    setSceneProgress(0);
+    setCurrentSceneIdx((prev) => {
+      if (prev + 1 >= totalScenes) {
+        setIsPaused(true);
+        return prev;
+      }
+      return prev + 1;
+    });
+  }, [totalScenes]);
+
+  const goToPrevScene = useCallback(() => {
+    setSceneProgress(0);
+    setCurrentSceneIdx((prev) => Math.max(0, prev - 1));
+  }, []);
+
+  // Scene progress ticker
   useEffect(() => {
-    if (!isOpen || !journey) {
-      setCurrentScene(0);
-      setSceneProgress(0);
-      return;
-    }
+    if (!isOpen || totalScenes === 0) return;
 
     if (isPaused) {
       if (timerRef.current) clearInterval(timerRef.current);
+      audioEngine.current.pause();
       return;
+    } else {
+      audioEngine.current.resume();
     }
 
     const intervalStep = 50;
-    const increment = (intervalStep / SCENE_DURATION_MS) * 100;
+    const increment = (intervalStep / sceneDurationMs) * 100;
 
     timerRef.current = setInterval(() => {
       setSceneProgress((prev) => {
         if (prev + increment >= 100) {
-          setCurrentScene((s) => {
-            if (s + 1 >= totalScenes) {
-              setIsPaused(true);
-              return s;
-            }
-            return s + 1;
-          });
+          goToNextScene();
           return 0;
         }
         return prev + increment;
@@ -80,121 +196,251 @@ export default function JourneyReelPlayerModal({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isOpen, journey, isPaused, totalScenes, SCENE_DURATION_MS]);
+  }, [isOpen, isPaused, sceneDurationMs, totalScenes, goToNextScene]);
 
-  // Keyboard navigation (Space = pause/play, Escape = close, ArrowLeft/Right = prev/next)
+  // Auto-hide controls timer
+  const resetHideControlsTimer = useCallback(() => {
+    setControlsVisible(true);
+    if (hideControlsTimerRef.current) clearTimeout(hideControlsTimerRef.current);
+    hideControlsTimerRef.current = setTimeout(() => {
+      if (!isPaused) {
+        setControlsVisible(false);
+      }
+    }, 2800);
+  }, [isPaused]);
+
+  useEffect(() => {
+    if (isOpen) {
+      resetHideControlsTimer();
+    }
+    return () => {
+      if (hideControlsTimerRef.current) clearTimeout(hideControlsTimerRef.current);
+    };
+  }, [isOpen, resetHideControlsTimer]);
+
+  // Keyboard navigation
   useEffect(() => {
     if (!isOpen) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      resetHideControlsTimer();
       if (e.key === 'Escape') onClose();
       if (e.key === ' ') {
         e.preventDefault();
         setIsPaused((p) => !p);
       }
-      if (e.key === 'ArrowRight') {
-        goToNextScene();
-      }
-      if (e.key === 'ArrowLeft') {
-        goToPrevScene();
+      if (e.key === 'ArrowRight') goToNextScene();
+      if (e.key === 'ArrowLeft') goToPrevScene();
+      if (e.key.toLowerCase() === 'm') {
+        setIsMuted((prev) => {
+          const next = !prev;
+          audioEngine.current.setMuted(next);
+          return next;
+        });
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, goToNextScene, goToPrevScene, resetHideControlsTimer]);
 
-  const goToNextScene = () => {
-    setSceneProgress(0);
-    setCurrentScene((s) => Math.min(totalScenes - 1, s + 1));
+  // Share handler
+  const handleShareReel = async () => {
+    if (onShare) {
+      onShare();
+      return;
+    }
+    const title = finalReelData?.title || 'Explore Pune Journey Reel';
+    const text = isMr
+      ? `माझी पुणे सफर पहा: ${title} • Explore Pune वर!`
+      : `Watch my Pune travel reel: ${title} • Explore Pune!`;
+    const res = await shareOrCopy({
+      title,
+      text,
+      url: typeof window !== 'undefined' ? window.location.href : 'https://punetrail.web.app/journey',
+    });
+    if (res === 'shared' || res === 'copied') {
+      setShareSuccess(true);
+      setTimeout(() => setShareSuccess(false), 2400);
+    }
   };
 
-  const goToPrevScene = () => {
-    setSceneProgress(0);
-    setCurrentScene((s) => Math.max(0, s - 1));
-  };
+  if (!isOpen || !finalReelData || totalScenes === 0 || !currentScene) {
+    return null;
+  }
 
-  if (!isOpen || !journey) return null;
+  const musicTrack = finalReelData.reel.music;
 
   return (
     <div
       className="journey-reel-backdrop"
       role="dialog"
       aria-modal="true"
-      aria-label="Journey Reel"
+      aria-label="Pune Travel Journey Reel"
+      onMouseMove={resetHideControlsTimer}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="journey-reel-player" onClick={(e) => e.stopPropagation()}>
-        {/* Top Story Progress Bars */}
+      <div
+        className="journey-reel-player-container reel-touchable"
+        onClick={(e) => e.stopPropagation()}
+        onMouseMove={resetHideControlsTimer}
+      >
+        {/* ===================================================================
+            TOP PROGRESS BAR SEGMENTS (Instagram / TikTok Reel Style)
+            =================================================================== */}
         <div
+          className={`reel-progress-row ${controlsVisible ? 'opacity-100' : 'opacity-70'}`}
           style={{
             position: 'absolute',
-            top: 14,
-            left: 14,
-            right: 14,
+            top: 12,
+            left: 12,
+            right: 12,
             display: 'flex',
-            gap: 6,
-            zIndex: 30,
+            gap: 4,
+            zIndex: 40,
+            transition: 'opacity 250ms ease',
           }}
         >
-          {Array.from({ length: totalScenes }).map((_, i) => (
-            <div key={i} className="reel-progress-segment">
+          {scenes.map((_, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                setCurrentSceneIdx(i);
+                setSceneProgress(0);
+              }}
+              style={{
+                flex: 1,
+                height: 3,
+                borderRadius: 2,
+                background: 'rgba(255, 255, 255, 0.28)',
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}
+            >
               <div
-                className="reel-progress-fill"
                 style={{
+                  height: '100%',
                   width:
-                    i < currentScene
+                    i < currentSceneIdx
                       ? '100%'
-                      : i === currentScene
+                      : i === currentSceneIdx
                       ? `${sceneProgress}%`
                       : '0%',
+                  background: '#10b981',
+                  transition: i === currentSceneIdx ? 'width 50ms linear' : 'none',
                 }}
               />
             </div>
           ))}
         </div>
 
-        {/* Top Bar Header & Controls */}
+        {/* ===================================================================
+            TOP BAR HEADER (Brand, Audio Status, Play/Pause, Close)
+            =================================================================== */}
         <div
+          className="reel-top-bar"
           style={{
             position: 'absolute',
-            top: 28,
-            left: 16,
-            right: 16,
+            top: 24,
+            left: 14,
+            right: 14,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            zIndex: 30,
+            zIndex: 40,
             color: '#ffffff',
+            opacity: controlsVisible ? 1 : 0,
+            transform: controlsVisible ? 'translateY(0)' : 'translateY(-6px)',
+            transition: 'opacity 250ms ease, transform 250ms ease',
+            pointerEvents: controlsVisible ? 'auto' : 'none',
           }}
         >
+          {/* Left badge */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span
               style={{
-                fontSize: 11,
+                fontSize: 10.5,
                 fontWeight: 800,
                 letterSpacing: '0.08em',
-                background: 'rgba(255,255,255,0.2)',
-                padding: '3px 8px',
-                borderRadius: 12,
-                backdropFilter: 'blur(8px)',
+                background: 'rgba(16, 185, 129, 0.25)',
+                border: '1px solid rgba(52, 211, 153, 0.4)',
+                color: '#6ee7b7',
+                padding: '4px 10px',
+                borderRadius: 20,
+                backdropFilter: 'blur(10px)',
                 textTransform: 'uppercase',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
               }}
             >
+              <span>🎬</span>
               {isMr ? 'पुणे प्रवास रील्स' : 'Pune Journey Reel'}
             </span>
-            <span style={{ fontSize: 12, opacity: 0.85, textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}>
-              {journey.dateLabelEn}
-            </span>
+
+            {/* Music Info Pill */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                fontSize: 11,
+                color: '#e2e8f0',
+                background: 'rgba(0, 0, 0, 0.4)',
+                padding: '3px 8px',
+                borderRadius: 14,
+                backdropFilter: 'blur(8px)',
+                maxWidth: 150,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+              title={`${musicTrack.title} (${musicTrack.license})`}
+            >
+              <span>🎵</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {isMr ? musicTrack.titleMr || musicTrack.title : musicTrack.title}
+              </span>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Right action controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {/* Audio Mute/Unmute */}
+            <button
+              type="button"
+              onClick={() => {
+                const nextMuted = !isMuted;
+                setIsMuted(nextMuted);
+                audioEngine.current.setMuted(nextMuted);
+              }}
+              style={{
+                background: 'rgba(0, 0, 0, 0.45)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#ffffff',
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
+              }}
+              aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+            >
+              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} color="#34d399" />}
+            </button>
+
+            {/* Play/Pause */}
             <button
               type="button"
               onClick={() => setIsPaused((p) => !p)}
               style={{
-                background: 'rgba(0,0,0,0.4)',
-                border: 'none',
+                background: 'rgba(0, 0, 0, 0.45)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 color: '#ffffff',
                 width: 32,
                 height: 32,
@@ -203,17 +449,20 @@ export default function JourneyReelPlayerModal({
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
               }}
               aria-label={isPaused ? 'Play' : 'Pause'}
             >
-              {isPaused ? <Play size={16} /> : <Pause size={16} />}
+              {isPaused ? <Play size={15} /> : <Pause size={15} />}
             </button>
+
+            {/* Close */}
             <button
               type="button"
               onClick={onClose}
               style={{
-                background: 'rgba(0,0,0,0.4)',
-                border: 'none',
+                background: 'rgba(0, 0, 0, 0.55)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 color: '#ffffff',
                 width: 32,
                 height: 32,
@@ -222,48 +471,49 @@ export default function JourneyReelPlayerModal({
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
               }}
               aria-label="Close"
             >
-              <X size={18} />
+              <X size={17} />
             </button>
           </div>
         </div>
 
-        {/* Tap areas for Prev / Next (Scenes 0-4, not blocking final action scene) */}
-        {currentScene < totalScenes - 1 && (
-          <>
-            <div
-              onClick={goToPrevScene}
-              style={{
-                position: 'absolute',
-                top: 70,
-                bottom: 80,
-                left: 0,
-                width: '35%',
-                zIndex: 20,
-                cursor: 'pointer',
-              }}
-              aria-label="Previous scene"
-            />
-            <div
-              onClick={goToNextScene}
-              style={{
-                position: 'absolute',
-                top: 70,
-                bottom: 80,
-                right: 0,
-                width: '65%',
-                zIndex: 20,
-                cursor: 'pointer',
-              }}
-              aria-label="Next scene"
-            />
-          </>
-        )}
+        {/* ===================================================================
+            TAP ZONES (Left 35% Prev, Right 65% Next)
+            =================================================================== */}
+        <div
+          onClick={goToPrevScene}
+          style={{
+            position: 'absolute',
+            top: 60,
+            bottom: 80,
+            left: 0,
+            width: '35%',
+            zIndex: 30,
+            cursor: 'pointer',
+          }}
+          aria-label="Previous scene"
+        />
+        <div
+          onClick={goToNextScene}
+          style={{
+            position: 'absolute',
+            top: 60,
+            bottom: 80,
+            right: 0,
+            width: '65%',
+            zIndex: 30,
+            cursor: 'pointer',
+          }}
+          aria-label="Next scene"
+        />
 
-        {/* 🎬 SCENE 1: OPENING TITLE & SUBTLE MAP */}
-        {currentScene === 0 && (
+        {/* ===================================================================
+            🎬 SCENE 1: OPENING TITLE & TRAVEL OVERVIEW
+            =================================================================== */}
+        {currentScene.type === 'intro' && (
           <div
             style={{
               position: 'relative',
@@ -274,338 +524,108 @@ export default function JourneyReelPlayerModal({
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              padding: 32,
-              background: 'radial-gradient(circle at center, #064e3b 0%, #022c22 70%, #01140e 100%)',
+              padding: '40px 28px',
+              background: 'radial-gradient(circle at center, #064e3b 0%, #022c22 65%, #01140e 100%)',
               color: '#ffffff',
+              overflow: 'hidden',
             }}
           >
-            {/* Subtle Pune topographic grid animation */}
+            {/* Topographic pattern */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
                 opacity: 0.18,
-                backgroundImage:
-                  'radial-gradient(#34d399 1px, transparent 1px), radial-gradient(#34d399 1px, transparent 1px)',
+                backgroundImage: 'radial-gradient(#34d399 1.5px, transparent 1.5px)',
                 backgroundSize: '24px 24px',
-                backgroundPosition: '0 0, 12px 12px',
               }}
             />
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
+            <div style={{ position: 'relative', zIndex: 10, maxWidth: 340 }}>
               <div
                 style={{
-                  width: 64,
-                  height: 64,
+                  width: 68,
+                  height: 68,
                   margin: '0 auto 20px',
                   borderRadius: '50%',
-                  background: 'rgba(16, 185, 129, 0.2)',
-                  border: '1.5px solid rgba(52, 211, 153, 0.5)',
+                  background: 'rgba(16, 185, 129, 0.25)',
+                  border: '2px solid rgba(52, 211, 153, 0.5)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 30,
-                  boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)',
+                  fontSize: 32,
+                  boxShadow: '0 0 35px rgba(16, 185, 129, 0.4)',
                 }}
               >
                 🧭
               </div>
+
               <span
                 style={{
                   display: 'block',
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: 800,
-                  letterSpacing: '0.15em',
+                  letterSpacing: '0.18em',
                   color: '#6ee7b7',
                   textTransform: 'uppercase',
                   marginBottom: 8,
                 }}
               >
-                {isMr ? 'तुमची पुणे सफर' : 'YOUR PUNE JOURNEY'}
+                {isMr ? 'पुणे प्रवास आठवण' : 'MY PUNE JOURNEY'}
               </span>
+
               <h2
                 style={{
-                  fontSize: 'clamp(28px, 6vw, 36px)',
+                  fontSize: 'clamp(26px, 7vw, 34px)',
                   fontWeight: 800,
                   margin: '0 0 12px',
                   color: '#ffffff',
-                  lineHeight: 1.2,
+                  lineHeight: 1.25,
                 }}
               >
-                {isMr ? (journey.titleMr || journey.title) : journey.title}
+                {isMr ? currentScene.titleMr || currentScene.title : currentScene.title}
               </h2>
+
               <p
                 style={{
-                  fontSize: 16,
+                  fontSize: 15,
                   color: '#a7f3d0',
                   margin: '0 auto 24px',
-                  maxWidth: 320,
                   lineHeight: 1.5,
                   fontStyle: 'italic',
                 }}
               >
                 {isMr
-                  ? '“तुमचा पुणे प्रवास, आठवणींत चिरंतन.”'
-                  : '“Your Pune journey, beautifully remembered.”'}
+                  ? '“पुण्याच्या वाटा, ऐतिहासिक गड आणि समृद्ध आठवणी.”'
+                  : '“Historical trails, mountain bastions, and living heritage.”'}
               </p>
+
               <div
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '6px 14px',
-                  borderRadius: 20,
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(8px)',
+                  gap: 12,
+                  padding: '8px 18px',
+                  borderRadius: 24,
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   fontSize: 13,
                   fontWeight: 600,
                 }}
               >
-                <span>📅</span> {journey.dateLabelEn}
+                <span>📅 {currentScene.dateLabel}</span>
+                <span>•</span>
+                <span>📍 {currentScene.placesCount} {isMr ? 'ठिकाणे' : 'Places'}</span>
               </div>
             </div>
           </div>
         )}
 
-        {/* 🎬 SCENE 2: FIRST DISCOVERY (KEN BURNS ZOOM) */}
-        {currentScene === 1 && (
-          <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-            <img
-              src={firstPlace?.image_url || '/images/places/sinhagad-fort.jpg'}
-              alt={firstPlace?.placeName || 'Pune Spot'}
-              className="ken-burns-slow"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-            {/* Cinematic gradient overlay */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.3) 50%, rgba(15, 23, 42, 0.6) 100%)',
-              }}
-            />
-
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 40,
-                left: 24,
-                right: 24,
-                color: '#ffffff',
-                zIndex: 10,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <span
-                  style={{
-                    background: '#10b981',
-                    color: '#ffffff',
-                    fontSize: 11,
-                    fontWeight: 800,
-                    padding: '3px 10px',
-                    borderRadius: 12,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {isMr ? 'पहिले ठिकाण' : 'First Discovery'}
-                </span>
-                <span style={{ fontSize: 13, color: '#e2e8f0' }}>
-                  ⏰ {firstPlace?.arrivalTime || '10:02 AM'}
-                </span>
-              </div>
-              <h3 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#ffffff' }}>
-                {isMr ? (firstPlace?.placeNameMr || firstPlace?.placeName) : firstPlace?.placeName}
-              </h3>
-              <p
-                style={{
-                  fontSize: 15,
-                  color: '#cbd5e1',
-                  margin: 0,
-                  lineHeight: 1.5,
-                  fontStyle: 'italic',
-                }}
-              >
-                {isMr
-                  ? '“सह्याद्रीच्या कड्यांवर धुक्याची चादर आणि असीम पराक्रमाची साक्ष.”'
-                  : '“A morning above Pune, where history whispers in the mountain winds.”'}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* 🎬 SCENE 3: JOURNEY MOVEMENT & ROUTE LINE */}
-        {currentScene === 2 && (
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 32,
-              background: '#0a0f1d',
-              color: '#ffffff',
-            }}
-          >
-            <div style={{ textAlign: 'center', marginBottom: 24 }}>
-              <span
-                style={{
-                  fontSize: 12,
-                  fontWeight: 800,
-                  letterSpacing: '0.12em',
-                  color: '#34d399',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {isMr ? 'पुणे मार्ग प्रगती' : 'TRAVEL TRANSIT'}
-              </span>
-              <h3 style={{ fontSize: 24, fontWeight: 700, margin: '6px 0 0' }}>
-                {isMr ? 'मार्गावरील प्रवास' : 'Traversing Pune'}
-              </h3>
-            </div>
-
-            {/* Animated SVG Path connecting points */}
-            <svg width="240" height="180" viewBox="0 0 240 180" style={{ overflow: 'visible' }}>
-              <defs>
-                <linearGradient id="reelLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#10b981" />
-                  <stop offset="100%" stopColor="#06b6d4" />
-                </linearGradient>
-              </defs>
-
-              {/* Background faint path */}
-              <path
-                d="M 40 40 Q 120 20 200 140"
-                fill="none"
-                stroke="rgba(255,255,255,0.15)"
-                strokeWidth="4"
-                strokeDasharray="6 6"
-              />
-
-              {/* Animated Drawing Path */}
-              <path
-                d="M 40 40 Q 120 20 200 140"
-                fill="none"
-                stroke="url(#reelLineGrad)"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeDasharray="300"
-                className="today-hero-route-line"
-              />
-
-              {/* Origin Marker */}
-              <circle cx="40" cy="40" r="10" fill="#10b981" />
-              <circle cx="40" cy="40" r="4" fill="#ffffff" />
-              <text x="40" y="20" fill="#ffffff" fontSize="11" textAnchor="middle" fontWeight="bold">
-                1
-              </text>
-
-              {/* Destination Marker */}
-              <circle cx="200" cy="140" r="10" fill="#06b6d4" />
-              <circle cx="200" cy="140" r="4" fill="#ffffff" />
-              <text x="200" y="165" fill="#ffffff" fontSize="11" textAnchor="middle" fontWeight="bold">
-                2
-              </text>
-            </svg>
-
-            {/* Distance Callout */}
-            <div
-              style={{
-                marginTop: 28,
-                padding: '12px 24px',
-                borderRadius: 16,
-                background: 'rgba(16, 185, 129, 0.12)',
-                border: '1.5px solid rgba(52, 211, 153, 0.3)',
-                textAlign: 'center',
-              }}
-            >
-              <div style={{ fontSize: 32, fontWeight: 800, color: '#34d399', letterSpacing: '-0.02em' }}>
-                {totalDistance} km
-              </div>
-              <div style={{ fontSize: 13, color: '#94a3b8' }}>
-                {isMr ? 'एकूण कापलेले अंतर' : 'Total Exploration Distance'}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 🎬 SCENE 4: NEXT DISCOVERY (CROSSFADE) */}
-        {currentScene === 3 && (
-          <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-            <img
-              src={secondPlace?.image_url || '/images/places/aga-khan-palace.jpg'}
-              alt={secondPlace?.placeName || 'Heritage Explorer'}
-              className="ken-burns-slow"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.3) 50%, rgba(15, 23, 42, 0.6) 100%)',
-              }}
-            />
-
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 40,
-                left: 24,
-                right: 24,
-                color: '#ffffff',
-                zIndex: 10,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <span
-                  style={{
-                    background: '#06b6d4',
-                    color: '#ffffff',
-                    fontSize: 11,
-                    fontWeight: 800,
-                    padding: '3px 10px',
-                    borderRadius: 12,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {isMr ? 'पुढील अनुभव' : 'Next Discovery'}
-                </span>
-                <span style={{ fontSize: 13, color: '#e2e8f0' }}>
-                  🏛️ {secondPlace?.categoryName || 'Heritage Landmark'}
-                </span>
-              </div>
-              <h3 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#ffffff' }}>
-                {isMr ? (secondPlace?.placeNameMr || secondPlace?.placeName) : secondPlace?.placeName}
-              </h3>
-              <p
-                style={{
-                  fontSize: 15,
-                  color: '#cbd5e1',
-                  margin: 0,
-                  lineHeight: 1.5,
-                  fontStyle: 'italic',
-                }}
-              >
-                {isMr
-                  ? '“पुण्याच्या समृद्ध संस्कृती व वारशातील एक सुंदर आणि अविस्मरणीय अनुभव.”'
-                  : '“Where historic stone courtyards echo with memories of the Peshwa capital.”'}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* 🎬 SCENE 5: ACHIEVEMENT / MILESTONE UNLOCKED */}
-        {currentScene === 4 && (
+        {/* ===================================================================
+            🎬 SCENE 2: CINEMATIC PLACE INTRODUCTION SCREEN (Place Billboard)
+            =================================================================== */}
+        {currentScene.type === 'place_intro' && (
           <div
             style={{
               position: 'relative',
@@ -616,78 +636,237 @@ export default function JourneyReelPlayerModal({
               justifyContent: 'center',
               alignItems: 'center',
               textAlign: 'center',
-              padding: 32,
-              background: 'radial-gradient(circle at center, #78350f 0%, #451a03 60%, #1f0c02 100%)',
+              padding: '40px 24px',
+              background: 'linear-gradient(175deg, #020617 0%, #064e3b 80%, #022c22 100%)',
               color: '#ffffff',
+              overflow: 'hidden',
             }}
           >
-            <div
-              className="special-badge-pulse"
+            {/* Background blur of place image */}
+            <img
+              src={currentScene.place.photos[0] || '/images/places/shaniwar-wada.jpg'}
+              alt={currentScene.place.placeName}
               style={{
-                width: 90,
-                height: 90,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 44,
-                marginBottom: 20,
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'blur(32px) brightness(0.28)',
+                transform: 'scale(1.2)',
               }}
-            >
-              🏆
-            </div>
+            />
 
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: '0.15em',
-                color: '#fde68a',
-                textTransform: 'uppercase',
-                marginBottom: 8,
-              }}
-            >
-              {isMr ? 'यशोगाथा संपादन' : 'MILESTONE COMPLETED'}
-            </span>
-            <h3 style={{ fontSize: 26, fontWeight: 800, margin: '0 0 10px', color: '#ffffff' }}>
-              {milestoneTitle || (isMr ? 'सह्याद्री दुर्गवीर' : 'Sahyadri Fort Hunter')}
-            </h3>
-            <p
-              style={{
-                fontSize: 15,
-                color: '#fef3c7',
-                margin: '0 auto 20px',
-                maxWidth: 280,
-                lineHeight: 1.5,
-              }}
-            >
-              {isMr
-                ? 'पुण्याभोवतीचे ऐतिहासिक गड आणि वास्तू सर करून तुम्ही नवीन टप्पा गाठला.'
-                : 'Recognized for authentic exploration across Pune’s historical bastions.'}
-            </p>
+            <div style={{ position: 'relative', zIndex: 10, maxWidth: 320 }}>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: '0.2em',
+                  color: '#34d399',
+                  textTransform: 'uppercase',
+                  marginBottom: 12,
+                }}
+              >
+                {isMr ? `ठिकाण ${currentScene.placeIndex} / ${currentScene.totalPlaces}` : `STOP ${currentScene.placeIndex} OF ${currentScene.totalPlaces}`}
+              </div>
 
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '8px 16px',
-                borderRadius: 20,
-                background: 'rgba(251, 191, 36, 0.2)',
-                border: '1px solid rgba(251, 191, 36, 0.4)',
-                fontSize: 13,
-                fontWeight: 700,
-                color: '#fde68a',
-              }}
-            >
-              <Sparkles size={16} /> {isMr ? 'अभिमान वाटावा असा प्रवास!' : 'Achievement Recorded'}
+              <h2
+                style={{
+                  fontSize: 'clamp(32px, 8vw, 42px)',
+                  fontWeight: 900,
+                  letterSpacing: '0.04em',
+                  margin: '0 0 10px',
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                  lineHeight: 1.15,
+                  textShadow: '0 2px 20px rgba(0,0,0,0.8)',
+                }}
+              >
+                {isMr ? currentScene.place.placeNameMr || currentScene.place.placeName : currentScene.place.placeName}
+              </h2>
+
+              <div
+                style={{
+                  fontSize: 14,
+                  color: '#cbd5e1',
+                  letterSpacing: '0.06em',
+                  marginBottom: 8,
+                  fontWeight: 600,
+                }}
+              >
+                {currentScene.place.locationSubtitle || 'Pune, Maharashtra'}
+              </div>
+
+              {currentScene.place.elevation && (
+                <div
+                  style={{
+                    display: 'inline-block',
+                    fontSize: 11.5,
+                    color: '#94a3b8',
+                    padding: '3px 10px',
+                    borderRadius: 12,
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(6px)',
+                  }}
+                >
+                  {currentScene.place.elevation}
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* 🎬 SCENE 6: ENDING RECAP & EXPLORE PUNE BRANDING */}
-        {currentScene === 5 && (
+        {/* ===================================================================
+            🎬 SCENE 3: PLACE PHOTO WITH KEN BURNS & ELEGANT CAPTION
+            =================================================================== */}
+        {currentScene.type === 'place_photo' && (
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
+              background: '#0a0f1d',
+            }}
+          >
+            {/* Background subtle blurred layer (prevents letterboxing for portrait/landscape) */}
+            <img
+              src={currentScene.photoUrl}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'blur(28px) brightness(0.4)',
+                transform: 'scale(1.2)',
+              }}
+            />
+
+            {/* Foreground crisp photo with smooth Ken Burns zoom */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+              }}
+            >
+              <img
+                src={currentScene.photoUrl}
+                alt={currentScene.place.placeName}
+                className="ken-burns-slow"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+
+            {/* Cinematic Gradient Vignette */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(to top, rgba(10, 15, 26, 0.95) 0%, rgba(10, 15, 26, 0.25) 45%, rgba(10, 15, 26, 0.65) 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Caption / Location Card Overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 34,
+                left: 20,
+                right: 20,
+                color: '#ffffff',
+                zIndex: 20,
+              }}
+            >
+              {/* Category & Time Tag */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
+                <span
+                  style={{
+                    background: '#10b981',
+                    color: '#ffffff',
+                    fontSize: 10.5,
+                    fontWeight: 800,
+                    padding: '3px 9px',
+                    borderRadius: 12,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {isMr ? currentScene.place.categoryNameMr || currentScene.place.categoryName : currentScene.place.categoryName}
+                </span>
+
+                {currentScene.place.visitedAt && (
+                  <span style={{ fontSize: 12, color: '#e2e8f0', opacity: 0.9 }}>
+                    ⏰ {currentScene.place.visitedAt}
+                  </span>
+                )}
+
+                {currentScene.totalPhotosInPlace > 1 && (
+                  <span
+                    style={{
+                      fontSize: 10.5,
+                      color: '#cbd5e1',
+                      background: 'rgba(255,255,255,0.18)',
+                      padding: '2px 8px',
+                      borderRadius: 10,
+                      backdropFilter: 'blur(6px)',
+                    }}
+                  >
+                    📷 {currentScene.photoIndex} / {currentScene.totalPhotosInPlace}
+                  </span>
+                )}
+              </div>
+
+              {/* Place Name */}
+              <h3
+                style={{
+                  fontSize: 'clamp(22px, 5.5vw, 28px)',
+                  fontWeight: 800,
+                  margin: '0 0 8px',
+                  color: '#ffffff',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.7)',
+                }}
+              >
+                {isMr
+                  ? currentScene.place.placeNameMr || currentScene.place.placeName
+                  : currentScene.place.placeName}
+              </h3>
+
+              {/* Poetic description / user note */}
+              <p
+                style={{
+                  fontSize: 14,
+                  color: '#cbd5e1',
+                  margin: 0,
+                  lineHeight: 1.5,
+                  fontStyle: 'italic',
+                  textShadow: '0 1px 4px rgba(0,0,0,0.8)',
+                }}
+              >
+                {isMr
+                  ? currentScene.place.quoteMr || currentScene.place.quoteEn
+                  : currentScene.place.quoteEn}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            🎬 SCENE 4: CLOSING OUTRO RECAP & EXPLORE PUNE BRANDING
+            =================================================================== */}
+        {currentScene.type === 'outro' && (
           <div
             style={{
               position: 'relative',
@@ -696,8 +875,8 @@ export default function JourneyReelPlayerModal({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '80px 28px 40px',
-              background: 'linear-gradient(180deg, #0f172a 0%, #064e3b 100%)',
+              padding: '70px 24px 34px',
+              background: 'linear-gradient(180deg, #0f172a 0%, #064e3b 85%, #022c22 100%)',
               color: '#ffffff',
             }}
           >
@@ -705,7 +884,7 @@ export default function JourneyReelPlayerModal({
               <span
                 style={{
                   display: 'inline-block',
-                  fontSize: 12,
+                  fontSize: 11.5,
                   fontWeight: 800,
                   letterSpacing: '0.15em',
                   color: '#6ee7b7',
@@ -713,116 +892,141 @@ export default function JourneyReelPlayerModal({
                   marginBottom: 8,
                 }}
               >
-                {isMr ? 'सहल सारांश' : "TODAY'S JOURNEY SUMMARY"}
+                {isMr ? 'सहल सारांश' : 'JOURNEY COMPLETED'}
               </span>
-              <h2 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 18px', color: '#ffffff' }}>
-                {isMr ? 'पुणे नेहमीच अद्भुत.' : 'Keep exploring Pune.'}
+
+              <h2 style={{ fontSize: 28, fontWeight: 900, margin: '0 0 16px', color: '#ffffff' }}>
+                {isMr ? currentScene.journeyTitleMr || currentScene.journeyTitle : currentScene.journeyTitle}
               </h2>
 
-              {/* 3 Pillars Summary */}
+              {/* Stats Grid */}
               <div
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: 12,
+                  gap: 10,
                   background: 'rgba(255, 255, 255, 0.08)',
                   backdropFilter: 'blur(10px)',
-                  padding: '16px 12px',
+                  padding: '16px 10px',
                   borderRadius: 16,
                   border: '1px solid rgba(255, 255, 255, 0.15)',
-                  marginBottom: 24,
+                  marginBottom: 20,
                   textAlign: 'center',
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#34d399' }}>{totalPlaces}</div>
-                  <div style={{ fontSize: 11.5, color: '#cbd5e1' }}>{isMr ? 'ठिकाणे' : 'Places'}</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: '#34d399' }}>
+                    {currentScene.placesCount}
+                  </div>
+                  <div style={{ fontSize: 11, color: '#cbd5e1' }}>{isMr ? 'ठिकाणे' : 'Places'}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#38bdf8' }}>{totalDistance}</div>
-                  <div style={{ fontSize: 11.5, color: '#cbd5e1' }}>km</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: '#38bdf8' }}>
+                    {Math.round(currentScene.totalDistanceKm)}
+                  </div>
+                  <div style={{ fontSize: 11, color: '#cbd5e1' }}>km</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#fbbf24' }}>1</div>
-                  <div style={{ fontSize: 11.5, color: '#cbd5e1' }}>{isMr ? 'यशोगाथा' : 'Milestone'}</div>
+                  <div style={{ fontSize: 26, fontWeight: 800, color: '#fbbf24' }}>100%</div>
+                  <div style={{ fontSize: 11, color: '#cbd5e1' }}>{isMr ? 'अभिमान' : 'Memories'}</div>
                 </div>
+              </div>
+
+              {/* Places visited pills */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
+                {currentScene.placesSummary.map((pName, pIdx) => (
+                  <span
+                    key={pIdx}
+                    style={{
+                      fontSize: 11.5,
+                      background: 'rgba(255, 255, 255, 0.12)',
+                      padding: '4px 10px',
+                      borderRadius: 12,
+                      color: '#e2e8f0',
+                    }}
+                  >
+                    ✓ {pName}
+                  </span>
+                ))}
               </div>
             </div>
 
             <div>
               <p
                 style={{
-                  fontSize: 15,
-                  color: '#e2e8f0',
-                  margin: '0 0 24px',
-                  lineHeight: 1.6,
+                  fontSize: 14.5,
+                  color: '#cbd5e1',
+                  margin: '0 0 20px',
+                  lineHeight: 1.5,
                   fontStyle: 'italic',
                 }}
               >
                 {isMr
-                  ? '“पुणे हे केवळ ठिकाणांची यादी नाही. हा तुमचा स्वतः निर्माण केलेला प्रवास आहे.”'
-                  : '“Pune isn’t just a list of places you’ve visited. It’s a journey you’ve created.”'}
+                  ? '“पुणे हे केवळ शहराचे नाव नाही, ही तुम्ही अनुभवलेली अमर जीवनकथा आहे.”'
+                  : '“Pune is not just a place on a map. It is a journey etched in memory.”'}
               </p>
 
+              {/* Action Buttons */}
               <div style={{ display: 'flex', gap: 10 }}>
-                {onShare && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onClose();
-                      onShare();
-                    }}
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 8,
-                      padding: '12px 18px',
-                      borderRadius: 14,
-                      background: '#10b981',
-                      color: '#ffffff',
-                      fontWeight: 700,
-                      fontSize: 14,
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
-                    }}
-                  >
-                    <Share2 size={16} /> {isMr ? 'सफर शेअर करा' : 'Share Journey'}
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={handleShareReel}
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    padding: '12px 18px',
+                    borderRadius: 14,
+                    background: '#10b981',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: 13.5,
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
+                  }}
+                >
+                  <Share2 size={16} />
+                  {shareSuccess ? (isMr ? 'लिंक कॉपी झाली!' : 'Link Copied!') : isMr ? 'सफर शेअर करा' : 'Share Journey Reel'}
+                </button>
+
                 <button
                   type="button"
                   onClick={() => {
-                    setCurrentScene(0);
+                    setCurrentSceneIdx(0);
                     setSceneProgress(0);
                     setIsPaused(false);
                   }}
                   style={{
-                    padding: '12px 18px',
+                    padding: '12px 16px',
                     borderRadius: 14,
                     background: 'rgba(255, 255, 255, 0.15)',
                     color: '#ffffff',
                     fontWeight: 600,
-                    fontSize: 14,
+                    fontSize: 13.5,
                     border: 'none',
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
                   }}
                 >
-                  ↺ {isMr ? 'पुन्हा पहा' : 'Replay'}
+                  <RotateCcw size={15} />
+                  {isMr ? 'पुन्हा पहा' : 'Replay'}
                 </button>
               </div>
 
               {/* Branding Footer */}
               <div
                 style={{
-                  marginTop: 20,
+                  marginTop: 18,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 6,
-                  fontSize: 12,
+                  fontSize: 11.5,
                   color: '#94a3b8',
                 }}
               >
@@ -833,39 +1037,6 @@ export default function JourneyReelPlayerModal({
             </div>
           </div>
         )}
-
-        {/* Bottom Navigation Dots Indicator */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 14,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 6,
-            zIndex: 30,
-          }}
-        >
-          {Array.from({ length: totalScenes }).map((_, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                setCurrentScene(i);
-                setSceneProgress(0);
-              }}
-              style={{
-                width: i === currentScene ? 16 : 6,
-                height: 6,
-                borderRadius: 4,
-                background: i === currentScene ? '#10b981' : 'rgba(255, 255, 255, 0.3)',
-                cursor: 'pointer',
-                transition: 'all 200ms ease',
-              }}
-            />
-          ))}
-        </div>
       </div>
     </div>
   );

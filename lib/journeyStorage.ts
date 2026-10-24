@@ -21,6 +21,7 @@ export interface JourneyPlaceStop {
   note?: string;
   noteMr?: string;
   order: number;
+  photos?: string[];
 }
 
 export interface DayJourney {
