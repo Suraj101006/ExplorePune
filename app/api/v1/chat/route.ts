@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from '@/lib/firebase';
+
+export const dynamic = 'force-dynamic';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { isLimited } from '@/lib/rateLimit';
 import { getPublicTransitRoute, calculateDistanceKm } from '@/lib/publicTransit';
