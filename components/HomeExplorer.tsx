@@ -32,7 +32,6 @@ import {
 import { useLanguage } from '@/lib/LanguageContext';
 import HeroWatermarkAnimation from '@/components/HeroWatermarkAnimation';
 import FeedbackSection from '@/components/FeedbackSection';
-import IntroVideoOverlay from '@/components/IntroVideoOverlay';
 import WeatherWidget from '@/components/WeatherWidget';
 import LocationPickerModal from '@/components/LocationPickerModal';
 import { calculateDistanceKm } from '@/lib/publicTransit';
@@ -310,9 +309,6 @@ export default function HomeExplorer({
 
   return (
     <>
-      {/* 3.5-Second Cinematic Intro Video Overlay (First Visit in Session) */}
-      <IntroVideoOverlay />
-
       {/* Hero Section: Authoritative Heritage Guide */}
       <section className="hero wrap">
         <div style={{ position: 'relative', zIndex: 2 }}>

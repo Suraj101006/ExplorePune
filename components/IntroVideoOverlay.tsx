@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const STORAGE_KEY = 'explore_pune_intro_shown';
-// Cut precisely at 2.40 seconds before any mock web page screenshot appears
-const TARGET_INTRO_DURATION = 2.4;
+// Cut precisely at 2.45 seconds before any mock web page screenshot appears
+const TARGET_INTRO_DURATION = 2.45;
 const VIDEO_ASPECT = 16 / 9;
 const NORM_X = 1160 / 1280; // 0.90625 (horizontal center of Gemini watermark)
 const NORM_Y = 599.5 / 720; // 0.8326388888888889 (vertical center of Gemini watermark)
@@ -51,6 +53,8 @@ function calculateLogoPosition(w: number, h: number): LogoPosition {
 }
 
 export default function IntroVideoOverlay() {
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [introState, setIntroState] = useState<'playing' | 'fading' | 'none'>('playing');
   const [showTitleCard, setShowTitleCard] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -91,6 +95,7 @@ export default function IntroVideoOverlay() {
 
     try {
       sessionStorage.setItem(STORAGE_KEY, 'true');
+      document.documentElement.classList.remove('intro-active');
       document.documentElement.classList.add('intro-dismissed');
     } catch {}
 
@@ -102,6 +107,9 @@ export default function IntroVideoOverlay() {
     setIntroState('fading');
     fadeTimeoutRef.current = setTimeout(() => {
       setIntroState('none');
+      try {
+        document.documentElement.classList.remove('intro-active');
+      } catch {}
     }, 550);
   }, []);
 
@@ -168,12 +176,23 @@ export default function IntroVideoOverlay() {
   // Initialize playback, sound, and session storage
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    setMounted(true);
+
+    if (pathname !== '/') {
+      try {
+        document.documentElement.classList.remove('intro-active');
+        document.documentElement.classList.add('intro-dismissed');
+      } catch {}
+      setIntroState('none');
+      return;
+    }
 
     // Prefers-reduced-motion check
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) {
       try {
         sessionStorage.setItem(STORAGE_KEY, 'true');
+        document.documentElement.classList.remove('intro-active');
         document.documentElement.classList.add('intro-dismissed');
       } catch {}
       setIntroState('none');
@@ -184,10 +203,14 @@ export default function IntroVideoOverlay() {
     try {
       const alreadySeen = sessionStorage.getItem(STORAGE_KEY);
       if (alreadySeen === 'true') {
+        document.documentElement.classList.remove('intro-active');
         document.documentElement.classList.add('intro-dismissed');
         setIntroState('none');
         return;
       }
+      // Activate fullscreen intro mode: completely hides all bars & places
+      document.documentElement.classList.add('intro-active');
+      document.documentElement.classList.remove('intro-dismissed');
     } catch {
       setIntroState('none');
       return;
@@ -228,7 +251,7 @@ export default function IntroVideoOverlay() {
       if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current);
       if (titleTimeoutRef.current) clearTimeout(titleTimeoutRef.current);
     };
-  }, [handleFinish]);
+  }, [handleFinish, pathname]);
 
   // Toggle BGM sound
   const toggleSound = (e: React.MouseEvent) => {
@@ -255,131 +278,131 @@ export default function IntroVideoOverlay() {
     }
   };
 
-  if (introState === 'none') {
+  if (!mounted || introState === 'none') {
     return null;
   }
 
-  return (
-    <>
-      <div
-        id="explore-pune-intro-overlay"
-        className={`intro-overlay ${introState === 'fading' ? 'fading' : ''}`}
-        aria-label="Explore Pune Cinematic Introduction"
-        role="dialog"
-        aria-modal="true"
-        onClick={handleOverlayClick}
-      >
-        {/* Heritage Background Music Audio */}
-        <audio
-          ref={audioRef}
-          src="/audio/explore-pune-intro-bgm.wav"
-          preload="auto"
-          loop={false}
-        />
+  const overlayContent = (
+    <div
+      id="explore-pune-intro-overlay"
+      className={`intro-overlay ${introState === 'fading' ? 'fading' : ''}`}
+      aria-label="Explore Pune Cinematic Introduction"
+      role="dialog"
+      aria-modal="true"
+      onClick={handleOverlayClick}
+    >
+      {/* Heritage Background Music Audio */}
+      <audio
+        ref={audioRef}
+        src="/audio/explore-pune-intro-bgm.wav"
+        preload="auto"
+        loop={false}
+      />
 
-        {/* Explore Pune Brand Badge - Top Left */}
-        <div className="intro-brand-badge" aria-hidden="true">
+      {/* Explore Pune Brand Badge - Top Left */}
+      <div className="intro-brand-badge" aria-hidden="true">
+        <Image
+          src="/images/logo.svg"
+          alt="Explore Pune Logo"
+          width={30}
+          height={30}
+          style={{ borderRadius: '50%', display: 'block' }}
+          priority
+        />
+        <span className="intro-brand-text">
+          Explore <span style={{ color: '#10b981' }}>Pune</span>
+        </span>
+      </div>
+
+      {/* Top-Right Controls: Sound Toggle + SKIP INTRO (Clean side-by-side, zero overlap) */}
+      <div className="intro-top-controls">
+        <button
+          type="button"
+          onClick={toggleSound}
+          className="intro-sound-btn"
+          aria-label={isMuted ? 'Unmute Sound' : 'Mute Sound'}
+        >
+          <span>{isMuted ? '🔇 MUTE' : '🔊 SOUND ON'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSkip}
+          className="intro-skip-btn"
+          aria-label="Skip Intro"
+        >
+          <span>SKIP INTRO</span>
+          <span aria-hidden="true">✕</span>
+        </button>
+      </div>
+
+      {/* Cinematic "Explore Pune" Text Title Card (replaces the last webpage screenshot frame) */}
+      <div
+        className={`intro-explore-title-card ${showTitleCard ? 'visible' : ''}`}
+        aria-hidden={!showTitleCard}
+      >
+        <div className="intro-title-crest">
           <Image
             src="/images/logo.svg"
-            alt="Explore Pune Logo"
-            width={30}
-            height={30}
+            alt="Explore Pune Crest"
+            width={80}
+            height={80}
             style={{ borderRadius: '50%', display: 'block' }}
             priority
           />
-          <span className="intro-brand-text">
-            Explore <span style={{ color: '#10b981' }}>Pune</span>
-          </span>
         </div>
+        <h1 className="intro-title-heading">
+          Explore <span className="intro-title-highlight">Pune</span>
+        </h1>
+        <p className="intro-title-marathi">
+          एक्सप्लोर पुणे • सह्याद्री आणि संस्कृती दर्शन
+        </p>
+      </div>
 
-        {/* Top-Right Controls: Sound Toggle + SKIP INTRO (Clean side-by-side, zero overlap) */}
-        <div className="intro-top-controls">
-          <button
-            type="button"
-            onClick={toggleSound}
-            className="intro-sound-btn"
-            aria-label={isMuted ? 'Unmute Sound' : 'Mute Sound'}
-          >
-            <span>{isMuted ? '🔇 MUTE' : '🔊 SOUND ON'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSkip}
-            className="intro-skip-btn"
-            aria-label="Skip Intro"
-          >
-            <span>SKIP INTRO</span>
-            <span aria-hidden="true">✕</span>
-          </button>
-        </div>
-
-        {/* Cinematic "Explore Pune" Text Title Card (replaces the last webpage screenshot frame) */}
-        <div
-          className={`intro-explore-title-card ${showTitleCard ? 'visible' : ''}`}
-          aria-hidden={!showTitleCard}
-        >
-          <div className="intro-title-crest">
-            <Image
-              src="/images/logo.svg"
-              alt="Explore Pune Crest"
-              width={80}
-              height={80}
-              style={{ borderRadius: '50%', display: 'block' }}
-              priority
-            />
-          </div>
-          <h1 className="intro-title-heading">
-            Explore <span className="intro-title-highlight">Pune</span>
-          </h1>
-          <p className="intro-title-marathi">
-            एक्सप्लोर पुणे • सह्याद्री आणि संस्कृती दर्शन
-          </p>
-        </div>
-
-        {/* Explore Pune Logo Badge covering the Gemini Watermark on the video */}
-        <div
-          className="intro-gemini-cover-badge"
-          style={
-            logoPos
-              ? {
-                  left: `${logoPos.left}px`,
-                  top: `${logoPos.top}px`,
-                  width: `${logoPos.size}px`,
-                  height: `${logoPos.size}px`,
-                  right: 'auto',
-                  bottom: 'auto',
-                  transform: 'translate(-50%, -50%)',
-                  display: logoPos.visible && !showTitleCard ? 'flex' : 'none',
-                }
-              : undefined
-          }
-          aria-hidden="true"
-        >
-          <Image
-            src="/images/logo.svg"
-            alt="Explore Pune"
-            width={logoPos ? logoPos.size : 52}
-            height={logoPos ? logoPos.size : 52}
-            className="intro-gemini-cover-img"
-            priority
-          />
-        </div>
-
-        {/* Video Asset strictly capped at 2.4s to cut any mock web screenshot */}
-        <video
-          ref={videoRef}
-          src="/videos/explore-pune-intro.mp4"
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={() => triggerTitleCard()}
-          onError={() => handleFinish(true)}
-          className={`intro-video-element ${showTitleCard ? 'dimmed' : ''}`}
+      {/* Explore Pune Logo Badge covering the Gemini Watermark on the video */}
+      <div
+        className="intro-gemini-cover-badge"
+        style={
+          logoPos
+            ? {
+                left: `${logoPos.left}px`,
+                top: `${logoPos.top}px`,
+                width: `${logoPos.size}px`,
+                height: `${logoPos.size}px`,
+                right: 'auto',
+                bottom: 'auto',
+                transform: 'translate(-50%, -50%)',
+                display: logoPos.visible && !showTitleCard ? 'flex' : 'none',
+              }
+            : undefined
+        }
+        aria-hidden="true"
+      >
+        <Image
+          src="/images/logo.svg"
+          alt="Explore Pune"
+          width={logoPos ? logoPos.size : 52}
+          height={logoPos ? logoPos.size : 52}
+          className="intro-gemini-cover-img"
+          priority
         />
       </div>
-    </>
+
+      {/* Video Asset strictly capped at 2.45s before mock web screenshot */}
+      <video
+        ref={videoRef}
+        src="/videos/explore-pune-intro.mp4"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={() => triggerTitleCard()}
+        onError={() => handleFinish(true)}
+        className={`intro-video-element ${showTitleCard ? 'dimmed' : ''}`}
+      />
+    </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(overlayContent, document.body) : null;
 }
