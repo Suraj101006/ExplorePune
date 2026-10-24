@@ -14,7 +14,7 @@ const Schema = z.object({
   returnToStart: z.boolean().default(false),
   includeUnverified: z.boolean().default(true),
   interests: z.array(z.string().max(40)).max(10).default([]),
-  start: z.object({ lat: z.number().min(17).max(20), lng: z.number().min(72.5).max(75.5) }).default({ lat: 18.5195, lng: 73.8553 }),
+  start: z.object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) }).default({ lat: 18.5195, lng: 73.8553 }),
   userLocName: z.string().max(100).optional(),
 });
 
@@ -109,6 +109,10 @@ export async function POST(req: NextRequest) {
       );
     }
     const inp = parsed.data;
+    // Graceful fallback if GPS origin is outside greater Pune boundary
+    if (inp.start.lat < 18.2 || inp.start.lat > 19.0 || inp.start.lng < 73.3 || inp.start.lng > 74.3) {
+      inp.start = { lat: 18.5204, lng: 73.8567 };
+    }
 
     let data: any[] = [];
     try {

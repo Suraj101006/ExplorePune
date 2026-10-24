@@ -86,7 +86,7 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
           }}
         >
           <span>👤 By <strong>{blog.author_name || 'Pune Explorer'}</strong></span>
-          {blog.published_at && (
+          {blog.published_at && !isNaN(new Date(blog.published_at).getTime()) && (
             <span>
               • Published on{' '}
               {new Date(blog.published_at).toLocaleDateString('en-IN', {

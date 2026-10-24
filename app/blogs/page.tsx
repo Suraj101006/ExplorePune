@@ -119,7 +119,7 @@ export default async function BlogsPage() {
                 <span className="cat" style={{ fontSize: '11.5px' }}>
                   {b.place_name ? `📍 ${b.place_name}` : '🎒 Travel Story'}
                 </span>
-                {b.published_at && (
+                {b.published_at && !isNaN(new Date(b.published_at).getTime()) && (
                   <span style={{ fontSize: '12px', color: 'var(--muted)', fontWeight: 600 }}>
                     {new Date(b.published_at).toLocaleDateString('en-IN', {
                       day: 'numeric',

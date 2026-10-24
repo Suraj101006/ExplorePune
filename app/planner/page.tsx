@@ -542,6 +542,10 @@ export default function PlannerPage() {
   // Add Place to Current Route (Requirement 17)
   const handleAddPlaceToRoute = (place: any) => {
     if (!activePlan) return;
+    if (activePlan.stops?.some((s: any) => s.placeId === place.id || (place.slug && s.placeSlug === place.slug))) {
+      setAddPlaceModalOpen(false);
+      return;
+    }
     setIsRecalculating(true);
     setJustAddedStopId(place.id);
 
@@ -2896,7 +2900,7 @@ export default function PlannerPage() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {filteredAvailablePlaces.map((p) => {
-                  const alreadyInRoute = activePlan?.stops?.some((s: any) => s.placeId === p.id);
+                  const alreadyInRoute = activePlan?.stops?.some((s: any) => s.placeId === p.id || (p.slug && s.placeSlug === p.slug));
                   return (
                     <div
                       key={p.id}

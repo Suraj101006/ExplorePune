@@ -102,6 +102,7 @@ export default function AccountPage() {
       setD({ profile, favs, visits, badges, reviews, blogs });
     } catch (e) {
       console.error('Error loading account:', e);
+      setD({ profile: null, favs: [], visits: [], badges: [], reviews: [], blogs: [] });
     }
   }, [user]);
 

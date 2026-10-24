@@ -128,7 +128,8 @@ export function getTripHistory(): ActiveTrip[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_HISTORY);
     if (!raw) return [];
-    return JSON.parse(raw) as ActiveTrip[];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as ActiveTrip[]) : [];
   } catch {
     return [];
   }

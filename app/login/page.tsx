@@ -26,6 +26,13 @@ export default function LoginPage() {
   const [busy, setBusy] = useState(false);
   const [agreePolicy, setAgreePolicy] = useState(false);
 
+  const getReturnUrl = () => {
+    if (typeof window === 'undefined') return '/account';
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect') || params.get('next');
+    return redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/account';
+  };
+
   async function ensureProfile(uid: string, displayName: string | null) {
     const ref = doc(db, 'profiles', uid);
     const snap = await getDoc(ref);
@@ -61,10 +68,10 @@ export default function LoginPage() {
         const { user } = await createUserWithEmailAndPassword(auth, email, pw);
         if (name) await updateProfile(user, { displayName: name });
         await ensureProfile(user.uid, name || null);
-        router.push('/account');
+        router.push(getReturnUrl());
       } else {
         await signInWithEmailAndPassword(auth, email, pw);
-        router.push('/account');
+        router.push(getReturnUrl());
       }
     } catch (error: any) {
       const code = error?.code ?? '';
@@ -96,7 +103,7 @@ export default function LoginPage() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       await ensureProfile(result.user.uid, result.user.displayName);
-      router.push('/account');
+      router.push(getReturnUrl());
     } catch (error: any) {
       if (error?.code !== 'auth/popup-closed-by-user') {
         setErr(error?.message ?? 'Google sign-in failed.');

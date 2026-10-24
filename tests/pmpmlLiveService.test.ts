@@ -8,7 +8,7 @@ import {
   getPmpmlRouteSchedule,
 } from '../lib/pmpmlLiveService';
 
-describe('PMPML Live Service', () => {
+describe('PMPML Live Service', { timeout: 12000 }, () => {
   it('retrieves live stops list or falls back gracefully', async () => {
     const stops = await getPmpmlLiveStops();
     expect(Array.isArray(stops)).toBe(true);

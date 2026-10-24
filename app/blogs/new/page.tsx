@@ -32,7 +32,11 @@ export default function NewBlog() {
         const snap = await getDocs(
           query(collection(db, 'places'), where('status', '==', 'published'), limit(200))
         );
-        const items = snap.docs.map((d) => ({ id: d.id, name: (d.data() as any).name }));
+        const items = snap.docs.map((d) => ({
+          id: d.id,
+          name: (d.data() as any).name,
+          slug: (d.data() as any).slug || d.id,
+        }));
         items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
         setPlaces(items);
       } catch (e) {
@@ -40,6 +44,14 @@ export default function NewBlog() {
       }
     })();
   }, []);
+
+  if (!ready) {
+    return (
+      <main className="wrap" style={{ paddingTop: 60, textAlign: 'center', color: 'var(--muted)' }}>
+        ⏳ Loading editor...
+      </main>
+    );
+  }
 
   if (ready && !user) {
     return (
@@ -74,6 +86,7 @@ export default function NewBlog() {
         content,
         place_id: place || null,
         place_name: selectedPlace ? selectedPlace.name : null,
+        place_slug: selectedPlace ? selectedPlace.slug : null,
         tags: tags
           .split(',')
           .map((t) => t.trim())

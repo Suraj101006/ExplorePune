@@ -1124,6 +1124,17 @@ a:hover {
   }
 }
 
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Print Stylesheet for Clean Offline PDF and Paper Export */
 @media print {
   .site-header,

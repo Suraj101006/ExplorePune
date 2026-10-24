@@ -87,6 +87,10 @@ export default function Reviews({ placeId }: { placeId: string }) {
   }
 
   async function report(id: string) {
+    if (!user) {
+      alert(isMr ? 'तक्रार करण्यासाठी प्रथम लॉगिन करा.' : 'Please sign in to report a review.');
+      return;
+    }
     const reason = prompt(isMr ? 'या प्रतिक्रियेमध्ये काय आक्षेपार्ह आहे?' : 'What is wrong with this review?');
     if (!reason) return;
     try {

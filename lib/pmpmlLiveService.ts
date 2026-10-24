@@ -69,7 +69,7 @@ const scheduleCache = new Map<string, CacheEntry<LivePmpmlSchedule>>();
 const STOPS_CACHE_TTL = 1000 * 60 * 60 * 12; // 12 hours
 const ROUTES_CACHE_TTL = 1000 * 60 * 60 * 6;  // 6 hours
 const DETAILS_CACHE_TTL = 1000 * 60 * 60 * 2; // 2 hours
-const FETCH_TIMEOUT_MS = 6000;
+const FETCH_TIMEOUT_MS = 2500;
 
 function haversineDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371; // Earth's radius in km
@@ -138,17 +138,40 @@ export async function getPmpmlLiveStops(): Promise<LivePmpmlStop[]> {
 
   // Fallback to local bundled GTFS stops
   const fallbackStops: LivePmpmlStop[] = [];
-  const rawStops = (gtfsDataRaw as any)?.stops || [];
-  for (const s of rawStops) {
-    fallbackStops.push({
-      id: String(s.stop_id || s.id),
-      name: s.stop_name || s.name || '',
-      lat: Number(s.stop_lat || s.lat),
-      lon: Number(s.stop_lon || s.lon || s.lng),
-      agency: 'pmpml',
-      city: 'pun',
-    });
+  
+  if (Array.isArray((gtfsDataRaw as any)?.hubs)) {
+    for (const h of (gtfsDataRaw as any).hubs) {
+      fallbackStops.push({
+        id: String(h.id),
+        name: h.name || '',
+        lat: Number(h.lat),
+        lon: Number(h.lon ?? h.lng),
+        agency: 'pmpml',
+        city: 'pun',
+      });
+    }
   }
+
+  const landmarks = (gtfsDataRaw as any)?.landmarkStops || {};
+  for (const key of Object.keys(landmarks)) {
+    const item = landmarks[key];
+    if (Array.isArray(item.nearestStops)) {
+      for (const ns of item.nearestStops) {
+        const stopId = String(ns.stopId || ns.id);
+        if (!fallbackStops.some((s) => s.id === stopId)) {
+          fallbackStops.push({
+            id: stopId,
+            name: ns.stopName || ns.name || '',
+            lat: Number(ns.lat),
+            lon: Number(ns.lon ?? ns.lng),
+            agency: 'pmpml',
+            city: 'pun',
+          });
+        }
+      }
+    }
+  }
+
   return fallbackStops;
 }
 
@@ -222,15 +245,16 @@ export async function getPmpmlLiveRoutes(searchQuery?: string): Promise<LivePmpm
 
   if (routes.length === 0) {
     // Fallback to local routes
-    const localRoutes = (gtfsDataRaw as any)?.routes || [];
+    const localRoutes =
+      (gtfsDataRaw as any)?.allRoutesSample || (gtfsDataRaw as any)?.routes || [];
     routes = localRoutes.map((r: any) => ({
-      id: String(r.route_id || r.id),
+      id: String(r.id || r.routeId || r.route_id),
       agency: 'PMPML',
       city: 'pun',
-      description: r.route_short_name || '',
+      description: r.busNo || r.routeNo || r.route_short_name || '',
       direction: 0,
-      end: r.route_long_name || '',
-      long_name: r.route_long_name || '',
+      end: r.end || r.destination || '',
+      long_name: r.name || r.long_name || r.route_long_name || '',
     }));
   }
 

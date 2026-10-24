@@ -139,6 +139,8 @@ export default function CommunityPostModal({
         }
       };
       reader.readAsDataURL(file);
+    } finally {
+      if (e.target) e.target.value = '';
     }
   };
 
