@@ -2794,6 +2794,7 @@ export default function PlannerPage() {
               padding: 24,
               maxWidth: 520,
               width: '100%',
+              margin: 'auto',
               maxHeight: '85vh',
               overflowY: 'auto',
               boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',

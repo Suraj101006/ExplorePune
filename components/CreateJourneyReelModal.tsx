@@ -320,7 +320,8 @@ export default function CreateJourneyReelModal({
         style={{
           position: 'relative',
           width: 'min(94vw, 560px)',
-          maxHeight: 'min(92dvh, 760px)',
+          maxHeight: 'min(90dvh, 760px)',
+          margin: 'auto',
           borderRadius: 24,
           background: '#0f172a',
           color: '#ffffff',

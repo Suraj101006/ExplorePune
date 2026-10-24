@@ -560,7 +560,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
   return (
     <main className="wrap" style={{ paddingTop: 36, paddingBottom: 60 }}>
-      <div style={{ maxWidth: '880px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
         <Link
           href="/"
           className="chip"
@@ -839,7 +839,7 @@ export default function PlaceDetailClient({ place }: { place: any }) {
         <PlaceActions placeId={place.id} placeSlug={place.slug} placeName={place.name} />
 
         {/* About & Visitor Info */}
-        <div className="stack" style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 24 }}>
           {/* Overview & History Section (Requirement 8) */}
           <section className="panel scroll-reveal place-section-reveal">
             <h2

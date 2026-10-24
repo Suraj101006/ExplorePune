@@ -316,6 +316,7 @@ export default function DirectionsModal() {
           width: '100%',
           maxWidth: 620,
           maxHeight: '92vh',
+          margin: 'auto',
           background: '#ffffff',
           borderRadius: 20,
           boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.35)',

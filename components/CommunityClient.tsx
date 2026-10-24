@@ -42,6 +42,7 @@ import { blockUser, getBlockedUserIds } from '@/lib/userSafety';
 import CommunityPostModal from '@/components/CommunityPostModal';
 import CommunityPostDetailModal from '@/components/CommunityPostDetailModal';
 import CommunityReportModal from '@/components/CommunityReportModal';
+import GuestLockModal from '@/components/GuestLockModal';
 import { shareOrCopy } from '@/lib/shareUtils';
 
 // Popular places for quick filter chips
@@ -84,7 +85,16 @@ function CommunityContent() {
 
   // Modals
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [isGuestLockOpen, setIsGuestLockOpen] = useState(false);
   const [selectedDetailPost, setSelectedDetailPost] = useState<CommunityPost | null>(null);
+
+  const handleOpenComposer = () => {
+    if (!user) {
+      setIsGuestLockOpen(true);
+      return;
+    }
+    setIsPostModalOpen(true);
+  };
   const [reportingTarget, setReportingTarget] = useState<{
     post: CommunityPost;
     mode: 'post' | 'user';
@@ -290,7 +300,7 @@ function CommunityContent() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <button
                 type="button"
-                onClick={() => setIsPostModalOpen(true)}
+                onClick={handleOpenComposer}
                 className="btn btn-primary"
                 style={{
                   padding: '12px 22px',
@@ -1360,7 +1370,7 @@ function CommunityContent() {
               </button>
               <button
                 type="button"
-                onClick={() => setIsPostModalOpen(true)}
+                onClick={handleOpenComposer}
                 className="btn btn-primary"
                 style={{ fontSize: 13.5, padding: '9px 20px' }}
               >
@@ -1382,7 +1392,7 @@ function CommunityContent() {
       >
         <button
           type="button"
-          onClick={() => setIsPostModalOpen(true)}
+          onClick={handleOpenComposer}
           style={{
             background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
             color: '#fff',
@@ -1442,6 +1452,15 @@ function CommunityContent() {
           initialReportType={reportingTarget.mode}
         />
       )}
+
+      {/* Guest Lock Modal for posting */}
+      <GuestLockModal
+        isOpen={isGuestLockOpen}
+        onClose={() => setIsGuestLockOpen(false)}
+        featureName="Pune Community posting"
+        featureNameMr="पुणे समुदायात अनुभव आणि फोटो शेअर करण्यासाठी"
+        redirectUrl="/community"
+      />
 
       {/* Toast Feedback */}
       {shareToast && (

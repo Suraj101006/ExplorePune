@@ -13,6 +13,7 @@ import JourneyMapAnimation from '@/components/JourneyMapAnimation';
 import TodayHeroAnimation from '@/components/TodayHeroAnimation';
 import JourneyReelPlayerModal from '@/components/JourneyReelPlayerModal';
 import CreateJourneyReelModal from '@/components/CreateJourneyReelModal';
+import GuestLockModal from '@/components/GuestLockModal';
 import { JourneyReelData } from '@/lib/journeyReel';
 import ShareJourneyModal from '@/components/ShareJourneyModal';
 import MemoryMomentModal from '@/components/MemoryMomentModal';
@@ -62,7 +63,17 @@ export default function MyJourneyClient() {
   const [reelJourney, setReelJourney] = useState<DayJourney | null>(null);
   const [customReelData, setCustomReelData] = useState<JourneyReelData | null>(null);
   const [isCreateReelOpen, setIsCreateReelOpen] = useState(false);
+  const [isGuestLockOpen, setIsGuestLockOpen] = useState(false);
   const [createReelMode, setCreateReelMode] = useState<'today' | 'overall'>('today');
+
+  const handleOpenCreateReel = (mode: 'today' | 'overall' = 'today') => {
+    if (!user) {
+      setIsGuestLockOpen(true);
+      return;
+    }
+    setCreateReelMode(mode);
+    setIsCreateReelOpen(true);
+  };
   const [shareJourney, setShareJourney] = useState<DayJourney | null>(null);
   const [memoryJourney, setMemoryJourney] = useState<DayJourney | null>(null);
 
@@ -542,10 +553,7 @@ export default function MyJourneyClient() {
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <button
                     type="button"
-                    onClick={() => {
-                      setCreateReelMode('today');
-                      setIsCreateReelOpen(true);
-                    }}
+                    onClick={() => handleOpenCreateReel('today')}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -891,10 +899,7 @@ export default function MyJourneyClient() {
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
             type="button"
-            onClick={() => {
-              setCreateReelMode('overall');
-              setIsCreateReelOpen(true);
-            }}
+            onClick={() => handleOpenCreateReel('overall')}
             style={{
               padding: '12px 22px',
               borderRadius: 14,
@@ -1788,6 +1793,15 @@ export default function MyJourneyClient() {
           setMemoryJourney(null);
           setShareJourney(toShare);
         }}
+      />
+
+      {/* Guest Lock Modal */}
+      <GuestLockModal
+        isOpen={isGuestLockOpen}
+        onClose={() => setIsGuestLockOpen(false)}
+        featureName="Journey Reel Creator"
+        featureNameMr="प्रवास रील तयार व सेव्ह करण्यासाठी"
+        redirectUrl="/journey"
       />
     </main>
   );
