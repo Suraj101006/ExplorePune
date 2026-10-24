@@ -299,9 +299,10 @@ export default function PlannerPage() {
     setIsGuidedMode(false);
 
     const startTime = Date.now();
+    const STEP_INTERVAL_MS = 500;
     const progressTimer = setInterval(() => {
       setPlanningStep((prev) => (prev < 4 ? prev + 1 : prev));
-    }, 150);
+    }, STEP_INTERVAL_MS);
 
     const [h, m] = time.split(':').map(Number);
     let lat = 18.5204;
@@ -331,11 +332,15 @@ export default function PlannerPage() {
       });
       const json = await res.json();
 
-      // Ensure calm 700ms progress animation so user sees the step sequence (Requirement 6)
+      // Ensure calm, deliberate ~2.5s generative calculation sequence so user can read each step comfortably
+      const MIN_CALCULATION_DURATION = 2500;
       const elapsed = Date.now() - startTime;
-      if (elapsed < 700) {
-        await new Promise((resolve) => setTimeout(resolve, 700 - elapsed));
+      if (elapsed < MIN_CALCULATION_DURATION) {
+        await new Promise((resolve) => setTimeout(resolve, MIN_CALCULATION_DURATION - elapsed));
       }
+      clearInterval(progressTimer);
+      setPlanningStep(4);
+      await new Promise((resolve) => setTimeout(resolve, 350));
 
       if (json.data) {
         setResult(json.data);
@@ -1990,6 +1995,28 @@ export default function PlannerPage() {
                   <span style={{ fontSize: 18 }}>🏛️</span>
                   <strong style={{ fontSize: 13, color: '#0f172a' }}>{isMr ? '२. शनिवार वाडा / वारसा स्थळ' : '2. Heritage Site / Cultural Hub'}</strong>
                 </div>
+              </div>
+
+              {/* Generative Progress Bar (Requirement 6 - Slower, relaxed animation) */}
+              <div
+                style={{
+                  maxWidth: 460,
+                  margin: '0 auto 16px',
+                  height: 6,
+                  background: '#e2e8f0',
+                  borderRadius: 999,
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${Math.min(100, Math.round(((planningStep + 1) / PLANNING_STEPS.length) * 100))}%`,
+                    background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+                    borderRadius: 999,
+                    transition: 'width 480ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
               </div>
 
               {/* Sequential 5-Step Planning Ticker (Requirement 6) */}

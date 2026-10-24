@@ -3305,7 +3305,7 @@ html.intro-dismissed .intro-overlay {
 
 .journey-building-line {
   stroke-dasharray: 6 5;
-  animation: routeStrokeDash 1.2s linear infinite;
+  animation: routeStrokeDash 2.4s linear infinite;
 }
 
 @keyframes stepFadeSlide {
@@ -3320,7 +3320,8 @@ html.intro-dismissed .intro-overlay {
 }
 
 .planning-step-item {
-  animation: stepFadeSlide 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: stepFadeSlide 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* 8, 9 & 20. Result Transition, Trip Summary Shimmer & Sparkles */
@@ -3336,7 +3337,7 @@ html.intro-dismissed .intro-overlay {
 }
 
 .planner-results-wrapper {
-  animation: resultsExpandFade 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: resultsExpandFade 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes statHighlightSweep {
