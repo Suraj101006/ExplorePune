@@ -45,9 +45,9 @@
   --shadow-lg: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
   --shadow-xl: 0 16px 36px -6px rgba(15, 23, 42, 0.1);
   
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
   --radius-full: 9999px;
 
   /* Centralized Professional Motion Tokens (Requirement 1 & 23) */
@@ -930,11 +930,9 @@ a:hover {
   object-position: center;
   display: block;
   flex-shrink: 0;
-  border-radius: var(--radius-sm);
   overflow: hidden;
   position: relative;
   background: #e2e8f0;
-  margin-bottom: 2px;
 }
 
 .card-media img {

@@ -1545,8 +1545,10 @@ export default function HomeExplorer({
                       </button>
                     </div>
 
+                    {/* Card Body Wrapper for consistent padding and flex layout */}
+                    <div className="card-body">
                     {/* Metadata Row: Category · Locality & Distance */}
-                    <div className="card-top" style={{ minHeight: 28, margin: '8px 0 4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <div className="card-top" style={{ minHeight: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: '1 1 auto' }}>
                         <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
                           {catDisplayName} · {locality}
@@ -1649,12 +1651,13 @@ export default function HomeExplorer({
                         </span>
                       )}
                     </div>
+                    </div>{/* end .card-body */}
 
                     {/* Entry Fee & Provenance Footer */}
                     <div
                       style={{
                         marginTop: 'auto',
-                        paddingTop: '12px',
+                        padding: '12px 18px 18px',
                         borderTop: '1px solid var(--line)',
                         display: 'flex',
                         justifyContent: 'space-between',

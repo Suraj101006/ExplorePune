@@ -157,7 +157,6 @@ export default function WeatherWidget() {
         color: 'var(--ink)',
         flexWrap: 'wrap',
       }}
-      title={isMr ? weather.adviceMr : weather.adviceEn}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700 }}>
         <span style={{ fontSize: '16px' }}>{weather.icon}</span>
