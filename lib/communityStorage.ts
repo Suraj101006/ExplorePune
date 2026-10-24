@@ -67,9 +67,10 @@ export interface CommunityPost {
 
 export interface CommunityReport {
   id: string;
-  targetType: 'post' | 'comment';
+  targetType: 'post' | 'comment' | 'user' | 'account';
   targetId: string;
   targetTitle?: string;
+  authorName?: string;
   reporterUserId: string;
   reason:
     | 'spam'

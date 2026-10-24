@@ -507,8 +507,11 @@ export default function MyJourneyClient() {
               <TodayHeroAnimation
                 journey={todayJourney}
                 isMr={isMr}
-                onPlayReel={() => setReelJourney(todayJourney)}
-                onShare={() => setShareJourney(todayJourney)}
+                onPlayReel={() => {
+                  const toPlay = todayJourney || journeys[0] || SEED_JOURNEYS[0];
+                  setReelJourney(toPlay);
+                }}
+                onShare={() => setShareJourney(todayJourney || journeys[0] || SEED_JOURNEYS[0])}
               />
 
               {/* Requirement 2: Visual Timeline Header */}
@@ -534,7 +537,10 @@ export default function MyJourneyClient() {
                 <div style={{ display: 'flex', gap: 10 }}>
                   <button
                     type="button"
-                    onClick={() => setReelJourney(todayJourney)}
+                    onClick={() => {
+                      const toPlay = todayJourney || journeys[0] || SEED_JOURNEYS[0];
+                      setReelJourney(toPlay);
+                    }}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -551,7 +557,7 @@ export default function MyJourneyClient() {
                     }}
                   >
                     <Play size={15} fill="#ffffff" />
-                    {isMr ? '🎬 प्रवास रील्स पहा' : '🎬 Create Journey'}
+                    {isMr ? '🎬 प्रवास रील्स पहा' : '🎬 Watch Journey Reel'}
                   </button>
 
                   <button
@@ -787,6 +793,27 @@ export default function MyJourneyClient() {
                   : 'Explore your first place and we’ll start building your journey. Plan an itinerary or check in at a Pune landmark.'}
               </p>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setReelJourney(SEED_JOURNEYS[0])}
+                  className="btn"
+                  style={{
+                    padding: '12px 22px',
+                    fontWeight: 700,
+                    background: '#10b981',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: 12,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                  }}
+                >
+                  <Play size={15} fill="#ffffff" />
+                  {isMr ? '🎬 नमुना प्रवास रील्स पहा' : '🎬 Watch Sample Journey Reel'}
+                </button>
                 <Link href="/planner" className="btn btn-primary" style={{ padding: '12px 24px', fontWeight: 700 }}>
                   {isMr ? 'सहल आखा →' : 'Plan a Trip →'}
                 </Link>
@@ -925,7 +952,11 @@ export default function MyJourneyClient() {
                     <button
                       type="button"
                       onClick={() => {
-                        const j = journeys.find((item) => item.id === story.journeyId) || journeys[0];
+                        const j =
+                          journeys.find((item) => item.id === story.journeyId) ||
+                          journeys[0] ||
+                          SEED_JOURNEYS.find((s) => s.id === story.journeyId) ||
+                          SEED_JOURNEYS[0];
                         setReelJourney(j);
                       }}
                       style={{
@@ -1481,7 +1512,7 @@ export default function MyJourneyClient() {
                                   type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    setReelJourney(j);
+                                    setReelJourney(j || SEED_JOURNEYS[0]);
                                   }}
                                   style={{
                                     padding: '6px 12px',

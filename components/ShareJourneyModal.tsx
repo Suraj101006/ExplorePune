@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { DayJourney } from '@/lib/journeyStorage';
 import { X, Download, Share2, Copy, Check, Lock, Globe, Eye, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { shareOrCopy } from '@/lib/shareUtils';
 
 interface ShareJourneyModalProps {
   isOpen: boolean;
@@ -36,13 +37,18 @@ export default function ShareJourneyModal({
   const totalKm = journey.totalDistanceKm || 12.4;
   const placeCount = visitedStops.length > 0 ? visitedStops.length : places.length;
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     if (typeof window !== 'undefined') {
       const shareUrl = `${window.location.origin}/journey?date=${journey.date}`;
-      navigator.clipboard.writeText(shareUrl).then(() => {
+      const res = await shareOrCopy({
+        title: `${userName}'s Pune Travel Journey`,
+        text: `Check out ${userName}'s Pune travel journey on Explore Pune:`,
+        url: shareUrl,
+      });
+      if (res === 'copied' || res === 'shared') {
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
-      });
+      }
     }
   };
 
@@ -122,8 +128,17 @@ export default function ShareJourneyModal({
   };
 
   return (
-    <div className="journey-reel-backdrop" role="dialog" aria-modal="true" aria-label="Share Journey">
+    <div
+      className="journey-reel-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Share Journey"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{
           position: 'relative',
           width: 'min(94vw, 560px)',

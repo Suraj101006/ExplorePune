@@ -3605,13 +3605,15 @@ html.intro-dismissed .intro-overlay {
 .journey-reel-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  background: rgba(10, 15, 20, 0.92);
+  z-index: 1000000;
+  background: rgba(10, 15, 20, 0.94);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: fadeIn 250ms ease forwards;
+  pointer-events: auto;
 }
 
 .journey-reel-player {

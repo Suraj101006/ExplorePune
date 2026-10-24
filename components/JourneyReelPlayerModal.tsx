@@ -36,6 +36,15 @@ export default function JourneyReelPlayerModal({
   const totalScenes = 6;
   const SCENE_DURATION_MS = 2800; // ~16.8 seconds total
 
+  // Reset playback whenever modal opens or new journey is loaded
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentScene(0);
+      setSceneProgress(0);
+      setIsPaused(false);
+    }
+  }, [isOpen, journey?.id]);
+
   // Scene transition timer
   useEffect(() => {
     if (!isOpen || !journey) {
@@ -106,8 +115,16 @@ export default function JourneyReelPlayerModal({
   if (!isOpen || !journey) return null;
 
   return (
-    <div className="journey-reel-backdrop" role="dialog" aria-modal="true" aria-label="Journey Reel">
-      <div className="journey-reel-player">
+    <div
+      className="journey-reel-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Journey Reel"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="journey-reel-player" onClick={(e) => e.stopPropagation()}>
         {/* Top Story Progress Bars */}
         <div
           style={{
@@ -213,33 +230,37 @@ export default function JourneyReelPlayerModal({
           </div>
         </div>
 
-        {/* Tap areas for Prev / Next */}
-        <div
-          onClick={goToPrevScene}
-          style={{
-            position: 'absolute',
-            top: 70,
-            bottom: 80,
-            left: 0,
-            width: '30%',
-            zIndex: 20,
-            cursor: 'pointer',
-          }}
-          aria-label="Previous scene"
-        />
-        <div
-          onClick={goToNextScene}
-          style={{
-            position: 'absolute',
-            top: 70,
-            bottom: 80,
-            right: 0,
-            width: '70%',
-            zIndex: 20,
-            cursor: 'pointer',
-          }}
-          aria-label="Next scene"
-        />
+        {/* Tap areas for Prev / Next (Scenes 0-4, not blocking final action scene) */}
+        {currentScene < totalScenes - 1 && (
+          <>
+            <div
+              onClick={goToPrevScene}
+              style={{
+                position: 'absolute',
+                top: 70,
+                bottom: 80,
+                left: 0,
+                width: '35%',
+                zIndex: 20,
+                cursor: 'pointer',
+              }}
+              aria-label="Previous scene"
+            />
+            <div
+              onClick={goToNextScene}
+              style={{
+                position: 'absolute',
+                top: 70,
+                bottom: 80,
+                right: 0,
+                width: '65%',
+                zIndex: 20,
+                cursor: 'pointer',
+              }}
+              aria-label="Next scene"
+            />
+          </>
+        )}
 
         {/* 🎬 SCENE 1: OPENING TITLE & SUBTLE MAP */}
         {currentScene === 0 && (

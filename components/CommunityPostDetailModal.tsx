@@ -30,6 +30,7 @@ import {
 import CommunityReportModal from '@/components/CommunityReportModal';
 import CommunityAppealModal from '@/components/CommunityAppealModal';
 import { blockUser } from '@/lib/userSafety';
+import { shareOrCopy } from '@/lib/shareUtils';
 
 interface CommunityPostDetailModalProps {
   post: CommunityPost | null;
@@ -53,7 +54,10 @@ export default function CommunityPostDetailModal({
   const [commentInput, setCommentInput] = useState('');
   const [commentError, setCommentError] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
-  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportConfig, setReportConfig] = useState<{ open: boolean; mode: 'post' | 'user' }>({
+    open: false,
+    mode: 'post',
+  });
   const [appealModalOpen, setAppealModalOpen] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
   const [hasVotedHelpful, setHasVotedHelpful] = useState(false);
@@ -165,12 +169,19 @@ export default function CommunityPostDetailModal({
     }
   };
 
-  const handleShare = () => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      const shareUrl = `${window.location.origin}/community?place=${currentPost.placeSlug}#${currentPost.id}`;
-      navigator.clipboard.writeText(shareUrl);
-      setCopiedShare(true);
-      setTimeout(() => setCopiedShare(false), 2000);
+  const handleShare = async () => {
+    if (!currentPost) return;
+    if (typeof window !== 'undefined') {
+      const shareUrl = `${window.location.origin}/community?post=${currentPost.id}`;
+      const res = await shareOrCopy({
+        title: `Explore Pune: ${currentPost.title}`,
+        text: `Check out this discussion on Explore Pune Community: "${currentPost.title}"`,
+        url: shareUrl,
+      });
+      if (res === 'copied' || res === 'shared') {
+        setCopiedShare(true);
+        setTimeout(() => setCopiedShare(false), 2400);
+      }
     }
   };
 
@@ -497,7 +508,7 @@ export default function CommunityPostDetailModal({
 
               <button
                 type="button"
-                onClick={() => setReportModalOpen(true)}
+                onClick={() => setReportConfig({ open: true, mode: 'post' })}
                 style={{
                   background: '#ffffff',
                   border: '1px solid #cbd5e1',
@@ -511,33 +522,58 @@ export default function CommunityPostDetailModal({
                   alignItems: 'center',
                   gap: 5,
                 }}
+                title={isMr ? 'या चर्चेची तक्रार करा' : 'Report this post'}
               >
                 <Flag size={13} />
-                <span>{isMr ? 'तक्रार' : 'Report'}</span>
+                <span>{isMr ? 'तक्रार' : 'Report Post'}</span>
               </button>
 
               {currentUserId !== currentPost.userId && (
-                <button
-                  type="button"
-                  onClick={handleBlockAuthor}
-                  style={{
-                    background: '#ffffff',
-                    border: '1px solid #cbd5e1',
-                    color: '#64748b',
-                    padding: '6px 10px',
-                    borderRadius: 8,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                  title={isMr ? 'या वापरकर्त्यास ब्लॉक करा' : `Block ${currentPost.authorName}`}
-                >
-                  <UserX size={13} />
-                  <span>{isMr ? 'ब्लॉक' : 'Block'}</span>
-                </button>
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setReportConfig({ open: true, mode: 'user' })}
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #fecaca',
+                      color: '#b91c1c',
+                      padding: '6px 10px',
+                      borderRadius: 8,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                    title={isMr ? `${currentPost.authorName} यांच्या खात्याची तक्रार करा` : `Report account of ${currentPost.authorName}`}
+                  >
+                    <UserX size={13} />
+                    <span>{isMr ? 'खाते तक्रार' : 'Report User'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleBlockAuthor}
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #cbd5e1',
+                      color: '#64748b',
+                      padding: '6px 10px',
+                      borderRadius: 8,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                    title={isMr ? 'या वापरकर्त्यास ब्लॉक करा' : `Block ${currentPost.authorName}`}
+                  >
+                    <UserX size={13} />
+                    <span>{isMr ? 'ब्लॉक' : 'Block'}</span>
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -714,11 +750,14 @@ export default function CommunityPostDetailModal({
 
       {/* Report Modal */}
       <CommunityReportModal
-        isOpen={reportModalOpen}
-        onClose={() => setReportModalOpen(false)}
-        targetId={currentPost.id}
-        targetType="post"
+        isOpen={reportConfig.open}
+        onClose={() => setReportConfig({ open: false, mode: 'post' })}
+        targetId={reportConfig.mode === 'user' ? currentPost.userId : currentPost.id}
+        targetType={reportConfig.mode === 'user' ? 'user' : 'post'}
         targetTitle={currentPost.title}
+        authorId={currentPost.userId}
+        authorName={currentPost.authorName}
+        initialReportType={reportConfig.mode}
       />
 
       {/* Appeal / Request Review Modal */}

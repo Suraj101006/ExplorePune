@@ -42,6 +42,7 @@ import { blockUser, getBlockedUserIds } from '@/lib/userSafety';
 import CommunityPostModal from '@/components/CommunityPostModal';
 import CommunityPostDetailModal from '@/components/CommunityPostDetailModal';
 import CommunityReportModal from '@/components/CommunityReportModal';
+import { shareOrCopy } from '@/lib/shareUtils';
 
 // Popular places for quick filter chips
 const POPULAR_PLACE_CHIPS = [
@@ -84,7 +85,10 @@ function CommunityContent() {
   // Modals
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedDetailPost, setSelectedDetailPost] = useState<CommunityPost | null>(null);
-  const [reportingPost, setReportingPost] = useState<CommunityPost | null>(null);
+  const [reportingTarget, setReportingTarget] = useState<{
+    post: CommunityPost;
+    mode: 'post' | 'user';
+  } | null>(null);
   const [shareToast, setShareToast] = useState(false);
   const [blockToast, setBlockToast] = useState(false);
 
@@ -192,15 +196,20 @@ function CommunityContent() {
     }
   };
 
-  // Handle Share link copy
-  const handleSharePost = (post: CommunityPost, e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Handle Share link with native Web Share on mobile & clipboard fallback
+  const handleSharePost = async (post: CommunityPost, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     if (typeof window !== 'undefined') {
       const shareUrl = `${window.location.origin}/community?post=${post.id}`;
-      navigator.clipboard.writeText(shareUrl).then(() => {
+      const res = await shareOrCopy({
+        title: `Explore Pune: ${post.title}`,
+        text: `Check out "${post.title}" on Explore Pune Community:`,
+        url: shareUrl,
+      });
+      if (res === 'copied' || res === 'shared') {
         setShareToast(true);
         setTimeout(() => setShareToast(false), 2600);
-      });
+      }
     }
   };
 
@@ -953,8 +962,32 @@ function CommunityContent() {
                             </span>
                           )}
                         </div>
-                        <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                          {formatCommunityTime(post.createdAt, isMr)}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+                          <span>{formatCommunityTime(post.createdAt, isMr)}</span>
+                          <span>•</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReportingTarget({ post, mode: 'user' });
+                            }}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'var(--muted)',
+                              cursor: 'pointer',
+                              padding: 0,
+                              fontSize: 11,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 3,
+                            }}
+                            title={isMr ? `खात्याची तक्रार करा: @${post.authorName}` : `Report account: @${post.authorName}`}
+                            aria-label={`Report user account ${post.authorName}`}
+                          >
+                            <UserX size={11} />
+                            <span>{isMr ? 'खाते तक्रार' : 'Report Account'}</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1207,7 +1240,7 @@ function CommunityContent() {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setReportingPost(post);
+                          setReportingTarget({ post, mode: 'post' });
                         }}
                         style={{
                           background: 'none',
@@ -1219,8 +1252,8 @@ function CommunityContent() {
                           display: 'flex',
                           alignItems: 'center',
                         }}
-                        title={isMr ? 'तक्रार नोंदवा' : 'Report discussion'}
-                        aria-label="Report post"
+                        title={isMr ? 'तक्रार नोंदवा' : 'Report discussion or account'}
+                        aria-label="Report post or account"
                       >
                         <Flag size={15} />
                       </button>
@@ -1395,13 +1428,16 @@ function CommunityContent() {
       />
 
       {/* 3. Report Modal */}
-      {reportingPost && (
+      {reportingTarget && (
         <CommunityReportModal
-          isOpen={Boolean(reportingPost)}
-          onClose={() => setReportingPost(null)}
-          targetId={reportingPost.id}
-          targetType="post"
-          targetTitle={reportingPost.title}
+          isOpen={Boolean(reportingTarget)}
+          onClose={() => setReportingTarget(null)}
+          targetId={reportingTarget.mode === 'user' ? reportingTarget.post.userId : reportingTarget.post.id}
+          targetType={reportingTarget.mode === 'user' ? 'user' : 'post'}
+          targetTitle={reportingTarget.post.title}
+          authorId={reportingTarget.post.userId}
+          authorName={reportingTarget.post.authorName}
+          initialReportType={reportingTarget.mode}
         />
       )}
 

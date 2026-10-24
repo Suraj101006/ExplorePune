@@ -246,7 +246,7 @@ describe('Community Knowledge & Discussion Engine', () => {
   });
 
   describe('submitCommunityReport', () => {
-    it('records a moderation report with pending status', () => {
+    it('records a moderation report for a post with pending status', () => {
       const report = submitCommunityReport({
         targetType: 'post',
         targetId: 'post-test-123',
@@ -258,6 +258,24 @@ describe('Community Knowledge & Discussion Engine', () => {
       expect(report.id).toBeDefined();
       expect(report.status).toBe('pending');
       expect(report.reason).toBe('false_info');
+      expect(report.targetType).toBe('post');
+    });
+
+    it('records an account/user violation report with author details', () => {
+      const report = submitCommunityReport({
+        targetType: 'user',
+        targetId: 'author-user-456',
+        reporterUserId: 'user-reporter-99',
+        reason: 'harassment',
+        authorName: 'Rohan Sharma',
+        details: 'User sending inappropriate personal remarks across discussions.',
+      });
+
+      expect(report.id).toBeDefined();
+      expect(report.status).toBe('pending');
+      expect(report.targetType).toBe('user');
+      expect(report.authorName).toBe('Rohan Sharma');
+      expect(report.reason).toBe('harassment');
     });
   });
 
