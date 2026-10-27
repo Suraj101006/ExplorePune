@@ -274,6 +274,9 @@ export interface GpsDetectionResult {
   accuracyMeters?: number;
   speedKmh?: number | null;
   heading?: number | null;
+  source?: 'gps' | 'ip' | 'default';
+  city?: string;
+  country?: string;
 }
 
 // =========================================================================
@@ -457,19 +460,174 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
 }
 
 /**
- * Acquire precise, authentic GPS coordinates using browser Geolocation API.
- * Uses high-accuracy device GPS sensors with zero caching for fresh satellite fix.
+ * Verify whether the current execution context is secure for Geolocation.
+ * Modern browsers strictly require HTTPS or localhost/loopback origins.
+ */
+function isSecureOrigin(): boolean {
+  if (typeof window === 'undefined') {
+    // If executed in Node / SSR / test environment with mocked navigator
+    return typeof navigator !== 'undefined' && !!navigator.geolocation;
+  }
+  // Allow test / JSDOM simulated environments (about:blank or empty protocol)
+  if (
+    !window.location?.hostname &&
+    (window.location?.protocol === 'about:' || window.location?.protocol === '')
+  ) {
+    return true;
+  }
+  return (
+    window.isSecureContext === true ||
+    window.location.protocol === 'https:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '[::1]'
+  );
+}
+
+/**
+ * SECONDARY FALLBACK LAYER: Silent IP-based Geolocation.
+ * Invoked if hardware GPS fails for any reason (denied, timeout, hardware absence, insecure origin).
+ * Extracts estimated coordinates, city, and country with zero API key requirement.
+ * Includes safety net to DEFAULT_PUNE_STATIC_LOCATION so the app never crashes or returns empty data.
+ */
+async function fetchSilentIpLocation(): Promise<GpsDetectionResult> {
+  const providers = [
+    {
+      url: 'https://ipapi.co/json/',
+      parse: (d: any) => {
+        const lat = parseFloat(d.latitude);
+        const lng = parseFloat(d.longitude);
+        if (isNaN(lat) || isNaN(lng)) return null;
+        return {
+          lat,
+          lng,
+          city: (d.city || 'Pune').toString(),
+          country: (d.country_name || d.country || 'India').toString(),
+        };
+      },
+    },
+    {
+      url: 'https://get.geojs.io/v1/ip/geo.json',
+      parse: (d: any) => {
+        const lat = parseFloat(d.latitude);
+        const lng = parseFloat(d.longitude);
+        if (isNaN(lat) || isNaN(lng)) return null;
+        return {
+          lat,
+          lng,
+          city: (d.city || 'Pune').toString(),
+          country: (d.country || 'India').toString(),
+        };
+      },
+    },
+  ];
+
+  for (const provider of providers) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      const response = await fetch(provider.url, {
+        signal: controller.signal,
+        headers: { Accept: 'application/json' },
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const data = await response.json();
+        const parsed = provider.parse(data);
+        if (parsed) {
+          const distFromCenter = calculateDistanceKm(parsed.lat, parsed.lng, 18.5204, 73.8567);
+          const { locality } = findClosestPuneLocality(parsed.lat, parsed.lng);
+          const isOutside = distFromCenter > 45;
+          const localityShortEn = locality.nameEn.split('/')[0].trim();
+          const localityShortMr = locality.nameMr.split('/')[0].trim();
+
+          const nameEn = isOutside
+            ? `Estimated IP (~${parsed.city})`
+            : `Estimated IP (Near ${localityShortEn})`;
+          const nameMr = isOutside
+            ? `अंदाजे IP (~${parsed.city})`
+            : `अंदाजे IP (${localityShortMr} जवळ)`;
+
+          const savedLoc: UserSavedLocation = {
+            id: 'ip-location',
+            nameEn,
+            nameMr,
+            latitude: parsed.lat,
+            longitude: parsed.lng,
+            lat: parsed.lat,
+            lng: parsed.lng,
+            timestamp: Date.now(),
+            isGps: false,
+            isLiveTracking: false,
+            accuracyRadiusMeters: 5000,
+            addressDetails: {
+              city: parsed.city,
+              formattedAddress: `${parsed.city}, ${parsed.country}`,
+            },
+          };
+
+          setStoredUserLocation(savedLoc);
+
+          return {
+            success: true,
+            location: savedLoc,
+            source: 'ip',
+            isOutsidePune: isOutside,
+            distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
+            accuracyMeters: 5000,
+            city: parsed.city,
+            country: parsed.country,
+          };
+        }
+      }
+    } catch {
+      // Continue to next IP provider fallback
+    }
+  }
+
+  // Absolute Safety Net: If offline or all IP providers fail, resolve to default Pune location
+  const fallbackLoc: UserSavedLocation = {
+    ...DEFAULT_PUNE_STATIC_LOCATION,
+    timestamp: Date.now(),
+  };
+  setStoredUserLocation(fallbackLoc);
+
+  return {
+    success: true,
+    location: fallbackLoc,
+    source: 'default',
+    isOutsidePune: false,
+    distanceFromPuneKm: 0,
+    accuracyMeters: 250,
+    city: 'Pune',
+    country: 'India',
+  };
+}
+
+/**
+ * Robust, production-grade User Location detection utilizing a "Never-Fail Hybrid Strategy":
+ * 
+ * 1. PRIMARY LAYER (Hardware GPS):
+ *    - Validates HTTPS / secure context.
+ *    - Queries HTML5 Geolocation API with high accuracy, 6000ms timeout, and maximumAge: 0.
+ *    - Returns coordinates with hardware accuracy radius.
+ * 
+ * 2. SECONDARY FALLBACK LAYER (Silent IP Geolocation):
+ *    - Instantly catches GPS denial, timeouts, hardware lack, or insecure context.
+ *    - Asynchronously queries free IP geolocation APIs to extract estimated coordinates, city, and country.
+ *    - Falls back to Central Pune static coordinates if offline, ensuring the app never throws or returns empty data.
  */
 export function detectBrowserGps(): Promise<GpsDetectionResult> {
   return new Promise((resolve) => {
-    if (typeof window === 'undefined' || !navigator.geolocation) {
-      resolve({
-        success: false,
-        error: 'Geolocation is not supported by your browser.',
-      });
+    // Check for secure context and browser geolocation availability
+    if (!isSecureOrigin() || typeof navigator === 'undefined' || !navigator.geolocation) {
+      fetchSilentIpLocation().then(resolve);
       return;
     }
 
+    // PRIMARY LAYER: Hardware GPS
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const savedLoc = processGpsPosition(pos);
@@ -477,6 +635,7 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
         resolve({
           success: true,
           location: savedLoc,
+          source: 'gps',
           isOutsidePune: distFromCenter > 45,
           distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
           accuracyMeters: savedLoc.accuracyRadiusMeters,
@@ -484,28 +643,23 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
           heading: savedLoc.heading,
         });
       },
-      (err) => {
-        let msg = 'Could not acquire GPS position.';
-        if (err.code === err.PERMISSION_DENIED) {
-          msg = 'Location permission was denied. Please allow location access in your browser settings.';
-        } else if (err.code === err.POSITION_UNAVAILABLE) {
-          msg = 'GPS satellite fix or network position is unavailable.';
-        } else if (err.code === err.TIMEOUT) {
-          msg = 'GPS satellite fix timed out. Please check your device location services and try again.';
-        }
-        resolve({
-          success: false,
-          error: msg,
-        });
+      (_err) => {
+        // SECONDARY LAYER: Catch any error (denied, timeout, unavailable) and silently fetch IP geolocation
+        fetchSilentIpLocation().then(resolve);
       },
       {
         enableHighAccuracy: true,
-        timeout: 15000,
+        timeout: 6000,
         maximumAge: 0,
       }
     );
   });
 }
+
+/**
+ * Reusable export alias for consuming the Never-Fail Hybrid Location Promise.
+ */
+export const getUserLocation = detectBrowserGps;
 
 /**
  * Starts continuous real-time GPS tracking.
