@@ -506,6 +506,8 @@ export default function HomeExplorer({
               <img
                 src="/images/places/sinhagad-fort.jpg"
                 alt="Sinhagad Fort"
+                loading="eager"
+                {...({ fetchPriority: 'high' } as any)}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span
@@ -1434,7 +1436,7 @@ export default function HomeExplorer({
                 return (
                   <article
                     key={p.id}
-                    className="card place-card-interactive"
+                    className={`card place-card-interactive ${idx > 5 ? 'card-deferred' : ''}`}
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
@@ -1479,7 +1481,8 @@ export default function HomeExplorer({
                             <img
                               src={p.image_url || badgeImg}
                               alt={p.name}
-                              loading="lazy"
+                              loading={idx === 0 ? 'eager' : 'lazy'}
+                              {...(idx === 0 ? ({ fetchPriority: 'high' } as any) : {})}
                               className="place-card-img-zoom"
                               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                             />

@@ -2,6 +2,8 @@ import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
+// Public client-side configuration for Firebase Web SDK.
+// These are client identifiers restricted by Firebase Security Rules, not secret keys.
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyBfxzypc2mqyQwPx9WqOsttvGScJOfUHSw',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 'punetrail.firebaseapp.com',

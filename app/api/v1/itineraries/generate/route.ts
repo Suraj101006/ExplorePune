@@ -41,7 +41,12 @@ function formatMinutesToTime(totalMin: number): string {
   return `${displayH.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
 }
 
-function hydratePlan(plan: PlannerResult, inp: any, coords: Map<string, { lat: number; lng: number }>, placesMap?: Map<string, any>) {
+function hydratePlan(plan: PlannerResult, inp: any, coords: Map<string, { lat: number; lng: number }>, placesMap?: Map<string, any>, wasClamped?: boolean) {
+  if (wasClamped) {
+    plan.warnings.unshift(
+      'Notice: Your start or GPS coordinates are outside the Pune district boundary. The route has been started from Central Pune (Shaniwar Wada).'
+    );
+  }
   if (inp.mode === 'public_transit') {
     plan.warnings.unshift(
       'Public Transit: Combines Pune Metro (Lines 1 & 2) and PMPML Buses. Tip: Buy the ₹70 PMPML Day Pass (PMC + PCMC) for unlimited city bus travel all day!'
@@ -109,9 +114,11 @@ export async function POST(req: NextRequest) {
       );
     }
     const inp = parsed.data;
+    let wasClamped = false;
     // Graceful fallback if GPS origin is outside greater Pune boundary
     if (inp.start.lat < 18.2 || inp.start.lat > 19.0 || inp.start.lng < 73.3 || inp.start.lng > 74.3) {
       inp.start = { lat: 18.5204, lng: 73.8567 };
+      wasClamped = true;
     }
 
     let data: any[] = [];
@@ -167,7 +174,7 @@ export async function POST(req: NextRequest) {
 
     // Plan 1: Primary Optimal Sequence
     const rawPlan1 = buildItinerary(inp, [...candidates], getTravel);
-    const plan1 = hydratePlan(rawPlan1, inp, coords, placesMap);
+    const plan1 = hydratePlan(rawPlan1, inp, coords, placesMap, wasClamped);
 
     // Plan 2: Alternate Route Sequence (different starting anchor or varied score distribution)
     const topStop1 = plan1.stops[0]?.placeId;
@@ -179,7 +186,7 @@ export async function POST(req: NextRequest) {
         score: c.score + (!hasSpecificInterests && ['nature', 'forts', 'parks'].includes(c.category_slug || '') ? 45 : 0),
       }));
     const rawPlan2 = buildItinerary(inp, candidatesForPlan2.length > 0 ? candidatesForPlan2 : candidates, getTravel);
-    const plan2 = hydratePlan(rawPlan2, inp, coords, placesMap);
+    const plan2 = hydratePlan(rawPlan2, inp, coords, placesMap, wasClamped);
 
     // Plan 3: Comprehensive / Varied Route (diversified from Plan 1 & Plan 2)
     const topStop2 = plan2.stops[0]?.placeId;
@@ -190,7 +197,7 @@ export async function POST(req: NextRequest) {
         score: c.score + (!hasSpecificInterests && ['temples', 'museums', 'heritage'].includes(c.category_slug || '') ? 40 : 0),
       }));
     const rawPlan3 = buildItinerary(inp, candidatesForPlan3.length > 0 ? candidatesForPlan3 : candidates, getTravel);
-    const plan3 = hydratePlan(rawPlan3, inp, coords, placesMap);
+    const plan3 = hydratePlan(rawPlan3, inp, coords, placesMap, wasClamped);
 
     // Dynamic Title & Theme Generation matching user's selected interests
     const primaryInterest = inp.interests[0];

@@ -126,4 +126,27 @@ describe('/api/v1/directions API route', () => {
     expect(json.success).toBe(true);
     expect(json.distanceText).toContain('किमी');
   });
+
+  it('handles distant or edge coordinates gracefully without crashing', async () => {
+    // Outer edge Pune boundary coordinates
+    const req = new NextRequest('http://localhost:3000/api/v1/directions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        originLat: 18.7500,
+        originLng: 73.4000,
+        destLat: 18.5196,
+        destLng: 73.8553,
+        travelMode: 'driving',
+        lang: 'en',
+      }),
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    expect(json.distanceKm).toBeGreaterThan(0);
+  });
 });

@@ -920,6 +920,14 @@ a:hover {
   border-color: #cbd5e1 !important;
 }
 
+/* Modern Web Guidance (defer-rendering-heavy-content):
+   Defers layout and paint computations for cards below the initial fold.
+   contain-intrinsic-size provides placeholder dimensions to avoid CLS on scroll. */
+.card-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 390px;
+}
+
 .card-media, .card .card-media {
   width: 100%;
   aspect-ratio: 16 / 10;
