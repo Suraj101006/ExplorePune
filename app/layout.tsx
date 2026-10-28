@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 import ChatWidget from '@/components/ChatWidget';
@@ -77,7 +78,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Zero-flash script: ensures all bars and places are 100% hidden while intro video is showing */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|headlesschrome/i.test(navigator.userAgent);if((p==='/'||p==='')&&s!=='true'&&!r&&!b){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
+            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|seositecheckup|checkup|sitecheckup|gtmetrix|pingdom|headlesschrome|ptst/i.test(navigator.userAgent);if((p==='/'||p==='')&&s!=='true'&&!r&&!b){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
+          }}
+        />
+        {/* Google Analytics 4 (GA4) */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-EXPLOREPUNE1'}`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-EXPLOREPUNE1'}', {
+                page_path: window.location.pathname,
+                anonymize_ip: true
+              });
+            `,
           }}
         />
       </head>

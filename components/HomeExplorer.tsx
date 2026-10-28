@@ -503,13 +503,15 @@ export default function HomeExplorer({
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
-            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+            <div style={{ position: 'relative', height: 160, width: '100%', aspectRatio: '16 / 9', overflow: 'hidden' }}>
               <img
                 src="/images/places/sinhagad-fort.jpg"
                 alt="Sinhagad Fort"
+                width={320}
+                height={180}
                 loading="eager"
                 {...({ fetchPriority: 'high' } as any)}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '16 / 9' }}
               />
               <span
                 style={{
@@ -570,13 +572,15 @@ export default function HomeExplorer({
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
-            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+            <div style={{ position: 'relative', height: 160, width: '100%', aspectRatio: '16 / 9', overflow: 'hidden' }}>
               <img
                 src="/images/places/shaniwar-wada.jpg"
                 alt="Shaniwar Wada"
+                width={320}
+                height={180}
                 loading="lazy"
                 decoding="async"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '16 / 9' }}
               />
               <span
                 style={{
@@ -637,13 +641,15 @@ export default function HomeExplorer({
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
-            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+            <div style={{ position: 'relative', height: 160, width: '100%', aspectRatio: '16 / 9', overflow: 'hidden' }}>
               <img
                 src="/images/places/raja-dinkar-kelkar-museum.jpg"
                 alt="Raja Dinkar Kelkar Museum"
+                width={320}
+                height={180}
                 loading="lazy"
                 decoding="async"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '16 / 9' }}
               />
               <span
                 style={{
@@ -704,13 +710,15 @@ export default function HomeExplorer({
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
-            <div style={{ position: 'relative', height: 160, width: '100%' }}>
+            <div style={{ position: 'relative', height: 160, width: '100%', aspectRatio: '16 / 9', overflow: 'hidden' }}>
               <img
                 src="/images/places/pataleshwar-cave-temple.jpg"
                 alt="Pataleshwar Cave Temple"
+                width={320}
+                height={180}
                 loading="lazy"
                 decoding="async"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '16 / 9' }}
               />
               <span
                 style={{
@@ -1525,10 +1533,12 @@ export default function HomeExplorer({
                             <img
                               src={p.image_url || badgeImg}
                               alt={p.name}
+                              width={360}
+                              height={225}
                               loading="lazy"
                               decoding="async"
                               className="place-card-img-zoom"
-                              style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+                              style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '16 / 10' }}
                             />
                           </div>
                         </div>

@@ -55,3 +55,30 @@ export async function getCachedPlacesData() {
 
   return { places: cachedPlaces, categories: cachedCats };
 }
+
+export function projectPlaceCardSummary(p: any) {
+  return {
+    id: p.id,
+    slug: p.slug || p.id,
+    name: p.name,
+    name_mr: p.name_mr || '',
+    category: p.category || '',
+    category_slug: p.category_slug || '',
+    image_url: p.image_url || '',
+    fee_status: p.fee_status || '',
+    entry_fee: typeof p.entry_fee === 'number' ? p.entry_fee : null,
+    place_prices: Array.isArray(p.place_prices) ? p.place_prices.slice(0, 1) : [],
+    operating_hours: p.operating_hours || null,
+    popularity_score: p.popularity_score || 0,
+    latitude: typeof p.latitude === 'number' ? p.latitude : null,
+    longitude: typeof p.longitude === 'number' ? p.longitude : null,
+    address: p.address || '',
+    address_mr: p.address_mr || '',
+    description: (p.description || '').slice(0, 160),
+    description_mr: (p.description_mr || '').slice(0, 160),
+    tier: p.tier || 'verified',
+    place_categories: Array.isArray(p.place_categories)
+      ? p.place_categories.map((c: any) => ({ slug: c.slug, name: c.name }))
+      : [],
+  };
+}

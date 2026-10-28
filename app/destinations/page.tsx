@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { getCachedPlacesData } from '@/lib/serverPlaces';
+import { getCachedPlacesData, projectPlaceCardSummary } from '@/lib/serverPlaces';
 import HomeExplorer from '@/components/HomeExplorer';
 
 export const revalidate = 1800; // 30-minute ISR
-const PAGE = 24;
+const PAGE = 16;
 
 export const metadata: Metadata = {
   title: 'All Destinations & Historic Sites in Pune | Field Guide',
@@ -63,7 +63,7 @@ export default async function DestinationsPage({
 
   const count = allPlaces.length;
   const pages = Math.max(1, Math.ceil(count / PAGE));
-  const places = allPlaces.slice((pg - 1) * PAGE, pg * PAGE);
+  const places = allPlaces.slice((pg - 1) * PAGE, pg * PAGE).map(projectPlaceCardSummary);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
