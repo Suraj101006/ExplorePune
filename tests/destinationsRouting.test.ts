@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 
 describe('Destinations & Categories SEO Routing', () => {
@@ -35,6 +37,32 @@ describe('Destinations & Categories SEO Routing', () => {
     freePlaces.forEach((p) => {
       expect(p.fee_status).toBe('free');
       expect(p.entry_fee ?? p.place_prices?.[0]?.amount).toBe(0);
+    });
+  });
+
+  describe('Destination Card Responsive Layout & Formatting Invariants', () => {
+    const homeExplorerCode = fs.readFileSync(path.resolve(__dirname, '../components/HomeExplorer.tsx'), 'utf8');
+    const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
+
+    it('enforces minmax(0, 1fr) grid tracks across desktop, tablet, and mobile', () => {
+      expect(globalsCss).toContain('grid-template-columns: repeat(3, minmax(0, 1fr));');
+      expect(globalsCss).toContain('grid-template-columns: repeat(2, minmax(0, 1fr));');
+      expect(globalsCss).toContain('grid-template-columns: minmax(0, 1fr);');
+    });
+
+    it('guarantees action buttons in card footer are flex-shrink: 0 with whiteSpace: nowrap', () => {
+      expect(homeExplorerCode).toContain("display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0");
+      expect(homeExplorerCode).toContain("whiteSpace: 'nowrap',");
+    });
+
+    it('guarantees price and verification labels have whiteSpace: nowrap and ellipsis truncation', () => {
+      expect(homeExplorerCode).toContain("textOverflow: 'ellipsis', whiteSpace: 'nowrap'");
+    });
+
+    it('ensures card container does not force aggressive word-break: break-word on badges and flex containers', () => {
+      const cardCssMatch = globalsCss.match(/\.card\s*\{([^}]+)\}/);
+      expect(cardCssMatch).not.toBeNull();
+      expect(cardCssMatch![1]).not.toContain('word-break: break-word');
     });
   });
 });

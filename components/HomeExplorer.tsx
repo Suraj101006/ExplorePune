@@ -488,7 +488,7 @@ export default function HomeExplorer({
           </Link>
         </div>
 
-        <div className="grid">
+        <div className="grid curator-grid">
           {/* Card 1: Sinhagad Fort */}
           <div
             className="scroll-reveal-child"
@@ -530,27 +530,29 @@ export default function HomeExplorer({
                 {isMr ? 'किल्ले · सह्याद्री' : 'Historic Fort · Donje'}
               </span>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
-                {isMr ? 'सिंहगड किल्ला (कोंढाणा)' : "Sinhagad Fort (Lion's Fort)"}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
-                {isMr ? 'सुभेदार तानाजी मालुसरे यांचा पराक्रम · १,३१२ मीटर' : 'Tanaji Malusare 1670 Battleground · 1,312m Ridge'}
-              </span>
-              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+              <div style={{ minHeight: 44, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'सिंहगड किल्ला (कोंढाणा)' : "Sinhagad Fort (Lion's Fort)"}
+                </strong>
+                <span style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'सुभेदार तानाजी मालुसरे यांचा पराक्रम · १,३१२ मीटर' : 'Tanaji Malusare 1670 Battleground · 1,312m Ridge'}
+                </span>
+              </div>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '8px 0 12px', minHeight: '38px', maxHeight: '38px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {isMr
                   ? 'कल्याण दरवाजा, तानाजी समाधी आणि अप्रतिम सह्याद्री निसर्ग दृश्ये.'
                   : 'Iconic Sahyadri hill fortress known for Kalyan Darwaza and panoramic valley vistas.'}
               </p>
-              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ६ ते सायं ६' : '06:00 – 18:00'}
                 </span>
                 <Link
                   href="/places/sinhagad-fort"
                   aria-label="View Sinhagad Fort visitor guide and history"
-                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'सिंहगड माहिती →' : 'Sinhagad Guide →'}
                 </Link>
@@ -599,27 +601,29 @@ export default function HomeExplorer({
                 {isMr ? 'वाडे · शनिवार पेठ' : 'Peshwa Seat · Shaniwar Peth'}
               </span>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
-                {isMr ? 'शनिवार वाडा' : 'Shaniwar Wada'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
-                {isMr ? 'पेशवे बाजीराव पहिले · १७३२ ची भव्य तटबंदी' : 'Peshwa Baji Rao I · 1732 CE Stone Citadel'}
-              </span>
-              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+              <div style={{ minHeight: 44, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'शनिवार वाडा' : 'Shaniwar Wada'}
+                </strong>
+                <span style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'पेशवे बाजीराव पहिले · १७३२ ची भव्य तटबंदी' : 'Peshwa Baji Rao I · 1732 CE Stone Citadel'}
+                </span>
+              </div>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '8px 0 12px', minHeight: '38px', maxHeight: '38px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {isMr
                   ? 'मराठा साम्राज्याची राजधानी, दिल्ली दरवाजा व १६ कमळांचा कारंजा.'
                   : 'The historic seat of the Peshwa rulers, Delhi Darwaza spikes, and Hazari Karanje.'}
               </p>
-              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ९:३० ते सायं ५:३०' : '09:30 – 17:30'}
                 </span>
                 <Link
                   href="/places/shaniwar-wada"
                   aria-label="View Shaniwar Wada visitor guide and history"
-                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'शनिवार वाडा माहिती →' : 'Shaniwar Wada Guide →'}
                 </Link>
@@ -668,27 +672,29 @@ export default function HomeExplorer({
                 {isMr ? 'वस्तुसंग्रहालय · शुक्रवार पेठ' : 'Museum · Shukrawar Peth'}
               </span>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
-                {isMr ? 'राजा दिनकर केळकर संग्रहालय' : 'Raja Dinkar Kelkar Museum'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
-                {isMr ? '२०,०००+ ऐतिहासिक दुर्मिळ वस्तू व मस्तानी महाल' : '20,000+ Maratha Artifacts & Mastani Mahal'}
-              </span>
-              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+              <div style={{ minHeight: 44, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'राजा दिनकर केळकर संग्रहालय' : 'Raja Dinkar Kelkar Museum'}
+                </strong>
+                <span style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? '२०,०००+ ऐतिहासिक दुर्मिळ वस्तू व मस्तानी महाल' : '20,000+ Maratha Artifacts & Mastani Mahal'}
+                </span>
+              </div>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '8px 0 12px', minHeight: '38px', maxHeight: '38px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {isMr
                   ? 'डॉ. दिनकर केळकर यांचा जीवनगौरव संग्रह: वाद्ये, शस्त्रे व हस्तकला.'
                   : 'Priceless single-collector treasury of 18th-century textiles, instruments, and arms.'}
               </p>
-              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी १० ते सायं ५:३०' : '10:00 – 17:30'}
                 </span>
                 <Link
                   href="/places/raja-dinkar-kelkar-museum"
                   aria-label="View Raja Dinkar Kelkar Museum visitor guide and artifacts"
-                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'केळकर संग्रहालय माहिती →' : 'Kelkar Museum Guide →'}
                 </Link>
@@ -737,27 +743,29 @@ export default function HomeExplorer({
                 {isMr ? 'प्राचीन लेणी · शिवाजीनगर' : 'Rock-Cut Shrine · Shivajinagar'}
               </span>
             </div>
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2 }}>
-                {isMr ? 'पाताळेश्वर लेणी मंदिर' : 'Pataleshwar Cave Temple'}
-              </strong>
-              <span style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: 8 }}>
-                {isMr ? '८वे शतक · राष्ट्रकूटकालीन अखंड कातळात कोरलेले मंदिर' : '8th-Century Rashtrakuta Monolithic Shrine'}
-              </span>
-              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '0 0 12px' }}>
+            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+              <div style={{ minHeight: 44, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <strong style={{ fontSize: '15px', color: 'var(--ink)', marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? 'पाताळेश्वर लेणी मंदिर' : 'Pataleshwar Cave Temple'}
+                </strong>
+                <span style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {isMr ? '८वे शतक · राष्ट्रकूटकालीन अखंड कातळात कोरलेले मंदिर' : '8th-Century Rashtrakuta Monolithic Shrine'}
+                </span>
+              </div>
+              <p style={{ fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45, margin: '8px 0 12px', minHeight: '38px', maxHeight: '38px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {isMr
                   ? 'जंगली महाराज रस्त्यावरील बेसाल्ट खडकातील वर्तुळाकार नंदी मंडप व शिवमंदिर.'
                   : 'Carved out of single basalt rock, featuring a circular Nandi pavilion on JM Road.'}
               </p>
-              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
+                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ८:३० ते सायं ५:३०' : '08:30 – 17:30'}
                 </span>
                 <Link
                   href="/places/pataleshwar-cave-temple"
                   aria-label="View Pataleshwar Cave Temple monolithic shrine details"
-                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
+                  style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'पाताळेश्वर लेणी माहिती →' : 'Pataleshwar Cave Guide →'}
                 </Link>
@@ -1603,11 +1611,11 @@ export default function HomeExplorer({
                     </div>
 
                     {/* Card Body Wrapper for consistent padding and flex layout */}
-                    <div className="card-body">
+                    <div className="card-body" style={{ padding: '16px 18px 14px', display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
                     {/* Metadata Row: Category · Locality & Distance */}
-                    <div className="card-top" style={{ minHeight: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <div className="card-top" style={{ minHeight: 26, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, width: '100%' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0, flex: '1 1 auto' }}>
-                        <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                        <span className="cat" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }} title={`${catDisplayName} · ${locality}`}>
                           {catDisplayName} · {locality}
                         </span>
                       </div>
@@ -1622,6 +1630,8 @@ export default function HomeExplorer({
                               fontWeight: 700,
                               fontSize: '10.5px',
                               padding: '2px 6px',
+                              whiteSpace: 'nowrap',
+                              flexShrink: 0,
                             }}
                           >
                             {p.distanceKm} {isMr ? 'किमी' : 'km'}
@@ -1633,11 +1643,12 @@ export default function HomeExplorer({
                     {/* Landmark Title */}
                     <div
                       style={{
-                        minHeight: 46,
+                        minHeight: 52,
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start',
                         minWidth: 0,
+                        margin: '2px 0 4px',
                       }}
                     >
                       <Link
@@ -1651,7 +1662,11 @@ export default function HomeExplorer({
                             fontFamily: isMr ? 'var(--deva)' : 'inherit',
                             margin: '0 0 2px',
                             lineHeight: 1.25,
-                            wordBreak: 'break-word',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            wordBreak: 'normal',
                             overflowWrap: 'break-word',
                             color: 'var(--ink)',
                           }}
@@ -1670,6 +1685,7 @@ export default function HomeExplorer({
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
+                          height: 16,
                         }}
                       >
                         {isMr ? p.name : p.name_mr}
@@ -1682,25 +1698,26 @@ export default function HomeExplorer({
                         fontSize: '13px',
                         color: 'var(--muted)',
                         lineHeight: 1.45,
-                        margin: '4px 0 10px',
+                        margin: '0 0 8px',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
                         minHeight: '38px',
-                        maxHeight: '40px',
-                        wordBreak: 'break-word',
+                        maxHeight: '38px',
+                        wordBreak: 'normal',
                         overflowWrap: 'break-word',
                         fontFamily: isMr ? 'var(--deva)' : 'inherit',
                       }}
+                      title={(isMr ? (p.description_mr || p.description) : p.description) || ''}
                     >
                       {(isMr ? (p.description_mr || p.description) : p.description) ||
                         (isMr ? 'पुण्यातील हे प्रेक्षणीय ठिकाण पाहण्यासारखे आहे.' : 'A wonderful landmark to explore in Pune.')}
                     </p>
 
                     {/* Operational Details Row: Hours & Visit Duration */}
-                    <div style={{ margin: '2px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minWidth: 0, flexWrap: 'wrap' }}>
-                      <span className={`status-badge ${opStatus.badgeClass}`} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ marginTop: 'auto', minHeight: 26, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minWidth: 0 }}>
+                      <span className={`status-badge ${opStatus.badgeClass}`} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
                         <span
                           style={{
                             width: 6,
@@ -1716,8 +1733,8 @@ export default function HomeExplorer({
                         </span>
                       </span>
                       {durationLabel && (
-                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                          <Clock size={11} />
+                        <span style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0, whiteSpace: 'nowrap' }}>
+                          <Clock size={11} style={{ flexShrink: 0 }} />
                           <span>{durationLabel}</span>
                         </span>
                       )}
@@ -1728,24 +1745,62 @@ export default function HomeExplorer({
                     <div
                       style={{
                         marginTop: 'auto',
-                        padding: '12px 18px 18px',
+                        padding: '12px 18px 16px',
                         borderTop: '1px solid var(--line)',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
+                        gap: 10,
+                        flexWrap: 'wrap',
+                        minHeight: 58,
                       }}
                     >
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--clay)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                          <Ticket size={13} />
-                          <span>{ticketLabel}</span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          minWidth: 0,
+                          flex: '1 1 auto',
+                          marginRight: 4,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: '12.5px',
+                            fontWeight: 700,
+                            color: 'var(--clay)',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 5,
+                            whiteSpace: 'nowrap',
+                          }}
+                          title={ticketLabel}
+                        >
+                          <Ticket size={13} style={{ flexShrink: 0 }} />
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {ticketLabel}
+                          </span>
                         </span>
-                        <span style={{ fontSize: '10.5px', color: 'var(--muted)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3, marginTop: 2 }}>
-                          <ShieldCheck size={11} color="#059669" />
-                          <span>{tierLabel}</span>
+                        <span
+                          style={{
+                            fontSize: '10.5px',
+                            color: 'var(--muted)',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            marginTop: 3,
+                            whiteSpace: 'nowrap',
+                          }}
+                          title={tierLabel}
+                        >
+                          <ShieldCheck size={12} color="#059669" style={{ flexShrink: 0 }} />
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {tierLabel}
+                          </span>
                         </span>
                       </div>
-                      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
                         <button
                           type="button"
                           onClick={(e) => {
@@ -1776,6 +1831,8 @@ export default function HomeExplorer({
                             color: '#065f46',
                             background: '#ecfdf5',
                             cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            flexShrink: 0,
                           }}
                           title={isMr ? `${p.name_mr || p.name} चा मार्ग शोधा` : `Get directions to ${p.name}`}
                         >
@@ -1786,9 +1843,20 @@ export default function HomeExplorer({
                           href={`/places/${p.slug}`}
                           aria-label={`View visitor guide and timings for ${p.name}`}
                           className="btn outline"
-                          style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 700 }}
+                          style={{
+                            padding: '6px 12px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            whiteSpace: 'nowrap',
+                            flexShrink: 0,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 4,
+                          }}
+                          title={isMr ? `${p.name_mr || p.name} माहिती व मार्गदर्शक` : `${p.name} Visitor Guide`}
                         >
-                          {isMr ? `${p.name_mr || p.name} माहिती` : `${p.name.split(' (')[0].split(' & ')[0]} Guide`}
+                          <span>{isMr ? 'मार्गदर्शक' : 'Guide'}</span>
+                          <ChevronRight size={13} style={{ flexShrink: 0 }} />
                         </Link>
                       </div>
                     </div>
