@@ -7,10 +7,19 @@ import {
   getPmpmlRouteDetails,
   getPmpmlRouteSchedule,
 } from '@/lib/pmpmlLiveService';
+import { isLimited } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  // Rate limit: 120 queries per minute per IP
+  if (isLimited(req, 'pmpml-api', 120, 60_000)) {
+    return NextResponse.json(
+      { success: false, error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': '60' } }
+    );
+  }
+
   try {
     const { searchParams } = new URL(req.url);
     const action = searchParams.get('action') || 'routes';

@@ -1,0 +1,10 @@
+# Explore Pune Security Vulnerability Disclosure Policy
+# Reference: RFC 9116 (https://www.rfc-editor.org/rfc/rfc9116)
+
+Contact: mailto:security@explorepune.org
+Contact: https://github.com/sj176644-maker/ExplorePune/security/advisories/new
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en, mr
+Canonical: https://explore-pune-eosin.vercel.app/.well-known/security.txt
+Policy: https://explore-pune-eosin.vercel.app/privacy
+Acknowledgments: https://github.com/sj176644-maker/ExplorePune/graphs/contributors

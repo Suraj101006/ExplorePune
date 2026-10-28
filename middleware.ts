@@ -47,9 +47,14 @@ function applySecurityHeaders(res: NextResponse): NextResponse {
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('X-Frame-Options', 'SAMEORIGIN');
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=(), screen-wake-lock=(), accelerometer=(), gyroscope=(), magnetometer=(), display-capture=(), midi=(), browsing-topics=()');
   res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   res.headers.set('X-DNS-Prefetch-Control', 'on');
+  res.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+  res.headers.set('X-Permitted-Cross-Domain-Policies', 'none');
+  res.headers.set('Origin-Agent-Cluster', '?1');
+  res.headers.set('X-XSS-Protection', '0');
   res.headers.set('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   return res;
 }

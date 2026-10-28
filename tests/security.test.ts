@@ -153,5 +153,58 @@ describe('Phase 1 Security & Correctness Fixes', () => {
       expect(frameHeader.value).toBe('SAMEORIGIN');
       expect(referrerHeader.value).toBe('strict-origin-when-cross-origin');
     });
+
+    it('enforces industry-standard defense-in-depth headers across all configurations', () => {
+      // COOP, CORP, X-Permitted-Cross-Domain-Policies, Origin-Agent-Cluster, X-XSS-Protection
+      expect(nextConfigCode).toContain('Cross-Origin-Opener-Policy');
+      expect(nextConfigCode).toContain('same-origin-allow-popups');
+      expect(nextConfigCode).toContain('Cross-Origin-Resource-Policy');
+      expect(nextConfigCode).toContain('X-Permitted-Cross-Domain-Policies');
+      expect(nextConfigCode).toContain('Origin-Agent-Cluster');
+      expect(nextConfigCode).toContain('X-XSS-Protection');
+
+      expect(middlewareCode).toContain("res.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups')");
+      expect(middlewareCode).toContain("res.headers.set('Cross-Origin-Resource-Policy', 'same-origin')");
+      expect(middlewareCode).toContain("res.headers.set('Origin-Agent-Cluster', '?1')");
+
+      const headerEntries = vercelJson.headers[0].headers;
+      expect(headerEntries.find((h: { key: string }) => h.key === 'Cross-Origin-Opener-Policy')?.value).toBe('same-origin-allow-popups');
+      expect(headerEntries.find((h: { key: string }) => h.key === 'Cross-Origin-Resource-Policy')?.value).toBe('same-origin');
+      expect(headerEntries.find((h: { key: string }) => h.key === 'X-Permitted-Cross-Domain-Policies')?.value).toBe('none');
+      expect(headerEntries.find((h: { key: string }) => h.key === 'Origin-Agent-Cluster')?.value).toBe('?1');
+      expect(headerEntries.find((h: { key: string }) => h.key === 'X-XSS-Protection')?.value).toBe('0');
+    });
+
+    it('enforces hardware sensor lockdown in Permissions-Policy', () => {
+      const headerEntries = vercelJson.headers[0].headers;
+      const permHeader = headerEntries.find((h: { key: string }) => h.key === 'Permissions-Policy')?.value || '';
+      expect(permHeader).toContain('payment=()');
+      expect(permHeader).toContain('usb=()');
+      expect(permHeader).toContain('accelerometer=()');
+      expect(permHeader).toContain('gyroscope=()');
+      expect(permHeader).toContain('magnetometer=()');
+    });
+
+    it('implements RFC 9116 security.txt with required directives and redirect', () => {
+      const securityTxtPath = path.resolve(__dirname, '../public/.well-known/security.txt');
+      expect(fs.existsSync(securityTxtPath)).toBe(true);
+      const securityTxt = fs.readFileSync(securityTxtPath, 'utf8');
+
+      expect(securityTxt).toContain('Contact:');
+      expect(securityTxt).toContain('Expires:');
+      expect(securityTxt).toContain('Canonical:');
+      expect(securityTxt).toContain('Policy:');
+      expect(nextConfigCode).toContain('destination: "/.well-known/security.txt"');
+    });
+
+    it('verifies /api/v1/places and /api/v1/pmpml enforce rate limiting against scrapers and denial of service', () => {
+      const placesRoutePath = path.resolve(__dirname, '../app/api/v1/places/route.ts');
+      const placesCode = fs.readFileSync(placesRoutePath, 'utf8');
+      expect(placesCode).toContain("isLimited(req, 'places-list'");
+
+      const pmpmlRoutePath = path.resolve(__dirname, '../app/api/v1/pmpml/route.ts');
+      const pmpmlCode = fs.readFileSync(pmpmlRoutePath, 'utf8');
+      expect(pmpmlCode).toContain("isLimited(req, 'pmpml-api'");
+    });
   });
 });
