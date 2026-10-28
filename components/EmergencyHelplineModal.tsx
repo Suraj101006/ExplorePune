@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
+import ModalPortal from '@/components/ModalPortal';
 
 interface HelplineItem {
   id: string;
@@ -151,6 +152,7 @@ export default function EmergencyHelplineModal() {
 
       {/* Modal Backdrop */}
       {isOpen && (
+        <ModalPortal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div
           role="dialog"
           aria-modal="true"
@@ -349,6 +351,7 @@ export default function EmergencyHelplineModal() {
             </div>
           </div>
         </div>
+        </ModalPortal>
       )}
     </>
   );

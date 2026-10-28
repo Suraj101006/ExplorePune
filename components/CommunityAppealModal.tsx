@@ -5,6 +5,7 @@ import { X, HelpCircle, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
 import { submitCommunityAppeal } from '@/lib/userSafety';
+import ModalPortal from '@/components/ModalPortal';
 
 interface CommunityAppealModalProps {
   isOpen: boolean;
@@ -61,8 +62,9 @@ export default function CommunityAppealModal({
   };
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={handleClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -242,5 +244,6 @@ export default function CommunityAppealModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

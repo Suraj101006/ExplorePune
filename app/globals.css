@@ -2763,7 +2763,11 @@ html.intro-dismissed .intro-overlay {
 
 /* 10. Unified Page Transition System (Requirement 19) */
 .page-transition-wrap {
-  animation: pageEnter var(--motion-normal) var(--ease-standard) forwards;
+  width: 100%;
+}
+
+.page-transition-wrap.page-entering {
+  animation: pageEnter var(--motion-normal) var(--ease-standard) both;
   will-change: transform, opacity;
 }
 
@@ -3680,26 +3684,34 @@ html.intro-dismissed .intro-overlay {
   will-change: transform;
 }
 
-/* Background scroll lock removed per user request: maintain natural page scrolling */
+/* Controlled background scroll lock when any modal is open (Requirements 6 & 8) */
 body.modal-open {
-  /* Scroll lock disabled */
+  overflow: hidden !important;
+  overscroll-behavior: contain;
 }
 
 /* Dedicated Full-Screen Journey Reel / Video Modal (Requirements 1, 13, 14) */
 .journey-reel-backdrop {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  z-index: 9999999;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  width: 100dvw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 9999999 !important;
   background: rgba(5, 8, 15, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
   animation: fadeIn 250ms ease forwards;
   pointer-events: auto;
   overscroll-behavior: contain;

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { useLanguage } from '@/lib/LanguageContext';
 import {
   getStoredUserLocation,
@@ -38,22 +39,11 @@ export default function LocationPickerModal({
 
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add('modal-open');
       setCurrentLoc(getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION);
       setFeedbackMessage(null);
       setSearchResults(searchPuneLocalities(''));
-
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') onClose();
-      };
-      window.addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        document.body.classList.remove('modal-open');
-        window.removeEventListener('keydown', handleKeyDown);
-      };
     }
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   // Live address & locality search with debounce
   useEffect(() => {
@@ -157,8 +147,9 @@ export default function LocationPickerModal({
   };
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -540,5 +531,6 @@ export default function LocationPickerModal({
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 }

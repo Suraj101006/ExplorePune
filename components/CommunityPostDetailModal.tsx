@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import ModalPortal from '@/components/ModalPortal';
 import {
   X,
   ThumbsUp,
@@ -186,8 +187,9 @@ export default function CommunityPostDetailModal({
   };
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -792,5 +794,6 @@ export default function CommunityPostDetailModal({
         </div>
       )}
     </div>
+    </ModalPortal>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import {
   X,
   Navigation,
@@ -86,23 +87,6 @@ export default function DirectionsModal() {
     setErrorMessage(null);
   }, []);
 
-  // Handle ESC key to close & background scroll lock
-  useEffect(() => {
-    if (!isOpen) return;
-    document.body.classList.add('modal-open');
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        handleClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.classList.remove('modal-open');
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, handleClose]);
 
   // Compute route from current origin and destination
   const calculateRoute = useCallback(
@@ -296,8 +280,9 @@ export default function DirectionsModal() {
     : null;
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={handleClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       aria-labelledby="directions-modal-title"
       style={{
@@ -1061,5 +1046,6 @@ export default function DirectionsModal() {
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

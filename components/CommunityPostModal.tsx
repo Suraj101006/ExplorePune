@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { X, Image as ImageIcon, Check, AlertCircle, Camera, Search, ShieldCheck, PenSquare } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -232,8 +233,9 @@ export default function CommunityPostModal({
   }
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       aria-labelledby="community-modal-title"
       style={{
@@ -781,5 +783,6 @@ export default function CommunityPostModal({
         </form>
       </div>
     </div>
+    </ModalPortal>
   );
 }

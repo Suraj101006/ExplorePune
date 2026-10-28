@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { DayJourney } from '@/lib/journeyStorage';
 import {
   JourneyReelData,
@@ -179,15 +180,6 @@ export default function JourneyReelPlayerModal({
     return 3000;
   }, [currentScene]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.body.classList.add('modal-open');
-
-    return () => {
-      document.body.classList.remove('modal-open');
-    };
-  }, [isOpen]);
 
   // Audio lifecycle
   useEffect(() => {
@@ -335,8 +327,9 @@ export default function JourneyReelPlayerModal({
   const musicTrack = finalReelData.reel.music;
 
   return (
-    <div
-      className="journey-reel-backdrop"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        className="journey-reel-backdrop"
       role="dialog"
       aria-modal="true"
       aria-label="Pune Travel Journey Reel"
@@ -1383,5 +1376,6 @@ export default function JourneyReelPlayerModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

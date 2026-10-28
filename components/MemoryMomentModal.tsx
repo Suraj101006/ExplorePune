@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useEffect } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { DayJourney } from '@/lib/journeyStorage';
 import { X, Play, MapPin, Compass, ArrowRight, Share2 } from 'lucide-react';
 
@@ -24,21 +25,6 @@ export default function MemoryMomentModal({
 }: MemoryMomentModalProps) {
   const [stage, setStage] = useState<number>(0);
 
-  // Background freeze & escape key handling
-  useEffect(() => {
-    if (!isOpen) return;
-    document.body.classList.add('modal-open');
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.classList.remove('modal-open');
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isOpen || !journey) {
@@ -75,8 +61,9 @@ export default function MemoryMomentModal({
   const totalKm = journey.totalDistanceKm || 12.4;
 
   return (
-    <div
-      className="journey-reel-backdrop"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        className="journey-reel-backdrop"
       role="dialog"
       aria-modal="true"
       aria-label="Travel Memory Moment"
@@ -318,5 +305,6 @@ export default function MemoryMomentModal({
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 }

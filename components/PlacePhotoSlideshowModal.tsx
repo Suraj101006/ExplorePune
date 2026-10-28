@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { useLanguage } from '@/lib/LanguageContext';
 import { PlacePhotoItem } from '@/app/api/v1/places/photos/route';
 import { Play, Pause, X, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
@@ -58,10 +59,9 @@ export default function PlacePhotoSlideshowModal({
     }
   }, []);
 
-  // Load photos & freeze background scroll when modal opens
+  // Load photos when modal opens
   useEffect(() => {
     if (!isOpen || !place) return;
-    document.body.classList.add('modal-open');
 
     setCurrentIndex(initialIndex);
     setIsPlaying(true);
@@ -96,7 +96,6 @@ export default function PlacePhotoSlideshowModal({
 
     return () => {
       isMounted = false;
-      document.body.classList.remove('modal-open');
     };
   }, [isOpen, place, initialIndex, isMr]);
 
@@ -219,8 +218,9 @@ export default function PlacePhotoSlideshowModal({
   const effectClass = prefersReducedMotion ? '' : KEN_BURNS_EFFECTS[currentIndex % KEN_BURNS_EFFECTS.length];
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -596,5 +596,6 @@ export default function PlacePhotoSlideshowModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

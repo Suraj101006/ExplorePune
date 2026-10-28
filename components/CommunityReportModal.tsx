@@ -5,6 +5,7 @@ import { X, AlertTriangle, CheckCircle2, UserX, FileText } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
 import { submitCommunityReport } from '@/lib/communityStorage';
+import ModalPortal from '@/components/ModalPortal';
 
 export interface CommunityReportModalProps {
   isOpen: boolean;
@@ -85,8 +86,9 @@ export default function CommunityReportModal({
   const hasAuthorOption = Boolean(authorName || authorId);
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={handleClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -399,5 +401,6 @@ export default function CommunityReportModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

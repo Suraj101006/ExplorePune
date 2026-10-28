@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -181,20 +182,6 @@ export default function PlannerPage() {
   const [removingStopId, setRemovingStopId] = useState<string | null>(null);
   const [justAddedStopId, setJustAddedStopId] = useState<string | null>(null);
 
-  // Background freeze & escape key handling for Add Place Modal
-  useEffect(() => {
-    if (addPlaceModalOpen) {
-      document.body.classList.add('modal-open');
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setAddPlaceModalOpen(false);
-      };
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.body.classList.remove('modal-open');
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [addPlaceModalOpen]);
 
   // PDF & Email State
   const [downloadingPdf, setDownloadingPdf] = useState(false);
@@ -2817,7 +2804,10 @@ export default function PlannerPage() {
           17. ADD PLACE SEARCH MODAL (Requirement 17)
           =================================================================== */}
       {addPlaceModalOpen && (
+        <ModalPortal isOpen={addPlaceModalOpen} onClose={() => setAddPlaceModalOpen(false)}>
         <div
+          role="dialog"
+          aria-modal="true"
           style={{
             position: 'fixed',
             inset: 0,
@@ -2990,6 +2980,7 @@ export default function PlannerPage() {
             </div>{/* end scrollable body */}
           </div>
         </div>
+        </ModalPortal>
       )}
     </main>
   );

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { DayJourney, JourneyPlaceStop } from '@/lib/journeyStorage';
 import {
   JourneyReelData,
@@ -79,15 +80,6 @@ export default function CreateJourneyReelModal({
   const [activeUploadPlaceId, setActiveUploadPlaceId] = useState<string | null>(null);
   const audioEngine = useRef(getReelAudioEngine());
 
-  // Lock background scroll when modal is open
-  useEffect(() => {
-    if (!isOpen) return;
-    document.body.classList.add('modal-open');
-
-    return () => {
-      document.body.classList.remove('modal-open');
-    };
-  }, [isOpen]);
 
   // Derive target journey / places when journeyScope changes
   useEffect(() => {
@@ -290,8 +282,9 @@ export default function CreateJourneyReelModal({
   const activePlacesCount = placesList.filter((p) => selectedPlaceIds.has(p.placeId)).length;
 
   return (
-    <div
-      className="journey-reel-backdrop"
+    <ModalPortal isOpen={isOpen} onClose={currentStep !== 'generating' ? onClose : undefined}>
+      <div
+        className="journey-reel-backdrop"
       role="dialog"
       aria-modal="true"
       aria-label="Create Journey Reel"
@@ -1143,5 +1136,6 @@ export default function CreateJourneyReelModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }

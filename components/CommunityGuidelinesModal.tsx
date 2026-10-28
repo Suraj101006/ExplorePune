@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ShieldCheck, Check, AlertCircle, X, Compass, HeartHandshake } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { acceptCommunityGuidelines } from '@/lib/userSafety';
+import ModalPortal from '@/components/ModalPortal';
 
 interface CommunityGuidelinesModalProps {
   isOpen: boolean;
@@ -62,8 +63,9 @@ export default function CommunityGuidelinesModal({
   const activeGuidelines = isMr ? guidelinesMr : guidelinesEn;
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -291,5 +293,6 @@ export default function CommunityGuidelinesModal({
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 }

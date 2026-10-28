@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Lock, X, LogIn, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
+import ModalPortal from '@/components/ModalPortal';
 
 interface GuestLockModalProps {
   isOpen: boolean;
@@ -25,8 +26,9 @@ export default function GuestLockModal({
   if (!isOpen) return null;
 
   return (
-    <div
-      role="dialog"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        role="dialog"
       aria-modal="true"
       style={{
         position: 'fixed',
@@ -201,5 +203,6 @@ export default function GuestLockModal({
         </div>
       </div>
     </div>
+    </ModalPortal>
   );
 }

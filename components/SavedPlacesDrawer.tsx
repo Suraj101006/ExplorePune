@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Bookmark, X } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { getSavedPlaces, toggleSavedPlace, clearSavedPlaces, SavedPlaceSummary } from '@/lib/savedPlaces';
+import ModalPortal from '@/components/ModalPortal';
 
 export default function SavedPlacesDrawer() {
   const { isMr } = useLanguage();
@@ -84,6 +85,7 @@ export default function SavedPlacesDrawer() {
 
       {/* Slide-over Backdrop & Drawer */}
       {isOpen && (
+        <ModalPortal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div
           role="dialog"
           aria-modal="true"
@@ -308,6 +310,7 @@ export default function SavedPlacesDrawer() {
             )}
           </div>
         </div>
+        </ModalPortal>
       )}
     </>
   );

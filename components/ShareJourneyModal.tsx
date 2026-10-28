@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useRef, useEffect } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import { DayJourney } from '@/lib/journeyStorage';
 import { X, Download, Share2, Copy, Check, Lock, Globe, Eye, Sparkles } from 'lucide-react';
 import Link from 'next/link';
@@ -128,8 +129,9 @@ export default function ShareJourneyModal({
   };
 
   return (
-    <div
-      className="journey-reel-backdrop"
+    <ModalPortal isOpen={isOpen} onClose={onClose}>
+      <div
+        className="journey-reel-backdrop"
       role="dialog"
       aria-modal="true"
       aria-label="Share Journey"
@@ -459,5 +461,6 @@ export default function ShareJourneyModal({
         </div>{/* end scrollable body */}
       </div>
     </div>
+    </ModalPortal>
   );
 }

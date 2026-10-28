@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import ModalPortal from '@/components/ModalPortal';
 import {
   Camera,
   Upload,
@@ -238,8 +239,9 @@ export default function ProfileAvatarModal({
   if (!isOpen) return null;
 
   return (
-    <div
-      className="avatar-modal-backdrop"
+    <ModalPortal isOpen={isOpen} onClose={!isSaving ? onClose : undefined}>
+      <div
+        className="avatar-modal-backdrop"
       onClick={() => {
         if (!isSaving) onClose();
       }}
@@ -789,5 +791,6 @@ export default function ProfileAvatarModal({
         )}
       </div>
     </div>
+    </ModalPortal>
   );
 }
