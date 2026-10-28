@@ -25,12 +25,32 @@ function isOriginAllowed(origin: string, host: string): boolean {
   }
 }
 
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://www.googletagmanager.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: blob: https:",
+  "media-src 'self' data: blob: https:",
+  "worker-src 'self' blob:",
+  "child-src 'self' blob: https://*.firebaseapp.com",
+  "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.tile.openstreetmap.org https://*.openstreetmap.org https://commons.wikimedia.org https://upload.wikimedia.org https://api.open-meteo.com https://www.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net",
+  "frame-src 'self' https://*.firebaseapp.com https://*.google.com https://maps.google.com",
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+
 function applySecurityHeaders(res: NextResponse): NextResponse {
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('X-Frame-Options', 'SAMEORIGIN');
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
   res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  res.headers.set('X-DNS-Prefetch-Control', 'on');
+  res.headers.set('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   return res;
 }
 
@@ -41,7 +61,7 @@ export function middleware(req: NextRequest) {
 
   // 1. Guard against source code / sensitive file disclosure and probing
   if (BLOCKED_PATH_REGEX.test(pathname)) {
-    return new NextResponse('Not Found', { status: 404 });
+    return applySecurityHeaders(new NextResponse('Not Found', { status: 404 }));
   }
 
   // 2. Strict CORS & CSRF defense for API endpoints
@@ -49,7 +69,7 @@ export function middleware(req: NextRequest) {
     // Handle OPTIONS Preflight
     if (req.method === 'OPTIONS') {
       if (origin && !isOriginAllowed(origin, host)) {
-        return new NextResponse('CORS origin forbidden', { status: 403 });
+        return applySecurityHeaders(new NextResponse('CORS origin forbidden', { status: 403 }));
       }
       const preflightRes = new NextResponse(null, {
         status: 204,

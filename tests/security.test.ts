@@ -106,4 +106,52 @@ describe('Phase 1 Security & Correctness Fixes', () => {
       expect(chatCode).toMatch(/process\.env\.NODE_ENV !== 'production' && process\.env\.CHAT_RATE_LIMIT_OFF === '1'/);
     });
   });
+
+  describe('UpGuard Security Baseline & CSP Hardening', () => {
+    const nextConfigPath = path.resolve(__dirname, '../next.config.ts');
+    const nextConfigCode = fs.readFileSync(nextConfigPath, 'utf8');
+
+    const middlewarePath = path.resolve(__dirname, '../middleware.ts');
+    const middlewareCode = fs.readFileSync(middlewarePath, 'utf8');
+
+    const vercelJsonPath = path.resolve(__dirname, '../vercel.json');
+    const vercelJson = JSON.parse(fs.readFileSync(vercelJsonPath, 'utf8'));
+
+    it('eliminates unsafe-eval from Content Security Policy in next.config.ts', () => {
+      expect(nextConfigCode).not.toContain("'unsafe-eval'");
+    });
+
+    it('eliminates insecure http: sources from img-src in next.config.ts and enforces upgrade-insecure-requests', () => {
+      expect(nextConfigCode).not.toContain("http:");
+      expect(nextConfigCode).toContain("upgrade-insecure-requests");
+      expect(nextConfigCode).toContain("object-src 'none'");
+    });
+
+    it('enforces X-Content-Type-Options: nosniff in next.config.ts, middleware.ts, and vercel.json', () => {
+      expect(nextConfigCode).toContain('X-Content-Type-Options');
+      expect(nextConfigCode).toContain('nosniff');
+
+      expect(middlewareCode).toContain("res.headers.set('X-Content-Type-Options', 'nosniff')");
+
+      const headerEntries = vercelJson.headers[0].headers;
+      const nosniffHeader = headerEntries.find((h: { key: string }) => h.key === 'X-Content-Type-Options');
+      expect(nosniffHeader).toBeDefined();
+      expect(nosniffHeader.value).toBe('nosniff');
+    });
+
+    it('ensures middleware attaches security headers to blocked probe scans (404s)', () => {
+      expect(middlewareCode).toContain("return applySecurityHeaders(new NextResponse('Not Found', { status: 404 }))");
+    });
+
+    it('ensures vercel.json sets HSTS, SAMEORIGIN, and strict-origin-when-cross-origin at the edge', () => {
+      const headerEntries = vercelJson.headers[0].headers;
+      const hstsHeader = headerEntries.find((h: { key: string }) => h.key === 'Strict-Transport-Security');
+      const frameHeader = headerEntries.find((h: { key: string }) => h.key === 'X-Frame-Options');
+      const referrerHeader = headerEntries.find((h: { key: string }) => h.key === 'Referrer-Policy');
+
+      expect(hstsHeader.value).toContain('max-age=63072000');
+      expect(frameHeader.value).toBe('SAMEORIGIN');
+      expect(referrerHeader.value).toBe('strict-origin-when-cross-origin');
+    });
+  });
 });
