@@ -611,6 +611,103 @@ export function getLatestReelForJourney(journeyId: string, userId?: string | nul
   return reels.find((r) => r.journeyId === journeyId) || null;
 }
 
+export function deleteSavedReel(reelId: string, userId?: string | null): boolean {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return false;
+  try {
+    const key = userId ? `${STORAGE_KEY_REELS}_${userId}` : STORAGE_KEY_REELS;
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(key) : null;
+    if (!raw) return false;
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list)) return false;
+    const updated = list.filter((r: JourneyReelData) => r.id !== reelId);
+    localStorage.setItem(key, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('explore-pune-reels-changed', { detail: { userId, list: updated } }));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export const STORAGE_KEY_PHOTO_CAPTIONS = 'explore_pune_custom_photo_captions_v1';
+
+export function getStoredPhotoCaptionsMap(): Record<string, string> {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return {};
+  try {
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY_PHOTO_CAPTIONS) : null;
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function savePhotoCaption(photoUrl: string, caption: string): void {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return;
+  try {
+    const map = getStoredPhotoCaptionsMap();
+    if (caption.trim()) {
+      map[photoUrl] = caption.trim();
+    } else {
+      delete map[photoUrl];
+    }
+    localStorage.setItem(STORAGE_KEY_PHOTO_CAPTIONS, JSON.stringify(map));
+    window.dispatchEvent(new CustomEvent('explore-pune-captions-changed', { detail: map }));
+  } catch (err) {
+    console.warn('Failed to store photo caption:', err);
+  }
+}
+
+export function deleteCustomPhoto(photoUrl: string, placeId?: string): void {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return;
+  try {
+    const map = getStoredCustomPhotosMap();
+    if (placeId && map[placeId]) {
+      map[placeId] = map[placeId].filter((url) => url !== photoUrl);
+      if (map[placeId].length === 0) delete map[placeId];
+    } else {
+      for (const pid of Object.keys(map)) {
+        map[pid] = map[pid].filter((url) => url !== photoUrl);
+        if (map[pid].length === 0) delete map[pid];
+      }
+    }
+    localStorage.setItem(STORAGE_KEY_PLACE_PHOTOS, JSON.stringify(map));
+
+    // Also remove any saved caption
+    const captions = getStoredPhotoCaptionsMap();
+    if (captions[photoUrl]) {
+      delete captions[photoUrl];
+      localStorage.setItem(STORAGE_KEY_PHOTO_CAPTIONS, JSON.stringify(captions));
+    }
+
+    window.dispatchEvent(new CustomEvent('explore-pune-photos-changed', { detail: map }));
+  } catch (err) {
+    console.warn('Failed to delete custom photo:', err);
+  }
+}
+
+export function getAllCustomPhotosList(): Array<{ photoUrl: string; placeId: string; caption?: string }> {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return [];
+  try {
+    const map = getStoredCustomPhotosMap();
+    const captions = getStoredPhotoCaptionsMap();
+    const result: Array<{ photoUrl: string; placeId: string; caption?: string }> = [];
+
+    for (const [placeId, photos] of Object.entries(map)) {
+      if (Array.isArray(photos)) {
+        for (const photoUrl of photos) {
+          result.push({
+            photoUrl,
+            placeId,
+            caption: captions[photoUrl] || undefined,
+          });
+        }
+      }
+    }
+    return result;
+  } catch {
+    return [];
+  }
+}
+
 /**
  * LocalStorage for user-uploaded custom place photos
  */

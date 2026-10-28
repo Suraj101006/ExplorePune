@@ -22,6 +22,11 @@ export interface JourneyPlaceStop {
   noteMr?: string;
   order: number;
   photos?: string[];
+  elevation?: number;
+  address?: string;
+  addressMr?: string;
+  recommendedDurationMinutes?: number;
+  isHistorical?: boolean;
 }
 
 export interface DayJourney {
@@ -44,6 +49,7 @@ export interface DayJourney {
   totalDistanceKm: number;
   totalDurationMinutes: number;
   notes?: string;
+  coverImage?: string;
 }
 
 export interface JourneyStats {
@@ -1281,6 +1287,22 @@ export function toggleJourneyStopVisited(journeyId: string, placeId: string, vis
 
   saveJourney(j, userId);
   return j;
+}
+
+// Delete a journey by ID or date key
+export function deleteJourney(journeyId: string, userId?: string | null): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    const storageKey = userId ? `explore_pune_user_journeys_${userId}` : STORAGE_KEY_JOURNEYS;
+    const list = getAllJourneys(userId, false);
+    const updated = list.filter((j) => j.id !== journeyId && j.date !== journeyId);
+    localStorage.setItem(storageKey, JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('explore-pune-journeys-changed', { detail: { userId, list: updated } }));
+    return true;
+  } catch (err) {
+    console.error('Failed to delete journey:', err);
+    return false;
+  }
 }
 
 // Compute dynamic overall journey statistics from actual data

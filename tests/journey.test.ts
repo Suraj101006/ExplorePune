@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   calculateGeoDistanceKm,
   getAllJourneys,
@@ -10,6 +10,8 @@ import {
   generateJourneyStories,
   calculateExplorationStreak,
   TOTAL_PUNE_PLACES_COUNT,
+  saveJourney,
+  deleteJourney,
 } from '@/lib/journeyStorage';
 
 describe('My Pune Journey Engine', () => {
@@ -90,5 +92,50 @@ describe('My Pune Journey Engine', () => {
     expect(streak.totalActiveDays).toBeGreaterThan(0);
     expect(streak.currentStreak).toBeGreaterThanOrEqual(1);
     expect(TOTAL_PUNE_PLACES_COUNT).toBe(80);
+  });
+
+  it('supports saving, updating, and deleting customized journeys', () => {
+    const store: Record<string, string> = {};
+    (globalThis as any).localStorage = {
+      getItem: (k: string) => store[k] || null,
+      setItem: (k: string, v: string) => {
+        store[k] = v;
+      },
+      removeItem: (k: string) => {
+        delete store[k];
+      },
+    };
+    (globalThis as any).window = {
+      dispatchEvent: vi.fn(),
+    };
+
+    try {
+      const testJourney = {
+        id: 'test-journey-999',
+        date: '2026-11-01',
+        dateLabelEn: '1 Nov 2026',
+        dateLabelMr: '१ नोव्हेंबर २०२६',
+        title: 'Heritage Wada Trail',
+        titleMr: 'वाडे दर्शन',
+        travelMode: 'walking' as const,
+        status: 'planned' as const,
+        totalDistanceKm: 4.5,
+        totalDurationMinutes: 120,
+        startLocation: 'Shaniwar Wada',
+        places: [],
+      };
+
+      saveJourney(testJourney, 'test-user-123');
+      const userJourneys = getAllJourneys('test-user-123', false);
+      expect(userJourneys.some((j) => j.id === 'test-journey-999')).toBe(true);
+
+      const deleted = deleteJourney('test-journey-999', 'test-user-123');
+      expect(deleted).toBe(true);
+      const afterDelete = getAllJourneys('test-user-123', false);
+      expect(afterDelete.some((j) => j.id === 'test-journey-999')).toBe(false);
+    } finally {
+      delete (globalThis as any).window;
+      delete (globalThis as any).localStorage;
+    }
   });
 });
