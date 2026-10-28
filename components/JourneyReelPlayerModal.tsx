@@ -11,8 +11,26 @@ import {
   getRecommendedMusic,
 } from '@/lib/journeyReel';
 import { getReelAudioEngine } from '@/lib/reelAudioEngine';
-import { X, Play, Pause, Volume2, VolumeX, Share2, Sparkles, RotateCcw, MapPin, Compass } from 'lucide-react';
+import {
+  X,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Share2,
+  Sparkles,
+  RotateCcw,
+  MapPin,
+  Compass,
+  Download,
+  Film,
+  Music,
+  Check,
+  Copy,
+} from 'lucide-react';
 import { shareOrCopy } from '@/lib/shareUtils';
+import { exportJourneyReelToMP4, RenderProgressUpdate, RenderedVideoResult } from '@/lib/reelVideoExporter';
+import { REAL_SONG_CATALOG } from '@/lib/reelSongLibrary';
 
 interface JourneyReelPlayerModalProps {
   isOpen: boolean;
@@ -74,9 +92,63 @@ export default function JourneyReelPlayerModal({
   const [controlsVisible, setControlsVisible] = useState(true);
   const [shareSuccess, setShareSuccess] = useState(false);
 
+  // MP4 Export & Social Attribution state
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState<RenderProgressUpdate | null>(null);
+  const [exportedVideo, setExportedVideo] = useState<RenderedVideoResult | null>(null);
+  const [copiedAudioTag, setCopiedAudioTag] = useState(false);
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const hideControlsTimerRef = useRef<NodeJS.Timeout | null>(null);
   const audioEngine = useRef(getReelAudioEngine());
+
+  const matchedSong = useMemo(() => {
+    return REAL_SONG_CATALOG.find((s) => s.id === finalReelData?.reel.music.id) || null;
+  }, [finalReelData]);
+
+  const handleExportMP4 = async () => {
+    if (!finalReelData || isExporting) return;
+    setIsPaused(true);
+    audioEngine.current.pause();
+    setIsExporting(true);
+    setExportProgress({
+      percent: 0,
+      phase: 'preparing',
+      message: 'Initializing cinematic composition...',
+      currentFrame: 0,
+      totalFrames: 100,
+    });
+
+    try {
+      const result = await exportJourneyReelToMP4(finalReelData, {
+        onProgress: (p) => setExportProgress(p),
+      });
+      setExportedVideo(result);
+    } catch (err) {
+      console.error('Failed to export MP4:', err);
+      alert('Video export could not be completed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleDownloadVideo = () => {
+    if (!exportedVideo) return;
+    const a = document.createElement('a');
+    a.href = exportedVideo.downloadUrl;
+    a.download = exportedVideo.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const handleCopyAudioTag = () => {
+    if (!matchedSong) return;
+    const text = matchedSong.socialAudioTag.recommendedSoundName;
+    navigator.clipboard?.writeText(text);
+    setCopiedAudioTag(true);
+    setTimeout(() => setCopiedAudioTag(false), 2500);
+  };
 
   // Determine duration for current scene
   const currentScene = scenes[currentSceneIdx];
@@ -415,6 +487,32 @@ export default function JourneyReelPlayerModal({
               aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
             >
               {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} color="#34d399" />}
+            </button>
+
+            {/* MP4 Download / Export button */}
+            <button
+              type="button"
+              onClick={handleExportMP4}
+              disabled={isExporting}
+              style={{
+                background: 'rgba(16, 185, 129, 0.4)',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                color: '#ffffff',
+                height: 32,
+                padding: '0 10px',
+                borderRadius: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                fontSize: 11,
+                fontWeight: 700,
+                cursor: isExporting ? 'wait' : 'pointer',
+                backdropFilter: 'blur(8px)',
+              }}
+              title="Export high-resolution MP4 video"
+            >
+              <Download size={13} />
+              <span>MP4</span>
             </button>
 
             {/* Play/Pause */}
@@ -977,6 +1075,30 @@ export default function JourneyReelPlayerModal({
 
                 <button
                   type="button"
+                  onClick={handleExportMP4}
+                  disabled={isExporting}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    padding: '12px 16px',
+                    borderRadius: 14,
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: 13.5,
+                    border: 'none',
+                    cursor: isExporting ? 'wait' : 'pointer',
+                    boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)',
+                  }}
+                >
+                  <Download size={16} />
+                  {isMr ? 'MP4 डाऊनलोड' : 'Export MP4'}
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => {
                     setCurrentSceneIdx(0);
                     setSceneProgress(0);
@@ -1017,6 +1139,218 @@ export default function JourneyReelPlayerModal({
                 <span style={{ fontWeight: 700, color: '#ffffff' }}>Explore Pune</span>
                 <span>• punetrail.web.app</span>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            MP4 EXPORT IN PROGRESS OVERLAY
+            =================================================================== */}
+        {isExporting && exportProgress && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.92)',
+              backdropFilter: 'blur(12px)',
+              zIndex: 100,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 24,
+              textAlign: 'center',
+              color: '#ffffff',
+            }}
+          >
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: '50%',
+                background: 'rgba(16, 185, 129, 0.2)',
+                border: '2px solid #10b981',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 20,
+                color: '#34d399',
+                animation: 'pulse 1.8s infinite',
+              }}
+            >
+              <Film size={32} />
+            </div>
+
+            <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 8px' }}>
+              {isMr ? 'सिनेमॅटिक MP4 रील तयार होत आहे...' : 'Exporting Cinematic Travel Reel...'}
+            </h3>
+
+            <p style={{ fontSize: 13, color: '#94a3b8', margin: '0 0 20px', maxWidth: 280 }}>
+              {exportProgress.message}
+            </p>
+
+            {/* Progress Bar */}
+            <div
+              style={{
+                width: '100%',
+                maxWidth: 280,
+                height: 8,
+                borderRadius: 4,
+                background: 'rgba(255, 255, 255, 0.15)',
+                overflow: 'hidden',
+                marginBottom: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: `${exportProgress.percent}%`,
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #10b981, #3b82f6)',
+                  borderRadius: 4,
+                  transition: 'width 200ms ease',
+                }}
+              />
+            </div>
+
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8' }}>
+              {exportProgress.percent}% {exportProgress.totalFrames > 0 && `(${exportProgress.currentFrame}/${exportProgress.totalFrames} frames)`}
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            MP4 EXPORT COMPLETED DIALOG
+            =================================================================== */}
+        {exportedVideo && !isExporting && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(15, 23, 42, 0.94)',
+              backdropFilter: 'blur(14px)',
+              zIndex: 105,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 24,
+              textAlign: 'center',
+              color: '#ffffff',
+            }}
+          >
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: '50%',
+                background: 'rgba(16, 185, 129, 0.25)',
+                border: '2px solid #34d399',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16,
+                color: '#34d399',
+              }}
+            >
+              <Check size={28} />
+            </div>
+
+            <h3 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 6px' }}>
+              {isMr ? '🎉 रील यशस्वीरित्या एक्सपोर्ट झाली!' : '🎉 Reel Exported Successfully!'}
+            </h3>
+
+            <p style={{ fontSize: 13, color: '#94a3b8', margin: '0 0 20px', maxWidth: 300 }}>
+              {isMr
+                ? `९:१६ व्हर्टिकल व्हिडिओ • ${Math.round(exportedVideo.durationSec)} सेकंद • इन्स्टाग्राम व युट्यूबसाठी तयार`
+                : `9:16 Vertical Video • ${Math.round(exportedVideo.durationSec)}s • Ready for Instagram & YouTube`}
+            </p>
+
+            {/* Social Media Audio Attribution Card */}
+            {matchedSong && (
+              <div
+                style={{
+                  width: '100%',
+                  maxWidth: 320,
+                  background: 'rgba(255, 255, 255, 0.07)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: 14,
+                  padding: 14,
+                  marginBottom: 20,
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, fontWeight: 700, color: '#38bdf8', marginBottom: 4 }}>
+                  <Music size={13} />
+                  <span>{isMr ? 'इन्स्टाग्राम / युट्यूब ऑडिओ टॅग' : 'Official Social Audio Attribution'}</span>
+                </div>
+                <div style={{ fontSize: 12.5, fontWeight: 600, color: '#f1f5f9', marginBottom: 8 }}>
+                  {matchedSong.socialAudioTag.recommendedSoundName}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCopyAudioTag}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '6px 12px',
+                    borderRadius: 8,
+                    background: copiedAudioTag ? 'rgba(16, 185, 129, 0.3)' : 'rgba(255, 255, 255, 0.12)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: copiedAudioTag ? '#34d399' : '#ffffff',
+                    fontSize: 11.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {copiedAudioTag ? <Check size={12} /> : <Copy size={12} />}
+                  <span>{copiedAudioTag ? (isMr ? 'ऑडिओ टॅग कॉपी झाला!' : 'Audio Tag Copied!') : isMr ? 'ऑडिओ टॅग कॉपी करा' : 'Copy Audio Name'}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Download & Dismiss Buttons */}
+            <div style={{ display: 'flex', gap: 10, width: '100%', maxWidth: 320 }}>
+              <button
+                type="button"
+                onClick={handleDownloadVideo}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  padding: '13px 18px',
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: 14,
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
+                }}
+              >
+                <Download size={16} />
+                {isMr ? 'व्हिडिओ सेव्ह करा' : 'Download MP4'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setExportedVideo(null)}
+                style={{
+                  padding: '13px 16px',
+                  borderRadius: 14,
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  color: '#ffffff',
+                  fontWeight: 600,
+                  fontSize: 13,
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                {isMr ? 'बंद करा' : 'Close'}
+              </button>
             </div>
           </div>
         )}

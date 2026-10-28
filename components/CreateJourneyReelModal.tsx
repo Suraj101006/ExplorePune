@@ -67,9 +67,11 @@ export default function CreateJourneyReelModal({
   const [selectedPlaceIds, setSelectedPlaceIds] = useState<Set<string>>(new Set());
 
   // Selected Style & Music
-  const [reelStyle, setReelStyle] = useState<'cinematic' | 'adventure' | 'heritage' | 'minimal'>('cinematic');
+  const [reelStyle, setReelStyle] = useState<'cinematic' | 'adventure' | 'heritage' | 'spiritual' | 'food' | 'nature' | 'minimal'>('cinematic');
   const [selectedMusic, setSelectedMusic] = useState<JourneyReelMusicTrack>(REEL_MUSIC_TRACKS[0]);
   const [previewingMusicId, setPreviewingMusicId] = useState<string | null>(null);
+  const [musicLanguageFilter, setMusicLanguageFilter] = useState<'all' | 'marathi' | 'hindi' | 'ambient'>('all');
+  const [selectedSection, setSelectedSection] = useState<'intro' | 'verse' | 'drop'>('verse');
 
   // Generation Loading Animation State (5 progressive steps)
   const [genPhase, setGenPhase] = useState<number>(0);
@@ -691,10 +693,12 @@ export default function CreateJourneyReelModal({
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                 {[
-                  { id: 'cinematic', label: '🎬 Cinematic Travel', desc: 'Slow Ken Burns & golden hour tone' },
-                  { id: 'adventure', label: '⚔️ Sahyadri Adventure', desc: 'Dynamic pace, mountain grit' },
-                  { id: 'heritage', label: '🏛️ Peshwa Heritage', desc: 'Regal warm tones, classic elegance' },
-                  { id: 'minimal', label: '🌿 Serene & Minimal', desc: 'Contemplative slow fades' },
+                  { id: 'cinematic', label: '🎬 Cinematic Wonder', desc: 'Slow Ken Burns & golden hour tone' },
+                  { id: 'adventure', label: '⚔️ Sahyadri Bastion', desc: 'High octane, mountain mist' },
+                  { id: 'heritage', label: '🏛️ Peshwa Royalty', desc: '18th-century court & teakwood' },
+                  { id: 'spiritual', label: '🕉️ Sacred Solace', desc: 'Temple bells & bansuri peace' },
+                  { id: 'food', label: '🍲 Puneri Food Trail', desc: 'Spicy misal & street rhythms' },
+                  { id: 'nature', label: '🌊 Lakeside Bliss', desc: 'Serene ripples & hill breeze' },
                 ].map((s) => (
                   <button
                     key={s.id}
@@ -717,7 +721,7 @@ export default function CreateJourneyReelModal({
               </div>
             </div>
 
-            {/* Smart Music Recommendation */}
+            {/* Smart Music Recommendation with Real Vocals & Language Filter */}
             <div>
               <div
                 style={{
@@ -728,7 +732,7 @@ export default function CreateJourneyReelModal({
                 }}
               >
                 <label style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0' }}>
-                  {isMr ? 'ठिकाणानुरूप संगीत (Place Music):' : 'Place-Based Music Recommendation:'}
+                  {isMr ? 'अस्सल गाणी व संगीत (Real Songs):' : 'Authentic Real Songs & Vocals:'}
                 </label>
                 <span
                   style={{
@@ -740,12 +744,46 @@ export default function CreateJourneyReelModal({
                     fontWeight: 700,
                   }}
                 >
-                  ✓ 100% Royalty-Free
+                  ✓ Authorized & Legal
                 </span>
               </div>
 
+              {/* Language Filters */}
+              <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+                {[
+                  { id: 'all', label: 'All Songs' },
+                  { id: 'marathi', label: 'मराठी (Marathi)' },
+                  { id: 'hindi', label: 'हिंदी (Hindi)' },
+                  { id: 'ambient', label: 'Ambient & Classical' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setMusicLanguageFilter(tab.id as any)}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: 20,
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      border: 'none',
+                      cursor: 'pointer',
+                      background: musicLanguageFilter === tab.id ? '#10b981' : 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      transition: 'background 150ms ease',
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {REEL_MUSIC_TRACKS.map((track) => {
+                {REEL_MUSIC_TRACKS.filter((track) => {
+                  if (musicLanguageFilter === 'marathi') return track.vocalLanguage?.toLowerCase().includes('marathi');
+                  if (musicLanguageFilter === 'hindi') return track.vocalLanguage?.toLowerCase().includes('hindi');
+                  if (musicLanguageFilter === 'ambient') return !track.isRealVocalSong;
+                  return true;
+                }).map((track) => {
                   const isSelected = selectedMusic.id === track.id;
                   const isPreviewing = previewingMusicId === track.id;
 
@@ -755,8 +793,8 @@ export default function CreateJourneyReelModal({
                       onClick={() => setSelectedMusic(track)}
                       style={{
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                        flexDirection: 'column',
+                        gap: 8,
                         padding: '10px 14px',
                         borderRadius: 14,
                         background: isSelected ? 'rgba(16, 185, 129, 0.16)' : 'rgba(255, 255, 255, 0.04)',
@@ -764,54 +802,116 @@ export default function CreateJourneyReelModal({
                         cursor: 'pointer',
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        {/* Play/Stop Audio Preview Button */}
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleToggleMusicPreview(track);
-                          }}
-                          style={{
-                            width: 34,
-                            height: 34,
-                            borderRadius: '50%',
-                            background: isPreviewing ? '#10b981' : 'rgba(255, 255, 255, 0.1)',
-                            border: 'none',
-                            color: '#ffffff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                          }}
-                          aria-label={isPreviewing ? 'Stop music preview' : 'Play music preview'}
-                        >
-                          {isPreviewing ? <Pause size={14} /> : <Play size={14} fill="#ffffff" />}
-                        </button>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          {/* Play/Stop Audio Preview Button */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggleMusicPreview(track);
+                            }}
+                            style={{
+                              width: 34,
+                              height: 34,
+                              borderRadius: '50%',
+                              background: isPreviewing ? '#10b981' : 'rgba(255, 255, 255, 0.1)',
+                              border: 'none',
+                              color: '#ffffff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                            }}
+                            aria-label={isPreviewing ? 'Stop music preview' : 'Play music preview'}
+                          >
+                            {isPreviewing ? <Pause size={14} /> : <Play size={14} fill="#ffffff" />}
+                          </button>
 
-                        <div>
-                          <div style={{ fontSize: 13.5, fontWeight: 700, color: '#ffffff' }}>
-                            {isMr ? track.titleMr || track.title : track.title}
-                          </div>
-                          <div style={{ fontSize: 11.5, color: '#94a3b8' }}>
-                            {track.artist} • {track.license}
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <span style={{ fontSize: 13.5, fontWeight: 700, color: '#ffffff' }}>
+                                {isMr ? track.titleMr || track.title : track.title}
+                              </span>
+                              {track.isRealVocalSong && (
+                                <span
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: 700,
+                                    color: '#facc15',
+                                    background: 'rgba(250, 204, 21, 0.15)',
+                                    padding: '1px 6px',
+                                    borderRadius: 6,
+                                  }}
+                                >
+                                  🎤 {track.vocalLanguage}
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: 11.5, color: '#94a3b8' }}>
+                              {track.artist} • {track.source}
+                            </div>
                           </div>
                         </div>
+
+                        {isSelected && (
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 800,
+                              color: '#34d399',
+                              background: 'rgba(16, 185, 129, 0.2)',
+                              padding: '3px 8px',
+                              borderRadius: 10,
+                            }}
+                          >
+                            Selected
+                          </span>
+                        )}
                       </div>
 
+                      {/* Song Section Selector if Selected */}
                       {isSelected && (
-                        <span
+                        <div
                           style={{
-                            fontSize: 11,
-                            fontWeight: 800,
-                            color: '#34d399',
-                            background: 'rgba(16, 185, 129, 0.2)',
-                            padding: '3px 8px',
-                            borderRadius: 10,
+                            marginTop: 4,
+                            paddingTop: 8,
+                            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
                           }}
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          Selected
-                        </span>
+                          <span style={{ fontSize: 11.5, color: '#cbd5e1', fontWeight: 600 }}>
+                            {isMr ? 'सुरुवात विभाग निवडा:' : 'Reel Sync Section:'}
+                          </span>
+                          <div style={{ display: 'flex', gap: 4 }}>
+                            {[
+                              { id: 'intro', label: 'Intro (वातावरण)' },
+                              { id: 'verse', label: 'Verse (काव्य बोल)' },
+                              { id: 'drop', label: 'Beat Drop (ढोल कळस)' },
+                            ].map((sec) => (
+                              <button
+                                key={sec.id}
+                                type="button"
+                                onClick={() => setSelectedSection(sec.id as any)}
+                                style={{
+                                  padding: '3px 8px',
+                                  borderRadius: 8,
+                                  fontSize: 10.5,
+                                  fontWeight: 700,
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  background: selectedSection === sec.id ? '#10b981' : 'rgba(255, 255, 255, 0.08)',
+                                  color: '#ffffff',
+                                }}
+                              >
+                                {sec.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       )}
                     </div>
                   );

@@ -46,5 +46,6 @@ next-env.d.ts
 # raw extracted datasets
 data/pmpml-extracted/
 scratch-*.js
+.agents/
 
 !.env.example

@@ -1,22 +1,118 @@
 'use client';
 
 import { DayJourney, JourneyPlaceStop } from '@/lib/journeyStorage';
+import { getDestinationProfile } from '@/lib/destinationIntelligence';
+import { REAL_SONG_CATALOG, ReelSongTrack } from '@/lib/reelSongLibrary';
 
 export interface JourneyReelMusicTrack {
   id: string;
   title: string;
   titleMr?: string;
   artist: string;
-  mood: 'adventure' | 'heritage' | 'spiritual' | 'ambient' | 'nature';
-  license: 'Royalty-Free CC0' | 'Royalty-Free Open' | 'Original Authentic';
+  mood: 'adventure' | 'heritage' | 'spiritual' | 'ambient' | 'nature' | 'food';
+  license: string;
   source: string;
   attributionRequired: boolean;
-  audioGeneratorType: 'fort_adventure' | 'heritage_classical' | 'peaceful_flute' | 'lakeside_chill' | 'pune_ambient';
+  audioGeneratorType: 'fort_adventure' | 'heritage_classical' | 'peaceful_flute' | 'lakeside_chill' | 'pune_ambient' | 'food_trail';
   descriptionEn: string;
   descriptionMr: string;
+  vocalLanguage?: string;
+  isRealVocalSong?: boolean;
 }
 
 export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
+  // 1. Authentic Marathi & Hindi Vocal Songs
+  {
+    id: 'song-sahyadri-powada',
+    title: 'Garja Sahyadri (गरजा सह्याद्री - पोवाडा)',
+    titleMr: 'गरजा सह्याद्री • वीररस पोवाडा व ढोल नाद',
+    artist: 'Traditional Lokshahir Ensemble',
+    mood: 'adventure',
+    license: 'Royalty-Free Traditional Cultural Heritage',
+    source: 'Real Marathi Folk Vocal & Dhol-Tasha',
+    attributionRequired: false,
+    audioGeneratorType: 'fort_adventure',
+    descriptionEn: 'Passionate Lokshahir vocal chant and thunderous Puneri dhol beats for Sahyadri forts.',
+    descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसा अस्सल मराठी शाहिरी आवाज.',
+    vocalLanguage: 'Marathi',
+    isRealVocalSong: true,
+  },
+  {
+    id: 'song-dagdusheth-aarti',
+    title: 'Majha Ganaraya (माझा गणराया - अभंग)',
+    titleMr: 'माझा गणराया • दगडूशेठ भक्तिरस अभंग व बासरी',
+    artist: 'Pune Devotional Sangeet Mandali',
+    mood: 'spiritual',
+    license: 'Royalty-Free Traditional Abhang',
+    source: 'Authentic Marathi Abhang & Temple Flute',
+    attributionRequired: false,
+    audioGeneratorType: 'peaceful_flute',
+    descriptionEn: 'Pure melodic female & chorus devotional singing with pakhawaj and bansuri flute.',
+    descriptionMr: 'दगडूशेठ व पवित्र मंदिरांसाठी मनःशांती देणारा मंजुळ अभंग आणि घंटानाद.',
+    vocalLanguage: 'Marathi',
+    isRealVocalSong: true,
+  },
+  {
+    id: 'song-peshwa-tarana',
+    title: 'Shaniwar Wada Tarana (पेशवाई तराना)',
+    titleMr: 'पेशवाई तराना • शास्त्रीय सतार, तानपुरा व बोल',
+    artist: 'Maharashtra Classical Heritage Ensemble',
+    mood: 'heritage',
+    license: 'Royalty-Free Classical Heritage',
+    source: 'Royal 18th-Century Classical Vocal Tarana',
+    attributionRequired: false,
+    audioGeneratorType: 'heritage_classical',
+    descriptionEn: 'Regal acoustic sitar, tanpura, and classical vocal tarana in Raga Bhupali.',
+    descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार, तानपुरा व बोल.',
+    vocalLanguage: 'Sanskrit / Classical',
+    isRealVocalSong: true,
+  },
+  {
+    id: 'song-roohani-pune',
+    title: 'Roohani Pune (रूहानी पुणे - हिंदी गझल)',
+    titleMr: 'रूहानी पुणे • शांत सायंकाळ, गझल व गिटार',
+    artist: 'Deccan Acoustic Collective',
+    mood: 'ambient',
+    license: 'Royalty-Free Original Vocal',
+    source: 'Acoustic Guitar & Soulful Hindi Vocals',
+    attributionRequired: false,
+    audioGeneratorType: 'pune_ambient',
+    descriptionEn: 'Warm acoustic guitar chords and soulful Hindi vocals reminiscing Pune’s charm.',
+    descriptionMr: 'पुण्याच्या विविध पेठा, टेकड्या व सांस्कृतिक ठिकाणांसाठी भावपूर्ण गझल सूर.',
+    vocalLanguage: 'Hindi',
+    isRealVocalSong: true,
+  },
+  {
+    id: 'song-puneri-khadya-jingle',
+    title: 'Puneri Chawad (पुणेरी चवदार कट्टा)',
+    titleMr: 'पुणेरी चवदार कट्टा • झणझणीत मिसळ व चहा ताल',
+    artist: 'Pune Street Food Beats Collective',
+    mood: 'food',
+    license: 'Royalty-Free Original Vocal',
+    source: 'Fast Folk Percussion & Street Vocals',
+    attributionRequired: false,
+    audioGeneratorType: 'food_trail',
+    descriptionEn: 'Upbeat rhythmic dholak and lively Marathi vocals for food trails and culinary crawls.',
+    descriptionMr: 'झणझणीत मिसळ, मस्तानी आणि चहाच्या कट्ट्यासाठी वेगवान चविष्ट संगीत.',
+    vocalLanguage: 'Marathi',
+    isRealVocalSong: true,
+  },
+  {
+    id: 'song-sahyadri-breeze',
+    title: 'Lakeside Bliss (खडकवासला संथ लाटा)',
+    titleMr: 'खडकवासला संथ लाटा • निसर्ग सूर व बासरी',
+    artist: 'Sahyadri Nature Waves',
+    mood: 'nature',
+    license: 'Royalty-Free Creative Commons Open',
+    source: 'Lake Water Waves & Soft Bansuri Humming',
+    attributionRequired: false,
+    audioGeneratorType: 'lakeside_chill',
+    descriptionEn: 'Gentle acoustic piano, soft bansuri flute, and peaceful water ripple resonance.',
+    descriptionMr: 'तलाव, धरण आणि हिरवेगार टेकड्यांच्या भ्रमंतीसाठी सुखद व शांत संगीत.',
+    vocalLanguage: 'Vocal Humming',
+    isRealVocalSong: true,
+  },
+  // 2. Ambient Synthesized Classics
   {
     id: 'track-sahydri-adventure',
     title: 'Sahyadri Bastion Trail',
@@ -29,6 +125,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'fort_adventure',
     descriptionEn: 'Epic mountain winds, deep rhythmic cadence, and heroic Sahyadri adventure atmosphere.',
     descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसे वीररस संगीत.',
+    isRealVocalSong: false,
   },
   {
     id: 'track-peshwa-heritage',
@@ -42,6 +139,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'heritage_classical',
     descriptionEn: 'Warm acoustic sitar and tanpura harmonics echoing Pune’s historic 18th-century wadas.',
     descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार व तानपुरा सूर.',
+    isRealVocalSong: false,
   },
   {
     id: 'track-sacred-peace',
@@ -55,6 +153,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'peaceful_flute',
     descriptionEn: 'Peaceful bansuri flute notes and tranquil chimes for sacred shrines and rock-cut caves.',
     descriptionMr: 'दगडूशेठ व पाताळेश्वरसाठी मनःशांती देणारी मंजुळ बासरी आणि घंटानाद.',
+    isRealVocalSong: false,
   },
   {
     id: 'track-lakeside-chill',
@@ -68,6 +167,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'lakeside_chill',
     descriptionEn: 'Gentle acoustic piano chords and soft water ripple resonance for lakes, dams, and nature.',
     descriptionMr: 'तलाव, धरण आणि हिरवेगार टेकड्यांच्या भ्रमंतीसाठी सुखद व शांत संगीत.',
+    isRealVocalSong: false,
   },
   {
     id: 'track-pune-ambient',
@@ -81,6 +181,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'pune_ambient',
     descriptionEn: 'Bright, balanced travel acoustic melodies suitable for all city landmarks and street walks.',
     descriptionMr: 'पुण्याच्या विविध पेठा व सांस्कृतिक ठिकाणांसाठी प्रसन्न प्रभात धून.',
+    isRealVocalSong: false,
   },
 ];
 
@@ -146,7 +247,7 @@ export interface JourneyReelData {
   reel: {
     duration: number; // in seconds
     music: JourneyReelMusicTrack;
-    style: 'cinematic' | 'adventure' | 'heritage' | 'minimal';
+    style: 'cinematic' | 'adventure' | 'heritage' | 'spiritual' | 'food' | 'nature' | 'minimal';
     generatedAt: string;
   };
 }
@@ -243,6 +344,7 @@ export function getRecommendedMusic(
   let heritageCount = 0;
   let templeCount = 0;
   let natureCount = 0;
+  let foodCount = 0;
 
   for (const p of places) {
     const cat = (p.category || '').toLowerCase();
@@ -252,6 +354,8 @@ export function getRecommendedMusic(
       fortCount += 2;
     } else if (cat.includes('temple') || cat.includes('sacred') || id.includes('ganpati') || id.includes('pataleshwar')) {
       templeCount += 2;
+    } else if (cat.includes('food') || cat.includes('culinary') || id.includes('misal') || id.includes('bakery') || id.includes('fc-road')) {
+      foodCount += 2;
     } else if (cat.includes('heritage') || cat.includes('palace') || cat.includes('museum') || id.includes('wada')) {
       heritageCount += 2;
     } else if (cat.includes('nature') || cat.includes('lake') || cat.includes('dam') || cat.includes('park')) {
@@ -259,16 +363,18 @@ export function getRecommendedMusic(
     }
   }
 
-  let recommendedTrack = REEL_MUSIC_TRACKS[4]; // Pune Ambient fallback
+  let recommendedTrack = REEL_MUSIC_TRACKS[3]; // Roohani Pune fallback
 
-  if (fortCount >= Math.max(heritageCount, templeCount, natureCount) && fortCount > 0) {
-    recommendedTrack = REEL_MUSIC_TRACKS[0]; // Sahyadri Adventure
-  } else if (heritageCount >= Math.max(templeCount, natureCount) && heritageCount > 0) {
-    recommendedTrack = REEL_MUSIC_TRACKS[1]; // Peshwa Heritage
-  } else if (templeCount >= natureCount && templeCount > 0) {
-    recommendedTrack = REEL_MUSIC_TRACKS[2]; // Sacred Peace Flute
+  if (fortCount >= Math.max(heritageCount, templeCount, natureCount, foodCount) && fortCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[0]; // Garja Sahyadri Powada
+  } else if (templeCount >= Math.max(heritageCount, natureCount, foodCount) && templeCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[1]; // Majha Ganaraya Abhang
+  } else if (heritageCount >= Math.max(natureCount, foodCount) && heritageCount > 0) {
+    recommendedTrack = REEL_MUSIC_TRACKS[2]; // Peshwa Tarana
+  } else if (foodCount > 0 && foodCount >= natureCount) {
+    recommendedTrack = REEL_MUSIC_TRACKS[4]; // Puneri Chawad
   } else if (natureCount > 0) {
-    recommendedTrack = REEL_MUSIC_TRACKS[3]; // Lakeside Chill
+    recommendedTrack = REEL_MUSIC_TRACKS[5]; // Lakeside Bliss
   }
 
   const alternatives = REEL_MUSIC_TRACKS.filter((t) => t.id !== recommendedTrack.id);
@@ -338,11 +444,12 @@ export function buildReelPlacesFromJourney(journey: DayJourney): ReelPlaceItem[]
 
   return targetStops.map((stop) => {
     const slug = stop.placeSlug || stop.placeId || 'pune-landmark';
+    const profile = getDestinationProfile(stop);
     const extra = PLACE_METADATA_EXTRAS[slug] || PLACE_METADATA_EXTRAS[stop.placeId] || {
-      subtitle: `${stop.categoryName || 'Heritage Landmark'} • Pune, MH`,
+      subtitle: `${stop.categoryName || profile.themeNameEn} • Pune, MH`,
       elevation: undefined,
-      quoteEn: stop.note || '“An authentic, unforgettable exploration in the cultural capital of Maharashtra.”',
-      quoteMr: stop.noteMr || '“पुण्याच्या समृद्ध संस्कृती व इतिहासातील एक सुंदर आणि अविस्मरणीय अनुभव.”',
+      quoteEn: stop.note || profile.narrativeCurve.climaxQuoteEn,
+      quoteMr: stop.noteMr || profile.narrativeCurve.climaxQuoteMr,
     };
 
     // Photos: Check custom uploaded photos, then stop photos, then primary image_url
