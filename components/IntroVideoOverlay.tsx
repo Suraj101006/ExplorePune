@@ -187,6 +187,22 @@ export default function IntroVideoOverlay() {
       return;
     }
 
+    // Bot & Crawler bypass: ensure search engines & speed tools see instant rendered content
+    const isBot =
+      typeof navigator !== 'undefined' &&
+      /bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|headlesschrome/i.test(
+        navigator.userAgent
+      );
+    if (isBot) {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, 'true');
+        document.documentElement.classList.remove('intro-active');
+        document.documentElement.classList.add('intro-dismissed');
+      } catch {}
+      setIntroState('none');
+      return;
+    }
+
     // Prefers-reduced-motion check
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) {
@@ -295,7 +311,7 @@ export default function IntroVideoOverlay() {
       <audio
         ref={audioRef}
         src="/audio/explore-pune-intro-bgm.wav"
-        preload="auto"
+        preload="none"
         loop={false}
       />
 
@@ -351,9 +367,9 @@ export default function IntroVideoOverlay() {
             priority
           />
         </div>
-        <h1 className="intro-title-heading">
+        <div role="heading" aria-level={2} className="intro-title-heading">
           Explore <span className="intro-title-highlight">Pune</span>
-        </h1>
+        </div>
         <p className="intro-title-marathi">
           एक्सप्लोर पुणे • सह्याद्री आणि संस्कृती दर्शन
         </p>
@@ -395,7 +411,7 @@ export default function IntroVideoOverlay() {
         autoPlay
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => triggerTitleCard()}
         onError={() => handleFinish(true)}

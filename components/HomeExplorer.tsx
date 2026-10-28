@@ -572,6 +572,8 @@ export default function HomeExplorer({
               <img
                 src="/images/places/shaniwar-wada.jpg"
                 alt="Shaniwar Wada"
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span
@@ -636,6 +638,8 @@ export default function HomeExplorer({
               <img
                 src="/images/places/raja-dinkar-kelkar-museum.jpg"
                 alt="Raja Dinkar Kelkar Museum"
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span
@@ -700,6 +704,8 @@ export default function HomeExplorer({
               <img
                 src="/images/places/pataleshwar-cave-temple.jpg"
                 alt="Pataleshwar Cave Temple"
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <span
@@ -1481,8 +1487,8 @@ export default function HomeExplorer({
                             <img
                               src={p.image_url || badgeImg}
                               alt={p.name}
-                              loading={idx === 0 ? 'eager' : 'lazy'}
-                              {...(idx === 0 ? ({ fetchPriority: 'high' } as any) : {})}
+                              loading="lazy"
+                              decoding="async"
                               className="place-card-img-zoom"
                               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                             />

@@ -1,0 +1,46 @@
+# Explore Pune
+
+> The Curated Field Guide to Historic Pune — Maratha hill forts, Peshwa-era wadas, sacred sanctuaries, museums, and Sahyadri nature trails.
+
+Explore Pune is an authoritative, verified digital travel journal, itinerary planner, and heritage preservation directory dedicated to Pune and the surrounding Sahyadri region in Maharashtra, India.
+
+## Canonical Domain
+- Website: https://explore-pune-eosin.vercel.app
+- Language: English (en) and Marathi (mr)
+- Sitemaps: https://explore-pune-eosin.vercel.app/sitemap.xml
+- Robots: https://explore-pune-eosin.vercel.app/robots.txt
+
+## Primary Public Routes
+- [Explore Pune Home](https://explore-pune-eosin.vercel.app/): Main heritage explorer directory with real-time filtering, search, and category exploration.
+- [AI Trip Planner](https://explore-pune-eosin.vercel.app/planner): Custom daily itinerary generator optimized by duration, companion, travel pace, and transport mode.
+- [Pune Community](https://explore-pune-eosin.vercel.app/community): Authentic visitor reviews, travel tips, and moderated heritage discussions.
+- [Traveller Stories & Blogs](https://explore-pune-eosin.vercel.app/blogs): Long-form travelogues and expedition field journals by local explorers.
+- [Explorer Milestones](https://explore-pune-eosin.vercel.app/milestones): Gamified heritage achievements, visit certificates, and exploration badges.
+- [About the Initiative](https://explore-pune-eosin.vercel.app/about): Background, mission, and heritage conservation ethics.
+- [Data Methodology](https://explore-pune-eosin.vercel.app/data): Archival sources, GIS validation standards, and research methodology.
+
+## Major Verified Destination Entities
+- **Sinhagad Fort (कोंढाणा)**: Sahyadri hill fortress at 1,312m elevation; site of the 1670 Battle of Sinhagad fought by Tanaji Malusare.
+- **Shaniwar Wada (शनिवार वाडा)**: Historic 18th-century seat of the Peshwa rulers of the Maratha Empire, constructed in 1732 by Peshwa Baji Rao I.
+- **Lal Mahal (लाल महाल)**: Historic 1630 palace commissioned by Shahaji Bhosale for Chhatrapati Shivaji Maharaj and Jijabai.
+- **Raja Dinkar Kelkar Museum**: Collection of 20,000+ Indian antiquities, carvings, and historic musical instruments.
+- **Pataleshwar Cave Temple (पाताळेश्वर)**: 8th-century monolithic rock-cut Shiva sanctuary carved from a single basalt rock mass during the Rashtrakuta period.
+- **Aga Khan Palace (आगाखान पॅलेस)**: 1892 Italian-arched palace where Mahatma Gandhi and Kasturba Gandhi were interned during the Quit India Movement.
+- **Dagdusheth Halwai Ganpati**: World-renowned Ganesh shrine established in 1893.
+- **Rajgad Fort**: Sovereign capital of the Maratha Empire under Shivaji Maharaj for over 25 years.
+- **Torna Fort (Prachandagad)**: First fort captured by 16-year-old Shivaji Maharaj in 1646.
+- **Shivneri Fort**: 1630 birthplace of Chhatrapati Shivaji Maharaj in Junnar.
+
+## Verified Categories
+- `forts`: Historic hill fortresses and Maratha military strongholds.
+- `wadas`: Peshwa-era residential mansions and civic complexes.
+- `temples`: Ancient Hemadpanthi, rock-cut, and sacred pilgrimage sanctuaries.
+- `museums`: Art, ethnography, defense, and cultural artifact museums.
+- `nature`: Sahyadri hills, tekdis, lakes, and monsoon waterfalls.
+- `food`: Authentic Pune culinary heritage (misal, bhakarwadi, mastani, puneri thali).
+
+## Public API Endpoints
+- `GET /api/v1/places`: Catalog of verified published destinations with filters for category, keyword, and coordinates.
+- `GET /api/v1/health`: System status, uptime, and database connectivity.
+- `GET /api/v1/pmpml`: Public bus transit stop routes and transit schedules.
+- `GET /api/v1/transit/directions`: Multimodal route calculation between Pune landmarks.

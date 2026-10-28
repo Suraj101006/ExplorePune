@@ -4,17 +4,17 @@ import { collection, getDocs } from 'firebase/firestore';
 import HomeExplorer from '@/components/HomeExplorer';
 
 export const dynamic = 'force-dynamic';
-const PAGE = 72;
+const PAGE = 24;
 
 export const metadata: Metadata = {
-  title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+  title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
   description:
     'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+    title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description:
       'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
     url: '/',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+    title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description:
       'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, and custom trip planning.',
     images: ['/images/pune-map-hero.jpg'],
@@ -137,8 +137,26 @@ export default async function HomePage({
     })),
   };
 
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Explore Pune',
+    url: 'https://explore-pune-eosin.vercel.app',
+    logo: 'https://explore-pune-eosin.vercel.app/images/logo.svg',
+    description:
+      'An authoritative, locally researched field guide to Maratha forts, Peshwa-era wadas, temples, and custom travel itineraries.',
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Pune, Maharashtra, India',
+    },
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}

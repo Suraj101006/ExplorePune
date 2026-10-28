@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 import ChatWidget from '@/components/ChatWidget';
 import DirectionsModal from '@/components/DirectionsModal';
@@ -8,6 +9,27 @@ import IntroVideoOverlay from '@/components/IntroVideoOverlay';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
 import PageTransition from '@/components/PageTransition';
+
+const fontSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const fontYatra = Yatra_One({
+  subsets: ['latin', 'devanagari'],
+  weight: ['400'],
+  variable: '--font-deva',
+  display: 'swap',
+});
+
+const fontRozha = Rozha_One({
+  subsets: ['latin', 'devanagari'],
+  weight: ['400'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://explore-pune-eosin.vercel.app'),
@@ -46,12 +68,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
+    >
       <head>
         {/* Zero-flash script: ensures all bars and places are 100% hidden while intro video is showing */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if((p==='/'||p==='')&&s!=='true'&&!r){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
+            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|headlesschrome/i.test(navigator.userAgent);if((p==='/'||p==='')&&s!=='true'&&!r&&!b){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
           }}
         />
       </head>
