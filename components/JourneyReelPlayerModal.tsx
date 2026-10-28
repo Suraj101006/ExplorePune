@@ -179,23 +179,13 @@ export default function JourneyReelPlayerModal({
     return 3000;
   }, [currentScene]);
 
-  // Prevent background page scrolling strictly & restore on close
   useEffect(() => {
     if (!isOpen) return;
 
     document.body.classList.add('modal-open');
 
-    // Touch event interceptor to prevent iOS Safari bounce/scroll leak
-    const preventBackdropTouchMove = (e: TouchEvent) => {
-      if (!(e.target as HTMLElement)?.closest('.reel-touchable')) {
-        e.preventDefault();
-      }
-    };
-    window.addEventListener('touchmove', preventBackdropTouchMove, { passive: false });
-
     return () => {
       document.body.classList.remove('modal-open');
-      window.removeEventListener('touchmove', preventBackdropTouchMove);
     };
   }, [isOpen]);
 

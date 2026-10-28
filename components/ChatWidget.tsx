@@ -266,16 +266,6 @@ export default function ChatWidget() {
     };
   }, []);
 
-  // Lock background scroll on mobile when chat is open (Requirement 12)
-  useEffect(() => {
-    if (open && window.innerWidth <= 768) {
-      const origOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = origOverflow;
-      };
-    }
-  }, [open]);
 
   // Smart auto-scroll observer (Requirement 14)
   const handleChatLogScroll = () => {
