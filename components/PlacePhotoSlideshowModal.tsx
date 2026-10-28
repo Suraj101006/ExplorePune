@@ -58,9 +58,10 @@ export default function PlacePhotoSlideshowModal({
     }
   }, []);
 
-  // Load photos when modal opens or place changes
+  // Load photos & freeze background scroll when modal opens
   useEffect(() => {
     if (!isOpen || !place) return;
+    document.body.classList.add('modal-open');
 
     setCurrentIndex(initialIndex);
     setIsPlaying(true);
@@ -95,6 +96,7 @@ export default function PlacePhotoSlideshowModal({
 
     return () => {
       isMounted = false;
+      document.body.classList.remove('modal-open');
     };
   }, [isOpen, place, initialIndex, isMr]);
 

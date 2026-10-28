@@ -93,19 +93,7 @@ export default function JourneyReelPlayerModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const scrollY = window.scrollY;
-    const origBodyOverflow = document.body.style.overflow;
-    const origBodyPosition = document.body.style.position;
-    const origBodyTop = document.body.style.top;
-    const origBodyWidth = document.body.style.width;
-    const origHtmlOverflow = document.documentElement.style.overflow;
-
-    // Apply viewport lock
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-    document.documentElement.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
 
     // Touch event interceptor to prevent iOS Safari bounce/scroll leak
     const preventBackdropTouchMove = (e: TouchEvent) => {
@@ -116,13 +104,8 @@ export default function JourneyReelPlayerModal({
     window.addEventListener('touchmove', preventBackdropTouchMove, { passive: false });
 
     return () => {
-      document.body.style.overflow = origBodyOverflow;
-      document.body.style.position = origBodyPosition;
-      document.body.style.top = origBodyTop;
-      document.body.style.width = origBodyWidth;
-      document.documentElement.style.overflow = origHtmlOverflow;
+      document.body.classList.remove('modal-open');
       window.removeEventListener('touchmove', preventBackdropTouchMove);
-      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 

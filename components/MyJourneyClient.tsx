@@ -1783,8 +1783,8 @@ export default function MyJourneyClient() {
         onClose={() => setMemoryJourney(null)}
         journey={memoryJourney}
         isMr={isMr}
-        onPlayReel={() => {
-          const toPlay = memoryJourney;
+        onPlayReel={(selectedJ) => {
+          const toPlay = selectedJ || memoryJourney || todayJourney || journeys[0] || SEED_JOURNEYS[0];
           setMemoryJourney(null);
           setReelJourney(toPlay);
         }}

@@ -55,7 +55,12 @@ export default async function HomePage({
         (p) =>
           (p.name && p.name.toLowerCase().includes(lowerTerm)) ||
           (p.name_mr && p.name_mr.toLowerCase().includes(lowerTerm)) ||
-          (p.description && p.description.toLowerCase().includes(lowerTerm))
+          (p.description && p.description.toLowerCase().includes(lowerTerm)) ||
+          (p.description_mr && p.description_mr.toLowerCase().includes(lowerTerm)) ||
+          (p.category && p.category.toLowerCase().includes(lowerTerm)) ||
+          (p.category_slug && p.category_slug.toLowerCase().includes(lowerTerm)) ||
+          (typeof p.nearby_food === 'string' && p.nearby_food.toLowerCase().includes(lowerTerm)) ||
+          (typeof p.nearby_food_mr === 'string' && p.nearby_food_mr.toLowerCase().includes(lowerTerm))
       );
     }
 

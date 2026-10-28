@@ -10,7 +10,7 @@ interface MemoryMomentModalProps {
   onClose: () => void;
   journey: DayJourney | null;
   isMr?: boolean;
-  onPlayReel?: () => void;
+  onPlayReel?: (j: DayJourney) => void;
   onShare?: () => void;
 }
 
@@ -23,6 +23,22 @@ export default function MemoryMomentModal({
   onShare,
 }: MemoryMomentModalProps) {
   const [stage, setStage] = useState<number>(0);
+
+  // Background freeze & escape key handling
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.classList.add('modal-open');
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.classList.remove('modal-open');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isOpen || !journey) {
@@ -59,17 +75,27 @@ export default function MemoryMomentModal({
   const totalKm = journey.totalDistanceKm || 12.4;
 
   return (
-    <div className="journey-reel-backdrop" role="dialog" aria-modal="true" aria-label="Travel Memory Moment">
+    <div
+      className="journey-reel-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Travel Memory Moment"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div
         className="memory-reveal-animate"
         style={{
           position: 'relative',
           width: 'min(92vw, 520px)',
+          maxHeight: 'min(90vh, 760px)',
+          overflowY: 'auto',
+          overscrollBehavior: 'contain',
           margin: 'auto',
           borderRadius: 20,
           background: 'linear-gradient(165deg, #0f172a 0%, #064e3b 100%)',
           color: '#ffffff',
-          overflow: 'hidden',
           boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.5)',
           border: '1px solid rgba(255, 255, 255, 0.15)',
           padding: '36px 28px 28px',
@@ -241,8 +267,7 @@ export default function MemoryMomentModal({
             <button
               type="button"
               onClick={() => {
-                onClose();
-                onPlayReel();
+                onPlayReel(journey);
               }}
               style={{
                 flex: 1,

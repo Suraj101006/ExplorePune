@@ -181,6 +181,21 @@ export default function PlannerPage() {
   const [removingStopId, setRemovingStopId] = useState<string | null>(null);
   const [justAddedStopId, setJustAddedStopId] = useState<string | null>(null);
 
+  // Background freeze & escape key handling for Add Place Modal
+  useEffect(() => {
+    if (addPlaceModalOpen) {
+      document.body.classList.add('modal-open');
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setAddPlaceModalOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.classList.remove('modal-open');
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [addPlaceModalOpen]);
+
   // PDF & Email State
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [pdfSuccess, setPdfSuccess] = useState('');
@@ -1720,14 +1735,39 @@ export default function PlannerPage() {
                 onChange={(e) => setDuration(Number(e.target.value))}
                 className="planner-time-slider"
                 style={{
-                  background: `linear-gradient(90deg, #10b981 0%, #047857 ${(duration / 720) * 100}%, #e2e8f0 ${(duration / 720) * 100}%)`,
+                  background: `linear-gradient(90deg, #10b981 0%, #047857 ${Math.max(0, Math.min(100, ((duration - 30) / 690) * 100))}%, #e2e8f0 ${Math.max(0, Math.min(100, ((duration - 30) / 690) * 100))}%)`,
                 }}
               />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>
-                <span>30m</span>
-                <span>3h</span>
-                <span>6h</span>
-                <span>12h</span>
+              {/* Accurately positioned time markers corresponding to exact slider percentages */}
+              <div style={{ position: 'relative', width: '100%', height: 18, fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>
+                <span
+                  onClick={() => setDuration(30)}
+                  title="30 minutes"
+                  style={{ position: 'absolute', left: 0, cursor: 'pointer', fontWeight: duration === 30 ? 800 : 500, color: duration === 30 ? '#047857' : undefined }}
+                >
+                  30m
+                </span>
+                <span
+                  onClick={() => setDuration(180)}
+                  title="3 hours (180 mins)"
+                  style={{ position: 'absolute', left: '21.74%', transform: 'translateX(-50%)', cursor: 'pointer', fontWeight: duration === 180 ? 800 : 500, color: duration === 180 ? '#047857' : undefined }}
+                >
+                  3h
+                </span>
+                <span
+                  onClick={() => setDuration(360)}
+                  title="6 hours (360 mins)"
+                  style={{ position: 'absolute', left: '47.83%', transform: 'translateX(-50%)', cursor: 'pointer', fontWeight: duration === 360 ? 800 : 500, color: duration === 360 ? '#047857' : undefined }}
+                >
+                  6h
+                </span>
+                <span
+                  onClick={() => setDuration(720)}
+                  title="12 hours (720 mins)"
+                  style={{ position: 'absolute', right: 0, cursor: 'pointer', fontWeight: duration === 720 ? 800 : 500, color: duration === 720 ? '#047857' : undefined }}
+                >
+                  12h
+                </span>
               </div>
             </div>
           </div>

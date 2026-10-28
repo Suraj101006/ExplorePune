@@ -38,11 +38,22 @@ export default function LocationPickerModal({
 
   useEffect(() => {
     if (isOpen) {
+      document.body.classList.add('modal-open');
       setCurrentLoc(getStoredUserLocation() || DEFAULT_PUNE_STATIC_LOCATION);
       setFeedbackMessage(null);
       setSearchResults(searchPuneLocalities(''));
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.body.classList.remove('modal-open');
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   // Live address & locality search with debounce
   useEffect(() => {

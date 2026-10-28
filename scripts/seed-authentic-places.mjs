@@ -5916,12 +5916,16 @@ export const AUTHENTIC_PLACES = [
   }
 ];
 
+import { AUTHENTIC_FOOD_PLACES } from './seed-food-places.mjs';
+
+const ALL_COMBINED_PLACES = [...AUTHENTIC_PLACES, ...AUTHENTIC_FOOD_PLACES];
+
 export async function seedAuthenticPlaces() {
-  console.log(`Starting seeding of ${AUTHENTIC_PLACES.length} authentic Pune places...`);
+  console.log(`Starting seeding of ${ALL_COMBINED_PLACES.length} authentic Pune places...`);
 
   // 1. Upsert each authentic place
-  const authenticIds = new Set(AUTHENTIC_PLACES.map((p) => p.id));
-  for (const place of AUTHENTIC_PLACES) {
+  const authenticIds = new Set(ALL_COMBINED_PLACES.map((p) => p.id));
+  for (const place of ALL_COMBINED_PLACES) {
     const ref = doc(db, 'places', place.id);
     await setDoc(ref, place, { merge: true });
     console.log(`✓ Upserted: [${place.category_slug}] ${place.name} | ${place.name_mr}`);

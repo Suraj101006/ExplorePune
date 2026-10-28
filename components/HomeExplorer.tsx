@@ -1026,7 +1026,7 @@ export default function HomeExplorer({
 
           {/* Trail 6: Traditional Gastronomy */}
           <Link
-            href="/?q=misal"
+            href="/?cat=food"
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 5,
@@ -1719,7 +1719,7 @@ export default function HomeExplorer({
                           className="btn outline"
                           style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 700 }}
                         >
-                          {t('card.view')} →
+                          {t('card.view')}
                         </Link>
                       </div>
                     </div>

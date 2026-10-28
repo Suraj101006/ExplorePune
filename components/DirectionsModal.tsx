@@ -86,15 +86,22 @@ export default function DirectionsModal() {
     setErrorMessage(null);
   }, []);
 
-  // Handle ESC key to close
+  // Handle ESC key to close & background scroll lock
   useEffect(() => {
+    if (!isOpen) return;
+    document.body.classList.add('modal-open');
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         handleClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.classList.remove('modal-open');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, handleClose]);
 
   // Compute route from current origin and destination

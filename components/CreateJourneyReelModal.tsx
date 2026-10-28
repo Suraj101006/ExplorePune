@@ -80,23 +80,10 @@ export default function CreateJourneyReelModal({
   // Lock background scroll when modal is open
   useEffect(() => {
     if (!isOpen) return;
-    const scrollY = window.scrollY;
-    const origBodyOverflow = document.body.style.overflow;
-    const origBodyPosition = document.body.style.position;
-    const origBodyTop = document.body.style.top;
-    const origBodyWidth = document.body.style.width;
-
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
+    document.body.classList.add('modal-open');
 
     return () => {
-      document.body.style.overflow = origBodyOverflow;
-      document.body.style.position = origBodyPosition;
-      document.body.style.top = origBodyTop;
-      document.body.style.width = origBodyWidth;
-      window.scrollTo(0, scrollY);
+      document.body.classList.remove('modal-open');
     };
   }, [isOpen]);
 

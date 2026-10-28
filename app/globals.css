@@ -3680,6 +3680,13 @@ html.intro-dismissed .intro-overlay {
   will-change: transform;
 }
 
+/* Background scroll freeze when any modal/drawer is active */
+body.modal-open {
+  overflow: hidden !important;
+  scrollbar-gutter: stable;
+  touch-action: none;
+}
+
 /* Dedicated Full-Screen Journey Reel / Video Modal (Requirements 1, 13, 14) */
 .journey-reel-backdrop {
   position: fixed;

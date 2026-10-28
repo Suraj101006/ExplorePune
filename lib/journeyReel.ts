@@ -284,9 +284,57 @@ export function buildReelPlacesFromJourney(journey: DayJourney): ReelPlaceItem[]
   const rawStops = journey.places && journey.places.length > 0 ? journey.places : [];
 
   // Filter to visited stops, or if none visited yet, use all planned stops
-  const targetStops = rawStops.some((p) => p.isVisited)
+  let targetStops = rawStops.some((p) => p.isVisited)
     ? rawStops.filter((p) => p.isVisited)
     : rawStops;
+
+  // Safety fallback: If journey currently has 0 stops, provide iconic Pune landmarks so reel always renders visually
+  if (targetStops.length === 0) {
+    targetStops = [
+      {
+        placeId: 'shaniwar-wada',
+        placeSlug: 'shaniwar-wada',
+        placeName: 'Shaniwar Wada',
+        placeNameMr: 'शनिवार वाडा',
+        category: 'heritage',
+        categoryName: 'Peshwa Heritage',
+        categoryNameMr: 'पेशवेकालीन वारसा',
+        image_url: '/images/places/shaniwar-wada.jpg',
+        latitude: 18.5196,
+        longitude: 73.8553,
+        order: 1,
+        isVisited: true,
+      },
+      {
+        placeId: 'aga-khan-palace',
+        placeSlug: 'aga-khan-palace',
+        placeName: 'Aga Khan Palace',
+        placeNameMr: 'आगा खान पॅलेस',
+        category: 'heritage',
+        categoryName: 'National Monument',
+        categoryNameMr: 'राष्ट्रीय स्मारक',
+        image_url: '/images/places/aga-khan-palace.jpg',
+        latitude: 18.5529,
+        longitude: 73.9015,
+        order: 2,
+        isVisited: true,
+      },
+      {
+        placeId: 'sinhagad-fort',
+        placeSlug: 'sinhagad-fort',
+        placeName: "Sinhagad Fort (Lion's Fort)",
+        placeNameMr: 'सिंहगड किल्ला (कोंढाणा)',
+        category: 'forts',
+        categoryName: 'Sahyadri Fortress',
+        categoryNameMr: 'सह्याद्री दुर्ग',
+        image_url: '/images/places/sinhagad-fort.jpg',
+        latitude: 18.3664,
+        longitude: 73.7558,
+        order: 3,
+        isVisited: true,
+      },
+    ];
+  }
 
   return targetStops.map((stop) => {
     const slug = stop.placeSlug || stop.placeId || 'pune-landmark';
