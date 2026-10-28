@@ -76,14 +76,14 @@ const CATEGORY_BADGES: Record<string, string> = {
 };
 
 const POPULAR_SEARCHES = [
-  { label: 'Sinhagad Fort', labelMr: 'सिंहगड किल्ला', query: 'Sinhagad' },
-  { label: 'Shaniwar Wada', labelMr: 'शनिवार वाडा', query: 'Shaniwar Wada' },
-  { label: 'Dagdusheth Ganpati', labelMr: 'दगडूशेठ गणपती', query: 'Dagdusheth' },
-  { label: 'Kelkar Museum', labelMr: 'केळकर संग्रहालय', query: 'Kelkar' },
-  { label: 'Phule Wada', labelMr: 'महात्मा फुले वाडा', query: 'Phule Wada' },
-  { label: 'Aga Khan Palace', labelMr: 'आगाखान पॅलेस', query: 'Aga Khan Palace' },
-  { label: 'Pataleshwar Cave', labelMr: 'पाताळेश्वर लेणी', query: 'Pataleshwar' },
-  { label: 'Khadakwasla Dam', labelMr: 'खडकवासला धरण', query: 'Khadakwasla' },
+  { label: 'Sinhagad Fort', labelMr: 'सिंहगड किल्ला', query: 'Sinhagad', slug: 'sinhagad-fort' },
+  { label: 'Shaniwar Wada Palace', labelMr: 'शनिवार वाडा महाल', query: 'Shaniwar Wada', slug: 'shaniwar-wada' },
+  { label: 'Dagdusheth Ganpati', labelMr: 'दगडूशेठ गणपती', query: 'Dagdusheth', slug: 'shreemant-dagdusheth-halwai-ganpati' },
+  { label: 'Kelkar Museum', labelMr: 'केळकर संग्रहालय', query: 'Kelkar', slug: 'raja-dinkar-kelkar-museum' },
+  { label: 'Phule Wada', labelMr: 'महात्मा फुले वाडा', query: 'Phule Wada', slug: 'mahatma-phule-wada' },
+  { label: 'Aga Khan Palace', labelMr: 'आगाखान पॅलेस', query: 'Aga Khan Palace', slug: 'aga-khan-palace' },
+  { label: 'Pataleshwar Cave', labelMr: 'पाताळेश्वर लेणी', query: 'Pataleshwar', slug: 'pataleshwar-cave-temple' },
+  { label: 'Khadakwasla Dam', labelMr: 'खडकवासला धरण', query: 'Khadakwasla', slug: 'khadakwasla-dam' },
 ];
 
 export const PUNE_GEOGRAPHIC_ZONES = [
@@ -391,7 +391,8 @@ export default function HomeExplorer({
             {POPULAR_SEARCHES.map((item, idx) => (
               <Link
                 key={item.query}
-                href={`/?q=${encodeURIComponent(item.query)}`}
+                href={`/places/${item.slug}`}
+                aria-label={`Visit ${item.label} guide`}
                 className="chip hero-search-chip hero-anim-chip"
                 style={{
                   '--chip-i': idx,
@@ -546,9 +547,10 @@ export default function HomeExplorer({
                 </span>
                 <Link
                   href="/places/sinhagad-fort"
+                  aria-label="View Sinhagad Fort visitor guide and history"
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
                 >
-                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                  {isMr ? 'सिंहगड माहिती →' : 'Sinhagad Guide →'}
                 </Link>
               </div>
             </div>
@@ -612,9 +614,10 @@ export default function HomeExplorer({
                 </span>
                 <Link
                   href="/places/shaniwar-wada"
+                  aria-label="View Shaniwar Wada visitor guide and history"
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
                 >
-                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                  {isMr ? 'शनिवार वाडा माहिती →' : 'Shaniwar Wada Guide →'}
                 </Link>
               </div>
             </div>
@@ -678,9 +681,10 @@ export default function HomeExplorer({
                 </span>
                 <Link
                   href="/places/raja-dinkar-kelkar-museum"
+                  aria-label="View Raja Dinkar Kelkar Museum visitor guide and artifacts"
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
                 >
-                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                  {isMr ? 'केळकर संग्रहालय माहिती →' : 'Kelkar Museum Guide →'}
                 </Link>
               </div>
             </div>
@@ -744,9 +748,10 @@ export default function HomeExplorer({
                 </span>
                 <Link
                   href="/places/pataleshwar-cave-temple"
+                  aria-label="View Pataleshwar Cave Temple monolithic shrine details"
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}
                 >
-                  {isMr ? 'तपशील पहा →' : 'Details →'}
+                  {isMr ? 'पाताळेश्वर लेणी माहिती →' : 'Pataleshwar Cave Guide →'}
                 </Link>
               </div>
             </div>
@@ -776,8 +781,7 @@ export default function HomeExplorer({
 
         <div className="grid">
           {/* Trail 1: Forts */}
-          <Link
-            href="/?cat=forts"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 0,
@@ -788,8 +792,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -814,21 +816,28 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'सह्याद्रीचे अजिंक्य किल्ले' : 'Sahyadri Forts & Bastions'}
+                <Link
+                  href="/destinations/forts"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'सह्याद्रीचे अजिंक्य किल्ले' : 'Sahyadri Forts & Bastions'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'सिंहगड, राजगड, तोरणा आणि लोहगड — छत्रपती शिवाजी महाराजांचा पराक्रमी वारसा.' : 'Sinhagad, Rajgad, Torna & Lohagad — historic mountain strongholds of Shivaji Maharaj.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/forts"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'किल्ले सूची पहा' : 'View Forts'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
 
           {/* Trail 2: Heritage Wadas */}
-          <Link
-            href="/?cat=heritage"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 1,
@@ -839,8 +848,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -865,21 +872,28 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'पेशवेकालीन वाडे व राजवाडे' : 'Peshwa Era Wadas & Palaces'}
+                <Link
+                  href="/destinations/heritage"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'पेशवेकालीन वाडे व राजवाडे' : 'Peshwa Era Wadas & Palaces'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'शनिवार वाडा, लाल महाल आणि विश्रामबाग वाडा — पेशवाईच्या वैभवशाली लाकडी वास्तू.' : 'Shaniwar Wada, Lal Mahal & Vishrambaug Wada — signature Peshwa architecture.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/heritage"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'वाडे सूची पहा' : 'View Wadas'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
 
           {/* Trail 3: Sacred Temples */}
-          <Link
-            href="/?cat=temples"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 2,
@@ -890,8 +904,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -916,21 +928,28 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'पुण्यनगरीची पवित्र मंदिरे' : 'Sacred Sanctuaries & Temples'}
+                <Link
+                  href="/destinations/temples"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'पुण्यनगरीची पवित्र मंदिरे' : 'Sacred Sanctuaries & Temples'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'दगडूशेठ हलवाई गणपती, ओंकारेश्वर, आळंदी व देहू — शतकांची वारकरी परंपरा.' : 'Dagdusheth Ganpati, Omkareshwar, Alandi & Dehu — centuries of spiritual devotion.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/temples"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'मंदिरे सूची पहा' : 'View Temples'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
 
           {/* Trail 4: Museums & Reformers */}
-          <Link
-            href="/?cat=museums"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 3,
@@ -941,8 +960,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -967,21 +984,28 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'सुधारक व वस्तुसंग्रहालये' : 'Museums & Social Reformers'}
+                <Link
+                  href="/destinations/museums"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'सुधारक व वस्तुसंग्रहालये' : 'Museums & Social Reformers'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'महात्मा फुले वाडा, राजा दिनकर केळकर व आगाखान पॅलेस — समाजक्रांतीचे साक्षिदार.' : 'Phule Wada, Kelkar Museum & Aga Khan Palace — freedom struggle & social equity.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/museums"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'संग्रहालये पहा' : 'View Museums'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
 
           {/* Trail 5: Nature & Lakes */}
-          <Link
-            href="/?cat=nature"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 4,
@@ -992,8 +1016,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -1018,21 +1040,28 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'निसर्गरम्य तलाव व उद्याने' : 'Sahyadri Lakes & Serene Parks'}
+                <Link
+                  href="/destinations/nature"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'निसर्गरम्य तलाव व उद्याने' : 'Sahyadri Lakes & Serene Parks'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'खडकवासला धरण, ओकायामा गार्डन व पाषाण तलाव — शांत व निसर्गरम्य वाटा.' : 'Khadakwasla Dam, Okayama Friendship Garden & Pashan Lake — tranquil waters.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/nature"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'निसर्गस्थळे पहा' : 'View Nature'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
 
           {/* Trail 6: Traditional Gastronomy */}
-          <Link
-            href="/?cat=food"
+          <div
             className="trail-card scroll-reveal-child"
             style={{
               '--reveal-i': 5,
@@ -1043,8 +1072,6 @@ export default function HomeExplorer({
               background: 'var(--card)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--line)',
-              textDecoration: 'none',
-              color: 'inherit',
               boxShadow: 'var(--shadow-xs)',
             } as React.CSSProperties}
           >
@@ -1069,17 +1096,25 @@ export default function HomeExplorer({
             </div>
             <div>
               <strong style={{ display: 'block', fontSize: '15px', color: 'var(--ink)', marginBottom: 4 }}>
-                {isMr ? 'पुणेरी खाद्यसंस्कृती' : 'Punekar Food & Culinary Heritage'}
+                <Link
+                  href="/destinations/food"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  {isMr ? 'पुणेरी खाद्यसंस्कृती' : 'Punekar Food & Culinary Heritage'}
+                </Link>
               </strong>
               <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--muted)', lineHeight: 1.45 }}>
                 {isMr ? 'काटाकिर्र मिसळ, चितळे बाकरवडी, सुजाता मस्तानी आणि वैशालीचा चविष्ट वारसा.' : 'Authentic Puneri misal, Chitale Bakarwadi, Sujata Mastani & FC Road institutions.'}
               </p>
             </div>
-            <span style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/destinations/food"
+              style={{ marginTop: 'auto', fontSize: '12px', fontWeight: 700, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
+            >
               <span>{isMr ? 'खाद्यसंस्कृती पहा' : 'Explore Food'}</span>
               <ChevronRight size={14} />
-            </span>
-          </Link>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -1253,7 +1288,8 @@ export default function HomeExplorer({
           {/* Verified Free Entry Filter (₹0 Only) */}
           <Link
             className="chip"
-            href="/?cat=free"
+            href="/destinations/free"
+            aria-label="Filter by verified free entry places"
             aria-current={currentCat === 'free'}
             style={{
               display: 'inline-flex',
@@ -1275,7 +1311,8 @@ export default function HomeExplorer({
               <Link
                 key={c.slug}
                 className="chip"
-                href={`/?cat=${c.slug}`}
+                href={`/destinations/${c.slug}`}
+                aria-label={`Explore ${displayName} category`}
                 aria-current={currentCat === c.slug}
                 style={{
                   display: 'inline-flex',
@@ -1456,6 +1493,7 @@ export default function HomeExplorer({
                     >
                       <Link
                         href={`/places/${p.slug}`}
+                        aria-label={`View photo of ${p.name}`}
                         style={{ display: 'block', width: '100%', height: '100%' }}
                         title={isMr ? `${p.name_mr || p.name} माहिती व थेट छायाचित्र स्लाइडशो` : `View ${p.name} details & automatic slideshow`}
                         onClick={(e) => {
@@ -1517,7 +1555,7 @@ export default function HomeExplorer({
                           }}
                         >
                           <Camera size={12} />
-                          <span>{isMr ? 'छायाचित्रे' : 'View Photos'}</span>
+                          <span>{isMr ? `${p.name_mr || p.name} फोटो` : `${p.name.split(' (')[0].split(' & ')[0]} Photos`}</span>
                         </div>
                       </Link>
 
@@ -1583,36 +1621,50 @@ export default function HomeExplorer({
                     </div>
 
                     {/* Landmark Title */}
-                    <Link
-                      href={`/places/${p.slug}`}
+                    <div
                       style={{
                         minHeight: 46,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         minWidth: 0,
-                        textDecoration: 'none',
-                        color: 'inherit',
                       }}
                     >
-                      {isMr && p.name_mr ? (
-                        <>
-                          <h2 style={{ fontSize: '17px', fontFamily: 'var(--deva)', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word', color: 'var(--ink)' }}>
-                            {p.name_mr}
-                          </h2>
-                          <div style={{ fontSize: '12px', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
-                        </>
-                      ) : (
-                        <>
-                          <h2 style={{ fontSize: '16.5px', margin: '0 0 2px', lineHeight: 1.25, wordBreak: 'break-word', overflowWrap: 'break-word', color: 'var(--ink)' }}>{p.name}</h2>
-                          {p.name_mr && (
-                            <p className="mr" style={{ margin: 0, fontSize: '12.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                              {p.name_mr}
-                            </p>
-                          )}
-                        </>
-                      )}
-                    </Link>
+                      <Link
+                        href={`/places/${p.slug}`}
+                        aria-label={`Explore ${p.name} travel guide`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <h2
+                          style={{
+                            fontSize: isMr ? '17px' : '16.5px',
+                            fontFamily: isMr ? 'var(--deva)' : 'inherit',
+                            margin: '0 0 2px',
+                            lineHeight: 1.25,
+                            wordBreak: 'break-word',
+                            overflowWrap: 'break-word',
+                            color: 'var(--ink)',
+                          }}
+                        >
+                          {isMr && p.name_mr
+                            ? p.name_mr
+                            : p.name.length > 45
+                            ? p.name.split(' (')[0].split(' & ')[0]
+                            : p.name}
+                        </h2>
+                      </Link>
+                      <div
+                        style={{
+                          fontSize: '12px',
+                          color: 'var(--muted)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {isMr ? p.name : p.name_mr}
+                      </div>
+                    </div>
 
                     {/* Editorial Description */}
                     <p
@@ -1722,10 +1774,11 @@ export default function HomeExplorer({
                         </button>
                         <Link
                           href={`/places/${p.slug}`}
+                          aria-label={`View visitor guide and timings for ${p.name}`}
                           className="btn outline"
                           style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 700 }}
                         >
-                          {t('card.view')}
+                          {isMr ? `${p.name_mr || p.name} माहिती` : `${p.name.split(' (')[0].split(' & ')[0]} Guide`}
                         </Link>
                       </div>
                     </div>
@@ -1788,7 +1841,7 @@ export default function HomeExplorer({
         {(!isDefaultHome || showAll) && totalPages > 1 && (
           <div className="pager">
             {page > 1 && (
-              <Link className="btn outline" href={href(page - 1)}>
+              <Link className="btn outline" href={href(page - 1)} rel="nofollow" aria-label="Go to previous page">
                 {isMr ? '← मागील' : '← Previous'}
               </Link>
             )}
@@ -1796,7 +1849,7 @@ export default function HomeExplorer({
               {isMr ? `पान ${page} / ${totalPages}` : `Page ${page} of ${totalPages}`}
             </span>
             {page < totalPages && (
-              <Link className="btn outline" href={href(page + 1)}>
+              <Link className="btn outline" href={href(page + 1)} rel="nofollow" aria-label="Go to next page">
                 {isMr ? 'पुढील →' : 'Next →'}
               </Link>
             )}

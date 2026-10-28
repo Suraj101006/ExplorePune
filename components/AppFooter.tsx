@@ -59,6 +59,149 @@ export default function AppFooter() {
           <Link href="/terms">{isMr ? 'सेवा अटी' : 'Terms'}</Link>
         </div>
 
+        {/* Official Civic & Heritage Portals (Authoritative External References) */}
+        <div
+          style={{
+            width: '100%',
+            borderTop: '1px solid var(--line)',
+            marginTop: 20,
+            paddingTop: 16,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--muted)' }}>
+            {isMr ? 'अधिकृत पर्यटन व वारसा दुवे' : 'Official Heritage & Tourism Portals'}
+          </div>
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 12.5 }}>
+            <a
+              href="https://maharashtratourism.gov.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}
+            >
+              Maharashtra Tourism (MTDC) ↗
+            </a>
+            <a
+              href="https://asi.nic.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}
+            >
+              Archaeological Survey of India (ASI) ↗
+            </a>
+            <a
+              href="https://pmc.gov.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}
+            >
+              Pune Municipal Corporation (PMC) ↗
+            </a>
+            <a
+              href="https://pmpml.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}
+            >
+              PMPML Public Bus Transit ↗
+            </a>
+            <a
+              href="https://www.punemetrorail.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}
+            >
+              Pune Metro Rail ↗
+            </a>
+          </div>
+        </div>
+
+        {/* Social Sharing Options */}
+        <div
+          style={{
+            width: '100%',
+            borderTop: '1px solid var(--line)',
+            marginTop: 16,
+            paddingTop: 16,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 12,
+          }}
+        >
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>
+            {isMr ? 'पुणे वारसा मार्गदर्शक शेअर करा:' : 'Share Explore Pune Guide:'}
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+            <a
+              href="https://api.whatsapp.com/send?text=Explore%20Pune%20-%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner%3A%20https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share Explore Pune on WhatsApp"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '4px 10px',
+                borderRadius: 999,
+                background: '#ecfdf5',
+                color: '#065f46',
+                border: '1px solid #a7f3d0',
+                fontSize: 12,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>💬</span> WhatsApp
+            </a>
+            <a
+              href="https://twitter.com/intent/tweet?text=Explore%20Pune%20-%20The%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner&url=https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share Explore Pune on X (Twitter)"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '4px 10px',
+                borderRadius: 999,
+                background: '#f8fafc',
+                color: '#0f172a',
+                border: '1px solid var(--line)',
+                fontSize: 12,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>𝕏</span> Twitter / X
+            </a>
+            <a
+              href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share Explore Pune on LinkedIn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '4px 10px',
+                borderRadius: 999,
+                background: '#eff6ff',
+                color: '#1e40af',
+                border: '1px solid #bfdbfe',
+                fontSize: 12,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>💼</span> LinkedIn
+            </a>
+          </div>
+        </div>
+
         <div
           style={{
             width: '100%',

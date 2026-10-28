@@ -12,6 +12,14 @@ Explore Pune is an authoritative, verified digital travel journal, itinerary pla
 
 ## Primary Public Routes
 - [Explore Pune Home](https://explore-pune-eosin.vercel.app/): Main heritage explorer directory with real-time filtering, search, and category exploration.
+- [Destinations Directory](https://explore-pune-eosin.vercel.app/destinations): Curated field guide index of 80+ historic Pune destinations.
+- [Historic Forts Guide](https://explore-pune-eosin.vercel.app/destinations/forts): Sahyadri mountain strongholds, trekking routes, and Maratha history.
+- [Peshwa Wadas Guide](https://explore-pune-eosin.vercel.app/destinations/heritage): 18th-century Maratha wadas and wooden palaces.
+- [Sacred Temples Guide](https://explore-pune-eosin.vercel.app/destinations/temples): Ancient Hemadpanthi, rock-cut, and sacred shrines.
+- [Museums Guide](https://explore-pune-eosin.vercel.app/destinations/museums): Antiquities, social reform memorials, and cultural galleries.
+- [Nature & Lakes Guide](https://explore-pune-eosin.vercel.app/destinations/nature): Sahyadri hills, tekdis, lakes, and reservoirs.
+- [Food Heritage Guide](https://explore-pune-eosin.vercel.app/destinations/food): Authentic Puneri gastronomy, misal, and heritage eateries.
+- [Free Entry Guide](https://explore-pune-eosin.vercel.app/destinations/free): Verified free admission destinations (₹0 entry).
 - [AI Trip Planner](https://explore-pune-eosin.vercel.app/planner): Custom daily itinerary generator optimized by duration, companion, travel pace, and transport mode.
 - [Pune Community](https://explore-pune-eosin.vercel.app/community): Authentic visitor reviews, travel tips, and moderated heritage discussions.
 - [Traveller Stories & Blogs](https://explore-pune-eosin.vercel.app/blogs): Long-form travelogues and expedition field journals by local explorers.

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { permanentRedirect } from 'next/navigation';
+import { getCachedPlacesData } from '@/lib/serverPlaces';
 import HomeExplorer from '@/components/HomeExplorer';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 1800; // 30-minute ISR for fast response times
 const PAGE = 24;
 
 export const metadata: Metadata = {
@@ -49,65 +49,53 @@ export default async function HomePage({
   const term = (sp.q ?? '').replace(/[^\p{L}\p{N}\s]/gu, '').trim().slice(0, 60);
   const pg = Math.max(1, parseInt(sp.page ?? '1') || 1);
 
-  // Fetch categories from Firestore
-  let cats: any[] = [];
-  try {
-    const catsSnap = await getDocs(collection(db, 'place_categories'));
-    cats = catsSnap.docs.map((doc) => doc.data());
-    cats.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || (a.name || '').localeCompare(b.name || ''));
-  } catch (err) {
-    console.error('Failed to load categories:', err);
+  // Clean permanent redirect from legacy query parameter /?cat=... to /destinations/...
+  if (cat && !term) {
+    permanentRedirect(`/destinations/${cat}`);
   }
 
-  // Fetch places and apply filters in memory
-  let allPlaces: any[] = [];
-  try {
-    const placesSnap = await getDocs(collection(db, 'places'));
-    allPlaces = placesSnap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as any) }));
-    allPlaces = allPlaces.filter((p) => p.status === 'published');
+  // Fetch cached categories & published places (instant in-memory resolution)
+  const { places: rawPlaces, categories: cats } = await getCachedPlacesData();
 
-    if (cat) {
-      if (cat === 'free') {
-        // Strict verification: general visitor entry must be verified as ₹0 with fee_status === 'free'
-        // Under no circumstances show unverified, unknown, or paid places
-        allPlaces = allPlaces.filter(
-          (p) => p.fee_status === 'free' && (p.entry_fee === 0 || p.place_prices?.[0]?.amount === 0)
-        );
-      } else {
-        allPlaces = allPlaces.filter(
-          (p) =>
-            p.place_categories?.some((c: any) => c.slug === cat) ||
-            p.category_slug === cat ||
-            p.category === cat
-        );
-      }
-    }
+  let allPlaces = [...rawPlaces];
 
-    if (term) {
-      const lowerTerm = term.toLowerCase();
+  if (cat) {
+    if (cat === 'free') {
+      allPlaces = allPlaces.filter(
+        (p) => p.fee_status === 'free' && (p.entry_fee === 0 || p.place_prices?.[0]?.amount === 0)
+      );
+    } else {
       allPlaces = allPlaces.filter(
         (p) =>
-          (p.name && p.name.toLowerCase().includes(lowerTerm)) ||
-          (p.name_mr && p.name_mr.toLowerCase().includes(lowerTerm)) ||
-          (p.description && p.description.toLowerCase().includes(lowerTerm)) ||
-          (p.description_mr && p.description_mr.toLowerCase().includes(lowerTerm)) ||
-          (p.category && p.category.toLowerCase().includes(lowerTerm)) ||
-          (p.category_slug && p.category_slug.toLowerCase().includes(lowerTerm)) ||
-          (typeof p.nearby_food === 'string' && p.nearby_food.toLowerCase().includes(lowerTerm)) ||
-          (typeof p.nearby_food_mr === 'string' && p.nearby_food_mr.toLowerCase().includes(lowerTerm))
+          p.place_categories?.some((c: any) => c.slug === cat) ||
+          p.category_slug === cat ||
+          p.category === cat
       );
     }
-
-    // Sort by popularity_score desc then name asc
-    allPlaces.sort((a, b) => {
-      if ((b.popularity_score || 0) !== (a.popularity_score || 0)) {
-        return (b.popularity_score || 0) - (a.popularity_score || 0);
-      }
-      return (a.name || '').localeCompare(b.name || '');
-    });
-  } catch (err: any) {
-    console.error('Failed to load places:', err);
   }
+
+  if (term) {
+    const lowerTerm = term.toLowerCase();
+    allPlaces = allPlaces.filter(
+      (p) =>
+        (p.name && p.name.toLowerCase().includes(lowerTerm)) ||
+        (p.name_mr && p.name_mr.toLowerCase().includes(lowerTerm)) ||
+        (p.description && p.description.toLowerCase().includes(lowerTerm)) ||
+        (p.description_mr && p.description_mr.toLowerCase().includes(lowerTerm)) ||
+        (p.category && p.category.toLowerCase().includes(lowerTerm)) ||
+        (p.category_slug && p.category_slug.toLowerCase().includes(lowerTerm)) ||
+        (typeof p.nearby_food === 'string' && p.nearby_food.toLowerCase().includes(lowerTerm)) ||
+        (typeof p.nearby_food_mr === 'string' && p.nearby_food_mr.toLowerCase().includes(lowerTerm))
+    );
+  }
+
+  // Sort by popularity_score desc then name asc
+  allPlaces.sort((a, b) => {
+    if ((b.popularity_score || 0) !== (a.popularity_score || 0)) {
+      return (b.popularity_score || 0) - (a.popularity_score || 0);
+    }
+    return (a.name || '').localeCompare(b.name || '');
+  });
 
   const count = allPlaces.length;
   const pages = Math.max(1, Math.ceil(count / PAGE));

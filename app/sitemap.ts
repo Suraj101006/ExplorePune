@@ -24,6 +24,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/destinations`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    ...['forts', 'heritage', 'temples', 'museums', 'nature', 'parks', 'food', 'free'].map(
+      (cat) => ({
+        url: `${baseUrl}/destinations/${cat}`,
+        lastModified: now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.9,
+      })
+    ),
+    {
       url: `${baseUrl}/community`,
       lastModified: now,
       changeFrequency: 'daily',
