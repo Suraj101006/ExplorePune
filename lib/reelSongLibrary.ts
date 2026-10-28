@@ -18,6 +18,11 @@ export interface ReelSongSection {
   descriptionMr: string;
 }
 
+export type AudioAssetType =
+  | 'procedural_web_audio'
+  | 'original_composition'
+  | 'social_pairing_reference';
+
 export interface ReelSongTrack {
   id: string;
   title: string;
@@ -32,6 +37,10 @@ export interface ReelSongTrack {
   dropTimestampSec: number;
   sections: ReelSongSection[];
   license: 'Traditional Cultural Heritage' | 'Creative Commons Open' | 'Explore Pune Original Vocal';
+  assetType: AudioAssetType;
+  hasLocalAudioFile: boolean;
+  audioSourceDescriptionEn: string;
+  audioSourceDescriptionMr: string;
   vocalType: 'male_chant' | 'female_abhang' | 'chorus_ensemble' | 'acoustic_ballad' | 'classical_tarana';
   socialAudioTag: {
     instagramQuery: string;
@@ -55,6 +64,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 116,
     dropTimestampSec: 18.0,
     license: 'Traditional Cultural Heritage',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio synthesis modeled on traditional Maratha tutari, dhol cadence, and mountain wind drones.',
+    audioSourceDescriptionMr: 'पारंपरिक सह्याद्री तुतारी आणि ढोल-ताशाच्या तालावर आधारित थेट ब्राऊझरमध्ये तयार होणारे कॉपीराइट-मुक्त संगीत.',
     vocalType: 'male_chant',
     audioGeneratorType: 'fort_adventure',
     socialAudioTag: {
@@ -105,6 +118,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 92,
     dropTimestampSec: 16.0,
     license: 'Traditional Cultural Heritage',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio meditation soundscape featuring temple chimes, meditative bansuri scale notes, and pakhawaj harmonics.',
+    audioSourceDescriptionMr: 'दगडूशेठ व मंदिरांसाठी घंटानाद आणि बासरीच्या स्वरांवर आधारित कॉपीराइट-मुक्त भक्तिरस संगीत.',
     vocalType: 'female_abhang',
     audioGeneratorType: 'peaceful_flute',
     socialAudioTag: {
@@ -155,6 +172,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 104,
     dropTimestampSec: 20.0,
     license: 'Traditional Cultural Heritage',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio acoustic sitar and tanpura synthesis in Raga Bhupali reminiscent of 18th-century Peshwa courts.',
+    audioSourceDescriptionMr: 'पेशवेकालीन दरबाराला साजेसे सतार व तानपुऱ्याचे शास्त्रीय सूर.',
     vocalType: 'classical_tarana',
     audioGeneratorType: 'heritage_classical',
     socialAudioTag: {
@@ -205,6 +226,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 88,
     dropTimestampSec: 15.0,
     license: 'Explore Pune Original Vocal',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio acoustic guitar and atmospheric pads inspired by Pune city sunset walks.',
+    audioSourceDescriptionMr: 'पुण्यातील शांत संध्याकाळसाठी गिटार व संथ स्वरांचे सुखद मिश्रण.',
     vocalType: 'acoustic_ballad',
     audioGeneratorType: 'pune_ambient',
     socialAudioTag: {
@@ -255,6 +280,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 80,
     dropTimestampSec: 14.0,
     license: 'Creative Commons Open',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio gentle piano resonance and lake ripple frequencies.',
+    audioSourceDescriptionMr: 'खडकवासला, पाषाण व वेताळ टेकडीसाठी संथ लाटा व बासरीचे शांत संगीत.',
     vocalType: 'female_abhang',
     audioGeneratorType: 'lakeside_chill',
     socialAudioTag: {
@@ -305,6 +334,10 @@ export const REAL_SONG_CATALOG: ReelSongTrack[] = [
     beatIntervalSec: 60 / 124,
     dropTimestampSec: 12.0,
     license: 'Explore Pune Original Vocal',
+    assetType: 'procedural_web_audio',
+    hasLocalAudioFile: false,
+    audioSourceDescriptionEn: '100% Royalty-Free procedural Web Audio upbeat folk dholak pulse for culinary trails.',
+    audioSourceDescriptionMr: 'झणझणीत मिसळ आणि चहाच्या कट्ट्यासाठी वेगवान पुणेरी ढोलक बीट.',
     vocalType: 'chorus_ensemble',
     audioGeneratorType: 'food_trail',
     socialAudioTag: {

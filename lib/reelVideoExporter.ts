@@ -18,9 +18,12 @@ export interface RenderedVideoResult {
   blob: Blob;
   downloadUrl: string;
   filename: string;
+  format: 'mp4' | 'webm';
+  mimeType: string;
   durationSec: number;
   width: number;
   height: number;
+  hasAudio: boolean;
 }
 
 /**
@@ -75,6 +78,7 @@ export async function exportJourneyReelToMP4(
     height?: number;
     fps?: number;
     maxDurationSec?: number;
+    signal?: AbortSignal;
     onProgress?: (progress: RenderProgressUpdate) => void;
   }
 ): Promise<RenderedVideoResult> {
@@ -82,6 +86,11 @@ export async function exportJourneyReelToMP4(
   const height = options?.height || 1280;
   const fps = options?.fps || 30;
   const onProgress = options?.onProgress || (() => {});
+  const signal = options?.signal;
+
+  if (signal?.aborted) {
+    throw new DOMException('Export cancelled before start', 'AbortError');
+  }
 
   onProgress({
     percent: 5,
@@ -103,6 +112,10 @@ export async function exportJourneyReelToMP4(
     if (s.type === 'place_intro' && s.place?.photos?.[0]) urlsToPreload.push(s.place.photos[0]);
   }
   await Promise.all(urlsToPreload.map(loadImage));
+
+  if (signal?.aborted) {
+    throw new DOMException('Export cancelled', 'AbortError');
+  }
 
   // Compute scene timeline and total duration
   const sceneTimeline: Array<{ scene: ReelVisualScene; startSec: number; endSec: number; duration: number }> = [];
@@ -150,9 +163,13 @@ export async function exportJourneyReelToMP4(
         height,
         fps,
         options?.song,
+        signal,
         onProgress
       );
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.name === 'AbortError' || signal?.aborted) {
+        throw new DOMException('Reel export cancelled by user', 'AbortError');
+      }
       console.warn('WebCodecs rendering failed, gracefully falling back to MediaRecorder:', err);
     }
   }
@@ -168,6 +185,7 @@ export async function exportJourneyReelToMP4(
     height,
     fps,
     options?.song,
+    signal,
     onProgress
   );
 }
@@ -186,10 +204,26 @@ async function renderWithWebCodecs(
   height: number,
   fps: number,
   song: ReelSongTrack | undefined,
+  signal: AbortSignal | undefined,
   onProgress: (p: RenderProgressUpdate) => void
 ): Promise<RenderedVideoResult> {
   const target = new ArrayBufferTarget();
-  const muxer = new Muxer({
+
+  const audioStyle = song?.audioGeneratorType || reelData.reel.music.audioGeneratorType || 'pune_ambient';
+  let renderedAudio: AudioBuffer | null = null;
+  try {
+    renderedAudio = await renderOfflineReelAudio(audioStyle, totalDurationSec, 44100);
+  } catch (err) {
+    console.warn('Audio rendering offline error:', err);
+  }
+
+  const hasAudioEncoder =
+    typeof window !== 'undefined' &&
+    'AudioEncoder' in window &&
+    'AudioData' in window &&
+    renderedAudio !== null;
+
+  const muxerOptions: any = {
     target,
     video: {
       codec: 'avc',
@@ -198,7 +232,17 @@ async function renderWithWebCodecs(
       frameRate: fps,
     },
     fastStart: 'in-memory',
-  });
+  };
+
+  if (hasAudioEncoder && renderedAudio) {
+    muxerOptions.audio = {
+      codec: 'aac',
+      numberOfChannels: renderedAudio.numberOfChannels > 1 ? 2 : 1,
+      sampleRate: 44100,
+    };
+  }
+
+  const muxer = new Muxer(muxerOptions);
 
   const videoEncoder = new (window as any).VideoEncoder({
     output: (chunk: any, meta: any) => muxer.addVideoChunk(chunk, meta),
@@ -213,11 +257,74 @@ async function renderWithWebCodecs(
     framerate: fps,
   });
 
+  let audioEncoder: any = null;
+  let hasAudio = false;
+
+  if (hasAudioEncoder && renderedAudio) {
+    try {
+      audioEncoder = new (window as any).AudioEncoder({
+        output: (chunk: any, meta: any) => muxer.addAudioChunk(chunk, meta),
+        error: (e: any) => console.warn('AudioEncoder warning:', e),
+      });
+
+      audioEncoder.configure({
+        codec: 'mp4a.40.2', // AAC-LC
+        numberOfChannels: renderedAudio.numberOfChannels > 1 ? 2 : 1,
+        sampleRate: 44100,
+        bitrate: 128_000,
+      });
+
+      // Encode audio data chunks
+      const chunkSize = 2048;
+      const totalSamples = renderedAudio.length;
+      const left = renderedAudio.getChannelData(0);
+      const right = renderedAudio.numberOfChannels > 1 ? renderedAudio.getChannelData(1) : left;
+
+      let sampleOffset = 0;
+      while (sampleOffset < totalSamples) {
+        if (signal?.aborted) {
+          videoEncoder.close();
+          audioEncoder.close();
+          throw new DOMException('Export cancelled', 'AbortError');
+        }
+
+        const framesToEncode = Math.min(chunkSize, totalSamples - sampleOffset);
+        const planarData = new Float32Array(framesToEncode * (renderedAudio.numberOfChannels > 1 ? 2 : 1));
+        planarData.set(left.subarray(sampleOffset, sampleOffset + framesToEncode), 0);
+        if (renderedAudio.numberOfChannels > 1) {
+          planarData.set(right.subarray(sampleOffset, sampleOffset + framesToEncode), framesToEncode);
+        }
+
+        const audioData = new (window as any).AudioData({
+          format: 'f32-planar',
+          sampleRate: 44100,
+          numberOfFrames: framesToEncode,
+          numberOfChannels: renderedAudio.numberOfChannels > 1 ? 2 : 1,
+          timestamp: Math.round((sampleOffset / 44100) * 1_000_000), // microseconds
+          data: planarData,
+        });
+
+        audioEncoder.encode(audioData);
+        audioData.close();
+        sampleOffset += framesToEncode;
+      }
+
+      await audioEncoder.flush();
+      audioEncoder.close();
+      hasAudio = true;
+    } catch (aErr) {
+      console.warn('AudioEncoder failed, proceeding with video-only MP4 track:', aErr);
+    }
+  }
+
   // Render video frames
   for (let f = 0; f < totalFrames; f++) {
-    const timeSec = f / fps;
+    if (signal?.aborted) {
+      videoEncoder.close();
+      throw new DOMException('Reel export cancelled by user', 'AbortError');
+    }
 
-    // Find current scene
+    const timeSec = f / fps;
     const entry = sceneTimeline.find((st) => timeSec >= st.startSec && timeSec < st.endSec) || sceneTimeline[sceneTimeline.length - 1];
     const sceneProgress = entry ? (timeSec - entry.startSec) / entry.duration : 0;
 
@@ -275,9 +382,12 @@ async function renderWithWebCodecs(
     blob,
     downloadUrl,
     filename,
+    format: 'mp4',
+    mimeType: 'video/mp4',
     durationSec: totalDurationSec,
     width,
     height,
+    hasAudio,
   };
 }
 
@@ -294,25 +404,36 @@ async function renderWithMediaRecorder(
   height: number,
   fps: number,
   song: ReelSongTrack | undefined,
+  signal: AbortSignal | undefined,
   onProgress: (p: RenderProgressUpdate) => void
 ): Promise<RenderedVideoResult> {
   const stream = canvas.captureStream(fps);
 
   // Audio track synthesis
-  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-  const audioDest = audioContext.createMediaStreamDestination();
-  const audioStyle = song?.audioGeneratorType || reelData.reel.music.audioGeneratorType || 'pune_ambient';
+  let audioContext: AudioContext | null = null;
+  let hasAudio = false;
 
-  // Offline render audio and connect to stream
-  const renderedBuffer = await renderOfflineReelAudio(audioStyle, totalDurationSec, 44100);
-  if (renderedBuffer) {
-    const source = audioContext.createBufferSource();
-    source.buffer = renderedBuffer;
-    source.connect(audioDest);
-    source.start(0);
-    for (const track of audioDest.stream.getAudioTracks()) {
-      stream.addTrack(track);
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (AudioCtx) {
+      audioContext = new AudioCtx();
+      const audioDest = audioContext.createMediaStreamDestination();
+      const audioStyle = song?.audioGeneratorType || reelData.reel.music.audioGeneratorType || 'pune_ambient';
+
+      const renderedBuffer = await renderOfflineReelAudio(audioStyle, totalDurationSec, 44100);
+      if (renderedBuffer) {
+        const source = audioContext.createBufferSource();
+        source.buffer = renderedBuffer;
+        source.connect(audioDest);
+        source.start(0);
+        for (const track of audioDest.stream.getAudioTracks()) {
+          stream.addTrack(track);
+        }
+        hasAudio = true;
+      }
     }
+  } catch (err) {
+    console.warn('MediaRecorder audio track could not be initialized:', err);
   }
 
   const mimeType = MediaRecorder.isTypeSupported('video/mp4')
@@ -334,6 +455,9 @@ async function renderWithMediaRecorder(
   const recordingFinished = new Promise<Blob>((resolve) => {
     recorder.onstop = () => {
       const finalBlob = new Blob(chunks, { type: mimeType });
+      if (audioContext) {
+        audioContext.close().catch(() => {});
+      }
       resolve(finalBlob);
     };
   });
@@ -344,6 +468,12 @@ async function renderWithMediaRecorder(
   const frameIntervalMs = 1000 / fps;
 
   for (let f = 0; f < totalFrames; f++) {
+    if (signal?.aborted) {
+      recorder.stop();
+      if (audioContext) audioContext.close().catch(() => {});
+      throw new DOMException('Reel export cancelled by user', 'AbortError');
+    }
+
     const timeSec = f / fps;
     const entry = sceneTimeline.find((st) => timeSec >= st.startSec && timeSec < st.endSec) || sceneTimeline[sceneTimeline.length - 1];
     const sceneProgress = entry ? (timeSec - entry.startSec) / entry.duration : 0;
@@ -369,8 +499,8 @@ async function renderWithMediaRecorder(
 
   const downloadUrl = URL.createObjectURL(finalBlob);
   const cleanTitle = (reelData.title || 'pune-journey-reel').toLowerCase().replace(/[^a-z0-9]/g, '-');
-  const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
-  const filename = `${cleanTitle}-${new Date().toISOString().slice(0, 10)}.${ext}`;
+  const format: 'mp4' | 'webm' = mimeType.includes('mp4') ? 'mp4' : 'webm';
+  const filename = `${cleanTitle}-${new Date().toISOString().slice(0, 10)}.${format}`;
 
   onProgress({
     percent: 100,
@@ -384,9 +514,12 @@ async function renderWithMediaRecorder(
     blob: finalBlob,
     downloadUrl,
     filename,
+    format,
+    mimeType,
     durationSec: totalDurationSec,
     width,
     height,
+    hasAudio,
   };
 }
 

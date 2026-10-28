@@ -184,18 +184,19 @@ export default function CreateJourneyReelModal({
     }
   };
 
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0 || !activeUploadPlaceId) return;
+    setUploadError(null);
 
     try {
       const compressedUrls: string[] = [];
       for (let i = 0; i < Math.min(files.length, 3); i++) {
         const file = files[i];
-        if (file.type.startsWith('image/')) {
-          const compressed = await compressUploadedPhoto(file);
-          compressedUrls.push(compressed);
-        }
+        const compressed = await compressUploadedPhoto(file);
+        compressedUrls.push(compressed);
       }
 
       if (compressedUrls.length > 0) {
@@ -210,8 +211,11 @@ export default function CreateJourneyReelModal({
           })
         );
       }
-    } catch (err) {
+    } catch (err: any) {
       console.warn('Failed to compress uploaded photo:', err);
+      const msg = err?.message || 'Failed to process photo upload.';
+      setUploadError(msg);
+      alert(isMr ? `फोटो अपलोड त्रुटी: ${msg}` : `Photo upload error: ${msg}`);
     }
   };
 
@@ -781,7 +785,7 @@ export default function CreateJourneyReelModal({
                 {REEL_MUSIC_TRACKS.filter((track) => {
                   if (musicLanguageFilter === 'marathi') return track.vocalLanguage?.toLowerCase().includes('marathi');
                   if (musicLanguageFilter === 'hindi') return track.vocalLanguage?.toLowerCase().includes('hindi');
-                  if (musicLanguageFilter === 'ambient') return !track.isRealVocalSong;
+                  if (musicLanguageFilter === 'ambient') return !track.isCulturalVocalTheme;
                   return true;
                 }).map((track) => {
                   const isSelected = selectedMusic.id === track.id;
@@ -833,7 +837,7 @@ export default function CreateJourneyReelModal({
                               <span style={{ fontSize: 13.5, fontWeight: 700, color: '#ffffff' }}>
                                 {isMr ? track.titleMr || track.title : track.title}
                               </span>
-                              {track.isRealVocalSong && (
+                              {track.isCulturalVocalTheme && (
                                 <span
                                   style={{
                                     fontSize: 10,
@@ -844,7 +848,7 @@ export default function CreateJourneyReelModal({
                                     borderRadius: 6,
                                   }}
                                 >
-                                  🎤 {track.vocalLanguage}
+                                  🎼 {track.vocalLanguage}
                                 </span>
                               )}
                             </div>

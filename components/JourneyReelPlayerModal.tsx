@@ -101,6 +101,7 @@ export default function JourneyReelPlayerModal({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const hideControlsTimerRef = useRef<NodeJS.Timeout | null>(null);
   const audioEngine = useRef(getReelAudioEngine());
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const matchedSong = useMemo(() => {
     return REAL_SONG_CATALOG.find((s) => s.id === finalReelData?.reel.music.id) || null;
@@ -111,6 +112,10 @@ export default function JourneyReelPlayerModal({
     setIsPaused(true);
     audioEngine.current.pause();
     setIsExporting(true);
+
+    const abortCtrl = new AbortController();
+    abortControllerRef.current = abortCtrl;
+
     setExportProgress({
       percent: 0,
       phase: 'preparing',
@@ -121,15 +126,28 @@ export default function JourneyReelPlayerModal({
 
     try {
       const result = await exportJourneyReelToMP4(finalReelData, {
+        signal: abortCtrl.signal,
         onProgress: (p) => setExportProgress(p),
       });
       setExportedVideo(result);
-    } catch (err) {
-      console.error('Failed to export MP4:', err);
-      alert('Video export could not be completed. Please try again.');
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        // Cancelled by user, silent recovery
+      } else {
+        console.error('Failed to export video:', err);
+        alert(isMr ? 'व्हिडिओ एक्सपोर्ट करताना त्रुटी आली.' : 'Video export could not be completed. Please try again.');
+      }
     } finally {
       setIsExporting(false);
+      abortControllerRef.current = null;
     }
+  };
+
+  const handleCancelExport = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    setIsExporting(false);
   };
 
   const handleDownloadVideo = () => {
@@ -1212,14 +1230,31 @@ export default function JourneyReelPlayerModal({
               />
             </div>
 
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8', marginBottom: 16 }}>
               {exportProgress.percent}% {exportProgress.totalFrames > 0 && `(${exportProgress.currentFrame}/${exportProgress.totalFrames} frames)`}
             </div>
+
+            <button
+              type="button"
+              onClick={handleCancelExport}
+              style={{
+                padding: '8px 16px',
+                borderRadius: 10,
+                background: 'rgba(239, 68, 68, 0.2)',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                color: '#f87171',
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              {isMr ? 'रद्द करा (Cancel)' : 'Cancel Export'}
+            </button>
           </div>
         )}
 
         {/* ===================================================================
-            MP4 EXPORT COMPLETED DIALOG
+            VIDEO EXPORT COMPLETED DIALOG
             =================================================================== */}
         {exportedVideo && !isExporting && (
           <div
@@ -1256,13 +1291,15 @@ export default function JourneyReelPlayerModal({
             </div>
 
             <h3 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 6px' }}>
-              {isMr ? '🎉 रील यशस्वीरित्या एक्सपोर्ट झाली!' : '🎉 Reel Exported Successfully!'}
+              {isMr
+                ? `🎉 ${exportedVideo.format.toUpperCase()} रील सज्ज झाली!`
+                : `🎉 ${exportedVideo.format.toUpperCase()} Reel Exported Successfully!`}
             </h3>
 
             <p style={{ fontSize: 13, color: '#94a3b8', margin: '0 0 20px', maxWidth: 300 }}>
               {isMr
-                ? `९:१६ व्हर्टिकल व्हिडिओ • ${Math.round(exportedVideo.durationSec)} सेकंद • इन्स्टाग्राम व युट्यूबसाठी तयार`
-                : `9:16 Vertical Video • ${Math.round(exportedVideo.durationSec)}s • Ready for Instagram & YouTube`}
+                ? `९:१६ व्हर्टिकल • ${exportedVideo.format.toUpperCase()} (${exportedVideo.hasAudio ? 'ऑडिओसह' : 'व्हिडिओ'}) • ${Math.round(exportedVideo.durationSec)}s`
+                : `9:16 Vertical • ${exportedVideo.format.toUpperCase()} (${exportedVideo.hasAudio ? 'with Audio' : 'Video Only'}) • ${Math.round(exportedVideo.durationSec)}s`}
             </p>
 
             {/* Social Media Audio Attribution Card */}
@@ -1332,7 +1369,7 @@ export default function JourneyReelPlayerModal({
                 }}
               >
                 <Download size={16} />
-                {isMr ? 'व्हिडिओ सेव्ह करा' : 'Download MP4'}
+                {isMr ? `${exportedVideo.format.toUpperCase()} डाऊनलोड` : `Download ${exportedVideo.format.toUpperCase()}`}
               </button>
 
               <button

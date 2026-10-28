@@ -14,73 +14,78 @@ export interface JourneyReelMusicTrack {
   source: string;
   attributionRequired: boolean;
   audioGeneratorType: 'fort_adventure' | 'heritage_classical' | 'peaceful_flute' | 'lakeside_chill' | 'pune_ambient' | 'food_trail';
+  audioSourceType?: 'procedural_web_audio' | 'procedural_ambient_synth';
   descriptionEn: string;
   descriptionMr: string;
   vocalLanguage?: string;
-  isRealVocalSong?: boolean;
+  isCulturalVocalTheme?: boolean;
 }
 
 export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
-  // 1. Authentic Marathi & Hindi Vocal Songs
+  // 1. Cultural Folk & Spiritual Ambient Scores
   {
     id: 'song-sahyadri-powada',
-    title: 'Garja Sahyadri (गरजा सह्याद्री - पोवाडा)',
+    title: 'Garja Sahyadri (गरजा सह्याद्री - पोवाडा धून)',
     titleMr: 'गरजा सह्याद्री • वीररस पोवाडा व ढोल नाद',
-    artist: 'Traditional Lokshahir Ensemble',
+    artist: 'Explore Pune Cultural Ensemble',
     mood: 'adventure',
     license: 'Royalty-Free Traditional Cultural Heritage',
-    source: 'Real Marathi Folk Vocal & Dhol-Tasha',
+    source: 'Procedural Web Audio (Maratha Tutari & Dhol Pulse)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'fort_adventure',
-    descriptionEn: 'Passionate Lokshahir vocal chant and thunderous Puneri dhol beats for Sahyadri forts.',
-    descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसा अस्सल मराठी शाहिरी आवाज.',
-    vocalLanguage: 'Marathi',
-    isRealVocalSong: true,
+    descriptionEn: 'Procedural mountain wind drone, tutari horn resonance, and thunderous Puneri dhol beats for Sahyadri forts.',
+    descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसा अस्सल मराठी शाहिरी तुतारी व ढोल नाद.',
+    vocalLanguage: 'Marathi Cultural Theme',
+    isCulturalVocalTheme: true,
   },
   {
     id: 'song-dagdusheth-aarti',
-    title: 'Majha Ganaraya (माझा गणराया - अभंग)',
+    title: 'Majha Ganaraya (माझा गणराया - अभंग धून)',
     titleMr: 'माझा गणराया • दगडूशेठ भक्तिरस अभंग व बासरी',
-    artist: 'Pune Devotional Sangeet Mandali',
+    artist: 'Deccan Spiritual Soundscapes',
     mood: 'spiritual',
     license: 'Royalty-Free Traditional Abhang',
-    source: 'Authentic Marathi Abhang & Temple Flute',
+    source: 'Procedural Web Audio (Temple Bansuri & Bells)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'peaceful_flute',
-    descriptionEn: 'Pure melodic female & chorus devotional singing with pakhawaj and bansuri flute.',
-    descriptionMr: 'दगडूशेठ व पवित्र मंदिरांसाठी मनःशांती देणारा मंजुळ अभंग आणि घंटानाद.',
-    vocalLanguage: 'Marathi',
-    isRealVocalSong: true,
+    descriptionEn: 'Procedural temple chimes, bansuri flute scales, and pakhawaj resonance for sacred shrines.',
+    descriptionMr: 'दगडूशेठ व पवित्र मंदिरांसाठी मनःशांती देणारा मंजुळ अभंग, बासरी आणि घंटानाद.',
+    vocalLanguage: 'Marathi Abhang Theme',
+    isCulturalVocalTheme: true,
   },
   {
     id: 'song-peshwa-tarana',
-    title: 'Shaniwar Wada Tarana (पेशवाई तराना)',
+    title: 'Shaniwar Wada Tarana (पेशवाई तराना धून)',
     titleMr: 'पेशवाई तराना • शास्त्रीय सतार, तानपुरा व बोल',
     artist: 'Maharashtra Classical Heritage Ensemble',
     mood: 'heritage',
     license: 'Royalty-Free Classical Heritage',
-    source: 'Royal 18th-Century Classical Vocal Tarana',
+    source: 'Procedural Web Audio (Sitar & Tanpura Drone)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'heritage_classical',
-    descriptionEn: 'Regal acoustic sitar, tanpura, and classical vocal tarana in Raga Bhupali.',
-    descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार, तानपुरा व बोल.',
-    vocalLanguage: 'Sanskrit / Classical',
-    isRealVocalSong: true,
+    descriptionEn: 'Regal acoustic sitar and tanpura harmonics in Raga Bhupali echoing 18th-century Peshwa courts.',
+    descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार, तानपुरा व तराणा सूर.',
+    vocalLanguage: 'Classical Tarana Theme',
+    isCulturalVocalTheme: true,
   },
   {
     id: 'song-roohani-pune',
-    title: 'Roohani Pune (रूहानी पुणे - हिंदी गझल)',
+    title: 'Roohani Pune (रूहानी पुणे - हिंदी गझल धून)',
     titleMr: 'रूहानी पुणे • शांत सायंकाळ, गझल व गिटार',
     artist: 'Deccan Acoustic Collective',
     mood: 'ambient',
     license: 'Royalty-Free Original Vocal',
-    source: 'Acoustic Guitar & Soulful Hindi Vocals',
+    source: 'Procedural Web Audio (Acoustic Guitar & Dusk Pads)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'pune_ambient',
-    descriptionEn: 'Warm acoustic guitar chords and soulful Hindi vocals reminiscing Pune’s charm.',
+    descriptionEn: 'Warm acoustic guitar chords and atmospheric twilight pads capturing Pune city memories.',
     descriptionMr: 'पुण्याच्या विविध पेठा, टेकड्या व सांस्कृतिक ठिकाणांसाठी भावपूर्ण गझल सूर.',
-    vocalLanguage: 'Hindi',
-    isRealVocalSong: true,
+    vocalLanguage: 'Hindi Ghazal Theme',
+    isCulturalVocalTheme: true,
   },
   {
     id: 'song-puneri-khadya-jingle',
@@ -89,13 +94,14 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     artist: 'Pune Street Food Beats Collective',
     mood: 'food',
     license: 'Royalty-Free Original Vocal',
-    source: 'Fast Folk Percussion & Street Vocals',
+    source: 'Procedural Web Audio (Fast Dholak Food Cadence)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'food_trail',
-    descriptionEn: 'Upbeat rhythmic dholak and lively Marathi vocals for food trails and culinary crawls.',
+    descriptionEn: 'Upbeat rhythmic dholak and street rhythms for culinary trails and food walks.',
     descriptionMr: 'झणझणीत मिसळ, मस्तानी आणि चहाच्या कट्ट्यासाठी वेगवान चविष्ट संगीत.',
-    vocalLanguage: 'Marathi',
-    isRealVocalSong: true,
+    vocalLanguage: 'Marathi Food Rhythm',
+    isCulturalVocalTheme: true,
   },
   {
     id: 'song-sahyadri-breeze',
@@ -104,13 +110,14 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     artist: 'Sahyadri Nature Waves',
     mood: 'nature',
     license: 'Royalty-Free Creative Commons Open',
-    source: 'Lake Water Waves & Soft Bansuri Humming',
+    source: 'Procedural Web Audio (Water Waves & Flute)',
+    audioSourceType: 'procedural_web_audio',
     attributionRequired: false,
     audioGeneratorType: 'lakeside_chill',
     descriptionEn: 'Gentle acoustic piano, soft bansuri flute, and peaceful water ripple resonance.',
     descriptionMr: 'तलाव, धरण आणि हिरवेगार टेकड्यांच्या भ्रमंतीसाठी सुखद व शांत संगीत.',
-    vocalLanguage: 'Vocal Humming',
-    isRealVocalSong: true,
+    vocalLanguage: 'Nature Flute Theme',
+    isCulturalVocalTheme: true,
   },
   // 2. Ambient Synthesized Classics
   {
@@ -125,7 +132,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'fort_adventure',
     descriptionEn: 'Epic mountain winds, deep rhythmic cadence, and heroic Sahyadri adventure atmosphere.',
     descriptionMr: 'किल्ल्यांच्या डोंगररांगा, वारा आणि साहसी दुर्गभ्रमंतीला साजेसे वीररस संगीत.',
-    isRealVocalSong: false,
+    isCulturalVocalTheme: false,
   },
   {
     id: 'track-peshwa-heritage',
@@ -139,7 +146,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'heritage_classical',
     descriptionEn: 'Warm acoustic sitar and tanpura harmonics echoing Pune’s historic 18th-century wadas.',
     descriptionMr: 'वाडे, कमानी आणि पेशवाई वैभवाला उजाळा देणारे शास्त्रीय सतार व तानपुरा सूर.',
-    isRealVocalSong: false,
+    isCulturalVocalTheme: false,
   },
   {
     id: 'track-sacred-peace',
@@ -153,7 +160,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'peaceful_flute',
     descriptionEn: 'Peaceful bansuri flute notes and tranquil chimes for sacred shrines and rock-cut caves.',
     descriptionMr: 'दगडूशेठ व पाताळेश्वरसाठी मनःशांती देणारी मंजुळ बासरी आणि घंटानाद.',
-    isRealVocalSong: false,
+    isCulturalVocalTheme: false,
   },
   {
     id: 'track-lakeside-chill',
@@ -167,7 +174,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'lakeside_chill',
     descriptionEn: 'Gentle acoustic piano chords and soft water ripple resonance for lakes, dams, and nature.',
     descriptionMr: 'तलाव, धरण आणि हिरवेगार टेकड्यांच्या भ्रमंतीसाठी सुखद व शांत संगीत.',
-    isRealVocalSong: false,
+    isCulturalVocalTheme: false,
   },
   {
     id: 'track-pune-ambient',
@@ -181,7 +188,7 @@ export const REEL_MUSIC_TRACKS: JourneyReelMusicTrack[] = [
     audioGeneratorType: 'pune_ambient',
     descriptionEn: 'Bright, balanced travel acoustic melodies suitable for all city landmarks and street walks.',
     descriptionMr: 'पुण्याच्या विविध पेठा व सांस्कृतिक ठिकाणांसाठी प्रसन्न प्रभात धून.',
-    isRealVocalSong: false,
+    isCulturalVocalTheme: false,
   },
 ];
 
@@ -630,20 +637,55 @@ export function saveCustomPlacePhotos(placeId: string, photos: string[]): void {
   }
 }
 
+export const MAX_PHOTO_UPLOAD_BYTES = 15 * 1024 * 1024; // 15MB
+export const ALLOWED_IMAGE_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+]);
+
 /**
- * Client-side Canvas Image Compressor
- * Converts File to web-friendly optimized JPEG data URL to prevent localStorage exhaustion
+ * Client-side Canvas Image Compressor with strict upload security & validation
+ * - Enforces 15MB file size limit
+ * - Rejects non-image types and SVGs (prevents script injection)
+ * - Converts valid File to web-friendly optimized JPEG data URL to prevent localStorage exhaustion
  */
 export async function compressUploadedPhoto(file: File, maxDim = 1200, quality = 0.82): Promise<string> {
+  if (!file) {
+    throw new Error('No file provided for upload.');
+  }
+
+  // File size validation
+  if (file.size > MAX_PHOTO_UPLOAD_BYTES) {
+    throw new Error(`File size ${(file.size / (1024 * 1024)).toFixed(1)}MB exceeds maximum 15MB limit.`);
+  }
+
+  if (file.size === 0) {
+    throw new Error('Cannot process empty (0 byte) image file.');
+  }
+
+  // MIME type validation (explicitly block SVGs to prevent script injection)
+  const mime = (file.type || '').toLowerCase();
+  if (mime === 'image/svg+xml' || !ALLOWED_IMAGE_MIME_TYPES.has(mime)) {
+    throw new Error('Invalid image format. Only JPEG, PNG, WebP, and HEIC photos are allowed.');
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error('Failed to read image file'));
     reader.onload = (e) => {
       const img = new Image();
-      img.onerror = () => reject(new Error('Failed to decode image'));
+      img.onerror = () => reject(new Error('Failed to decode image data'));
       img.onload = () => {
         let width = img.width;
         let height = img.height;
+
+        if (width <= 0 || height <= 0) {
+          reject(new Error('Image has invalid dimensions'));
+          return;
+        }
 
         if (width > maxDim || height > maxDim) {
           if (width > height) {

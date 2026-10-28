@@ -247,7 +247,11 @@ export function getDestinationProfile(place: {
   name?: string;
   name_mr?: string;
   description?: string;
+  description_mr?: string;
   elevation?: string | number;
+  address?: string;
+  address_mr?: string;
+  best_time?: string;
   latitude?: number;
   longitude?: number;
 }): DestinationProfile {
@@ -274,21 +278,45 @@ export function getDestinationProfile(place: {
 
   const base = getCategoryDefaults(categoryKey);
 
-  // 3. Adapt text dynamically to the place's actual verified data
+  // 3. Adapt text dynamically to the place's actual verified database data
   const placeTitle = place.name || 'Explore Pune Landmark';
   const placeTitleMr = place.name_mr || place.name || 'पुणे प्रेक्षणीय स्थळ';
+
+  // Ground elevation and address in verified fields if present
+  let hookEn = `Discovering ${placeTitle}`;
+  let hookMr = `${placeTitleMr} चा विलोभनीय प्रवास`;
+  if (place.elevation) {
+    const elevStr = typeof place.elevation === 'number' ? `${place.elevation}m` : `${place.elevation}`;
+    hookEn = `${elevStr} • ${placeTitle}`;
+    hookMr = `उंची ${elevStr} • ${placeTitleMr}`;
+  } else if (place.address) {
+    const shortAddr = place.address.split(',')[0].trim();
+    hookEn = `${shortAddr} • ${placeTitle}`;
+  }
+
+  // Immersion focus from verified database description
+  let immersionEn = base.narrativeCurve.immersionFocusEn;
+  let immersionMr = base.narrativeCurve.immersionFocusMr;
+  if (place.description && place.description.length > 20) {
+    const sentence = place.description.split('.')[0].trim();
+    immersionEn = sentence.length > 70 ? sentence.slice(0, 67) + '...' : sentence;
+  }
+  if (place.description_mr && place.description_mr.length > 20) {
+    const sentenceMr = place.description_mr.split('.')[0].trim();
+    immersionMr = sentenceMr.length > 60 ? sentenceMr.slice(0, 57) + '...' : sentenceMr;
+  }
 
   return {
     ...base,
     narrativeCurve: {
-      hookTextEn: `Discovering ${placeTitle}`,
-      hookTextMr: `${placeTitleMr} चा विलोभनीय प्रवास`,
+      hookTextEn: hookEn,
+      hookTextMr: hookMr,
       discoveryTitleEn: `Architectural Wonder of ${placeTitle}`,
       discoveryTitleMr: `${placeTitleMr} ची अद्वितीय ओळख`,
-      immersionFocusEn: `Authentic Cultural Heritage & Living History`,
-      immersionFocusMr: `पुण्याच्या समृद्ध संस्कृती व वारशाची जिवंत अनुभूती`,
-      climaxQuoteEn: `“An authentic experience that leaves lasting footprints in Pune.”`,
-      climaxQuoteMr: `“पुण्याच्या समृद्ध इतिहासातील एक सुंदर आणि अविस्मरणीय भेट.”`,
+      immersionFocusEn: immersionEn,
+      immersionFocusMr: immersionMr,
+      climaxQuoteEn: base.narrativeCurve.climaxQuoteEn,
+      climaxQuoteMr: base.narrativeCurve.climaxQuoteMr,
       outroSignatureEn: `${placeTitle} • Cherished in Memory`,
       outroSignatureMr: `${placeTitleMr} • प्रवासाच्या सुंदर आठवणी`,
     },
