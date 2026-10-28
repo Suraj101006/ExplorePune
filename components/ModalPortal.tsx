@@ -71,7 +71,10 @@ export default function ModalPortal({
 }: ModalPortalProps) {
   const [mounted, setMounted] = useState(false);
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     setMounted(true);

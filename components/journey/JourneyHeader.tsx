@@ -7,11 +7,6 @@ import {
   Compass,
   Sparkles,
   Plus,
-  MapPin,
-  Film,
-  Camera,
-  CheckCircle2,
-  Calendar,
 } from 'lucide-react';
 
 interface JourneyHeaderProps {

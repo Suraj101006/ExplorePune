@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import { getSavedPlaces, toggleSavedPlace, SavedPlaceSummary } from '@/lib/savedPlaces';
-import { Bookmark, MapPin, ExternalLink, Plus, Trash2 } from 'lucide-react';
+import { Bookmark, ExternalLink, Plus, Trash2 } from 'lucide-react';
 
 interface SavedDestinationsTabProps {
   onPlanWithPlace: (place: SavedPlaceSummary) => void;

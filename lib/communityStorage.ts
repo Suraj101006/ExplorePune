@@ -4,7 +4,6 @@
  * Connected directly to authentic place database via unique placeId.
  */
 
-import rawPlaces from '@/data/backup_places_pre_audit_20261023.json';
 import {
   moderateCommunityContent,
   sanitizeUserText,

@@ -17,13 +17,10 @@ import {
   Upload,
   Trash2,
   Edit2,
-  Check,
   X,
   Eye,
   Sparkles,
   MapPin,
-  Image as ImageIcon,
-  AlertCircle,
 } from 'lucide-react';
 
 interface MemoryGalleryTabProps {
@@ -31,7 +28,7 @@ interface MemoryGalleryTabProps {
   userId?: string | null;
 }
 
-export default function MemoryGalleryTab({ onOpenCreateReel, userId }: MemoryGalleryTabProps) {
+export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: MemoryGalleryTabProps) {
   const { isMr } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -538,7 +535,7 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId }: MemoryGal
                 </strong>
                 {previewPhoto.caption && (
                   <p style={{ margin: '4px 0 0', fontSize: 13, color: '#e2e8f0' }}>
-                    "{previewPhoto.caption}"
+                    &ldquo;{previewPhoto.caption}&rdquo;
                   </p>
                 )}
               </div>

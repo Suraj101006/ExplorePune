@@ -8,17 +8,13 @@ import { DayJourney, deleteJourney } from '@/lib/journeyStorage';
 import { ActiveTrip } from '@/lib/activeTrip';
 import {
   Compass,
-  Calendar,
   MapPin,
   Sparkles,
   Share2,
   Trash2,
-  Clock,
-  CheckCircle2,
   ArrowRight,
   Plus,
   Search,
-  Filter,
 } from 'lucide-react';
 
 interface JourneysListTabProps {
@@ -46,7 +42,6 @@ export default function JourneysListTab({
 
   const [statusFilter, setStatusFilter] = useState<'all' | 'planned' | 'completed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [journeyToDelete, setJourneyToDelete] = useState<string | null>(null);
 
   const filteredJourneys = useMemo(() => {
     return journeys.filter((j) => {
@@ -68,7 +63,6 @@ export default function JourneysListTab({
 
   const handleDelete = (journeyId: string) => {
     deleteJourney(journeyId, userId);
-    setJourneyToDelete(null);
     onJourneyDeleted(journeyId);
   };
 

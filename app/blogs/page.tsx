@@ -4,8 +4,23 @@ import { db } from '@/lib/firebase';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 
 export const metadata: Metadata = {
-  title: 'Traveller Blogs & Stories | Explore Pune',
+  title: 'Traveller Blogs & Stories',
   description: 'First-hand travelogues, Sahyadri trek tales, and heritage walk journals by Pune locals and visitors.',
+  alternates: {
+    canonical: '/blogs',
+  },
+  openGraph: {
+    title: 'Traveller Blogs & Stories | Explore Pune',
+    description: 'First-hand travelogues, Sahyadri trek tales, and heritage walk journals by Pune locals and visitors.',
+    url: '/blogs',
+    siteName: 'Explore Pune',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Traveller Blogs & Stories | Explore Pune',
+    description: 'First-hand travelogues, Sahyadri trek tales, and heritage walk journals.',
+  },
 };
 
 export const dynamic = 'force-dynamic';

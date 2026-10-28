@@ -3,6 +3,16 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
 const eslintConfig = defineConfig([
+  // Global ignores must come first in ESLint 9 flat config so it ignores before any plugin processing
+  globalIgnores([
+    ".next/**",
+    "node_modules/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "scripts/**",
+    "public/**",
+  ]),
   ...nextVitals,
   ...nextTs,
   {
@@ -14,15 +24,6 @@ const eslintConfig = defineConfig([
       "@next/next/no-location-assign-relative-destination": "warn",
     },
   },
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-    "scripts/**",
-  ]),
 ]);
 
 export default eslintConfig;

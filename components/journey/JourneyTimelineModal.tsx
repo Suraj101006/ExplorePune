@@ -3,25 +3,16 @@
 
 import React, { useState, useRef } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
-import { DayJourney, JourneyPlaceStop, saveJourney, deleteJourney, toggleJourneyStopVisited } from '@/lib/journeyStorage';
+import { DayJourney, saveJourney, deleteJourney, toggleJourneyStopVisited } from '@/lib/journeyStorage';
 import { compressUploadedPhoto, saveCustomPlacePhotos } from '@/lib/journeyReel';
 import ModalPortal from '@/components/ModalPortal';
 import {
   X,
   Sparkles,
   Share2,
-  Calendar,
-  MapPin,
-  CheckCircle2,
-  Clock,
   Trash2,
   Camera,
-  Car,
-  Bus,
-  Footprints,
   Compass,
-  AlertCircle,
-  Film,
 } from 'lucide-react';
 
 interface JourneyTimelineModalProps {

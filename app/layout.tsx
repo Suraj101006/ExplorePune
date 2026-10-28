@@ -10,11 +10,37 @@ import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransitio
 import PageTransition from '@/components/PageTransition';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://explore-pune-eosin.vercel.app'),
   title: { default: 'Explore Pune | Historic Forts, Wadas & Trip Planner', template: '%s | Explore Pune' },
   description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails with verified hours, visitor costs, and custom trip planner.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: 'https://explore-pune-eosin.vercel.app',
+    siteName: 'Explore Pune',
+    title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
+    description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails with verified hours, visitor costs, and custom trip planner.',
+    images: [
+      {
+        url: '/images/pune-map-hero.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Explore Pune - Heritage, Forts & Travel Guide',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
+    description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails.',
+    images: ['/images/pune-map-hero.jpg'],
+  },
   icons: {
-    icon: '/images/logo.png',
-    apple: '/images/logo.png',
+    icon: '/favicon.ico',
+    apple: '/logo-small.png',
   },
 };
 

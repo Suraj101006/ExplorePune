@@ -1,9 +1,43 @@
+import type { Metadata } from 'next';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import HomeExplorer from '@/components/HomeExplorer';
 
 export const dynamic = 'force-dynamic';
 const PAGE = 72;
+
+export const metadata: Metadata = {
+  title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+  description:
+    'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+    description:
+      'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
+    url: '/',
+    siteName: 'Explore Pune',
+    locale: 'en_IN',
+    type: 'website',
+    images: [
+      {
+        url: '/images/pune-map-hero.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Explore Pune - Historic Forts, Peshwa Wadas & Trip Planner',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Explore Pune | Discover Historic Forts, Peshwa Wadas & Trip Planner',
+    description:
+      'Explore 80+ historic Pune destinations with verified hours, timings, entry fees, and custom trip planning.',
+    images: ['/images/pune-map-hero.jpg'],
+  },
+};
 
 export default async function HomePage({
   searchParams,
@@ -79,8 +113,40 @@ export default async function HomePage({
   const pages = Math.max(1, Math.ceil(count / PAGE));
   const places = allPlaces.slice((pg - 1) * PAGE, pg * PAGE);
 
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Explore Pune',
+    url: 'https://explore-pune-eosin.vercel.app',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://explore-pune-eosin.vercel.app/?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const topPlacesSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Featured Historic & Cultural Places in Pune',
+    itemListElement: places.slice(0, 10).map((p: any, idx: number) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: p.name,
+      url: `https://explore-pune-eosin.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
+    })),
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(topPlacesSchema) }}
+      />
       <HomeExplorer
         places={places}
         categories={cats}

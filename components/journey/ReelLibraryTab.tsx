@@ -1,21 +1,17 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { JourneyReelData, getSavedReels, deleteSavedReel } from '@/lib/journeyReel';
 import ModalPortal from '@/components/ModalPortal';
 import {
   Film,
   Play,
-  Download,
   Trash2,
   Sparkles,
-  Calendar,
   Music,
   MapPin,
-  Clock,
-  Compass,
 } from 'lucide-react';
 
 interface ReelLibraryTabProps {
@@ -29,16 +25,16 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
   const [reels, setReels] = useState<JourneyReelData[]>([]);
   const [reelToDelete, setReelToDelete] = useState<JourneyReelData | null>(null);
 
-  const refreshReels = () => {
+  const refreshReels = useCallback(() => {
     setReels(getSavedReels(userId));
-  };
+  }, [userId]);
 
   useEffect(() => {
     refreshReels();
     const handleSync = () => refreshReels();
     window.addEventListener('explore-pune-reels-changed', handleSync);
     return () => window.removeEventListener('explore-pune-reels-changed', handleSync);
-  }, [userId]);
+  }, [refreshReels]);
 
   const handleConfirmDelete = () => {
     if (!reelToDelete) return;

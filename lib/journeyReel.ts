@@ -1,8 +1,7 @@
 'use client';
 
-import { DayJourney, JourneyPlaceStop } from '@/lib/journeyStorage';
+import { DayJourney } from '@/lib/journeyStorage';
 import { getDestinationProfile } from '@/lib/destinationIntelligence';
-import { REAL_SONG_CATALOG, ReelSongTrack } from '@/lib/reelSongLibrary';
 
 export interface JourneyReelMusicTrack {
   id: string;

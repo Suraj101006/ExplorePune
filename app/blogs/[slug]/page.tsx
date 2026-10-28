@@ -18,11 +18,49 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!snap.empty) {
       const data = snap.docs[0].data();
       if (data.status === 'published' && !data.is_draft) {
-        return { title: `${data.title} | Explore Pune Blogs` };
+        const title = data.title;
+        const description =
+          data.summary ||
+          data.content?.slice(0, 155)?.replace(/[#*`_]/g, '') ||
+          'Authentic travelogue and explorer insights on Explore Pune.';
+        const imageUrl = data.cover_image || '/images/pune-map-hero.jpg';
+
+        return {
+          title,
+          description,
+          alternates: {
+            canonical: `/blogs/${slug}`,
+          },
+          openGraph: {
+            title: `${title} | Explore Pune`,
+            description,
+            url: `/blogs/${slug}`,
+            siteName: 'Explore Pune',
+            type: 'article',
+            publishedTime: data.published_at || data.created_at,
+            images: [
+              {
+                url: imageUrl,
+                width: 1200,
+                height: 630,
+                alt: data.title,
+              },
+            ],
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title: `${title} | Explore Pune`,
+            description,
+            images: [imageUrl],
+          },
+        };
       }
     }
   } catch {}
-  return { title: 'Story Not Found | Explore Pune' };
+  return {
+    title: 'Story Not Found | Explore Pune',
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function BlogPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -45,8 +83,28 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
 
   if (!blog) notFound();
 
+  const blogPostingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.summary || blog.content?.slice(0, 160)?.replace(/[#*`_]/g, ''),
+    author: {
+      '@type': 'Person',
+      name: blog.author_name || 'Pune Traveller',
+    },
+    datePublished: blog.published_at || blog.created_at,
+    image: blog.cover_image
+      ? `https://explore-pune-eosin.vercel.app${blog.cover_image}`
+      : 'https://explore-pune-eosin.vercel.app/images/pune-map-hero.jpg',
+    url: `https://explore-pune-eosin.vercel.app/blogs/${slug}`,
+  };
+
   return (
     <main className="wrap" style={{ paddingTop: 40, paddingBottom: 60 }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
         <Link
           href="/blogs"
