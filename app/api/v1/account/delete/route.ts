@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
         batch.delete(adminDb.collection('profiles').doc(uid));
       } else {
         const snap = await adminDb.collection(col).where(fieldToQuery!, '==', uid).get();
-        snap.forEach((d) => batch.delete(d.ref));
+        snap.forEach((d: any) => batch.delete(d.ref));
       }
     }
 

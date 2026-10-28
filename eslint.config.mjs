@@ -6,6 +6,7 @@ const eslintConfig = defineConfig([
   // Global ignores must come first in ESLint 9 flat config so it ignores before any plugin processing
   globalIgnores([
     ".next/**",
+    ".firebase/**",
     "node_modules/**",
     "out/**",
     "build/**",
