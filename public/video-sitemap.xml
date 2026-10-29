@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://explore-pune-eosin.vercel.app/play-metro-transit.html</loc>
+    <video:video>
+      <video:thumbnail_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-poster.jpg</video:thumbnail_loc>
+      <video:title>Explore Pune — Metro &amp; PMPML Transit Showcase (English)</video:title>
+      <video:description>Official video demonstration of Pune Metro Purple and Aqua lines, Civil Court interchange, PMPML bus route 51 Sinhagad timetable, and multi-modal transit planning on Explore Pune.</video:description>
+      <video:content_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-en.mp4</video:content_loc>
+      <video:player_loc>https://explore-pune-eosin.vercel.app/play-metro-transit.html</video:player_loc>
+      <video:duration>112</video:duration>
+      <video:rating>4.9</video:rating>
+      <video:publication_date>2026-10-29T10:00:00+05:30</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-poster.jpg</video:thumbnail_loc>
+      <video:title>Explore Pune — पुणे मेट्रो आणि PMPML बस प्रवास माहिती (मराठी)</video:title>
+      <video:description>पुणे मेट्रो पर्पल व अ‍ॅक्वा लाईन, सिव्हिल कोर्ट इंटरचेंज, PMPML बस रूट ५१ सिंहगड वेळापत्रक आणि एक्सप्लोर पुणे पोर्टलचे अधिकृत प्रात्यक्षिक.</video:description>
+      <video:content_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-mr.mp4</video:content_loc>
+      <video:player_loc>https://explore-pune-eosin.vercel.app/play-metro-transit.html</video:player_loc>
+      <video:duration>112</video:duration>
+      <video:rating>4.9</video:rating>
+      <video:publication_date>2026-10-29T10:00:00+05:30</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-poster.jpg</video:thumbnail_loc>
+      <video:title>Explore Pune — Public Transit Short Teaser (25s)</video:title>
+      <video:description>25-second quick tour of Pune Metro, PMPML bus schedules, and geospatial trip planner on Explore Pune.</video:description>
+      <video:content_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-metro-transit-short.mp4</video:content_loc>
+      <video:player_loc>https://explore-pune-eosin.vercel.app/play-metro-transit.html</video:player_loc>
+      <video:duration>25</video:duration>
+      <video:publication_date>2026-10-29T10:00:00+05:30</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://explore-pune-eosin.vercel.app/</loc>
+    <video:video>
+      <video:thumbnail_loc>https://explore-pune-eosin.vercel.app/images/pune-map-hero.jpg</video:thumbnail_loc>
+      <video:title>Explore Pune — Heritage, Forts and Smart Mobility Platform Tour</video:title>
+      <video:description>Complete interactive guide to historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails in Pune.</video:description>
+      <video:content_loc>https://explore-pune-eosin.vercel.app/videos/explore-pune-intro.mp4</video:content_loc>
+      <video:player_loc>https://explore-pune-eosin.vercel.app/</video:player_loc>
+      <video:duration>30</video:duration>
+      <video:publication_date>2026-10-20T12:00:00+05:30</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+</urlset>
