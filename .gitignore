@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -14,11 +14,21 @@
 /coverage
 
 # next.js
-/.next/
+.next/
 /out/
+website-marketing-kit/out/
+website-marketing-kit/.next/
 
 # production
 /build
+
+# root video working files (keep public/videos)
+/*.mp4
+/*.srt
+/*.jpg
+/play-metro-transit.html
+brag-output/
+*full-film*.mp4
 
 # misc
 .DS_Store

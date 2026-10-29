@@ -7,8 +7,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
-    include: ['**/*.test.ts', '**/*.test.tsx'],
-    exclude: ['node_modules', '.next', 'dist'],
+    include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
+    exclude: ['node_modules', '.next', 'dist', 'website-marketing-kit', 'brag-output'],
   },
   resolve: {
     alias: {

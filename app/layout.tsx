@@ -65,6 +65,9 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/logo-small.png',
   },
+  verification: {
+    google: 'googleec52a74fd3fa44b1',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065f46" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+  </defs>
+  <!-- Circular Heritage Crest -->
+  <circle cx="60" cy="60" r="56" fill="url(#logoBg)" stroke="#10b981" stroke-width="2" />
+  <circle cx="60" cy="60" r="51" fill="none" stroke="#ecfdf5" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
+  
+  <!-- Shaniwar Wada Iconic Delhi Darwaza Bastion Silhouette in Pure Off-White -->
+  <g fill="#f8fafc" opacity="0.95">
+    <!-- Fort Bastion Base -->
+    <path d="M28 82 L28 64 L34 60 L38 60 L42 64 L42 82 Z" />
+    <path d="M78 82 L78 64 L82 60 L86 60 L92 64 L92 82 Z" />
+    <path d="M42 66 L78 66 L78 82 L42 82 Z" />
+    <!-- Ramparts / Merlons -->
+    <path d="M30 57 H35 V60 H30 Z M37 57 H42 V60 H37 Z M44 57 H49 V60 H44 Z M51 57 H56 V60 H51 Z M58 57 H63 V60 H58 Z M65 57 H70 V60 H65 Z M72 57 H77 V60 H72 Z M79 57 H84 V60 H79 Z M86 57 H91 V60 H86 Z" />
+    <!-- Arch Gateway -->
+    <path d="M52 82 L52 71 C52 67, 68 67, 68 71 L68 82 Z" fill="#065f46" />
+  </g>
+
+  <!-- Devanagari "पुणे" Calligraphy Header inside crest -->
+  <text x="60" y="44" text-anchor="middle" font-family="'Noto Sans Devanagari', 'Yantramanav', sans-serif" font-weight="900" font-size="20" fill="#ffffff" letter-spacing="1">पुणे</text>
+  
+  <!-- Small Star / Sun Emblem -->
+  <circle cx="60" cy="24" r="2.5" fill="#facc15" />
+</svg>

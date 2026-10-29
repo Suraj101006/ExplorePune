@@ -1,0 +1,31 @@
+1
+00:00:00,000 --> 00:00:10,000
+Welcome to Pune, Maharashtra's historic cultural capital and a vibrant modern metropolis. Navigating this dynamic city just got smarter, faster, and completely effortless.
+
+2
+00:00:10,000 --> 00:00:22,000
+Introducing Explore Pune, your all-in-one public transit and city discovery platform. Built with a clean, responsive interface, it puts the entire city at your fingertips—with instant search across one hundred and six verified locations.
+
+3
+00:00:22,000 --> 00:00:38,000
+Explore Pune with high-precision interactive geographic maps. Locate every heritage fort, serene lake, and cultural hub with verified coordinates, elevation contours, and neighborhood clusters—from Shivajinagar to the Sahyadri trails.
+
+4
+00:00:38,000 --> 00:00:55,000
+Mastering Pune's bus network is now simple. With verified PMPML bus schedules and route timetables, plan journeys effortlessly—like Bus Route 51 connecting Shanipar directly to Sinhagad Fort, with buses running every twenty minutes.
+
+5
+00:00:55,000 --> 00:01:12,000
+Experience the speed of Pune Metro. Seamlessly navigate the Purple Line from PCMC to Swargate, and the Aqua Line from Vanaz to Ramwadi. Check interchange connections at Civil Court, live station nodes, and exact fares.
+
+6
+00:01:12,000 --> 00:01:30,000
+Plan complete multi-stop journeys across the city. Select your origin, pick your destination, and let the smart directions engine curate a step-by-step route combining metro, feeder buses, and walking trails with exportable itineraries.
+
+7
+00:01:30,000 --> 00:01:42,000
+Explore Pune. Find your route. Discover public transport. Built with zero ads, lightning-fast client performance, and complete respect for Pune's cultural soul.
+
+8
+00:01:42,000 --> 00:01:52,000
+Your City. Your Journey. Your Pune. Start exploring today at explore-pune-eosin.vercel.app.
