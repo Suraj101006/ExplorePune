@@ -84,11 +84,70 @@ export default async function DestinationsPage({
     ],
   };
 
+  const destinationsFaqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What are the top must-visit historical places in Pune?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The top historical destinations in Pune include Shaniwar Wada (the historic Peshwa seat), Sinhagad Fort (famed for Tanaji Malusare’s 1670 battle), Aga Khan Palace (Gandhi memorial), Lal Mahal, and the 8th-century Pataleshwar Cave Temple.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Which historical forts near Pune can be visited in one day?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sinhagad Fort, Lohagad Fort, Tikona Fort, and Malhargad are ideal one-day trips located within 25 to 55 km of central Pune, easily accessible via road and public transport.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Are there any free tourist attractions in Pune?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes! Major cultural and heritage landmarks with zero entry fee include Shreemant Dagdusheth Halwai Ganpati Mandir, Kasba Ganpati, Pataleshwar Caves, Saras Baug, and Vetal Tekdi.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How many heritage and cultural spots are covered on Explore Pune?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Explore Pune provides verified field records for over 80 curated destinations spanning Sahyadri hill forts, Peshwa-era wadas, ancient temples, botanical gardens, and culinary landmarks.',
+        },
+      },
+    ],
+  };
+
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Top Historic & Cultural Places in Pune',
+    itemListElement: places.map((p, idx) => ({
+      '@type': 'ListItem',
+      position: (pg - 1) * PAGE + idx + 1,
+      name: p.name,
+      url: `https://explore-pune-eosin.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
+    })),
+  };
+
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationsFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
       <HomeExplorer
         places={places}
