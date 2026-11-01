@@ -121,6 +121,90 @@ export default async function PlaceDetailPage({
     notFound();
   }
 
+  const categorySlug = place.category_slug || place.category || 'heritage';
+  const categoryName =
+    categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1);
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://explore-pune-eosin.vercel.app/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Destinations',
+        item: 'https://explore-pune-eosin.vercel.app/destinations',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: categoryName,
+        item: `https://explore-pune-eosin.vercel.app/destinations/${encodeURIComponent(categorySlug)}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: place.name,
+        item: `https://explore-pune-eosin.vercel.app/places/${encodeURIComponent(slug)}`,
+      },
+    ],
+  };
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `What is the ticket entry fee for ${place.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            place.fee_status === 'free' || place.entry_fee === 0
+              ? `Entry to ${place.name} is completely free for all visitors.`
+              : place.entry_fee
+              ? `The ticket entry fee for ${place.name} is ₹${place.entry_fee} per adult.${place.fee_details?.foreigner ? ` For international tourists, entry fee is ₹${place.fee_details.foreigner}.` : ''}`
+              : `Standard admission fees apply. Visitors can verify current municipal or ASI ticketing at the entrance gate.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `What are the visiting hours for ${place.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            place.place_hours && place.place_hours.length > 0
+              ? `${place.name} is open from ${place.place_hours[0].opens_at || '9:00 AM'} to ${place.place_hours[0].closes_at || '6:00 PM'}.${place.place_hours[0].days ? ` (${place.place_hours[0].days})` : ''}`
+              : `${place.name} is typically accessible daily from sunrise to sunset (approx. 6:00 AM to 6:00 PM). Visiting during daylight hours is recommended.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `Where is ${place.name} located in Pune?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `${place.name} is located at ${place.address || 'Pune District, Maharashtra, India'}. Visitors can reach it using Pune Metro, PMPML public transit, or local taxis.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `What is the best time to visit ${place.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            place.best_time ||
+            'The ideal time to visit is between October and March during Pune’s pleasant winter weather, or early morning hours for cooler conditions and clear sightseeing.',
+        },
+      },
+    ],
+  };
+
   const touristAttractionSchema = {
     '@context': 'https://schema.org',
     '@type': 'TouristAttraction',
@@ -149,6 +233,14 @@ export default async function PlaceDetailPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(touristAttractionSchema) }}
