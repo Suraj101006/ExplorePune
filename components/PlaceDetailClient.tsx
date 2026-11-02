@@ -282,7 +282,13 @@ function getLandmarkTimelineMilestones(slug: string): TimelineMilestone[] {
   return [];
 }
 
-export default function PlaceDetailClient({ place }: { place: any }) {
+export default function PlaceDetailClient({
+  place,
+  relatedPlaces = [],
+}: {
+  place: any;
+  relatedPlaces?: any[];
+}) {
   const { isMr } = useLanguage();
 
   const categoryName = Array.isArray(place.place_categories)
@@ -2418,6 +2424,99 @@ export default function PlaceDetailClient({ place }: { place: any }) {
 
         {/* Reviews Section */}
         <Reviews placeId={place.id} />
+
+        {/* Explore Related Pune Landmarks & Heritage Sites (Internal Linking Network) */}
+        {relatedPlaces && relatedPlaces.length > 0 && (
+          <section
+            className="mt-14 pt-10 border-t border-stone-200 dark:border-stone-800"
+            aria-labelledby="related-places-heading"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+              <div>
+                <span className="text-xs font-semibold tracking-wider uppercase text-amber-700 dark:text-amber-400">
+                  {isMr ? 'पुणे पर्यटन मार्गदर्शन' : 'Continue Your Pune Journey'}
+                </span>
+                <h2
+                  id="related-places-heading"
+                  className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1"
+                >
+                  {isMr ? 'संबंधित आणि जवळपासची प्रेक्षणीय स्थळे' : 'Explore More Attractions in Pune'}
+                </h2>
+              </div>
+              <Link
+                href="/destinations"
+                className="inline-flex items-center text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              >
+                <span>{isMr ? 'सर्व ८०+ ठिकाणे पहा' : 'View all 80+ places'}</span>
+                <span className="ml-1.5" aria-hidden="true">
+                  &rarr;
+                </span>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedPlaces.map((rp: any) => {
+                const rpSlug = rp.slug || rp.id;
+                const rpName = isMr && rp.name_mr ? rp.name_mr : rp.name;
+                const rpImage = rp.image_url || `/images/places/${encodeURIComponent(rpSlug)}.jpg`;
+                const rpCategory = rp.category_slug || rp.category || 'heritage';
+                const rpFee =
+                  rp.fee_status === 'free' || rp.entry_fee === 0
+                    ? isMr
+                      ? 'विनामूल्य'
+                      : 'Free Entry'
+                    : `₹${rp.entry_fee}`;
+
+                return (
+                  <Link
+                    key={rpSlug}
+                    href={`/places/${rpSlug}`}
+                    className="group flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 hover:border-amber-500/50 dark:hover:border-amber-500/50 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
+                      <img
+                        src={rpImage}
+                        alt={`${rp.name} Pune`}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = '/images/pune-map-hero.jpg';
+                        }}
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-stone-950/70 backdrop-blur-md text-amber-300 border border-amber-400/20">
+                          {rpCategory}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-3 right-3">
+                        <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-black/60 backdrop-blur-md text-white">
+                          {rpFee}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="font-serif font-bold text-base text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1">
+                        {rpName}
+                      </h3>
+                      <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 mt-1.5 flex-1 leading-relaxed">
+                        {isMr && rp.description_mr
+                          ? rp.description_mr
+                          : rp.description ||
+                            `Visit ${rp.name} with verified hours, directions and entry fee details.`}
+                      </p>
+                      <div className="mt-3 pt-3 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between text-xs font-semibold text-amber-600 dark:text-amber-400">
+                        <span>{isMr ? 'संपूर्ण माहिती पहा' : 'View Visitor Guide'}</span>
+                        <span className="transform group-hover:translate-x-1 transition-transform">
+                          &rarr;
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Pune Locality Picker Modal */}

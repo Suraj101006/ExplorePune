@@ -116,6 +116,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: 'weekly',
     priority: 0.85,
+    images: [`${baseUrl}/images/places/${encodeURIComponent(slug)}.jpg`],
   }));
 
   return [...staticRoutes, ...destinationRoutes];

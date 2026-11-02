@@ -67,6 +67,28 @@ async function getPlaceData(slug: string) {
   return null;
 }
 
+function getRelatedPlaces(place: any, count = 4) {
+  const currentCategory = place.category_slug || place.category;
+  const currentSlug = place.slug || place.id;
+
+  const sameCategory = ALL_STRUCTURED_PLACES.filter(
+    (p) =>
+      p.slug !== currentSlug &&
+      p.id !== currentSlug &&
+      (p.category_slug === currentCategory || p.category === currentCategory)
+  );
+
+  const others = ALL_STRUCTURED_PLACES.filter(
+    (p) =>
+      p.slug !== currentSlug &&
+      p.id !== currentSlug &&
+      p.category_slug !== currentCategory &&
+      p.category !== currentCategory
+  );
+
+  return [...sameCategory, ...others].slice(0, count);
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const place = await getPlaceData(slug);
@@ -246,6 +268,8 @@ export default async function PlaceDetailPage({
     touristType: ['Heritage', 'History', 'Culture', 'Tourism'],
   };
 
+  const relatedPlaces = getRelatedPlaces(place, 4);
+
   return (
     <>
       <script
@@ -260,7 +284,7 @@ export default async function PlaceDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(touristAttractionSchema) }}
       />
-      <PlaceDetailClient place={place} />
+      <PlaceDetailClient place={place} relatedPlaces={relatedPlaces} />
     </>
   );
 }

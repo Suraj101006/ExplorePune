@@ -38,6 +38,11 @@ export const metadata: Metadata = {
   description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails with verified hours, visitor costs, and custom trip planner.',
   alternates: {
     canonical: '/',
+    languages: {
+      'en-IN': '/',
+      'mr-IN': '/',
+      'x-default': '/',
+    },
   },
   openGraph: {
     type: 'website',
@@ -65,6 +70,7 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/logo-small.png',
   },
+  manifest: '/manifest.webmanifest',
   verification: {
     google: ['googleec52a74fd3fa44b1', 'google9bda85abb7a0ba4d'],
   },

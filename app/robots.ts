@@ -15,6 +15,47 @@ export default function robots(): MetadataRoute.Robots {
           '/blogs/new',
         ],
       },
+      {
+        // Major search engine crawlers
+        userAgent: [
+          'Googlebot',
+          'Bingbot',
+          'Applebot',
+          'DuckDuckBot',
+          'Baiduspider',
+          'YandexBot',
+        ],
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/admin',
+          '/account',
+          '/login',
+          '/journey',
+          '/blogs/new',
+        ],
+      },
+      {
+        // Generative AI & Answer Engine crawlers (GEO - Generative Engine Optimization)
+        userAgent: [
+          'GPTBot',
+          'ChatGPT-User',
+          'PerplexityBot',
+          'ClaudeBot',
+          'Google-Extended',
+          'Amazonbot',
+          'OAI-SearchBot',
+        ],
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/admin',
+          '/account',
+          '/login',
+          '/journey',
+          '/blogs/new',
+        ],
+      },
     ],
     sitemap: [
       'https://explore-pune-eosin.vercel.app/sitemap.xml',
