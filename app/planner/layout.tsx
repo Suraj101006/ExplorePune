@@ -65,7 +65,7 @@ const plannerSchemas = {
           name: 'How does the Explore Pune AI Trip Planner work?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The planner uses geospatial routing algorithms combined with verified operating hours, ticket costs, and travel times between 80+ Pune heritage locations. It generates a personalized, time-optimized daily schedule based on your selected interests and pace.',
+            text: 'The planner uses geospatial routing algorithms combined with verified operating hours, ticket costs, and travel times between 106+ Pune heritage locations. It generates a personalized, time-optimized daily schedule based on your selected interests and pace.',
           },
         },
         {

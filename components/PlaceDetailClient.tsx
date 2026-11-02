@@ -9,7 +9,14 @@ import Reviews from '@/components/Reviews';
 import PlaceMap from '@/components/PlaceMapWrapper';
 import CommunityGallery from '@/components/CommunityGallery';
 import TransitRouteMap from '@/components/TransitRouteMap';
-import LocationPickerModal from '@/components/LocationPickerModal';
+import dynamic from 'next/dynamic';
+
+const LocationPickerModal = dynamic(() => import('@/components/LocationPickerModal'), {
+  ssr: false,
+});
+const PlacePhotoSlideshowModal = dynamic(() => import('@/components/PlacePhotoSlideshowModal'), {
+  ssr: false,
+});
 import {
   getPublicTransitRoute,
   TransitRouteInfo,
@@ -30,7 +37,6 @@ import {
   getProximityToPlace,
   ProximityStatus,
 } from '@/lib/userLocation';
-import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 import CinematicPlaceSlideshow from '@/components/CinematicPlaceSlideshow';
 import {
   getLandmarkTimetables,
@@ -2425,36 +2431,80 @@ export default function PlaceDetailClient({
         {/* Reviews Section */}
         <Reviews placeId={place.id} />
 
-        {/* Explore Related Pune Landmarks & Heritage Sites (Internal Linking Network) */}
+        {/* Continue Your Pune Journey — Explore Related Attractions (Internal Linking Network) */}
         {relatedPlaces && relatedPlaces.length > 0 && (
           <section
-            className="mt-14 pt-10 border-t border-stone-200 dark:border-stone-800"
+            className="panel scroll-reveal place-section-reveal"
+            style={{
+              marginTop: 28,
+              marginBottom: 28,
+              padding: '28px 24px',
+            }}
             aria-labelledby="related-places-heading"
           >
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                flexWrap: 'wrap',
+                gap: 12,
+                borderBottom: '1px solid var(--line)',
+                paddingBottom: 14,
+                marginBottom: 20,
+              }}
+            >
               <div>
-                <span className="text-xs font-semibold tracking-wider uppercase text-amber-700 dark:text-amber-400">
-                  {isMr ? 'पुणे पर्यटन मार्गदर्शन' : 'Continue Your Pune Journey'}
+                <span
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    color: 'var(--clay)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.06em',
+                    display: 'block',
+                    marginBottom: 4,
+                  }}
+                >
+                  📍 {isMr ? 'पुणे पर्यटन मार्गदर्शन' : 'Continue Your Pune Journey'}
                 </span>
                 <h2
                   id="related-places-heading"
-                  className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 mt-1"
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: 800,
+                    color: 'var(--ink)',
+                    margin: 0,
+                    lineHeight: 1.25,
+                  }}
                 >
                   {isMr ? 'संबंधित आणि जवळपासची प्रेक्षणीय स्थळे' : 'Explore More Attractions in Pune'}
                 </h2>
               </div>
               <Link
                 href="/destinations"
-                className="inline-flex items-center text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                className="chip"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: 'var(--clay)',
+                }}
               >
-                <span>{isMr ? 'सर्व ८०+ ठिकाणे पहा' : 'View all 80+ places'}</span>
-                <span className="ml-1.5" aria-hidden="true">
-                  &rarr;
-                </span>
+                <span>{isMr ? 'सर्व १०६ ठिकाणे पहा' : 'View all 106 places'}</span>
+                <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: 18,
+              }}
+            >
               {relatedPlaces.map((rp: any) => {
                 const rpSlug = rp.slug || rp.id;
                 const rpName = isMr && rp.name_mr ? rp.name_mr : rp.name;
@@ -2471,44 +2521,131 @@ export default function PlaceDetailClient({
                   <Link
                     key={rpSlug}
                     href={`/places/${rpSlug}`}
-                    className="group flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 hover:border-amber-500/50 dark:hover:border-amber-500/50 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: '14px',
+                      overflow: 'hidden',
+                      border: '1px solid var(--line)',
+                      background: 'var(--surface-sunken, #fafaf9)',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+                    }}
+                    className="card-hover-fx"
                   >
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100 dark:bg-stone-800">
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '4 / 3',
+                        overflow: 'hidden',
+                        background: '#e7e5e4',
+                      }}
+                    >
                       <img
                         src={rpImage}
                         alt={`${rp.name} Pune`}
                         loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        decoding="async"
+                        width={400}
+                        height={300}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
                         onError={(e) => {
                           (e.currentTarget as HTMLImageElement).src = '/images/pune-map-hero.jpg';
                         }}
                       />
-                      <div className="absolute top-3 left-3">
-                        <span className="px-2.5 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-stone-950/70 backdrop-blur-md text-amber-300 border border-amber-400/20">
-                          {rpCategory}
-                        </span>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 8,
+                          left: 8,
+                          background: 'rgba(15, 23, 42, 0.75)',
+                          backdropFilter: 'blur(4px)',
+                          color: '#fef08a',
+                          padding: '3px 8px',
+                          borderRadius: 999,
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                        }}
+                      >
+                        {rpCategory}
                       </div>
-                      <div className="absolute bottom-3 right-3">
-                        <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-black/60 backdrop-blur-md text-white">
-                          {rpFee}
-                        </span>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 8,
+                          right: 8,
+                          background: 'rgba(0, 0, 0, 0.75)',
+                          backdropFilter: 'blur(4px)',
+                          color: '#ffffff',
+                          padding: '3px 8px',
+                          borderRadius: 6,
+                          fontSize: '11.5px',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {rpFee}
                       </div>
                     </div>
-                    <div className="p-4 flex flex-col flex-1">
-                      <h3 className="font-serif font-bold text-base text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1">
+                    <div
+                      style={{
+                        padding: '14px 14px 16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: 1,
+                      }}
+                    >
+                      <h3
+                        style={{
+                          margin: '0 0 6px 0',
+                          fontSize: '16px',
+                          fontWeight: 800,
+                          color: 'var(--ink)',
+                          lineHeight: 1.3,
+                        }}
+                      >
                         {rpName}
                       </h3>
-                      <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 mt-1.5 flex-1 leading-relaxed">
+                      <p
+                        style={{
+                          margin: '0 0 12px 0',
+                          fontSize: '12.5px',
+                          color: 'var(--muted)',
+                          lineHeight: 1.45,
+                          flex: 1,
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                        }}
+                      >
                         {isMr && rp.description_mr
                           ? rp.description_mr
                           : rp.description ||
                             `Visit ${rp.name} with verified hours, directions and entry fee details.`}
                       </p>
-                      <div className="mt-3 pt-3 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between text-xs font-semibold text-amber-600 dark:text-amber-400">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          fontSize: '12px',
+                          fontWeight: 700,
+                          color: 'var(--clay)',
+                          borderTop: '1px solid var(--line)',
+                          paddingTop: 10,
+                        }}
+                      >
                         <span>{isMr ? 'संपूर्ण माहिती पहा' : 'View Visitor Guide'}</span>
-                        <span className="transform group-hover:translate-x-1 transition-transform">
-                          &rarr;
-                        </span>
+                        <span aria-hidden="true">&rarr;</span>
                       </div>
                     </div>
                   </Link>

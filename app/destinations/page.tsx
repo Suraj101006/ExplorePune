@@ -8,14 +8,14 @@ const PAGE = 16;
 export const metadata: Metadata = {
   title: 'All Destinations & Historic Sites in Pune | Field Guide',
   description:
-    'Complete field guide to 80+ historic forts, Peshwa-era wadas, ancient temples, museums, and scenic trails across Pune.',
+    'Complete field guide to 106+ historic forts, Peshwa-era wadas, ancient temples, museums, and scenic trails across Pune.',
   alternates: {
     canonical: '/destinations',
   },
   openGraph: {
     title: 'All Destinations & Historic Sites in Pune | Explore Pune',
     description:
-      'Complete field guide to 80+ historic forts, Peshwa-era wadas, ancient temples, museums, and scenic trails across Pune.',
+      'Complete field guide to 106+ historic forts, Peshwa-era wadas, ancient temples, museums, and scenic trails across Pune.',
     url: '/destinations',
     siteName: 'Explore Pune',
     locale: 'en_IN',
@@ -117,7 +117,7 @@ export default async function DestinationsPage({
         name: 'How many heritage and cultural spots are covered on Explore Pune?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Explore Pune provides verified field records for over 80 curated destinations spanning Sahyadri hill forts, Peshwa-era wadas, ancient temples, botanical gardens, and culinary landmarks.',
+          text: 'Explore Pune provides verified field records for over 106 curated destinations spanning Sahyadri hill forts, Peshwa-era wadas, ancient temples, botanical gardens, and culinary landmarks.',
         },
       },
     ],

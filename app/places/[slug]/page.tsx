@@ -3,12 +3,35 @@ import PlaceDetailClient from '@/components/PlaceDetailClient';
 import { db } from '@/lib/firebase';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
+import { getCachedPlacesData } from '@/lib/serverPlaces';
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  return ALL_STRUCTURED_PLACES.filter((p) => Boolean(p.slug || p.id)).map((p) => ({
-    slug: p.slug || p.id,
+  const slugSet = new Set<string>();
+
+  try {
+    const snap = await getDocs(collection(db, 'places'));
+    snap.docs.forEach((d) => {
+      const data = d.data();
+      if (data.status === 'published') {
+        const s = data.slug || d.id;
+        if (s) slugSet.add(s);
+      }
+    });
+  } catch (err) {
+    console.warn('[generateStaticParams] Firestore fetch fallback to local places:', err);
+  }
+
+  if (Array.isArray(ALL_STRUCTURED_PLACES)) {
+    ALL_STRUCTURED_PLACES.forEach((p) => {
+      const s = p.slug || p.id;
+      if (s) slugSet.add(s);
+    });
+  }
+
+  return Array.from(slugSet).map((slug) => ({
+    slug,
   }));
 }
 
@@ -67,19 +90,21 @@ async function getPlaceData(slug: string) {
   return null;
 }
 
-function getRelatedPlaces(place: any, count = 4) {
+function getRelatedPlaces(place: any, pool: any[], count = 4) {
   const currentCategory = place.category_slug || place.category;
   const currentSlug = place.slug || place.id;
 
-  const sameCategory = ALL_STRUCTURED_PLACES.filter(
-    (p) =>
+  const dataset = pool && pool.length > 0 ? pool : ALL_STRUCTURED_PLACES;
+
+  const sameCategory = dataset.filter(
+    (p: any) =>
       p.slug !== currentSlug &&
       p.id !== currentSlug &&
       (p.category_slug === currentCategory || p.category === currentCategory)
   );
 
-  const others = ALL_STRUCTURED_PLACES.filter(
-    (p) =>
+  const others = dataset.filter(
+    (p: any) =>
       p.slug !== currentSlug &&
       p.id !== currentSlug &&
       p.category_slug !== currentCategory &&
@@ -268,7 +293,8 @@ export default async function PlaceDetailPage({
     touristType: ['Heritage', 'History', 'Culture', 'Tourism'],
   };
 
-  const relatedPlaces = getRelatedPlaces(place, 4);
+  const { places: pool } = await getCachedPlacesData();
+  const relatedPlaces = getRelatedPlaces(place, pool, 4);
 
   return (
     <>
