@@ -187,6 +187,20 @@ export default function IntroVideoOverlay() {
       return;
     }
 
+    // Mobile devices & small screens bypass: ensure instant LCP & zero data wasted on mobile
+    const isMobile =
+      typeof window !== 'undefined' &&
+      (/mobi|android|iphone|ipad|touch/i.test(navigator.userAgent) || window.innerWidth < 768);
+    if (isMobile) {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, 'true');
+        document.documentElement.classList.remove('intro-active');
+        document.documentElement.classList.add('intro-dismissed');
+      } catch {}
+      setIntroState('none');
+      return;
+    }
+
     // Bot & Crawler bypass: ensure search engines & speed tools see instant rendered content
     const isBot =
       typeof navigator !== 'undefined' &&

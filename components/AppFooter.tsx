@@ -161,7 +161,7 @@ export default function AppFooter() {
               href="https://twitter.com/intent/tweet?text=Explore%20Pune%20-%20The%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner&url=https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share Explore Pune on X (Twitter)"
+              aria-label="Twitter / X — Share Explore Pune"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

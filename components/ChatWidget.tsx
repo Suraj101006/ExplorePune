@@ -620,11 +620,11 @@ export default function ChatWidget() {
           aria-label={
             open
               ? isMr
-                ? 'Explore Pune सहाय्यक बंद करा'
-                : 'Close Explore Pune Assistant'
+                ? 'बंद करा — Explore Pune सहाय्यक'
+                : 'Close — Explore Pune Assistant'
               : isMr
-              ? 'Explore Pune सहाय्यक उघडा'
-              : 'Open Explore Pune Assistant'
+              ? 'पुणे AI मार्गदर्शक — Explore Pune सहाय्यक'
+              : 'Ask Pune AI — Explore Pune Assistant'
           }
         >
           <div className="chat-fab-pulse" />

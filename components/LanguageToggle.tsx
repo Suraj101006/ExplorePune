@@ -17,7 +17,8 @@ export default function LanguageToggle() {
         className={`lang-btn ${lang === 'en' ? 'lang-btn-active' : ''}`}
         style={{
           background: lang === 'en' ? 'var(--primary)' : 'transparent',
-          color: lang === 'en' ? '#ffffff' : 'var(--muted)',
+          color: lang === 'en' ? '#ffffff' : '#334155',
+          fontWeight: 700,
         }}
       >
         EN
@@ -28,7 +29,8 @@ export default function LanguageToggle() {
         className={`lang-btn ${lang === 'mr' ? 'lang-btn-active' : ''}`}
         style={{
           background: lang === 'mr' ? 'var(--primary)' : 'transparent',
-          color: lang === 'mr' ? '#ffffff' : 'var(--muted)',
+          color: lang === 'mr' ? '#ffffff' : '#334155',
+          fontWeight: 700,
           fontFamily: 'var(--deva)',
         }}
       >

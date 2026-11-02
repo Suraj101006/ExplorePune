@@ -1963,11 +1963,7 @@ html.intro-active .site-header,
 html.intro-active header,
 html.intro-active .chat-fab,
 html.intro-active .chat-panel,
-html.intro-active #chat-widget-container,
-html.intro-active main,
-html.intro-active .hero,
-html.intro-active .page-transition-wrap,
-html.intro-active .site-footer {
+html.intro-active #chat-widget-container {
   opacity: 0 !important;
   pointer-events: none !important;
 }

@@ -88,10 +88,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="google-site-verification" content="googleec52a74fd3fa44b1" />
         <meta name="google-site-verification" content="google9bda85abb7a0ba4d" />
 
-        {/* Zero-flash script: ensures all bars and places are 100% hidden while intro video is showing */}
+        {/* Zero-flash script: ensures smooth load without blocking mobile devices or crawlers */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|seositecheckup|checkup|sitecheckup|gtmetrix|pingdom|headlesschrome|ptst/i.test(navigator.userAgent);if((p==='/'||p==='')&&s!=='true'&&!r&&!b){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
+            __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|seositecheckup|checkup|sitecheckup|gtmetrix|pingdom|headlesschrome|ptst/i.test(navigator.userAgent);var m=/mobi|android|iphone|ipad|touch/i.test(navigator.userAgent)||(window.innerWidth&&window.innerWidth<768);if((p==='/'||p==='')&&s!=='true'&&!r&&!b&&!m){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
           }}
         />
         {/* Google Analytics 4 (GA4) */}
