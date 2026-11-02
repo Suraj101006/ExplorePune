@@ -4,7 +4,13 @@ import { db } from '@/lib/firebase';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return ALL_STRUCTURED_PLACES.filter((p) => Boolean(p.slug || p.id)).map((p) => ({
+    slug: p.slug || p.id,
+  }));
+}
 
 const SLUG_ALIASES: Record<string, string> = {
   'fc-road': 'fergusson-college-heritage',
@@ -66,10 +72,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const place = await getPlaceData(slug);
 
   if (place) {
-    const title = place.name_mr ? `${place.name_mr} (${place.name})` : place.name;
+    const feeStr =
+      place.fee_status === 'free' || place.entry_fee === 0
+        ? 'Free Entry'
+        : place.entry_fee
+        ? `Ticket ₹${place.entry_fee}`
+        : 'Visitor Guide';
+    const title = `${place.name} Pune — Timings, ${feeStr} & Visitor Guide`;
     const description =
-      place.description?.slice(0, 160) ??
-      `Visitor timings, ticket entry fee, historical significance, and travel guide for ${place.name}, Pune.`;
+      `Visiting ${place.name} in Pune? Check verified opening hours, ticket entry fee (${feeStr}), history, and public transit directions. ${place.description?.slice(0, 90) || ''}`.trim();
     const imageUrl = place.image_url || '/images/pune-map-hero.jpg';
 
     return {
@@ -89,7 +100,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             url: imageUrl,
             width: 1200,
             height: 630,
-            alt: place.name,
+            alt: `${place.name} Pune`,
           },
         ],
       },
@@ -229,6 +240,10 @@ export default async function PlaceDetailPage({
           }
         : undefined,
     isAccessibleForFree: place.fee_status === 'free' || place.entry_fee === 0,
+    priceRange: place.fee_status === 'free' || place.entry_fee === 0 ? 'Free' : `₹${place.entry_fee}`,
+    currenciesAccepted: 'INR',
+    publicAccess: true,
+    touristType: ['Heritage', 'History', 'Culture', 'Tourism'],
   };
 
   return (

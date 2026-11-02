@@ -45,8 +45,47 @@ export default async function BlogsPage() {
     console.error('Failed to load blogs:', err);
   }
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://explore-pune-eosin.vercel.app/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Stories & Travelogues',
+        item: 'https://explore-pune-eosin.vercel.app/blogs',
+      },
+    ],
+  };
+
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Pune Heritage & Trekking Travelogues',
+    itemListElement: blogs.map((b, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: b.title,
+      url: `https://explore-pune-eosin.vercel.app/blogs/${encodeURIComponent(b.slug || b.id)}`,
+    })),
+  };
+
   return (
     <main className="wrap" style={{ paddingTop: 40, paddingBottom: 60 }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       {/* Header */}
       <div
         style={{
