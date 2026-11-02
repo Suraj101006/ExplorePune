@@ -27,17 +27,15 @@ const FALLBACK_WEATHER: WeatherData = {
 
 export default function WeatherWidget() {
   const { isMr } = useLanguage();
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [weather, setWeather] = useState<WeatherData>(FALLBACK_WEATHER);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // 1. Immediately provide fallback for search crawlers & bots without issuing outbound XHR
     const isBot =
       typeof navigator !== 'undefined' &&
-      /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent);
+      /bot|googlebot|crawler|spider|robot|crawling|lighthouse|headlesschrome|ptst/i.test(navigator.userAgent);
     if (isBot) {
-      setWeather(FALLBACK_WEATHER);
-      setLoading(false);
       return;
     }
 
