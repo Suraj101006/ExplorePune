@@ -9,14 +9,14 @@ const PAGE = 16;
 export const metadata: Metadata = {
   title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
   description:
-    'Explore 106+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
+    'Explore 106+ historic Pune destinations with verified visiting hours, ticket entry fees, Sahyadri trekking trails, local cuisine guides, and custom AI trip planning.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description:
-      'Explore 106+ historic Pune destinations with verified hours, timings, entry fees, local cuisine recommendations, and interactive AI trip planning.',
+      'Explore 106+ historic Pune destinations with verified visiting hours, ticket entry fees, Sahyadri trekking trails, local cuisine guides, and custom AI trip planning.',
     url: '/',
     siteName: 'Explore Pune',
     locale: 'en_IN',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description:
-      'Explore 106+ historic Pune destinations with verified hours, timings, entry fees, and custom trip planning.',
+      'Explore 106+ historic Pune destinations with verified visiting hours, ticket entry fees, Sahyadri trekking trails, local cuisine guides, and custom AI trip planning.',
     images: ['/images/pune-map-hero.jpg'],
   },
 };
