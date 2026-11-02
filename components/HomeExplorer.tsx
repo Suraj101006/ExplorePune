@@ -545,13 +545,13 @@ export default function HomeExplorer({
                   : 'Iconic Sahyadri hill fortress known for Kalyan Darwaza and panoramic valley vistas.'}
               </p>
               <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                <span style={{ fontSize: '11.5px', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ६ ते सायं ६' : '06:00 – 18:00'}
                 </span>
                 <Link
                   href="/places/sinhagad-fort"
-                  aria-label="View Sinhagad Fort visitor guide and history"
+                  aria-label={isMr ? 'सिंहगड माहिती — संपूर्ण इतिहास व भेट मार्गदर्शक' : 'Sinhagad Guide — View visitor details and history'}
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'सिंहगड माहिती →' : 'Sinhagad Guide →'}
@@ -622,13 +622,13 @@ export default function HomeExplorer({
                   : 'The historic seat of the Peshwa rulers, Delhi Darwaza spikes, and Hazari Karanje.'}
               </p>
               <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                <span style={{ fontSize: '11.5px', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ९:३० ते सायं ५:३०' : '09:30 – 17:30'}
                 </span>
                 <Link
                   href="/places/shaniwar-wada"
-                  aria-label="View Shaniwar Wada visitor guide and history"
+                  aria-label={isMr ? 'शनिवार वाडा माहिती — संपूर्ण इतिहास व भेट मार्गदर्शक' : 'Shaniwar Wada Guide — View visitor details and history'}
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'शनिवार वाडा माहिती →' : 'Shaniwar Wada Guide →'}
@@ -699,13 +699,13 @@ export default function HomeExplorer({
                   : 'Priceless single-collector treasury of 18th-century textiles, instruments, and arms.'}
               </p>
               <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                <span style={{ fontSize: '11.5px', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी १० ते सायं ५:३०' : '10:00 – 17:30'}
                 </span>
                 <Link
                   href="/places/raja-dinkar-kelkar-museum"
-                  aria-label="View Raja Dinkar Kelkar Museum visitor guide and artifacts"
+                  aria-label={isMr ? 'केळकर संग्रहालय माहिती — दुर्मिळ वस्तू व भेट मार्गदर्शक' : 'Kelkar Museum Guide — View Raja Dinkar Kelkar Museum details and artifacts'}
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'केळकर संग्रहालय माहिती →' : 'Kelkar Museum Guide →'}
@@ -776,13 +776,13 @@ export default function HomeExplorer({
                   : 'Carved out of single basalt rock, featuring a circular Nandi pavilion on JM Road.'}
               </p>
               <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--line-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
-                <span style={{ fontSize: '11.5px', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                <span style={{ fontSize: '11.5px', color: '#047857', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
                   <ShieldCheck size={12} />
                   {isMr ? 'सकाळी ८:३० ते सायं ५:३०' : '08:30 – 17:30'}
                 </span>
                 <Link
                   href="/places/pataleshwar-cave-temple"
-                  aria-label="View Pataleshwar Cave Temple monolithic shrine details"
+                  aria-label={isMr ? 'पाताळेश्वर लेणी माहिती — अखंड कातळातील शिवमंदिर तपशील' : 'Pataleshwar Cave Guide — View Pataleshwar Cave Temple monolithic shrine details'}
                   style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', flexShrink: 0 }}
                 >
                   {isMr ? 'पाताळेश्वर लेणी माहिती →' : 'Pataleshwar Cave Guide →'}
@@ -1213,7 +1213,7 @@ export default function HomeExplorer({
 
             {/* Full Day */}
             <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#059669', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#047857', textTransform: 'uppercase' }}>
                 {isMr ? 'पूर्ण दिवस (८ तास)' : 'Full Day (8 Hours)'}
               </span>
               <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>

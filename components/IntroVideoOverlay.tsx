@@ -425,7 +425,7 @@ export default function IntroVideoOverlay() {
         autoPlay
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => triggerTitleCard()}
         onError={() => handleFinish(true)}
