@@ -58,10 +58,10 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: [
-      'https://explore-pune-eosin.vercel.app/sitemap.xml',
-      'https://explore-pune-eosin.vercel.app/sitemap_index.xml',
-      'https://explore-pune-eosin.vercel.app/video-sitemap.xml',
+      'https://explorepune-guide.vercel.app/sitemap.xml',
+      'https://explorepune-guide.vercel.app/sitemap_index.xml',
+      'https://explorepune-guide.vercel.app/video-sitemap.xml',
     ],
-    host: 'https://explore-pune-eosin.vercel.app',
+    host: 'https://explorepune-guide.vercel.app',
   };
 }

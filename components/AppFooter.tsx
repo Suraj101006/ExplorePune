@@ -137,7 +137,7 @@ export default function AppFooter() {
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
             <a
-              href="https://api.whatsapp.com/send?text=Explore%20Pune%20-%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner%3A%20https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              href="https://api.whatsapp.com/send?text=Explore%20Pune%20-%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner%3A%20https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share Explore Pune on WhatsApp"
@@ -158,7 +158,7 @@ export default function AppFooter() {
               <span>💬</span> WhatsApp
             </a>
             <a
-              href="https://twitter.com/intent/tweet?text=Explore%20Pune%20-%20The%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner&url=https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              href="https://twitter.com/intent/tweet?text=Explore%20Pune%20-%20The%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner&url=https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share Explore Pune on X (Twitter)"
@@ -179,7 +179,7 @@ export default function AppFooter() {
               <span>𝕏</span> Twitter / X
             </a>
             <a
-              href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fexplore-pune-eosin.vercel.app%2F"
+              href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share Explore Pune on LinkedIn"

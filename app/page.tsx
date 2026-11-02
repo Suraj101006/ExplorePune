@@ -105,10 +105,10 @@ export default async function HomePage({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Explore Pune',
-    url: 'https://explore-pune-eosin.vercel.app',
+    url: 'https://explorepune-guide.vercel.app',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://explore-pune-eosin.vercel.app/?q={search_term_string}',
+      target: 'https://explorepune-guide.vercel.app/?q={search_term_string}',
       'query-input': 'required name=search_term_string',
     },
   };
@@ -121,7 +121,7 @@ export default async function HomePage({
       '@type': 'ListItem',
       position: idx + 1,
       name: p.name,
-      url: `https://explore-pune-eosin.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
+      url: `https://explorepune-guide.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
     })),
   };
 
@@ -129,8 +129,8 @@ export default async function HomePage({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Explore Pune',
-    url: 'https://explore-pune-eosin.vercel.app',
-    logo: 'https://explore-pune-eosin.vercel.app/images/logo.svg',
+    url: 'https://explorepune-guide.vercel.app',
+    logo: 'https://explorepune-guide.vercel.app/images/logo.svg',
     description:
       'An authoritative, locally researched field guide to Maratha forts, Peshwa-era wadas, temples, and custom travel itineraries.',
     areaServed: {

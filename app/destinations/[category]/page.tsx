@@ -192,19 +192,19 @@ export default async function CategoryDestinationsPage({
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://explore-pune-eosin.vercel.app/',
+        item: 'https://explorepune-guide.vercel.app/',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Destinations',
-        item: 'https://explore-pune-eosin.vercel.app/destinations',
+        item: 'https://explorepune-guide.vercel.app/destinations',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: categoryName,
-        item: `https://explore-pune-eosin.vercel.app/destinations/${catParam}`,
+        item: `https://explorepune-guide.vercel.app/destinations/${catParam}`,
       },
     ],
   };
@@ -217,7 +217,7 @@ export default async function CategoryDestinationsPage({
       '@type': 'ListItem',
       position: idx + 1,
       name: p.name,
-      url: `https://explore-pune-eosin.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
+      url: `https://explorepune-guide.vercel.app/places/${encodeURIComponent(p.slug || p.id)}`,
     })),
   };
 

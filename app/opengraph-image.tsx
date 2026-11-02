@@ -108,7 +108,7 @@ export default async function Image() {
           }}
         >
           <span style={{ color: '#fb923c', fontWeight: 700 }}>
-            explore-pune-eosin.vercel.app
+            explorepune-guide.vercel.app
           </span>
           <span>106 Verified Pune Landmarks</span>
         </div>

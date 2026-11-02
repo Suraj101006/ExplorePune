@@ -33,7 +33,7 @@ const fontRozha = Rozha_One({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://explore-pune-eosin.vercel.app'),
+  metadataBase: new URL('https://explorepune-guide.vercel.app'),
   title: { default: 'Explore Pune | Historic Forts, Wadas & Trip Planner', template: '%s | Explore Pune' },
   description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails with verified hours, visitor costs, and custom trip planner.',
   alternates: {
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://explore-pune-eosin.vercel.app',
+    url: 'https://explorepune-guide.vercel.app',
     siteName: 'Explore Pune',
     title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description: 'Explore Pune: Historic forts, Peshwa wadas, ancient temples, museums, and Sahyadri trails with verified hours, visitor costs, and custom trip planner.',

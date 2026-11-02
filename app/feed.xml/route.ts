@@ -4,7 +4,7 @@ import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const baseUrl = 'https://explore-pune-eosin.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
   const buildDate = new Date().toUTCString();
 
   const items = ALL_STRUCTURED_PLACES.slice(0, 30).map((place) => {

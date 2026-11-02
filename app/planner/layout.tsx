@@ -33,20 +33,20 @@ const plannerSchemas = {
           '@type': 'ListItem',
           position: 1,
           name: 'Home',
-          item: 'https://explore-pune-eosin.vercel.app/',
+          item: 'https://explorepune-guide.vercel.app/',
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'AI Trip Planner',
-          item: 'https://explore-pune-eosin.vercel.app/planner',
+          item: 'https://explorepune-guide.vercel.app/planner',
         },
       ],
     },
     {
       '@type': 'WebApplication',
       name: 'Explore Pune AI Trip Planner',
-      url: 'https://explore-pune-eosin.vercel.app/planner',
+      url: 'https://explorepune-guide.vercel.app/planner',
       applicationCategory: 'TravelApplication',
       operatingSystem: 'All (Web, Android, iOS)',
       offers: {

@@ -53,13 +53,13 @@ export default async function BlogsPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://explore-pune-eosin.vercel.app/',
+        item: 'https://explorepune-guide.vercel.app/',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Stories & Travelogues',
-        item: 'https://explore-pune-eosin.vercel.app/blogs',
+        item: 'https://explorepune-guide.vercel.app/blogs',
       },
     ],
   };
@@ -72,7 +72,7 @@ export default async function BlogsPage() {
       '@type': 'ListItem',
       position: idx + 1,
       name: b.title,
-      url: `https://explore-pune-eosin.vercel.app/blogs/${encodeURIComponent(b.slug || b.id)}`,
+      url: `https://explorepune-guide.vercel.app/blogs/${encodeURIComponent(b.slug || b.id)}`,
     })),
   };
 

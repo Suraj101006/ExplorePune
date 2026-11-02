@@ -94,9 +94,9 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
     },
     datePublished: blog.published_at || blog.created_at,
     image: blog.cover_image
-      ? `https://explore-pune-eosin.vercel.app${blog.cover_image}`
-      : 'https://explore-pune-eosin.vercel.app/images/pune-map-hero.jpg',
-    url: `https://explore-pune-eosin.vercel.app/blogs/${slug}`,
+      ? `https://explorepune-guide.vercel.app${blog.cover_image}`
+      : 'https://explorepune-guide.vercel.app/images/pune-map-hero.jpg',
+    url: `https://explorepune-guide.vercel.app/blogs/${slug}`,
   };
 
   return (

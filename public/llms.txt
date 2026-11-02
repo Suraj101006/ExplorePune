@@ -5,27 +5,27 @@
 Explore Pune is an authoritative, verified digital travel journal, itinerary planner, and heritage preservation directory dedicated to Pune and the surrounding Sahyadri region in Maharashtra, India.
 
 ## Canonical Domain
-- Website: https://explore-pune-eosin.vercel.app
+- Website: https://explorepune-guide.vercel.app
 - Language: English (en) and Marathi (mr)
-- Sitemaps: https://explore-pune-eosin.vercel.app/sitemap.xml
-- Robots: https://explore-pune-eosin.vercel.app/robots.txt
+- Sitemaps: https://explorepune-guide.vercel.app/sitemap.xml
+- Robots: https://explorepune-guide.vercel.app/robots.txt
 
 ## Primary Public Routes
-- [Explore Pune Home](https://explore-pune-eosin.vercel.app/): Main heritage explorer directory with real-time filtering, search, and category exploration.
-- [Destinations Directory](https://explore-pune-eosin.vercel.app/destinations): Curated field guide index of 80+ historic Pune destinations.
-- [Historic Forts Guide](https://explore-pune-eosin.vercel.app/destinations/forts): Sahyadri mountain strongholds, trekking routes, and Maratha history.
-- [Peshwa Wadas Guide](https://explore-pune-eosin.vercel.app/destinations/heritage): 18th-century Maratha wadas and wooden palaces.
-- [Sacred Temples Guide](https://explore-pune-eosin.vercel.app/destinations/temples): Ancient Hemadpanthi, rock-cut, and sacred shrines.
-- [Museums Guide](https://explore-pune-eosin.vercel.app/destinations/museums): Antiquities, social reform memorials, and cultural galleries.
-- [Nature & Lakes Guide](https://explore-pune-eosin.vercel.app/destinations/nature): Sahyadri hills, tekdis, lakes, and reservoirs.
-- [Food Heritage Guide](https://explore-pune-eosin.vercel.app/destinations/food): Authentic Puneri gastronomy, misal, and heritage eateries.
-- [Free Entry Guide](https://explore-pune-eosin.vercel.app/destinations/free): Verified free admission destinations (₹0 entry).
-- [AI Trip Planner](https://explore-pune-eosin.vercel.app/planner): Custom daily itinerary generator optimized by duration, companion, travel pace, and transport mode.
-- [Pune Community](https://explore-pune-eosin.vercel.app/community): Authentic visitor reviews, travel tips, and moderated heritage discussions.
-- [Traveller Stories & Blogs](https://explore-pune-eosin.vercel.app/blogs): Long-form travelogues and expedition field journals by local explorers.
-- [Explorer Milestones](https://explore-pune-eosin.vercel.app/milestones): Gamified heritage achievements, visit certificates, and exploration badges.
-- [About the Initiative](https://explore-pune-eosin.vercel.app/about): Background, mission, and heritage conservation ethics.
-- [Data Methodology](https://explore-pune-eosin.vercel.app/data): Archival sources, GIS validation standards, and research methodology.
+- [Explore Pune Home](https://explorepune-guide.vercel.app/): Main heritage explorer directory with real-time filtering, search, and category exploration.
+- [Destinations Directory](https://explorepune-guide.vercel.app/destinations): Curated field guide index of 106+ historic Pune destinations.
+- [Historic Forts Guide](https://explorepune-guide.vercel.app/destinations/forts): Sahyadri mountain strongholds, trekking routes, and Maratha history.
+- [Peshwa Wadas Guide](https://explorepune-guide.vercel.app/destinations/heritage): 18th-century Maratha wadas and wooden palaces.
+- [Sacred Temples Guide](https://explorepune-guide.vercel.app/destinations/temples): Ancient Hemadpanthi, rock-cut, and sacred shrines.
+- [Museums Guide](https://explorepune-guide.vercel.app/destinations/museums): Antiquities, social reform memorials, and cultural galleries.
+- [Nature & Lakes Guide](https://explorepune-guide.vercel.app/destinations/nature): Sahyadri hills, tekdis, lakes, and reservoirs.
+- [Food Heritage Guide](https://explorepune-guide.vercel.app/destinations/food): Authentic Puneri gastronomy, misal, and heritage eateries.
+- [Free Entry Guide](https://explorepune-guide.vercel.app/destinations/free): Verified free admission destinations (₹0 entry).
+- [AI Trip Planner](https://explorepune-guide.vercel.app/planner): Custom daily itinerary generator optimized by duration, companion, travel pace, and transport mode.
+- [Pune Community](https://explorepune-guide.vercel.app/community): Authentic visitor reviews, travel tips, and moderated heritage discussions.
+- [Traveller Stories & Blogs](https://explorepune-guide.vercel.app/blogs): Long-form travelogues and expedition field journals by local explorers.
+- [Explorer Milestones](https://explorepune-guide.vercel.app/milestones): Gamified heritage achievements, visit certificates, and exploration badges.
+- [About the Initiative](https://explorepune-guide.vercel.app/about): Background, mission, and heritage conservation ethics.
+- [Data Methodology](https://explorepune-guide.vercel.app/data): Archival sources, GIS validation standards, and research methodology.
 
 ## Major Verified Destination Entities
 - **Sinhagad Fort (कोंढाणा)**: Sahyadri hill fortress at 1,312m elevation; site of the 1670 Battle of Sinhagad fought by Tanaji Malusare.

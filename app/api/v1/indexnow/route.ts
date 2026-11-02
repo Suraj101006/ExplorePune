@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 const INDEXNOW_KEY = '404a71b2d7fc4f2b9b7342813589b21e';
-const HOST = 'explore-pune-eosin.vercel.app';
+const HOST = 'explorepune-guide.vercel.app';
 const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 
 const PRIORITY_URLS = [

@@ -6,7 +6,7 @@ import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://explore-pune-eosin.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
   const now = new Date();
 
   // Core public indexable routes
