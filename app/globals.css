@@ -2385,53 +2385,53 @@ html.intro-dismissed .intro-overlay {
 }
 
 .hero-anim-badge {
-  animation: heroFadeIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 50ms;
+  animation: heroFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0ms;
 }
 
 .hero-anim-weather {
-  animation: heroFadeIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 130ms;
+  animation: heroFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0ms;
 }
 
 .hero-anim-title {
-  animation: heroFadeUp 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 220ms;
+  animation: heroFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 30ms;
 }
 
 .hero-anim-desc {
-  animation: heroFadeUp 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 310ms;
+  animation: heroFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 60ms;
 }
 
 .hero-anim-search {
-  animation: heroFadeUp 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 400ms;
+  animation: heroFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 90ms;
 }
 
 .hero-anim-chips-wrap {
-  animation: heroFadeIn 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 480ms;
+  animation: heroFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 120ms;
 }
 
 .hero-anim-chip {
-  animation: heroChipFadeUp 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(500ms + var(--chip-i, 0) * 40ms);
+  animation: heroChipFadeUp 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(120ms + var(--chip-i, 0) * 20ms);
 }
 
 .hero-anim-actions {
-  animation: heroFadeUp 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 600ms;
+  animation: heroFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 150ms;
 }
 
 .hero-anim-trust {
-  animation: heroFadeIn 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 700ms;
+  animation: heroFadeIn 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 180ms;
 }
 
 .hero-anim-trust-item {
-  animation: heroFadeIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(720ms + var(--trust-i, 0) * 85ms);
+  animation: heroFadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(180ms + var(--trust-i, 0) * 30ms);
 }
 
 /* Viewport-based Section Reveals (IntersectionObserver) */
