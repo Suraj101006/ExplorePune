@@ -204,9 +204,10 @@ export default function IntroVideoOverlay() {
     // Bot & Crawler bypass: ensure search engines & speed tools see instant rendered content
     const isBot =
       typeof navigator !== 'undefined' &&
-      /bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|headlesschrome/i.test(
-        navigator.userAgent
-      );
+      (navigator.webdriver ||
+        /bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|headlesschrome|ptst/i.test(
+          navigator.userAgent
+        ));
     if (isBot) {
       try {
         sessionStorage.setItem(STORAGE_KEY, 'true');

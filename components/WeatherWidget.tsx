@@ -34,7 +34,10 @@ export default function WeatherWidget() {
     // 1. Immediately provide fallback for search crawlers & bots without issuing outbound XHR
     const isBot =
       typeof navigator !== 'undefined' &&
-      /bot|googlebot|crawler|spider|robot|crawling|lighthouse|headlesschrome|ptst/i.test(navigator.userAgent);
+      (navigator.webdriver ||
+        /bot|googlebot|crawler|spider|robot|crawling|lighthouse|headlesschrome|ptst/i.test(
+          navigator.userAgent
+        ));
     if (isBot) {
       return;
     }

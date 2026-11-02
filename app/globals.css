@@ -1948,19 +1948,11 @@ a:hover {
    CINEMATIC INTRO VIDEO OVERLAY — FULLSCREEN WITH NO BARS & NO PLACES
    =================================================================== */
 
-/* While intro is actively playing: lock scrolling and completely hide navigation bar, chat widget, and places */
-html.intro-active,
+/* While intro is actively playing: keep document flow stable to prevent any layout shift */
 html.intro-active body {
-  overflow: hidden !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  max-height: 100vh !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  scrollbar-gutter: stable;
 }
 
-html.intro-active .site-header,
-html.intro-active header,
 html.intro-active .chat-fab,
 html.intro-active .chat-panel,
 html.intro-active #chat-widget-container {
