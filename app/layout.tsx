@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 import ChatWidget from '@/components/ChatWidget';
@@ -95,6 +94,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
     >
       <head>
+        {/* Google Tag (Container: GTM-MN4BZPB6) */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MN4BZPB6" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            `,
+          }}
+        />
+
         {/* Google Search Console Site Verification */}
         <meta name="google-site-verification" content="googleec52a74fd3fa44b1" />
         <meta name="google-site-verification" content="google9bda85abb7a0ba4d" />
@@ -105,28 +116,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var p=window.location.pathname;var s=sessionStorage.getItem('explore_pune_intro_shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var b=navigator.webdriver||/bot|googlebot|crawler|spider|robot|crawling|lighthouse|seoptimer|seositecheckup|checkup|sitecheckup|gtmetrix|pingdom|headlesschrome|ptst/i.test(navigator.userAgent);var m=/mobi|android|iphone|ipad|touch/i.test(navigator.userAgent)||(window.innerWidth&&window.innerWidth<768);if((p==='/'||p==='')&&s!=='true'&&!r&&!b&&!m){document.documentElement.classList.add('intro-active');}else{document.documentElement.classList.add('intro-dismissed');}}catch(e){}})();`,
           }}
         />
-        {/* Google Analytics 4 (GA4) */}
-        <Script
-          strategy="lazyOnload"
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-EXPLOREPUNE1'}`}
-        />
-        <Script
-          id="google-analytics"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-EXPLOREPUNE1'}', {
-                page_path: window.location.pathname,
-                anonymize_ip: true
-              });
-            `,
-          }}
-        />
       </head>
       <body>
+        {/* Google Tag Manager (noscript fallback) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MN4BZPB6"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <LanguageProvider>
           <TravelPhotoTransitionProvider>
             <IntroVideoOverlay />
