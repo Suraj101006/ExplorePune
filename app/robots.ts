@@ -1,67 +1,86 @@
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
+
+  const commonAllow = [
+    '/',
+    '/_next/static/',
+    '/_next/image',
+    '/images/',
+    '/videos/',
+    '/manifest.webmanifest',
+    '/feed.xml',
+    '/rss.xml',
+    '/llms.txt',
+    '/sitemap.xml',
+    '/sitemap_index.xml',
+    '/video-sitemap.xml',
+  ];
+
+  const commonDisallow = [
+    '/api/',
+    '/admin',
+    '/admin/',
+    '/account',
+    '/account/',
+    '/login',
+    '/login/',
+    '/journey',
+    '/journey/',
+    '/blogs/new',
+    '/blogs/new/',
+  ];
+
   return {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/admin',
-          '/account',
-          '/login',
-          '/journey',
-          '/blogs/new',
-        ],
+        allow: commonAllow,
+        disallow: commonDisallow,
       },
       {
-        // Major search engine crawlers
+        // Major search engine crawlers: Google, Bing, Applebot, DuckDuckGo, Baidu, Yandex
         userAgent: [
           'Googlebot',
+          'Googlebot-Image',
+          'Googlebot-News',
+          'Googlebot-Video',
           'Bingbot',
           'Applebot',
           'DuckDuckBot',
           'Baiduspider',
           'YandexBot',
         ],
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/admin',
-          '/account',
-          '/login',
-          '/journey',
-          '/blogs/new',
-        ],
+        allow: commonAllow,
+        disallow: commonDisallow,
       },
       {
-        // Generative AI & Answer Engine crawlers (GEO - Generative Engine Optimization)
+        // Generative AI & Answer Engine crawlers (GEO - Generative Engine Optimization for ChatGPT, Perplexity, Gemini, Claude, Apple Intelligence)
         userAgent: [
           'GPTBot',
           'ChatGPT-User',
+          'OAI-SearchBot',
           'PerplexityBot',
           'ClaudeBot',
+          'Claude-Web',
+          'anthropic-ai',
           'Google-Extended',
+          'Applebot-Extended',
           'Amazonbot',
-          'OAI-SearchBot',
+          'cohere-ai',
+          'Bytespider',
+          'Meta-ExternalAgent',
         ],
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/admin',
-          '/account',
-          '/login',
-          '/journey',
-          '/blogs/new',
-        ],
+        allow: commonAllow,
+        disallow: commonDisallow,
       },
     ],
     sitemap: [
-      'https://explorepune-guide.vercel.app/sitemap.xml',
-      'https://explorepune-guide.vercel.app/sitemap_index.xml',
-      'https://explorepune-guide.vercel.app/video-sitemap.xml',
+      `${baseUrl}/sitemap.xml`,
+      `${baseUrl}/sitemap_index.xml`,
+      `${baseUrl}/video-sitemap.xml`,
     ],
-    host: 'https://explorepune-guide.vercel.app',
+    host: baseUrl,
   };
 }

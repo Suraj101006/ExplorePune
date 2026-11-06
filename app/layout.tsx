@@ -71,6 +71,17 @@ export const metadata: Metadata = {
     apple: '/logo-small.png',
   },
   manifest: '/manifest.webmanifest',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   verification: {
     google: ['googleec52a74fd3fa44b1', 'google9bda85abb7a0ba4d'],
   },
