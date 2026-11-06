@@ -94,8 +94,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
     >
       <head>
-        {/* Google Tag (Container: GTM-MN4BZPB6) */}
-        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MN4BZPB6" />
+        {/* Google Tag (Container: GTM-WNTH6S92) */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WNTH6S92" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -121,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Google Tag Manager (noscript fallback) */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-MN4BZPB6"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WNTH6S92"
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
