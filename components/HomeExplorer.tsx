@@ -1633,12 +1633,17 @@ export default function HomeExplorer({
                           e.stopPropagation();
                           handleSpeak(p);
                         }}
-                        className="card-action-btn"
-                        style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}
-                        title={isMr ? 'पुणेरी उच्चार ऐका' : 'Listen Native Pronunciation'}
-                        aria-label="Listen pronunciation"
+                        className={`card-action-btn card-action-sound ${speakingId === p.id ? 'active-speaking' : ''}`}
+                        style={{ position: 'absolute', top: 10, left: 10, zIndex: 10 }}
+                        title={isMr ? `${p.name_mr || p.name} चा पुणेरी उच्चार ऐका` : `Listen native pronunciation of ${p.name}`}
+                        aria-label={isMr ? `${p.name_mr || p.name} चा पुणेरी उच्चार ऐका` : `Listen pronunciation of ${p.name}`}
                       >
-                        <Volume2 size={15} color={speakingId === p.id ? '#059669' : '#ffffff'} />
+                        <Volume2
+                          size={16}
+                          strokeWidth={2.2}
+                          color={speakingId === p.id ? '#059669' : 'currentColor'}
+                          aria-hidden="true"
+                        />
                       </button>
 
                       {/* Bookmark Tool (Requirement 14) */}
@@ -1649,12 +1654,20 @@ export default function HomeExplorer({
                           e.stopPropagation();
                           handleToggleSave(p);
                         }}
-                        className={`card-action-btn ${isSaved ? 'active-saved' : ''} ${poppingBookmarkId === p.id ? 'bookmark-btn-pop' : ''}`}
-                        style={{ position: 'absolute', top: 10, right: 10, zIndex: 3 }}
+                        className={`card-action-btn card-action-bookmark ${isSaved ? 'active-saved' : ''} ${poppingBookmarkId === p.id ? 'bookmark-btn-pop' : ''}`}
+                        style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}
                         title={isSaved ? (isMr ? 'आवडत्या यादीतून काढा' : 'Remove from Wishlist') : (isMr ? 'आवडत्या यादीत जोडा' : 'Save to Wishlist')}
-                        aria-label="Save place"
+                        aria-label={isSaved
+                          ? (isMr ? `${p.name_mr || p.name} आवडत्या यादीतून काढा` : `Remove ${p.name} from saved places`)
+                          : (isMr ? `${p.name_mr || p.name} आवडत्या यादीत जोडा` : `Save ${p.name} to wishlist`)}
                       >
-                        <Bookmark size={15} fill={isSaved ? '#ea580c' : 'none'} color={isSaved ? '#ea580c' : '#ffffff'} />
+                        <Bookmark
+                          size={16}
+                          strokeWidth={2.2}
+                          fill={isSaved ? '#e11d48' : 'none'}
+                          color={isSaved ? '#e11d48' : 'currentColor'}
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
 
