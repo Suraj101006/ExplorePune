@@ -7,10 +7,22 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/useAuth';
 import { useLanguage } from '@/lib/LanguageContext';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, setDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { compressImageFile } from '@/lib/imageUtils';
 import { downloadCertificatePdf } from '@/lib/generateCertificatePdf';
 import { getActiveTrip, ActiveTrip } from '@/lib/activeTrip';
+import {
+  evaluateUserAchievements,
+  computeAchievementsSummary,
+  UserAchievementState,
+  getCelebratedBadgeIds,
+  markBadgeAsCelebrated,
+} from '@/lib/achievements';
+import AchievementsGallery from '@/components/AchievementsGallery';
+import ShareAchievementModal from '@/components/ShareAchievementModal';
+import CelebrationUnlockModal from '@/components/CelebrationUnlockModal';
+import AchievementBadgeMedal from '@/components/AchievementBadgeMedal';
+import { Trophy, Star, Sparkles, Compass, Award } from 'lucide-react';
 
 interface MilestoneItem {
   id: string;
@@ -191,10 +203,12 @@ export default function MilestonesPage() {
   const { isMr, t } = useLanguage();
   const [visitsCount, setVisitsCount] = useState(0);
   const [blogsCount, setBlogsCount] = useState(0);
+  const [userVisits, setUserVisits] = useState<any[]>([]);
+  const [favoriteBadgeIds, setFavoriteBadgeIds] = useState<string[]>([]);
   const [placesList, setPlacesList] = useState<PlaceOption[]>([]);
   const [communityCheckins, setCommunityCheckins] = useState<PublicCommunityCheckin[]>([]);
 
-  // Check-in Modal State
+  // Modals State
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPlaceId, setSelectedPlaceId] = useState('');
   const [visitDate, setVisitDate] = useState(new Date().toISOString().slice(0, 10));
@@ -204,18 +218,35 @@ export default function MilestonesPage() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
   const [congratsModal, setCongratsModal] = useState<MilestoneItem | null>(null);
+  const [sharingAchievement, setSharingAchievement] = useState<UserAchievementState | null>(null);
+  const [celebrationAchievement, setCelebrationAchievement] = useState<UserAchievementState | null>(null);
   const [activeTrip, setActiveTrip] = useState<ActiveTrip | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadStats = async () => {
     if (!user) return;
     try {
-      const [visitsSnap, blogsSnap] = await Promise.all([
+      const [visitsSnap, blogsSnap, profileSnap] = await Promise.all([
         getDocs(query(collection(db, 'visits'), where('user_id', '==', user.uid))),
         getDocs(query(collection(db, 'blogs'), where('author_id', '==', user.uid), where('status', '==', 'published'))),
+        getDoc(doc(db, 'profiles', user.uid)),
       ]);
-      setVisitsCount(visitsSnap.size);
+      const loadedVisits = visitsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setUserVisits(loadedVisits);
+      setVisitsCount(loadedVisits.length);
       setBlogsCount(blogsSnap.size);
+
+      if (profileSnap.exists()) {
+        const profData = profileSnap.data();
+        if (profData?.favorite_badge_ids && Array.isArray(profData.favorite_badge_ids)) {
+          setFavoriteBadgeIds(profData.favorite_badge_ids);
+        }
+      } else if (typeof window !== 'undefined') {
+        try {
+          const cachedFavs = localStorage.getItem(`explore_pune_fav_badges_${user.uid}`);
+          if (cachedFavs) setFavoriteBadgeIds(JSON.parse(cachedFavs));
+        } catch {}
+      }
     } catch (err) {
       console.error('Failed to load user milestone stats:', err);
     }
@@ -333,15 +364,32 @@ export default function MilestonesPage() {
         created_at: new Date().toISOString(),
       });
 
-      const newVisits = visitsCount + 1;
-      setVisitsCount(newVisits);
+      const newVisitObj = {
+        id: visitId,
+        place_id: selectedPlace.id,
+        place_slug: selectedPlace.slug,
+        place_name: selectedPlace.name,
+        place_name_mr: selectedPlace.name_mr || selectedPlace.name,
+        user_id: user.uid,
+        visited_at: visitDate,
+        notes: visitNote || null,
+        image_url: imagePreview,
+        is_public: isPublic,
+      };
 
-      // Check if a new milestone was unlocked with this check-in!
-      const justUnlocked = MILESTONES_DATA.find(
-        (m) => m.criteriaType === 'distinct_places' && m.criteriaValue === newVisits
+      const updatedVisits = [...userVisits, newVisitObj];
+      setUserVisits(updatedVisits);
+      setVisitsCount(updatedVisits.length);
+
+      // Check if a new collectible achievement was unlocked with this check-in!
+      const updatedStates = evaluateUserAchievements(updatedVisits, blogsCount, undefined, favoriteBadgeIds);
+      const celebrated = getCelebratedBadgeIds();
+      const newlyUnlocked = updatedStates.find(
+        (s) => s.isUnlocked && !celebrated.has(s.id)
       );
-      if (justUnlocked) {
-        setCongratsModal(justUnlocked);
+
+      if (newlyUnlocked) {
+        setCelebrationAchievement(newlyUnlocked);
       }
 
       setModalOpen(false);
@@ -361,6 +409,43 @@ export default function MilestonesPage() {
     }
   };
 
+  const handleToggleFavoriteBadge = async (badgeId: string) => {
+    if (!user) return;
+    const isFav = favoriteBadgeIds.includes(badgeId);
+    let next: string[];
+    if (isFav) {
+      next = favoriteBadgeIds.filter((id) => id !== badgeId);
+    } else {
+      if (favoriteBadgeIds.length >= 5) {
+        setFormError(isMr ? 'जास्तीत जास्त ५ पदके निवडता येतील.' : 'You can showcase up to 5 favorite badges.');
+        return;
+      }
+      next = [...favoriteBadgeIds, badgeId];
+    }
+    setFavoriteBadgeIds(next);
+    try {
+      localStorage.setItem(`explore_pune_fav_badges_${user.uid}`, JSON.stringify(next));
+      await updateDoc(doc(db, 'profiles', user.uid), {
+        favorite_badge_ids: next,
+        updated_at: new Date().toISOString(),
+      });
+    } catch (e) {
+      console.warn('Could not update favorite badges:', e);
+    }
+  };
+
+  const handleDownloadAchievementCertificate = (ach: UserAchievementState) => {
+    downloadCertificatePdf({
+      explorerName: user?.displayName || user?.email?.split('@')[0] || 'Pune Explorer',
+      milestoneTitle: isMr ? ach.definition.nameMr : ach.definition.nameEn,
+      milestoneTitleMr: ach.definition.nameMr,
+      milestoneBadge: '🏆',
+      milestoneDesc: isMr ? ach.definition.descMr : ach.definition.descEn,
+      dateUnlocked: new Date().toISOString().slice(0, 10),
+      isMr,
+    });
+  };
+
   const handleDownloadCertificate = (m: MilestoneItem) => {
     downloadCertificatePdf({
       explorerName: user?.displayName || user?.email?.split('@')[0] || 'Pune Explorer',
@@ -372,6 +457,14 @@ export default function MilestonesPage() {
       isMr,
     });
   };
+
+  const achievementStates = evaluateUserAchievements(
+    userVisits,
+    blogsCount,
+    undefined,
+    favoriteBadgeIds
+  );
+  const achievementsSummary = computeAchievementsSummary(achievementStates);
 
   return (
     <main className="wrap" style={{ paddingTop: 40, paddingBottom: 60 }}>
@@ -466,42 +559,46 @@ export default function MilestonesPage() {
         </div>
       )}
 
-      {/* User Status Card */}
+      {/* User Explorer Rank Dashboard */}
       {ready && user ? (
         <div
           className="panel"
           style={{
             marginBottom: 32,
+            padding: '24px 28px',
             background: 'linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%)',
             border: '1.5px solid var(--primary-border)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <div
                 style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: '50%',
-                  background: 'var(--primary)',
+                  width: 58,
+                  height: 58,
+                  borderRadius: 16,
+                  background: achievementsSummary.currentRank.themeColor,
                   color: '#fff',
                   display: 'grid',
                   placeItems: 'center',
-                  fontSize: 24,
-                  fontWeight: 800,
+                  fontSize: 30,
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
                 }}
               >
-                🏅
+                {achievementsSummary.currentRank.badgeSymbol}
               </div>
               <div>
-                <h2 style={{ fontSize: 20, margin: 0, color: 'var(--ink)' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#c2410c', textTransform: 'uppercase' }}>
+                  Level {achievementsSummary.currentRank.level}: {isMr ? achievementsSummary.currentRank.titleMr : achievementsSummary.currentRank.titleEn}
+                </div>
+                <h2 style={{ fontSize: 22, margin: '2px 0 4px', color: 'var(--ink)' }}>
                   {user.displayName || user.email?.split('@')[0]}
-                  {isMr ? ' यांची भ्रमंती प्रगती' : "'s Explorer Progress"}
+                  {isMr ? ' यांची भ्रमंती प्रगती' : "'s Explorer Mastery"}
                 </h2>
-                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--muted)' }}>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--muted)' }}>
                   {isMr
-                    ? `${visitsCount} ठिकाणांना फोटोसह भेट दिली • ${blogsCount} कथा प्रकाशित • ${unlockedCount} / ${MILESTONES_DATA.length} पदके संपादन`
-                    : `${visitsCount} visits with verified photos • ${blogsCount} travelogues published • ${unlockedCount} of ${MILESTONES_DATA.length} badges unlocked`}
+                    ? `${userVisits.length} ठिकाणांना भेट • ${achievementsSummary.unlockedCount} / ${achievementsSummary.totalCount} पदके संपादन`
+                    : `${userVisits.length} verified destination visits • ${achievementsSummary.unlockedCount} of ${achievementsSummary.totalCount} collectible medals unlocked`}
                 </p>
               </div>
             </div>
@@ -516,32 +613,54 @@ export default function MilestonesPage() {
                   setIsPublic(false);
                 }}
                 className="btn"
-                style={{ fontSize: 13, padding: '8px 16px', background: '#c2410c' }}
+                style={{ fontSize: 13, padding: '8px 18px', background: '#c2410c' }}
               >
                 📸 {isMr ? 'नवीन भेट नोंदवा' : 'Log New Place Visit'}
               </button>
               <Link href="/account" className="btn outline" style={{ fontSize: 13, padding: '8px 16px' }}>
-                👤 {isMr ? 'माझे खाते' : 'My Account'}
+                👤 {isMr ? 'माझे खाते' : 'My Profile & Badges'}
               </Link>
             </div>
           </div>
 
-          {/* Overall Progress Bar */}
-          <div style={{ marginTop: 18 }}>
+          {/* Level Progress Bar */}
+          <div style={{ marginTop: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 6 }}>
-              <span>{isMr ? 'एकूण यशोगाथा प्रगती' : 'Total Explorer Mastery'}</span>
-              <span>{Math.round((unlockedCount / MILESTONES_DATA.length) * 100)}%</span>
+              <span>
+                {achievementsSummary.nextRank
+                  ? (isMr
+                      ? `${isMr ? achievementsSummary.nextRank.titleMr : achievementsSummary.nextRank.titleEn} स्तरासाठी प्रगती`
+                      : `Progress to ${achievementsSummary.nextRank.titleEn}`)
+                  : (isMr ? 'सर्वोच्च पुणेकर सम्राट स्तर!' : 'Highest Grandmaster Rank Achieved!')}
+              </span>
+              <span>{achievementsSummary.completionPercentage}% Complete</span>
             </div>
             <div style={{ height: 10, background: '#e2e8f0', borderRadius: 999, overflow: 'hidden' }}>
               <div
                 style={{
-                  width: `${(unlockedCount / MILESTONES_DATA.length) * 100}%`,
+                  width: `${achievementsSummary.completionPercentage}%`,
                   height: '100%',
-                  background: 'linear-gradient(90deg, var(--primary) 0%, #10b981 100%)',
+                  background: 'linear-gradient(90deg, #ea580c 0%, #10b981 100%)',
                   borderRadius: 999,
                   transition: 'width 0.4s ease',
                 }}
               />
+            </div>
+          </div>
+
+          {/* Rarity Counter Badges Strip */}
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
+            <div style={{ padding: '6px 12px', borderRadius: 8, background: '#ffedd5', color: '#9a3412', fontSize: 12, fontWeight: 700, border: '1px solid #fdba74' }}>
+              Common: {achievementsSummary.totalRarityUnlocked.common}
+            </div>
+            <div style={{ padding: '6px 12px', borderRadius: 8, background: '#e0f2fe', color: '#0369a1', fontSize: 12, fontWeight: 700, border: '1px solid #7dd3fc' }}>
+              Rare: {achievementsSummary.totalRarityUnlocked.rare}
+            </div>
+            <div style={{ padding: '6px 12px', borderRadius: 8, background: '#fef3c7', color: '#b45309', fontSize: 12, fontWeight: 700, border: '1px solid #fcd34d' }}>
+              Epic: {achievementsSummary.totalRarityUnlocked.epic}
+            </div>
+            <div style={{ padding: '6px 12px', borderRadius: 8, background: '#ffe4e6', color: '#be123c', fontSize: 12, fontWeight: 700, border: '1px solid #fda4af' }}>
+              Legendary: {achievementsSummary.totalRarityUnlocked.legendary}
             </div>
           </div>
         </div>
@@ -557,172 +676,92 @@ export default function MilestonesPage() {
             gap: 16,
             background: 'var(--amber-light)',
             borderColor: 'var(--amber-border)',
+            padding: '24px 28px',
           }}
         >
           <div>
-            <h3 style={{ margin: '0 0 4px', fontSize: 17, color: 'var(--amber-ink)' }}>
-              👋 {isMr ? 'तुमची स्वतःची पदके मिळवण्यासाठी तयार आहात?' : 'Ready to earn your badges?'}
+            <h3 style={{ margin: '0 0 4px', fontSize: 18, color: 'var(--amber-ink)' }}>
+              👋 {isMr ? 'तुमची स्वतःची पदके मिळवण्यासाठी तयार आहात?' : 'Ready to collect your travel achievement medals?'}
             </h3>
             <p style={{ margin: 0, fontSize: 14, color: 'var(--muted)' }}>
               {isMr
-                ? 'लॉगिन करा, ठिकाणांचे फोटो जोडून भेट नोंदवा आणि अधिकृत यशोगाथा पदके अनलॉक करा.'
-                : 'Sign in to log visits with photo proofs, unlock explorer badges, and download official certificates.'}
+                ? 'लॉगिन करा, सह्याद्री गडकोट, मंदिरे व निसर्गरम्य स्थळांचे फोटो जोडून भेट नोंदवा आणि सुंदर १०८०×१०८० कार्ड शेअर करा.'
+                : 'Sign in to log verified visits across forts, temples, and treks, unlock metallic badges, and generate 1080×1080 social media cards.'}
             </p>
           </div>
-          <Link href="/login" className="btn" style={{ padding: '8px 18px' }}>
+          <Link href="/login" className="btn" style={{ padding: '10px 22px' }}>
             {isMr ? 'लॉगिन करा' : 'Sign In Now'}
           </Link>
         </div>
       )}
 
-      {/* Milestones Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: 20,
-          marginBottom: 44,
-        }}
-      >
-        {MILESTONES_DATA.map((m) => {
-          const { current, target, isUnlocked, percent } = getMilestoneProgress(m);
+      {/* Featured Showcase Badges Row if pinned */}
+      {achievementsSummary.favoriteBadges.length > 0 && (
+        <div
+          style={{
+            marginBottom: 28,
+            padding: '16px 20px',
+            background: 'linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)',
+            border: '1.5px solid #fcd34d',
+            borderRadius: 'var(--radius)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <Star size={16} fill="#f59e0b" color="#d97706" />
+            <strong style={{ fontSize: 14, color: '#92400e' }}>
+              {isMr ? 'माझे आवडते शोकेस पदके (Pinned to Profile):' : 'My Featured Showcase Badges:'}
+            </strong>
+          </div>
 
-          return (
-            <div
-              key={m.id}
-              className="panel"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                border: isUnlocked ? '2px solid #10b981' : '1px solid var(--line)',
-                boxShadow: isUnlocked ? '0 10px 25px -5px rgba(16, 185, 129, 0.15)' : 'var(--shadow-sm)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {isUnlocked && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 14,
-                    right: 14,
-                    background: 'var(--sage-bg)',
-                    color: 'var(--sage-ink)',
-                    border: '1px solid var(--sage-border)',
-                    borderRadius: 999,
-                    padding: '3px 10px',
-                    fontSize: 11,
-                    fontWeight: 800,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  🎉 {isMr ? 'संपादन केले' : 'Unlocked'}
-                </div>
-              )}
-
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
-                  <Image
-                    src={m.badgeImg}
-                    alt={m.nameEn}
-                    width={48}
-                    height={48}
-                    style={{
-                      borderRadius: '50%',
-                      objectFit: 'cover',
-                      border: isUnlocked ? '2px solid #10b981' : '1px solid var(--line)',
-                      boxShadow: 'var(--shadow-sm)',
-                    }}
-                  />
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: 17, color: 'var(--ink)' }}>
-                      {isMr ? m.nameMr : m.nameEn}
-                    </h3>
-                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                      {isMr ? m.nameEn : m.nameMr}
-                    </div>
+          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            {achievementsSummary.favoriteBadges.map((fav) => (
+              <div
+                key={fav.id}
+                onClick={() => setSharingAchievement(fav)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: '8px 14px',
+                  background: '#ffffff',
+                  border: '1px solid #fcd34d',
+                  borderRadius: 10,
+                  boxShadow: '0 2px 8px rgba(245, 158, 11, 0.12)',
+                  cursor: 'pointer',
+                }}
+                title="Click to generate 1080x1080 share card"
+              >
+                <AchievementBadgeMedal
+                  design={fav.definition.medalDesign}
+                  rarity={fav.definition.rarity}
+                  isUnlocked={true}
+                  size="sm"
+                />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>
+                    {isMr ? fav.definition.nameMr : fav.definition.nameEn}
                   </div>
-                </div>
-
-                <p style={{ fontSize: 14, color: 'var(--ink-secondary)', lineHeight: 1.5, margin: '0 0 16px', minHeight: 44 }}>
-                  {isMr ? m.descMr : m.descEn}
-                </p>
-              </div>
-
-              {/* Progress Bar & Actions */}
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 700, color: 'var(--muted)', marginBottom: 6 }}>
-                  <span>{isMr ? 'प्रगती (फोटो पुरावा)' : 'Progress (Photo Proof)'}</span>
-                  <span>
-                    {user
-                      ? `${Math.min(current, target)} / ${target}`
-                      : `0 / ${target}`}
-                  </span>
-                </div>
-
-                <div style={{ height: 8, background: '#f1f5f9', borderRadius: 999, overflow: 'hidden', marginBottom: 14 }}>
-                  <div
-                    style={{
-                      width: `${percent}%`,
-                      height: '100%',
-                      background: isUnlocked
-                        ? 'linear-gradient(90deg, #10b981 0%, #059669 100%)'
-                        : 'linear-gradient(90deg, var(--primary) 0%, #d97706 100%)',
-                      borderRadius: 999,
-                      transition: 'width 0.4s ease',
-                    }}
-                  />
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, borderTop: '1px solid var(--line)', flexWrap: 'wrap', gap: 8 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: isUnlocked ? '#059669' : 'var(--clay)' }}>
-                    {isUnlocked
-                      ? (isMr ? '✅ पदक प्राप्त झाले' : '✅ Milestone Unlocked!')
-                      : (isMr ? `अजून ${Math.max(0, target - current)} भेटी बाकी` : `${Math.max(0, target - current)} more to unlock`)}
-                  </span>
-
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    {isUnlocked ? (
-                      <button
-                        type="button"
-                        onClick={() => handleDownloadCertificate(m)}
-                        className="btn"
-                        style={{ padding: '6px 12px', fontSize: 11.5, background: '#047857' }}
-                        title={isMr ? 'प्रमाणपत्र डाऊनलोड करा (PDF)' : 'Download Milestone Certificate (PDF)'}
-                      >
-                        🎓 {isMr ? 'प्रमाणपत्र (PDF)' : 'Certificate (PDF)'}
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setModalOpen(true);
-                          setFormError('');
-                          setImagePreview(null);
-                          setIsPublic(false);
-                        }}
-                        className="btn clay"
-                        style={{ padding: '6px 12px', fontSize: 11.5 }}
-                      >
-                        📸 {isMr ? 'फोटो जोडा' : 'Add Photo'}
-                      </button>
-                    )}
-
-                    <Link
-                      href={m.categoryLink}
-                      className="btn outline"
-                      style={{ padding: '6px 12px', fontSize: 11.5 }}
-                    >
-                      {isMr ? m.actionTextMr : m.actionTextEn}
-                    </Link>
+                  <div style={{ fontSize: 11, color: '#b45309', fontWeight: 600 }}>
+                    ✦ {fav.definition.rarity.toUpperCase()} MEDAL
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Complete Collectible Achievements Gallery */}
+      <section style={{ marginBottom: 44 }}>
+        <AchievementsGallery
+          achievements={achievementStates}
+          onShareClick={(ach) => setSharingAchievement(ach)}
+          onDownloadCertificate={handleDownloadAchievementCertificate}
+          onToggleFavorite={handleToggleFavoriteBadge}
+          isMr={isMr}
+          isAccountView={false}
+        />
+      </section>
 
       {/* Live Community Explorer Feed */}
       {communityCheckins.length > 0 && (
@@ -1064,7 +1103,34 @@ export default function MilestonesPage() {
       )}
 
       {/* CELEBRATION UNLOCK MODAL */}
-      {congratsModal && (
+      {celebrationAchievement && (
+        <CelebrationUnlockModal
+          achievement={celebrationAchievement}
+          onClose={() => setCelebrationAchievement(null)}
+          onShareClick={(ach) => {
+            setCelebrationAchievement(null);
+            setSharingAchievement(ach);
+          }}
+          onDownloadCertificate={handleDownloadAchievementCertificate}
+          isMr={isMr}
+        />
+      )}
+
+      {/* SHARE 1080x1080 CARD MODAL */}
+      {sharingAchievement && (
+        <ShareAchievementModal
+          achievement={sharingAchievement}
+          userName={user?.displayName || user?.email?.split('@')[0] || 'Pune Explorer'}
+          userPhotoUrl={user?.photoURL}
+          totalVisitedCount={userVisits.length}
+          isOpen={Boolean(sharingAchievement)}
+          onClose={() => setSharingAchievement(null)}
+          isMr={isMr}
+        />
+      )}
+
+      {/* Legacy Fallback Celebration Modal */}
+      {congratsModal && !celebrationAchievement && (
         <div
           onClick={() => setCongratsModal(null)}
           style={{
