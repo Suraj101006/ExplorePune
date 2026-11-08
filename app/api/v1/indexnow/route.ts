@@ -34,9 +34,15 @@ const CORE_STATIC_ROUTES = [
 async function getAllCatalogUrls(): Promise<string[]> {
   const urlSet = new Set<string>(CORE_STATIC_ROUTES);
 
-  // Try fetching live published places from Firestore
+  // Try fetching live published places from Firestore with a 1200ms timeout to prevent stalls
   try {
-    const snap = await getDocs(collection(db, 'places'));
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Firestore timeout')), 1200)
+    );
+    const snap = await Promise.race([
+      getDocs(collection(db, 'places')),
+      timeoutPromise,
+    ]);
     snap.docs.forEach((d) => {
       const data = d.data();
       if (data.status === 'published' && data.slug) {

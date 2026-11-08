@@ -23,30 +23,42 @@ export async function getCachedPlacesData() {
     return { places: cachedPlaces, categories: cachedCats };
   }
 
-  let cats: any[] = [];
+  // Pre-seed with in-memory baseline for instant sub-millisecond response
+  let cats: any[] = DEFAULT_CATEGORIES;
+  let allPlaces: any[] = Array.isArray(ALL_STRUCTURED_PLACES)
+    ? ALL_STRUCTURED_PLACES.map((p) => ({ ...p, status: 'published' }))
+    : [];
+
   try {
-    const catsSnap = await getDocs(collection(db, 'place_categories'));
-    cats = catsSnap.docs.map((doc) => doc.data());
-    cats.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || (a.name || '').localeCompare(b.name || ''));
+    // Query both collections in parallel with a fast 1500ms safety timeout to prevent cold-start stalls
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Firestore fetch timeout')), 1500)
+    );
+
+    const [catsSnap, placesSnap] = await Promise.race([
+      Promise.all([
+        getDocs(collection(db, 'place_categories')),
+        getDocs(collection(db, 'places')),
+      ]),
+      timeoutPromise,
+    ]);
+
+    if (catsSnap && catsSnap.docs?.length > 0) {
+      const fetchedCats = catsSnap.docs.map((doc) => doc.data());
+      fetchedCats.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || (a.name || '').localeCompare(b.name || ''));
+      cats = fetchedCats;
+    }
+
+    if (placesSnap && placesSnap.docs?.length > 0) {
+      const livePlaces = placesSnap.docs
+        .map((doc) => ({ id: doc.id, ...(doc.data() as any) }))
+        .filter((p) => p.status === 'published');
+      if (livePlaces.length > 0) {
+        allPlaces = livePlaces;
+      }
+    }
   } catch (err) {
-    console.warn('[serverPlaces] Categories fetch fallback:', err);
-  }
-
-  if (cats.length === 0) {
-    cats = DEFAULT_CATEGORIES;
-  }
-
-  let allPlaces: any[] = [];
-  try {
-    const placesSnap = await getDocs(collection(db, 'places'));
-    allPlaces = placesSnap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as any) }));
-    allPlaces = allPlaces.filter((p) => p.status === 'published');
-  } catch (err) {
-    console.warn('[serverPlaces] Places fetch fallback to structured dataset:', err);
-  }
-
-  if (allPlaces.length === 0 && Array.isArray(ALL_STRUCTURED_PLACES)) {
-    allPlaces = ALL_STRUCTURED_PLACES.map((p) => ({ ...p, status: 'published' }));
+    // Clean, instant fallback to verified structured dataset
   }
 
   cachedPlaces = allPlaces;

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -31,17 +32,22 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import HeroWatermarkAnimation from '@/components/HeroWatermarkAnimation';
-import FeedbackSection from '@/components/FeedbackSection';
 import WeatherWidget from '@/components/WeatherWidget';
-import LocationPickerModal from '@/components/LocationPickerModal';
 import { calculateDistanceKm } from '@/lib/publicTransit';
 import { getOperatingStatus } from '@/lib/operatingHours';
 import { speakPlaceName } from '@/lib/speech';
 import { getSavedPlaces, toggleSavedPlace } from '@/lib/savedPlaces';
 import { getStoredUserLocation, UserSavedLocation, DEFAULT_PUNE_STATIC_LOCATION } from '@/lib/userLocation';
-import PlacePhotoSlideshowModal from '@/components/PlacePhotoSlideshowModal';
 import { useTravelPhotoTransition } from '@/components/TravelPhotoTransition';
 import { openDirectionsModal } from '@/lib/navigationService';
+
+// Defer non-critical modals and below-the-fold feedback until interaction/idle
+const LocationPickerModal = dynamic(() => import('@/components/LocationPickerModal'), { ssr: false });
+const PlacePhotoSlideshowModal = dynamic(() => import('@/components/PlacePhotoSlideshowModal'), { ssr: false });
+const FeedbackSection = dynamic(() => import('@/components/FeedbackSection'), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: '260px' }} aria-hidden="true" />,
+});
 
 const TIER_MR: Record<string, string> = {
   verified: 'तपासलेले अधिकृत तपशील',

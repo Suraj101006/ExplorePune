@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
-import ChatWidget from '@/components/ChatWidget';
-import DirectionsModal from '@/components/DirectionsModal';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
-import IntroVideoOverlay from '@/components/IntroVideoOverlay';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
 import PageTransition from '@/components/PageTransition';
+import ClientInteractiveOverlays from '@/components/ClientInteractiveOverlays';
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -94,9 +93,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
     >
       <head>
-        {/* Google Tag (Container: GTM-WNTH6S92) */}
-        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WNTH6S92" />
-        <script
+        {/* Preconnect & DNS prefetch for critical origins */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+
+        {/* Google Tag (Container: GTM-WNTH6S92) - lazyOnload defers until browser idle time, preserving 0ms TBT */}
+        <Script
+          id="google-tag-manager"
+          strategy="lazyOnload"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-WNTH6S92"
+        />
+        <Script
+          id="gtm-init"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -129,12 +140,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
         <LanguageProvider>
           <TravelPhotoTransitionProvider>
-            <IntroVideoOverlay />
             <AppHeader />
             <PageTransition>{children}</PageTransition>
             <AppFooter />
-            <ChatWidget />
-            <DirectionsModal />
+            <ClientInteractiveOverlays />
           </TravelPhotoTransitionProvider>
         </LanguageProvider>
       </body>

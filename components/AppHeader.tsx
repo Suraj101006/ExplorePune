@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -13,26 +14,24 @@ import {
   Info,
   Menu,
   X,
-  User as UserIcon,
-  LogOut,
-  LogIn,
-  Shield,
   Users,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
-import { useAuth } from '@/lib/useAuth';
-import AuthNav from '@/components/AuthNav';
 import LanguageToggle from '@/components/LanguageToggle';
-import SavedPlacesDrawer from '@/components/SavedPlacesDrawer';
-import EmergencyHelplineModal from '@/components/EmergencyHelplineModal';
-import ProfileAvatar from '@/components/ProfileAvatar';
+
+// Defer interactive auth & drawer modals so they do not block initial rendering or critical bundle evaluation
+const AuthNav = dynamic(() => import('@/components/AuthNav'), {
+  ssr: false,
+  loading: () => <span style={{ display: 'inline-block', width: 68, height: 32 }} />,
+});
+const MobileAuthNav = dynamic(() => import('@/components/MobileAuthNav'), { ssr: false });
+const SavedPlacesDrawer = dynamic(() => import('@/components/SavedPlacesDrawer'), { ssr: false });
+const EmergencyHelplineModal = dynamic(() => import('@/components/EmergencyHelplineModal'), { ssr: false });
 
 export default function AppHeader() {
   const { t, isMr } = useLanguage();
-  const { user, isStaff, logout } = useAuth();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const navLinks = [
     { href: '/', label: t('nav.explore'), Icon: Compass },
@@ -47,18 +46,6 @@ export default function AppHeader() {
   const isLinkActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
-  };
-
-  const handleMobileLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await logout();
-      setMobileMenuOpen(false);
-    } catch (err) {
-      console.error('Logout error:', err);
-    } finally {
-      setIsLoggingOut(false);
-    }
   };
 
   return (
@@ -154,134 +141,7 @@ export default function AppHeader() {
           }}
         >
           {/* Mobile Auth / User Profile Card */}
-          {user ? (
-            <div
-              style={{
-                background: 'var(--primary-light)',
-                border: '1px solid var(--primary-border)',
-                borderRadius: 'var(--radius-md)',
-                padding: '12px 14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                marginBottom: 6,
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-                  <ProfileAvatar
-                    photoUrl={user.photoURL || (typeof window !== 'undefined' ? localStorage.getItem(`explore_pune_avatar_${user.uid}`) : null)}
-                    name={user.displayName}
-                    email={user.email}
-                    size={36}
-                  />
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {isMr ? 'लॉगिन केलेले खाते' : 'Signed In'}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 13.5,
-                        fontWeight: 700,
-                        color: 'var(--ink)',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {user.displayName || user.email?.split('@')[0]}
-                    </div>
-                  </div>
-                </div>
-                {isStaff && (
-                  <Link
-                    href="/admin"
-                    onClick={() => setMobileMenuOpen(false)}
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: 'var(--clay)',
-                      background: 'rgba(194, 65, 12, 0.1)',
-                      padding: '3px 8px',
-                      borderRadius: 'var(--radius-sm)',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 4,
-                    }}
-                  >
-                    <Shield size={12} />
-                    <span>{isMr ? 'प्रशासन' : 'Admin'}</span>
-                  </Link>
-                )}
-              </div>
-
-              {/* Mobile Profile & Logout Action Buttons */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <Link
-                  href="/account"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="btn outline"
-                  style={{
-                    padding: '7px 10px',
-                    fontSize: '12.5px',
-                    fontWeight: 700,
-                    justifyContent: 'center',
-                    background: '#fff',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <UserIcon size={14} />
-                  <span>{isMr ? 'माझे खाते' : 'My Account'}</span>
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleMobileLogout}
-                  disabled={isLoggingOut}
-                  className="btn outline"
-                  style={{
-                    padding: '7px 10px',
-                    fontSize: '12.5px',
-                    fontWeight: 700,
-                    justifyContent: 'center',
-                    background: '#fff',
-                    borderColor: '#fca5a5',
-                    color: '#dc2626',
-                    cursor: isLoggingOut ? 'wait' : 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <LogOut size={14} />
-                  <span>{isLoggingOut ? '…' : isMr ? 'लॉगआउट' : 'Logout'}</span>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="btn"
-              style={{
-                padding: '11px 16px',
-                fontSize: '14px',
-                fontWeight: 700,
-                justifyContent: 'center',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: 6,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
-              <LogIn size={16} />
-              <span>{isMr ? 'लॉगिन करा / नवीन खाते तयार करा' : 'Sign in / Create Account'}</span>
-            </Link>
-          )}
+          <MobileAuthNav onClose={() => setMobileMenuOpen(false)} />
 
           {/* Navigation Links */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
