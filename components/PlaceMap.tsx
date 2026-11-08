@@ -211,13 +211,33 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
           )}
         </div>
 
+        {/* Map Loading State Placeholder */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            color: '#64748b',
+            fontSize: 12.5,
+            fontWeight: 600,
+            background: '#f8fafc',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        >
+          <span>{mapEngine === 'osm' ? '🗺️ Loading OpenStreetMap…' : '🗺️ Loading Google Maps…'}</span>
+        </div>
+
         {/* Map Embed Iframe */}
         <iframe
           key={`${mapEngine}-${mapView}`}
-          title={`Map of ${name}`}
+          title={mapEngine === 'osm' ? `OpenStreetMap of ${name}` : `Google Maps of ${name}`}
           width="100%"
           height="100%"
-          style={{ border: 0, width: '100%', height: '100%' }}
+          style={{ border: 0, width: '100%', height: '100%', position: 'relative', zIndex: 2 }}
           loading="lazy"
           allowFullScreen
           referrerPolicy="no-referrer-when-downgrade"
@@ -379,7 +399,10 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
               alignItems: 'center',
               gap: 5,
               textDecoration: 'none',
-              background: '#f8fafc',
+              background: mapEngine === 'osm' ? '#ecfdf5' : '#f8fafc',
+              borderColor: mapEngine === 'osm' ? '#10b981' : undefined,
+              color: mapEngine === 'osm' ? '#065f46' : undefined,
+              fontWeight: mapEngine === 'osm' ? 700 : 500,
             }}
           >
             <span>🗺️</span>
