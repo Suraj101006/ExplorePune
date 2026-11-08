@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 import { getCachedPlacesData } from '@/lib/serverPlaces';
+import { getDestinationLiveStatus } from '@/lib/liveStatusService';
 
 export const revalidate = 3600;
 
@@ -173,6 +174,7 @@ export default async function PlaceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const target = SLUG_ALIASES[slug] || slug;
   const place = await getPlaceData(slug);
 
   if (!place) {
@@ -296,6 +298,13 @@ export default async function PlaceDetailPage({
   const { places: pool } = await getCachedPlacesData();
   const relatedPlaces = getRelatedPlaces(place, pool, 4);
 
+  let initialLiveStatus = null;
+  try {
+    initialLiveStatus = await getDestinationLiveStatus(target);
+  } catch (err) {
+    console.warn(`[PlaceDetailPage] Live status fetch failed for ${target}:`, err);
+  }
+
   return (
     <>
       <script
@@ -310,7 +319,11 @@ export default async function PlaceDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(touristAttractionSchema) }}
       />
-      <PlaceDetailClient place={place} relatedPlaces={relatedPlaces} />
+      <PlaceDetailClient
+        place={place}
+        relatedPlaces={relatedPlaces}
+        initialLiveStatus={initialLiveStatus || undefined}
+      />
     </>
   );
 }

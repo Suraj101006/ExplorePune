@@ -38,6 +38,9 @@ import {
   ProximityStatus,
 } from '@/lib/userLocation';
 import CinematicPlaceSlideshow from '@/components/CinematicPlaceSlideshow';
+import LiveDestinationStatusBadge from '@/components/LiveDestinationStatusBadge';
+import LiveDestinationAlertsSection from '@/components/LiveDestinationAlertsSection';
+import { DestinationLiveStatusSummary } from '@/lib/liveStatus';
 import {
   getLandmarkTimetables,
   getUpcomingDepartures,
@@ -291,11 +294,47 @@ function getLandmarkTimelineMilestones(slug: string): TimelineMilestone[] {
 export default function PlaceDetailClient({
   place,
   relatedPlaces = [],
+  initialLiveStatus,
 }: {
   place: any;
   relatedPlaces?: any[];
+  initialLiveStatus?: DestinationLiveStatusSummary;
 }) {
   const { isMr } = useLanguage();
+
+  const [liveStatus, setLiveStatus] = useState<DestinationLiveStatusSummary | null>(
+    initialLiveStatus || null
+  );
+  const [isRefreshingStatus, setIsRefreshingStatus] = useState(false);
+
+  useEffect(() => {
+    if (!liveStatus && (place.slug || place.id)) {
+      const slug = place.slug || place.id;
+      fetch(`/api/v1/destinations/${slug}/status`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && !data.error) setLiveStatus(data);
+        })
+        .catch(() => {});
+    }
+  }, [place.slug, place.id, liveStatus]);
+
+  const handleManualRefreshStatus = async () => {
+    const slug = place.slug || place.id;
+    if (!slug || isRefreshingStatus) return;
+    setIsRefreshingStatus(true);
+    try {
+      const res = await fetch(`/api/v1/destinations/${slug}/status?refresh=true`);
+      const data = await res.json();
+      if (data && !data.error) {
+        setLiveStatus(data);
+      }
+    } catch (err) {
+      console.warn('Failed to refresh status:', err);
+    } finally {
+      setIsRefreshingStatus(false);
+    }
+  };
 
   const categoryName = Array.isArray(place.place_categories)
     ? place.place_categories[0]?.name
@@ -681,6 +720,11 @@ export default function PlaceDetailClient({
             </p>
           )}
 
+          {/* Live Destination Status & Safety Alert Badge */}
+          {liveStatus && (
+            <LiveDestinationStatusBadge statusData={liveStatus} isMarathi={isMr} />
+          )}
+
           {/* Free Live Operating Status & Directional Compass Banner */}
           <div
             style={{
@@ -849,6 +893,16 @@ export default function PlaceDetailClient({
 
         {/* Place Actions (Save, Record Visit) */}
         <PlaceActions placeId={place.id} placeSlug={place.slug} placeName={place.name} />
+
+        {/* Live Status & Safety Alerts Section (Prompt Requirements 1-5) */}
+        {liveStatus && (
+          <LiveDestinationAlertsSection
+            statusData={liveStatus}
+            isMarathi={isMr}
+            onRefresh={handleManualRefreshStatus}
+            isRefreshing={isRefreshingStatus}
+          />
+        )}
 
         {/* About & Visitor Info */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 24 }}>
