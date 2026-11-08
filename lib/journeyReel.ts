@@ -2,6 +2,7 @@
 
 import { DayJourney } from '@/lib/journeyStorage';
 import { getDestinationProfile } from '@/lib/destinationIntelligence';
+import { getReelTemplateForPlace } from '@/lib/reelTemplates106';
 
 export interface JourneyReelMusicTrack {
   id: string;
@@ -205,6 +206,11 @@ export interface ReelPlaceItem {
   quoteEn?: string;
   quoteMr?: string;
   photos: string[];
+  templateTitle?: string;
+  templateTitleMr?: string;
+  conceptTaglineEn?: string;
+  conceptTaglineMr?: string;
+  socialAudioQuery?: string;
 }
 
 export type ReelVisualScene =
@@ -345,6 +351,23 @@ export function getRecommendedMusic(
     }
   }
 
+  // If a single place or dominant place is present, check its dedicated 106 template music
+  if (places && places.length === 1) {
+    const targetSlug = places[0].placeSlug || places[0].placeId;
+    if (targetSlug) {
+      const template = getReelTemplateForPlace(targetSlug);
+      if (template && template.musicMapping && template.musicMapping.primaryTrackId) {
+        const dedicatedMatch = REEL_MUSIC_TRACKS.find((t) => t.id === template.musicMapping.primaryTrackId);
+        if (dedicatedMatch) {
+          return {
+            recommended: dedicatedMatch,
+            alternatives: REEL_MUSIC_TRACKS.filter((t) => t.id !== dedicatedMatch.id),
+          };
+        }
+      }
+    }
+  }
+
   // Count categories
   let fortCount = 0;
   let heritageCount = 0;
@@ -451,11 +474,12 @@ export function buildReelPlacesFromJourney(journey: DayJourney): ReelPlaceItem[]
   return targetStops.map((stop) => {
     const slug = stop.placeSlug || stop.placeId || 'pune-landmark';
     const profile = getDestinationProfile(stop);
+    const template = getReelTemplateForPlace(slug);
     const extra = PLACE_METADATA_EXTRAS[slug] || PLACE_METADATA_EXTRAS[stop.placeId] || {
-      subtitle: `${stop.categoryName || profile.themeNameEn} • Pune, MH`,
-      elevation: undefined,
-      quoteEn: stop.note || profile.narrativeCurve.climaxQuoteEn,
-      quoteMr: stop.noteMr || profile.narrativeCurve.climaxQuoteMr,
+      subtitle: template.subtitle || `${stop.categoryName || profile.themeNameEn} • Pune, MH`,
+      elevation: template.elevationOrEra || undefined,
+      quoteEn: stop.note || template.acts[3].quoteEn || template.acts[2].quoteEn || profile.narrativeCurve.climaxQuoteEn,
+      quoteMr: stop.noteMr || template.acts[3].quoteMr || template.acts[2].quoteMr || profile.narrativeCurve.climaxQuoteMr,
     };
 
     // Photos: Check custom uploaded photos, then stop photos, then primary image_url
@@ -473,12 +497,17 @@ export function buildReelPlacesFromJourney(journey: DayJourney): ReelPlaceItem[]
       category: stop.category,
       categoryName: stop.categoryName || 'Pune Landmark',
       categoryNameMr: stop.categoryNameMr || 'पुणे प्रेक्षणीय स्थळ',
-      locationSubtitle: extra.subtitle,
-      elevation: extra.elevation,
+      locationSubtitle: extra.subtitle || template.subtitle,
+      elevation: extra.elevation || template.elevationOrEra,
       visitedAt: stop.visitedAt || stop.arrivalTime,
-      quoteEn: extra.quoteEn,
-      quoteMr: extra.quoteMr,
+      quoteEn: stop.note || extra.quoteEn || template.acts[3].quoteEn,
+      quoteMr: stop.noteMr || extra.quoteMr || template.acts[3].quoteMr,
       photos: combinedPhotos.length > 0 ? combinedPhotos : [fallbackImage],
+      templateTitle: template.templateTitle,
+      templateTitleMr: template.templateTitleMr,
+      conceptTaglineEn: template.conceptTaglineEn,
+      conceptTaglineMr: template.conceptTaglineMr,
+      socialAudioQuery: template.musicMapping.socialAudioAttribution.instagramQuery,
     };
   });
 }

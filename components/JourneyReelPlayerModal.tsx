@@ -768,6 +768,21 @@ export default function JourneyReelPlayerModal({
                 {isMr ? currentScene.place.placeNameMr || currentScene.place.placeName : currentScene.place.placeName}
               </h2>
 
+              {currentScene.place.templateTitle && (
+                <div
+                  style={{
+                    fontSize: 12.5,
+                    color: '#34d399',
+                    fontWeight: 700,
+                    letterSpacing: '0.04em',
+                    marginBottom: 8,
+                    textShadow: '0 1px 6px rgba(0,0,0,0.8)',
+                  }}
+                >
+                  ✨ {isMr ? currentScene.place.templateTitleMr || currentScene.place.templateTitle : currentScene.place.templateTitle}
+                </div>
+              )}
+
               <div
                 style={{
                   fontSize: 14,

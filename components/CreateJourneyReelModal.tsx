@@ -539,7 +539,22 @@ export default function CreateJourneyReelModal({
                           >
                             {isMr ? place.placeNameMr || place.placeName : place.placeName}
                           </div>
-                          <div style={{ fontSize: 12, color: '#94a3b8' }}>
+                          {place.templateTitle && (
+                            <div
+                              style={{
+                                fontSize: 11,
+                                color: '#34d399',
+                                fontWeight: 600,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                marginTop: 1,
+                              }}
+                            >
+                              🎬 {isMr ? place.templateTitleMr || place.templateTitle : place.templateTitle}
+                            </div>
+                          )}
+                          <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 1 }}>
                             {place.categoryName || 'Heritage'} • {place.photos.length} {isMr ? 'फोटो' : 'photo(s)'}
                           </div>
                         </div>
@@ -717,6 +732,68 @@ export default function CreateJourneyReelModal({
                 ))}
               </div>
             </div>
+
+            {/* Dedicated Destination Template Badge */}
+            {placesList.length > 0 && placesList[0].templateTitle && (
+              <div
+                style={{
+                  marginBottom: 20,
+                  padding: '12px 14px',
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <span style={{ fontSize: 13 }}>🎬</span>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      color: '#34d399',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                    }}
+                  >
+                    {isMr ? 'समर्पित रील टेम्पलेट' : 'Dedicated Reel Template'}
+                  </span>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>
+                  {isMr ? placesList[0].templateTitleMr || placesList[0].templateTitle : placesList[0].templateTitle}
+                </div>
+                {placesList[0].conceptTaglineEn && (
+                  <div style={{ fontSize: 12, color: '#cbd5e1', marginTop: 2, fontStyle: 'italic' }}>
+                    “{isMr ? placesList[0].conceptTaglineMr || placesList[0].conceptTaglineEn : placesList[0].conceptTaglineEn}”
+                  </div>
+                )}
+                {placesList[0].socialAudioQuery && (
+                  <div
+                    style={{
+                      marginTop: 8,
+                      fontSize: 11,
+                      color: '#94a3b8',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <span>🎵 {isMr ? 'सोशल ऑडिओ टॅग:' : 'Instagram/Shorts Audio:'}</span>
+                    <code
+                      style={{
+                        color: '#fbbf24',
+                        background: 'rgba(0,0,0,0.35)',
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                        fontSize: 10.5,
+                      }}
+                    >
+                      {placesList[0].socialAudioQuery}
+                    </code>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Smart Music Recommendation with Real Vocals & Language Filter */}
             <div>

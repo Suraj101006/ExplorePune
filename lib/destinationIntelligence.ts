@@ -8,6 +8,8 @@
  * - Meaningful dual-language poetic captions (English & Marathi)
  */
 
+import { findReelTemplate, getReelTemplateForPlace, ReelTemplate106 } from '@/lib/reelTemplates106';
+
 export interface DestinationProfile {
   categoryKey:
     | 'forts'
@@ -54,6 +56,7 @@ export interface DestinationProfile {
     outroSignatureMr: string;
   };
   recommendedMusicMood: 'adventure' | 'heritage' | 'spiritual' | 'nature' | 'food' | 'ambient';
+  template106?: ReelTemplate106;
 }
 
 // Landmark-specific overrides for top iconic Pune destinations
@@ -262,15 +265,77 @@ export function getDestinationProfile(place: {
     const override = ICONIC_LANDMARK_PROFILES[slug];
     const cat = resolveCategoryKey(place.category || place.category_slug || '', slug);
     const baseCategoryDefaults = getCategoryDefaults(cat);
+    const template = getReelTemplateForPlace(slug);
     return {
       ...baseCategoryDefaults,
       ...override,
       palette: { ...baseCategoryDefaults.palette, ...(override.palette || {}) },
       narrativeCurve: { ...baseCategoryDefaults.narrativeCurve, ...(override.narrativeCurve || {}) },
+      template106: template,
     };
   }
 
-  // 2. Resolve category key
+  // 2. Check dedicated 106 template master catalogue (covers all 106 published Pune destinations)
+  const template = findReelTemplate(slug) || (place.name ? findReelTemplate(place.name) : null);
+  if (template) {
+    const moodMap: Record<string, DestinationProfile['recommendedMusicMood']> = {
+      powada_fort: 'adventure',
+      abhang_devotional: 'spiritual',
+      peshwa_classical: 'heritage',
+      nature_ambient: 'nature',
+      folk_celebration: 'food',
+      ghazal_acoustic: 'ambient',
+    };
+
+    const transMap: Record<string, DestinationProfile['motionStyle']['transitionEffect']> = {
+      whip_pan: 'zoom_punch',
+      light_leak: 'wipe_light',
+      crossfade: 'crossfade',
+      zoom_punch: 'zoom_punch',
+      cinematic_blur: 'cinematic_blur',
+    };
+
+    return {
+      categoryKey: template.category as DestinationProfile['categoryKey'],
+      themeNameEn: template.templateTitle,
+      themeNameMr: template.templateTitleMr,
+      visualMood: template.visualMood,
+      palette: template.palette,
+      typography: {
+        headerFont: template.typography.headerFont,
+        bodyFont: template.typography.bodyFont,
+        subtitleStyle: 'tracking-wider font-semibold text-amber-300',
+        accentCase: template.typography.accentCase,
+      },
+      motionStyle: {
+        pacingSpeed: template.motionPresets.pacingSpeed,
+        kenBurnsScale: template.motionPresets.kenBurnsScale,
+        transitionEffect: transMap[template.motionPresets.transitionEffect] || 'crossfade',
+        beatDropIntensity:
+          template.motionPresets.pacingSpeed === 'heroic' || template.motionPresets.pacingSpeed === 'punchy'
+            ? 'high'
+            : 'medium',
+      },
+      narrativeCurve: {
+        hookTextEn: template.acts[0].subtitleEn || template.acts[0].titleEn,
+        hookTextMr: template.acts[0].subtitleMr || template.acts[0].titleMr,
+        discoveryTitleEn: template.acts[1].titleEn,
+        discoveryTitleMr: template.acts[1].titleMr,
+        immersionFocusEn:
+          template.acts[2].titleEn + (template.acts[2].subtitleEn ? ` • ${template.acts[2].subtitleEn}` : ''),
+        immersionFocusMr:
+          template.acts[2].titleMr + (template.acts[2].subtitleMr ? ` • ${template.acts[2].subtitleMr}` : ''),
+        climaxQuoteEn: template.acts[3].quoteEn || template.acts[3].titleEn,
+        climaxQuoteMr: template.acts[3].quoteMr || template.acts[3].titleMr,
+        outroSignatureEn: `${template.acts[4].titleEn} • ${template.acts[4].subtitleEn || template.templateTitle}`,
+        outroSignatureMr: `${template.acts[4].titleMr} • ${template.acts[4].subtitleMr || template.templateTitleMr}`,
+      },
+      recommendedMusicMood: moodMap[template.musicMapping.culturalGenre] || 'ambient',
+      template106: template,
+    };
+  }
+
+  // 3. Resolve category key for uncatalogued custom/future destinations
   const categoryKey = resolveCategoryKey(
     place.category || place.category_slug || '',
     slug + ' ' + (place.name || '')

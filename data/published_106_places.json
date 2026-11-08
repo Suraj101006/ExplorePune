@@ -1,0 +1,1062 @@
+[
+  {
+    "id": "aga-khan-palace",
+    "slug": "aga-khan-palace",
+    "name": "Aga Khan Palace",
+    "name_mr": "आगा खान पॅलेस",
+    "category": "heritage",
+    "address": "Pune-Nagar Road, Kalyani Nagar, Pune, Maharashtra 411006",
+    "has_image": true,
+    "image_url": "/images/places/aga-khan-palace.jpg"
+  },
+  {
+    "id": "alandi-dnyaneshwar-mandir",
+    "slug": "alandi-dnyaneshwar-mandir",
+    "name": "Alandi (Sant Dnyaneshwar Sanjeevan Samadhi)",
+    "name_mr": "आळंदी (संत ज्ञानेश्वर महाराज संजीवन समाधी)",
+    "category": "temples",
+    "address": "Alandi Devachi, Khed Taluka, Pune District, Maharashtra 412105",
+    "has_image": true,
+    "image_url": "/images/places/alandi-dnyaneshwar-mandir.jpg"
+  },
+  {
+    "id": "arai-tekdi",
+    "slug": "arai-tekdi",
+    "name": "ARAI Hill (Kothrud Nature Ridge)",
+    "name_mr": "एआरएआय टेकडी (कोथरूड निसर्ग पठार)",
+    "category": "nature",
+    "address": "Paud Road / Law College Road, Kothrud, Pune, Maharashtra 411038",
+    "has_image": true,
+    "image_url": "/images/places/arai-tekdi.jpg"
+  },
+  {
+    "id": "balgandharva-ranga-mandir",
+    "slug": "balgandharva-ranga-mandir",
+    "name": "Balgandharva Ranga Mandir & Cultural Center",
+    "name_mr": "बालगंधर्व रंगमंदिर व सांस्कृतिक संकुल (जेएम रस्ता)",
+    "category": "heritage",
+    "address": "Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005",
+    "has_image": true,
+    "image_url": "/images/places/balgandharva-ranga-mandir.jpg"
+  },
+  {
+    "id": "banneshwar-temple-nasrapur",
+    "slug": "banneshwar-temple-nasrapur",
+    "name": "Baneshwar Shiva Temple & Forest Sanctuary",
+    "name_mr": "बाणेश्वर ऐतिहासिक शिवमंदिर व निसर्ग अभयारण्य (नसरापूर)",
+    "category": "temples",
+    "address": "Nasrapur, Bhor Taluka, Off NH-48, Pune District, Maharashtra 412213",
+    "has_image": true,
+    "image_url": "/images/places/banneshwar-temple-nasrapur.jpg"
+  },
+  {
+    "id": "baps-swaminarayan-mandir",
+    "slug": "baps-swaminarayan-mandir",
+    "name": "BAPS Shri Swaminarayan Mandir",
+    "name_mr": "श्री स्वामिनारायण मंदिर (आंबेगाव)",
+    "category": "temples",
+    "address": "Mumbai-Bangalore Highway, Ambegaon BK, Pune, Maharashtra 411046",
+    "has_image": true,
+    "image_url": "/images/places/baps-swaminarayan-mandir.jpg"
+  },
+  {
+    "id": "bedekar-tea-stall-misal",
+    "slug": "bedekar-tea-stall-misal",
+    "name": "Bedekar Tea Stall & Misal (Narayan Peth)",
+    "name_mr": "बेडेकर टी स्टॉल व मिसळ (नारायण पेठ)",
+    "category": "food",
+    "address": "418, Narayan Peth, Munjabacha Bol, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/bedekar-misal.jpg"
+  },
+  {
+    "id": "bedse-caves",
+    "slug": "bedse-caves",
+    "name": "Bedse Caves (Ancient Chaitya & Vihara)",
+    "name_mr": "बेडसे लेणी (शांत व प्राचीन बौद्ध लेणी)",
+    "category": "heritage",
+    "address": "Bedse Village, Maval Taluka, Pune District, Maharashtra 410405",
+    "has_image": true,
+    "image_url": "/images/places/bedse-caves.jpg"
+  },
+  {
+    "id": "bhaja-caves",
+    "slug": "bhaja-caves",
+    "name": "Bhaja Caves (Buddhist Monastic Complex)",
+    "name_mr": "भाजा लेणी (प्राचीन बौद्ध लेणी व स्तूप समूह)",
+    "category": "heritage",
+    "address": "Bhaja Village, Near Malavali, Pune District, Maharashtra 410405",
+    "has_image": true,
+    "image_url": "/images/places/bhaja-caves.jpg"
+  },
+  {
+    "id": "bhandarkar-oriental-research-institute",
+    "slug": "bhandarkar-oriental-research-institute",
+    "name": "Bhandarkar Oriental Research Institute (BORI)",
+    "name_mr": "भांडारकर प्राच्यविद्या संशोधन मंदिर (बोरी, पुणे)",
+    "category": "heritage",
+    "address": "Law College Road, Deccan Gymkhana, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/bhandarkar-oriental-research-institute.jpg"
+  },
+  {
+    "id": "bharat-itihas-sanshodhak-mandal",
+    "slug": "bharat-itihas-sanshodhak-mandal",
+    "name": "Bharat Itihas Sanshodhak Mandal (BISM)",
+    "name_mr": "भारत इतिहास संशोधक मंडळ (सदाशिव पेठ, पुणे)",
+    "category": "heritage",
+    "address": "1321 Sadashiv Peth, Near Bharat Natya Mandir, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/bharat-itihas-sanshodhak-mandal.jpg"
+  },
+  {
+    "id": "bhide-wada",
+    "slug": "bhide-wada",
+    "name": "Bhide Wada (India's First Girls' School)",
+    "name_mr": "भिडे वाडा (भारतातील मुलींची पहिली ऐतिहासिक शाळा)",
+    "category": "heritage",
+    "address": "Budhwar Peth, Opposite Dagdusheth Ganpati, Pune, Maharashtra 411002",
+    "has_image": true,
+    "image_url": "/images/places/bhide-wada.jpg"
+  },
+  {
+    "id": "bhimashankar-temple",
+    "slug": "bhimashankar-temple",
+    "name": "Bhimashankar Jyotirlinga Temple & Wildlife Sanctuary",
+    "name_mr": "भीमाशंकर ज्योतिर्लिंग मंदिर व वन्यजीव अभयारण्य",
+    "category": "temples",
+    "address": "Bhimashankar, Khed Taluka, Pune District, Maharashtra 410509",
+    "has_image": true,
+    "image_url": "/images/places/bhimashankar-temple.jpg"
+  },
+  {
+    "id": "bhor-rajwada-palace",
+    "slug": "bhor-rajwada-palace",
+    "name": "Bhor Rajwada & Royal Palace",
+    "name_mr": "भोर राजवाडा (पंत सचिवांचा ऐतिहासिक लाकडी राजमहाल)",
+    "category": "heritage",
+    "address": "Rajwada Chowk, Bhor, Pune District, Maharashtra 412206",
+    "has_image": true,
+    "image_url": "/images/places/bhor-rajwada-palace.jpg"
+  },
+  {
+    "id": "blades-of-glory-cricket-museum",
+    "slug": "blades-of-glory-cricket-museum",
+    "name": "Blades of Glory Cricket Museum",
+    "name_mr": "ब्लेड्स ऑफ ग्लोरी क्रिकेट म्युझियम (सहकार नगर, पुणे)",
+    "category": "museums",
+    "address": "Govind Gaurav Apartment, Swanand Society, Sahakar Nagar 2, Pune, Maharashtra 411009",
+    "has_image": true,
+    "image_url": "/images/places/blades-of-glory-cricket-museum.jpg"
+  },
+  {
+    "id": "bund-garden",
+    "slug": "bund-garden",
+    "name": "Bund Garden & Fitzgerald Bridge",
+    "name_mr": "बंड गार्डन व फिट्झगेराल्ड पूल",
+    "category": "heritage",
+    "address": "Sangamvadi, Near Yerawada Bridge, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/bund-garden.jpg"
+  },
+  {
+    "id": "bushi-dam",
+    "slug": "bushi-dam",
+    "name": "Bushi Dam (Lonavala Water Cascades)",
+    "name_mr": "भुशी धरण (लोणावळा जलप्रपात)",
+    "category": "nature",
+    "address": "Bushi Dam Road, Lonavala, Pune District, Maharashtra 410401",
+    "has_image": true,
+    "image_url": "/images/places/bushi-dam.jpg"
+  },
+  {
+    "id": "chaturshringi-temple",
+    "slug": "chaturshringi-temple",
+    "name": "Chaturshringi Temple",
+    "name_mr": "चतुःशृंगी देवी मंदिर",
+    "category": "temples",
+    "address": "Senapati Bapat Road, Shivajinagar, Pune, Maharashtra 411016",
+    "has_image": true,
+    "image_url": "/images/places/chaturshringi-temple.jpg"
+  },
+  {
+    "id": "chavand-fort",
+    "slug": "chavand-fort",
+    "name": "Chavand Fort (Prasannagad)",
+    "name_mr": "चावंड किल्ला (प्रसन्नगड, जुन्नर)",
+    "category": "forts",
+    "address": "Chavand Village, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/chavand-fort.jpg"
+  },
+  {
+    "id": "chitale-bandhu-bakarwadi",
+    "slug": "chitale-bandhu-bakarwadi",
+    "name": "Chitale Bandhu Mithaiwale (Bajirao Road Heritage Branch)",
+    "name_mr": "चितळे बंधू मिठाईवाले (बाजीराव रस्ता मुख्य शाखा)",
+    "category": "food",
+    "address": "776, Bajirao Road, Sadashiv Peth, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/chitale-bandhu-mithaiwale.jpg"
+  },
+  {
+    "id": "darshan-museum",
+    "slug": "darshan-museum",
+    "name": "Darshan Museum (High-Tech Spiritual Museum)",
+    "name_mr": "दर्शन संग्रहालय (साधू वासवानी मिशन, पुणे)",
+    "category": "museums",
+    "address": "10, Sadhu Vaswani Path, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/darshan-museum.jpg"
+  },
+  {
+    "id": "dehu-tukaram-mandir",
+    "slug": "dehu-tukaram-mandir",
+    "name": "Dehu (Sant Tukaram Maharaj Gatha Mandir)",
+    "name_mr": "देहू (संत तुकाराम महाराज गाथा मंदिर)",
+    "category": "temples",
+    "address": "Dehu Gaon, Haveli Taluka, Pune District, Maharashtra 412109",
+    "has_image": true,
+    "image_url": "/images/places/dehu-tukaram-mandir.jpg"
+  },
+  {
+    "id": "empress-botanical-garden",
+    "slug": "empress-botanical-garden",
+    "name": "Empress Botanical Garden",
+    "name_mr": "एम्प्रेस बॉटनिकल गार्डन",
+    "category": "parks",
+    "address": "Near Race Course, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/empress-botanical-garden.jpg"
+  },
+  {
+    "id": "fc-road-culinary-trail",
+    "slug": "fc-road-culinary-trail",
+    "name": "FC Road & Deccan Food Heritage (Cafe Goodluck, Vaishali & Roopali)",
+    "name_mr": "एफसी रोड व डेक्कन खाद्यसंस्कृती (कॅफे गडलक, वैशाली व रुपाली)",
+    "category": "food",
+    "address": "Fergusson College Road, Deccan Gymkhana, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/fc-road.jpg"
+  },
+  {
+    "id": "fergusson-college-heritage",
+    "slug": "fergusson-college-heritage",
+    "name": "Fergusson College Heritage Campus",
+    "name_mr": "फर्ग्युसन महाविद्यालय मुख्य हेरिटेज वास्तू",
+    "category": "heritage",
+    "address": "FC Road, Shivajinagar, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/fergusson-college-heritage.jpg"
+  },
+  {
+    "id": "gokhale-institute-heritage",
+    "slug": "gokhale-institute-heritage",
+    "name": "Gokhale Institute of Politics and Economics",
+    "name_mr": "गोखले अर्थशास्त्र व राज्यशास्त्र संस्था (ऐतिहासिक वारसा)",
+    "category": "heritage",
+    "address": "BMCC Road, Deccan Gymkhana, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/gokhale-institute-heritage.jpg"
+  },
+  {
+    "id": "gram-sanskruti-udyan",
+    "slug": "gram-sanskruti-udyan",
+    "name": "Gram Sanskruti Udyan (Village Culture Park, Pashan)",
+    "name_mr": "ग्राम संस्कृती उद्यान (पाषाण)",
+    "category": "parks",
+    "address": "Someshwarwadi Road, Near Pashan Lake, Pashan, Pune, Maharashtra 411045",
+    "has_image": true,
+    "image_url": "/images/places/gram-sanskruti-udyan.jpg"
+  },
+  {
+    "id": "hadsar-fort",
+    "slug": "hadsar-fort",
+    "name": "Hadsar Fort (Parvatgad)",
+    "name_mr": "हडसर किल्ला (पर्वतगड, जुन्नर)",
+    "category": "forts",
+    "address": "Hadsar Village, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/hadsar-fort.jpg"
+  },
+  {
+    "id": "iskcon-nvcc-kondhwa",
+    "slug": "iskcon-nvcc-kondhwa",
+    "name": "ISKCON NVCC Temple (Katraj-Kondhwa)",
+    "name_mr": "इस्कॉन नवीन वैदिक सांस्कृतिक केंद्र, कोंढवा",
+    "category": "temples",
+    "address": "Katraj-Kondhwa Bypass, Tilekar Nagar, Kondhwa, Pune, Maharashtra 411048",
+    "has_image": true,
+    "image_url": "/images/places/iskcon-nvcc-kondhwa.jpg"
+  },
+  {
+    "id": "iucaa-science-park",
+    "slug": "iucaa-science-park",
+    "name": "IUCAA Science Park & Astronomy Centre",
+    "name_mr": "आयुका विज्ञान उद्यान व खगोलशास्त्र केंद्र",
+    "category": "museums",
+    "address": "SPPU Campus, Ganeshkhind, Pune, Maharashtra 411007",
+    "has_image": true,
+    "image_url": "/images/places/iucaa-science-park.jpg"
+  },
+  {
+    "id": "jangli-maharaj-temple",
+    "slug": "jangli-maharaj-temple",
+    "name": "Sadguru Jangli Maharaj Temple & Ashram",
+    "name_mr": "सद्गुरू जंगली महाराज मंदिर व समाधी आश्रम (शिवाजीनगर)",
+    "category": "temples",
+    "address": "Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005",
+    "has_image": true,
+    "image_url": "/images/places/jangli-maharaj-temple.jpg"
+  },
+  {
+    "id": "jejuri-khandoba-temple",
+    "slug": "jejuri-khandoba-temple",
+    "name": "Khandoba Temple, Jejuri (Golden Jejuri)",
+    "name_mr": "खंडोबा मंदिर, जेजुरी (सोन्याची जेजुरी)",
+    "category": "temples",
+    "address": "Jejuri Hill, Purandar Taluka, Pune District, Maharashtra 412303",
+    "has_image": true,
+    "image_url": "/images/places/jejuri-khandoba-temple.jpg"
+  },
+  {
+    "id": "jivdhan-fort",
+    "slug": "jivdhan-fort",
+    "name": "Jivdhan Fort (Guardian of Naneghat)",
+    "name_mr": "जीवधन किल्ला (नाणेघाटाचा पहारेकरी)",
+    "category": "forts",
+    "address": "Ghatghar, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/jivdhan-fort.jpg"
+  },
+  {
+    "id": "joshi-miniature-railway",
+    "slug": "joshi-miniature-railway",
+    "name": "Joshi's Museum of Miniature Railways",
+    "name_mr": "जोशींचे मिनिएचर रेल्वे संग्रहालय",
+    "category": "museums",
+    "address": "17/1, B/2, G.A. Kulkarni Path, Kothrud, Pune, Maharashtra 411038",
+    "has_image": true,
+    "image_url": "/images/places/joshi-miniature-railway.jpg"
+  },
+  {
+    "id": "karla-caves",
+    "slug": "karla-caves",
+    "name": "Karla Caves (Ancient Rock-Cut Chaitya Hall)",
+    "name_mr": "कार्ला लेणी (भारतातील सर्वात मोठे बौद्ध चैत्यगृह)",
+    "category": "heritage",
+    "address": "Karla, Near Lonavala, Pune District, Maharashtra 410405",
+    "has_image": true,
+    "image_url": "/images/places/karla-caves.jpg"
+  },
+  {
+    "id": "kasba-ganpati",
+    "slug": "kasba-ganpati",
+    "name": "Kasba Ganpati Mandir (Gramdaivat of Pune)",
+    "name_mr": "कसबा गणपती मंदिर (पुण्याचे ग्रामदैवत)",
+    "category": "temples",
+    "address": "158, Kasba Peth, Pune, Maharashtra 411011",
+    "has_image": true,
+    "image_url": "/images/places/kasba-ganpati.jpg"
+  },
+  {
+    "id": "katakirr-misal-karve-nagar",
+    "slug": "katakirr-misal-karve-nagar",
+    "name": "Katakirr Misal (Karve Nagar / Deccan)",
+    "name_mr": "काटाकिर्र मिसळ (कर्वे नगर / डेक्कन)",
+    "category": "food",
+    "address": "Near Cummins College, Karve Nagar, Pune, Maharashtra 411052",
+    "has_image": true,
+    "image_url": "/images/places/katakirr-misal.jpg"
+  },
+  {
+    "id": "katraj-jain-temple-agam-mandir",
+    "slug": "katraj-jain-temple-agam-mandir",
+    "name": "Shree Katraj Tirth (Agam Mandir)",
+    "name_mr": "श्री कात्रज जैन तीर्थ व आगम मंदिर (कात्रज, पुणे)",
+    "category": "temples",
+    "address": "Katraj Ghat, Near Old Katraj Tunnel, Pune, Maharashtra 411046",
+    "has_image": true,
+    "image_url": "/images/places/katraj-jain-temple-agam-mandir.jpg"
+  },
+  {
+    "id": "kayani-bakery-camp",
+    "slug": "kayani-bakery-camp",
+    "name": "Kayani Bakery (East Street, Pune Camp)",
+    "name_mr": "कयानी बेकरी (ईस्ट स्ट्रीट, पुणे कॅम्प)",
+    "category": "food",
+    "address": "6, East Street, Hulshur, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/kayani-bakery-camp.jpg"
+  },
+  {
+    "id": "kesari-wada",
+    "slug": "kesari-wada",
+    "name": "Kesari Wada (Tilak Smarak)",
+    "name_mr": "केसरी वाडा (टिळक स्मारक)",
+    "category": "heritage",
+    "address": "568, Narayan Peth, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/kesari-wada.jpg"
+  },
+  {
+    "id": "khadakwasla-dam",
+    "slug": "khadakwasla-dam",
+    "name": "Khadakwasla Dam & Lake",
+    "name_mr": "खडकवासला धरण आणि तलाव",
+    "category": "nature",
+    "address": "Khadakwasla, Sinhagad Road, Pune, Maharashtra 411024",
+    "has_image": true,
+    "image_url": "/images/places/khadakwasla-dam.jpg"
+  },
+  {
+    "id": "khunya-murlidhar-temple",
+    "slug": "khunya-murlidhar-temple",
+    "name": "Khunya Murlidhar Temple (Historic Krishna Shrine)",
+    "name_mr": "खुन्या मुरलीधर मंदिर (पेशवेकालीन ऐतिहासिक मंदिर, सदाशिव पेठ)",
+    "category": "temples",
+    "address": "Sadashiv Peth, Near Gadre Wada, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/khunya-murlidhar-temple.jpg"
+  },
+  {
+    "id": "korigad-fort",
+    "slug": "korigad-fort",
+    "name": "Korigad Fort",
+    "name_mr": "कोरीगड किल्ला",
+    "category": "forts",
+    "address": "Aamby Valley Road, Peth Shahpur, Pune District, Maharashtra 410401",
+    "has_image": true,
+    "image_url": "/images/places/korigad-fort.jpg"
+  },
+  {
+    "id": "kune-falls-viewpoint",
+    "slug": "kune-falls-viewpoint",
+    "name": "Kune Waterfalls Viewpoint (Lonavala-Khandala)",
+    "name_mr": "कुणे धबधबा व्ह्यूपॉइंट (लोणावळा-खंडाळा दरी)",
+    "category": "nature",
+    "address": "Old Mumbai-Pune Highway, Khandala-Kune Village, Pune District, Maharashtra 410401",
+    "has_image": true,
+    "image_url": "/images/places/kune-falls-viewpoint.jpg"
+  },
+  {
+    "id": "lal-mahal",
+    "slug": "lal-mahal",
+    "name": "Lal Mahal (Red Palace)",
+    "name_mr": "लाल महाल",
+    "category": "heritage",
+    "address": "Kasba Peth, Durvankur Society, Pune, Maharashtra 411011",
+    "has_image": true,
+    "image_url": "/images/places/lal-mahal.jpg"
+  },
+  {
+    "id": "lavasa-lakeside",
+    "slug": "lavasa-lakeside",
+    "name": "Lavasa Lakeside Promenade (Warasgaon Lake)",
+    "name_mr": "लवासा लेकसाइड प्रोमेनाड (वरसगाव जलाशय)",
+    "category": "nature",
+    "address": "Dasve Village, Mose Valley, Mulshi Taluka, Pune District, Maharashtra 412112",
+    "has_image": true,
+    "image_url": "/images/places/lavasa-lakeside.jpg"
+  },
+  {
+    "id": "lenyadri-caves-ganpati",
+    "slug": "lenyadri-caves-ganpati",
+    "name": "Lenyadri Buddhist Caves & Girijatmaj Ganpati",
+    "name_mr": "लेण्याद्री लेणी व श्री गिरिजात्मज गणपती (अष्टविनायक, जुन्नर)",
+    "category": "temples",
+    "address": "Lenyadri Hill, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/lenyadri-caves-ganpati.jpg"
+  },
+  {
+    "id": "lohagad-fort",
+    "slug": "lohagad-fort",
+    "name": "Lohagad Fort (Iron Fort)",
+    "name_mr": "लोहगड किल्ला (लोहदुर्ग)",
+    "category": "forts",
+    "address": "Lohagad Ghat, Malavali, Pune District, Maharashtra 410405",
+    "has_image": true,
+    "image_url": "/images/places/lohagad-fort.jpg"
+  },
+  {
+    "id": "mahad-varadvinayak-temple",
+    "slug": "mahad-varadvinayak-temple",
+    "name": "Varadvinayak Temple & Sacred Pond (Mahad)",
+    "name_mr": "श्री वरदविनायक गणपती मंदिर (अष्टविनायक, महड)",
+    "category": "temples",
+    "address": "Mahad Village, Khalapur Taluka, Near Khopoli, Maharashtra 410203",
+    "has_image": true,
+    "image_url": "/images/places/mahad-varadvinayak-temple.jpg"
+  },
+  {
+    "id": "mahatma-phule-museum",
+    "slug": "mahatma-phule-museum",
+    "name": "Mahatma Phule Museum",
+    "name_mr": "महात्मा फुले वस्तुसंग्रहालय",
+    "category": "museums",
+    "address": "Ghole Road, Shivajinagar, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/mahatma-phule-museum.jpg"
+  },
+  {
+    "id": "mahatma-phule-wada",
+    "slug": "mahatma-phule-wada",
+    "name": "Mahatma Jyotirao Phule Wada",
+    "name_mr": "महात्मा जोतीराव फुले वाडा (राष्ट्रीय सामाजिक क्रांती स्मारक)",
+    "category": "heritage",
+    "address": "Phule Wada, Ganj Peth, Near Mandai, Pune, Maharashtra 411042",
+    "has_image": true,
+    "image_url": "/images/places/mahatma-phule-wada.jpg"
+  },
+  {
+    "id": "malhargad-fort",
+    "slug": "malhargad-fort",
+    "name": "Malhargad Fort (Sonori Fort)",
+    "name_mr": "मल्हारगड (सोनोरी किल्ला)",
+    "category": "forts",
+    "address": "Sonori Village, Saswad, Pune District, Maharashtra 412301",
+    "has_image": true,
+    "image_url": "/images/places/malhargad-fort.jpg"
+  },
+  {
+    "id": "manmodi-caves-junnar",
+    "slug": "manmodi-caves-junnar",
+    "name": "Manmodi Buddhist Caves & Amba-Ambika Complex",
+    "name_mr": "मानमोडी लेणी (अंबा-अंबिका बौद्ध समूह, जुन्नर)",
+    "category": "heritage",
+    "address": "Manmodi Hill, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/manmodi-caves-junnar.jpg"
+  },
+  {
+    "id": "morgaon-mayureshwar-ganpati",
+    "slug": "morgaon-mayureshwar-ganpati",
+    "name": "Mayureshwar Ganpati Mandir, Morgaon (Ashtavinayak #1)",
+    "name_mr": "मयूरेश्वर गणपती मंदिर, मोरगाव (आद्य अष्टविनायक)",
+    "category": "temples",
+    "address": "Morgaon, Baramati Taluka, Pune District, Maharashtra 412304",
+    "has_image": true,
+    "image_url": "/images/places/morgaon-mayureshwar-ganpati.jpg"
+  },
+  {
+    "id": "mulshi-dam",
+    "slug": "mulshi-dam",
+    "name": "Mulshi Dam & Lake",
+    "name_mr": "मुळशी धरण आणि निसर्ग परिसर",
+    "category": "nature",
+    "address": "Mulshi Taluka, Pune District, Maharashtra 412108",
+    "has_image": true,
+    "image_url": "/images/places/mulshi-dam.jpg"
+  },
+  {
+    "id": "nana-wada",
+    "slug": "nana-wada",
+    "name": "Nana Wada (Historic Residence of Nana Phadnavis)",
+    "name_mr": "नाना वाडा (नाना फडणवीस ऐतिहासिक वाडा, बुधवार पेठ)",
+    "category": "heritage",
+    "address": "Budhwar Peth, Near Vasant Talkies, Pune, Maharashtra 411002",
+    "has_image": true,
+    "image_url": "/images/places/nana-wada.jpg"
+  },
+  {
+    "id": "naneghat-pass-caves",
+    "slug": "naneghat-pass-caves",
+    "name": "Naneghat Ancient Mountain Pass & Inscriptions",
+    "name_mr": "नाणेघाट ऐतिहासिक व्यापारी मार्ग व शिलालेख",
+    "category": "heritage",
+    "address": "Ghatghar, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/naneghat-pass-caves.jpg"
+  },
+  {
+    "id": "national-war-memorial",
+    "slug": "national-war-memorial",
+    "name": "National War Memorial Southern Command",
+    "name_mr": "राष्ट्रीय युद्ध स्मारक (सदर्न कमांड)",
+    "category": "heritage",
+    "address": "Morwada, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/national-war-memorial.jpg"
+  },
+  {
+    "id": "ohel-david-synagogue",
+    "slug": "ohel-david-synagogue",
+    "name": "Ohel David Synagogue (Lal Deval)",
+    "name_mr": "ओहेल डेव्हिड सिनेगॉग (लाल देऊळ, पुणे कॅम्प)",
+    "category": "heritage",
+    "address": "Moledina Road, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/ohel-david-synagogue.jpg"
+  },
+  {
+    "id": "ojas-ganpati-ozar",
+    "slug": "ojas-ganpati-ozar",
+    "name": "Vighnahar Ganpati Mandir, Ozar (Ashtavinayak #7)",
+    "name_mr": "विघ्नहर गणपती मंदिर, ओझर (अष्टविनायक)",
+    "category": "temples",
+    "address": "Ozar, Junnar Taluka, Pune District, Maharashtra 410504",
+    "has_image": true,
+    "image_url": "/images/places/ojas-ganpati-ozar.jpg"
+  },
+  {
+    "id": "okayama-friendship-garden",
+    "slug": "okayama-friendship-garden",
+    "name": "Pu La Deshpande Garden (Okayama Friendship Garden)",
+    "name_mr": "पु. ल. देशपांडे उद्यान (जपानी मैत्री बाग)",
+    "category": "parks",
+    "address": "Sinhagad Road, Dattawadi, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/okayama-friendship-garden.jpg"
+  },
+  {
+    "id": "omkareshwar-temple",
+    "slug": "omkareshwar-temple",
+    "name": "Omkareshwar Temple (Peshwa-Era Shiva Shrine)",
+    "name_mr": "ओंकारेश्वर मंदिर (पेशवेकालीन ऐतिहासिक शिवमंदिर, शनिवार पेठ)",
+    "category": "temples",
+    "address": "Shaniwar Peth, Near Balgandharva Bridge, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/omkareshwar-temple.jpg"
+  },
+  {
+    "id": "osho-teerth-park",
+    "slug": "osho-teerth-park",
+    "name": "Osho Teerth Park & Ashram (Koregaon Park)",
+    "name_mr": "ओशो तीर्थ पार्क व ध्यान आश्रम (कोरेगाव पार्क)",
+    "category": "heritage",
+    "address": "Lane 2, Koregaon Park, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/osho-teerth-park.jpg"
+  },
+  {
+    "id": "panshet-dam",
+    "slug": "panshet-dam",
+    "name": "Panshet Dam (Tanajisagar)",
+    "name_mr": "पानशेत धरण (तानाजीसागर)",
+    "category": "nature",
+    "address": "Velhe-Panshet Road, Pune District, Maharashtra 412107",
+    "has_image": true,
+    "image_url": "/images/places/panshet-dam.jpg"
+  },
+  {
+    "id": "parvati-hill",
+    "slug": "parvati-hill",
+    "name": "Parvati Hill & Devdeveshwar Temple",
+    "name_mr": "पार्वती टेकडी व देवदेवेश्वर मंदिर",
+    "category": "temples",
+    "address": "Parvati Paytha, Pune, Maharashtra 411009",
+    "has_image": true,
+    "image_url": "/images/places/parvati-hill.jpg"
+  },
+  {
+    "id": "pashan-lake",
+    "slug": "pashan-lake",
+    "name": "Pashan Lake & Bird Sanctuary",
+    "name_mr": "पाषाण तलाव व पक्षी अभयारण्य",
+    "category": "nature",
+    "address": "Pashan, Pune, Maharashtra 411021",
+    "has_image": true,
+    "image_url": "/images/places/pashan-lake.jpg"
+  },
+  {
+    "id": "pataleshwar-cave-temple",
+    "slug": "pataleshwar-cave-temple",
+    "name": "Pataleshwar Cave Temple",
+    "name_mr": "पाताळेश्वर लेणी मंदिर",
+    "category": "temples",
+    "address": "Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005",
+    "has_image": true,
+    "image_url": "/images/places/pataleshwar-cave-temple.jpg"
+  },
+  {
+    "id": "pawna-lake",
+    "slug": "pawna-lake",
+    "name": "Pawna Lake & Dam (Lonavala-Kamshet)",
+    "name_mr": "पवना धरण व जलाशय (कॅम्पिंग व निसर्ग पर्यटन)",
+    "category": "nature",
+    "address": "Pawna Dam, Maval Taluka, Pune District, Maharashtra 410406",
+    "has_image": true,
+    "image_url": "/images/places/pawna-lake.jpg"
+  },
+  {
+    "id": "pune-rail-museum",
+    "slug": "pune-rail-museum",
+    "name": "Pune Railway Heritage Museum & Art Gallery",
+    "name_mr": "पुणे रेल्वे वारसा संग्रहालय व आर्ट गॅलरी (पुणे स्टेशन)",
+    "category": "museums",
+    "address": "Near Pune Railway Station, Tadiwala Road, Sangamvadi, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/pune-rail-museum.jpg"
+  },
+  {
+    "id": "pune-university-heritage-building",
+    "slug": "pune-university-heritage-building",
+    "name": "Savitribai Phule Pune University Heritage Main Building",
+    "name_mr": "सावित्रीबाई फुले पुणे विद्यापीठ मुख्य हेरिटेज इमारत",
+    "category": "heritage",
+    "address": "Ganeshkhind Road, Pune, Maharashtra 411007",
+    "has_image": true,
+    "image_url": "/images/places/pune-university-heritage-building.jpg"
+  },
+  {
+    "id": "purandar-fort",
+    "slug": "purandar-fort",
+    "name": "Purandar Fort (Birthplace of Sambhaji Maharaj)",
+    "name_mr": "पुरंदर किल्ला (छत्रपती संभाजी महाराजांचे जन्मस्थान)",
+    "category": "forts",
+    "address": "Purandar Taluka, Saswad, Pune District, Maharashtra 412301",
+    "has_image": true,
+    "image_url": "/images/places/purandar-fort.jpg"
+  },
+  {
+    "id": "raja-dinkar-kelkar-museum",
+    "slug": "raja-dinkar-kelkar-museum",
+    "name": "Raja Dinkar Kelkar Museum",
+    "name_mr": "राजा दिनकर केळकर वस्तुसंग्रहालय",
+    "category": "museums",
+    "address": "1377-78, Kamal Kunj, Natu Baug, Shukrawar Peth, Pune, Maharashtra 411002",
+    "has_image": true,
+    "image_url": "/images/places/raja-dinkar-kelkar-museum.jpg"
+  },
+  {
+    "id": "rajgad-fort",
+    "slug": "rajgad-fort",
+    "name": "Rajgad Fort (King of Forts)",
+    "name_mr": "राजगड किल्ला (राजांचा राजा)",
+    "category": "forts",
+    "address": "Gunjavane Village, Velhe Taluka, Pune District, Maharashtra 412213",
+    "has_image": true,
+    "image_url": "/images/places/rajgad-fort.jpg"
+  },
+  {
+    "id": "rajiv-gandhi-zoological-park",
+    "slug": "rajiv-gandhi-zoological-park",
+    "name": "Rajiv Gandhi Zoological Park (Katraj Zoo)",
+    "name_mr": "राजीव गांधी प्राणीसंग्रहालय व कात्रज सर्पोद्यान",
+    "category": "parks",
+    "address": "Pune-Satara Road, Katraj, Pune, Maharashtra 411046",
+    "has_image": true,
+    "image_url": "/images/places/rajiv-gandhi-zoological-park.jpg"
+  },
+  {
+    "id": "rajmachi-fort",
+    "slug": "rajmachi-fort",
+    "name": "Rajmachi Fort (Shrivardhan & Manaranjan)",
+    "name_mr": "राजमाची किल्ला (श्रीवर्धन व मनरंजन बालेकिल्ले)",
+    "category": "forts",
+    "address": "Udhewadi, Near Khandala-Lonavala, Pune District, Maharashtra 410401",
+    "has_image": true,
+    "image_url": "/images/places/rajmachi-fort.jpg"
+  },
+  {
+    "id": "ranjangaon-mahaganpati",
+    "slug": "ranjangaon-mahaganpati",
+    "name": "Mahaganpati Mandir, Ranjangaon (Ashtavinayak)",
+    "name_mr": "महागणपती मंदिर, रांजणगाव (अष्टविनायक)",
+    "category": "temples",
+    "address": "Ranjangaon, Shirur Taluka, Pune District, Maharashtra 412209",
+    "has_image": true,
+    "image_url": "/images/places/ranjangaon-mahaganpati.jpg"
+  },
+  {
+    "id": "rohida-fort",
+    "slug": "rohida-fort",
+    "name": "Rohida Fort (Vichitragad)",
+    "name_mr": "रोहिडा किल्ला (विचित्रगड)",
+    "category": "forts",
+    "address": "Bajarwadi, Bhor Taluka, Pune District, Maharashtra 412206",
+    "has_image": true,
+    "image_url": "/images/places/rohida-fort.jpg"
+  },
+  {
+    "id": "sambhaji-park",
+    "slug": "sambhaji-park",
+    "name": "Chhatrapati Sambhaji Garden",
+    "name_mr": "छत्रपती संभाजी महाराज उद्यान",
+    "category": "parks",
+    "address": "JM Road, Shivajinagar, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/sambhaji-park.jpg"
+  },
+  {
+    "id": "sangam-ghat-sangameshwar-temple",
+    "slug": "sangam-ghat-sangameshwar-temple",
+    "name": "Sangam Ghat & Sangameshwar Temple",
+    "name_mr": "संगम घाट व संगमेश्वर ऐतिहासिक शिवमंदिर (पुणे)",
+    "category": "heritage",
+    "address": "Near Sangam Bridge, Narveer Tanaji Wadi, Shivajinagar, Pune, Maharashtra 411005",
+    "has_image": true,
+    "image_url": "/images/places/sangam-ghat-sangameshwar-temple.jpg"
+  },
+  {
+    "id": "sangvi-sangameshwar-temple",
+    "slug": "sangvi-sangameshwar-temple",
+    "name": "Sangameshwar Mahadev Temple (Old Sangvi)",
+    "name_mr": "संगमेश्वर महादेव मंदिर (जुनी सांगवी, पवना-मुळा संगम)",
+    "category": "temples",
+    "address": "Old Sangvi, Near Sangam Confluence, Pimpri-Chinchwad, Pune, Maharashtra 411027",
+    "has_image": true,
+    "image_url": "/images/places/sangvi-sangameshwar-temple.jpg"
+  },
+  {
+    "id": "sarasbaug",
+    "slug": "sarasbaug",
+    "name": "Saras Baug & Talyatla Ganpati",
+    "name_mr": "सारसबाग व तळ्यातला गणपती",
+    "category": "parks",
+    "address": "Saras Baug Road, Sadashiv Peth, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/sarasbaug.jpg"
+  },
+  {
+    "id": "shaniwar-wada",
+    "slug": "shaniwar-wada",
+    "name": "Shaniwar Wada",
+    "name_mr": "शनिवार वाडा",
+    "category": "heritage",
+    "address": "Shaniwar Peth, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/shaniwar-wada.jpg"
+  },
+  {
+    "id": "shinde-chhatri",
+    "slug": "shinde-chhatri",
+    "name": "Shinde Chhatri (Mahadji Shinde Memorial)",
+    "name_mr": "शिंदे छत्री (महादजी शिंदे स्मारक)",
+    "category": "heritage",
+    "address": "Wanowrie, Pune, Maharashtra 411040",
+    "has_image": true,
+    "image_url": "/images/places/shinde-chhatri.jpg"
+  },
+  {
+    "id": "shivneri-fort",
+    "slug": "shivneri-fort",
+    "name": "Shivneri Fort (Birthplace of Shivaji Maharaj)",
+    "name_mr": "शिवनेरी किल्ला (शिवजन्माचे पवित्र स्थान)",
+    "category": "forts",
+    "address": "Junnar, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/shivneri-fort.jpg"
+  },
+  {
+    "id": "shreemant-dagdusheth-halwai-ganpati",
+    "slug": "shreemant-dagdusheth-halwai-ganpati",
+    "name": "Shreemant Dagdusheth Halwai Ganpati Mandir",
+    "name_mr": "श्रीमंत दगडूशेठ हलवाई गणपती मंदिर",
+    "category": "temples",
+    "address": "Ganpati Bhavan, 250, Budhwar Peth, Pune, Maharashtra 411002",
+    "has_image": true,
+    "image_url": "/images/places/shreemant-dagdusheth-halwai-ganpati.jpg"
+  },
+  {
+    "id": "siddhatek-siddhivinayak-ganpati",
+    "slug": "siddhatek-siddhivinayak-ganpati",
+    "name": "Siddhivinayak Ganpati Mandir, Siddhatek (Ashtavinayak #2)",
+    "name_mr": "सिद्धिविनायक गणपती मंदिर, सिद्धटेक (अष्टविनायक)",
+    "category": "temples",
+    "address": "Siddhatek, Karjat/Daund Border, Pune District, Maharashtra 414403",
+    "has_image": true,
+    "image_url": "/images/places/siddhatek-siddhivinayak-ganpati.jpg"
+  },
+  {
+    "id": "sinhagad-fort",
+    "slug": "sinhagad-fort",
+    "name": "Sinhagad Fort (Lion's Fort)",
+    "name_mr": "सिंहगड किल्ला (कोंढाणा)",
+    "category": "forts",
+    "address": "Sinhagad Ghat Road, Thoptewadi, Pune, Maharashtra 411025",
+    "has_image": true,
+    "image_url": "/images/places/sinhagad-fort.jpg"
+  },
+  {
+    "id": "someshwar-temple-pashan",
+    "slug": "someshwar-temple-pashan",
+    "name": "Someshwar Temple & Ramnadi Ghats (Pashan)",
+    "name_mr": "सोमेश्वर मंदिर व रामनदी घाट (सोमेश्वरवाडी, पाषाण)",
+    "category": "temples",
+    "address": "Someshwarwadi, Pashan, Pune, Maharashtra 411008",
+    "has_image": true,
+    "image_url": "/images/places/someshwar-temple-pashan.jpg"
+  },
+  {
+    "id": "st-marys-church",
+    "slug": "st-marys-church",
+    "name": "St. Mary's Church (Pune's Oldest Church)",
+    "name_mr": "सेंट मेरीज चर्च (पुण्यातील सर्वात जुने चर्च, कॅम्प)",
+    "category": "heritage",
+    "address": "Solapur Road, Camp, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/st-marys-church.jpg"
+  },
+  {
+    "id": "sujata-mastani-sadashiv-peth",
+    "slug": "sujata-mastani-sadashiv-peth",
+    "name": "Sujata Mastani (Sadashiv Peth - Original 1968 Branch)",
+    "name_mr": "सुजाता मस्तानी (सदाशिव पेठ - मूळ शाखा १९६८)",
+    "category": "food",
+    "address": "1260, Sadashiv Peth, Chimanya Ganpati Chowk, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/sujata-mastani-heritage.jpg"
+  },
+  {
+    "id": "taljai-hills",
+    "slug": "taljai-hills",
+    "name": "Taljai Hills & Forest Reserve",
+    "name_mr": "तळजाई टेकडी व वन उद्यान",
+    "category": "nature",
+    "address": "Taljai Forest Reserve, Sahakar Nagar, Pune, Maharashtra 411009",
+    "has_image": true,
+    "image_url": "/images/places/taljai-hills.jpg"
+  },
+  {
+    "id": "tambat-ali-craft-quarter",
+    "slug": "tambat-ali-craft-quarter",
+    "name": "Tambat Ali (Heritage Coppersmiths Quarter)",
+    "name_mr": "तांबट आळी (कसबा पेठेतील ४०० वर्षे जुनी तांब्या-पितळेची कारागिरी)",
+    "category": "heritage",
+    "address": "Tambat Ali, Kasba Peth, Pune, Maharashtra 411011",
+    "has_image": true,
+    "image_url": "/images/places/tambat-ali-craft-quarter.jpg"
+  },
+  {
+    "id": "tamhini-ghat",
+    "slug": "tamhini-ghat",
+    "name": "Tamhini Ghat & Waterfalls",
+    "name_mr": "ताम्हिणी घाट व धबधबे",
+    "category": "nature",
+    "address": "Tamhini Ghat Road, Mulshi Taluka, Pune District, Maharashtra 412108",
+    "has_image": true,
+    "image_url": "/images/places/tamhini-ghat.jpg"
+  },
+  {
+    "id": "theur-chintamani-ganpati",
+    "slug": "theur-chintamani-ganpati",
+    "name": "Chintamani Ganpati Mandir, Theur (Ashtavinayak)",
+    "name_mr": "चिंतामणी गणपती मंदिर, थेऊर (अष्टविनायक)",
+    "category": "temples",
+    "address": "Theur, Haveli Taluka, Pune District, Maharashtra 412110",
+    "has_image": true,
+    "image_url": "/images/places/theur-chintamani-ganpati.jpg"
+  },
+  {
+    "id": "tiger-point-lonavala",
+    "slug": "tiger-point-lonavala",
+    "name": "Tiger Point & Lion's Point (Lonavala)",
+    "name_mr": "टायगर पॉईंट व लायन्स पॉईंट (लोणावळा)",
+    "category": "nature",
+    "address": "Aamby Valley Road, Lonavala, Pune District, Maharashtra 410401",
+    "has_image": true,
+    "image_url": "/images/places/tiger-point-lonavala.jpg"
+  },
+  {
+    "id": "tikona-fort",
+    "slug": "tikona-fort",
+    "name": "Tikona Fort (Vitandgad)",
+    "name_mr": "तिकोना किल्ला (वितंडगड)",
+    "category": "forts",
+    "address": "Tikona Peth, Near Kamshet, Pune District, Maharashtra 410406",
+    "has_image": true,
+    "image_url": "/images/places/tikona-fort.jpg"
+  },
+  {
+    "id": "torna-fort",
+    "slug": "torna-fort",
+    "name": "Torna Fort (Prachandagad)",
+    "name_mr": "तोरणा किल्ला (प्रचंडगड)",
+    "category": "forts",
+    "address": "Velhe, Pune District, Maharashtra 412212",
+    "has_image": true,
+    "image_url": "/images/places/torna-fort.jpg"
+  },
+  {
+    "id": "tribal-museum",
+    "slug": "tribal-museum",
+    "name": "Tribal Cultural Museum",
+    "name_mr": "आदिवासी सांस्कृतिक वस्तुसंग्रहालय",
+    "category": "museums",
+    "address": "28, Queen's Garden Road, Band Garden, Pune, Maharashtra 411001",
+    "has_image": true,
+    "image_url": "/images/places/tribal-museum.jpg"
+  },
+  {
+    "id": "trishund-ganpati-temple",
+    "slug": "trishund-ganpati-temple",
+    "name": "Trishund Mayureshwar Ganpati Temple",
+    "name_mr": "त्रिशुंड मयूरेश्वर गणपती मंदिर (सोमवार पेठ)",
+    "category": "temples",
+    "address": "Near Apollo Theatre, Somwar Peth, Pune, Maharashtra 411011",
+    "has_image": true,
+    "image_url": "/images/places/trishund-ganpati-temple.jpg"
+  },
+  {
+    "id": "tulja-caves-junnar",
+    "slug": "tulja-caves-junnar",
+    "name": "Tulja Buddhist Caves (Junnar)",
+    "name_mr": "तुळजा लेणी (बौद्ध चैत्य व विहार, जुन्नर)",
+    "category": "heritage",
+    "address": "Tuljapur Road, Junnar Taluka, Pune District, Maharashtra 410502",
+    "has_image": true,
+    "image_url": "/images/places/tulja-caves-junnar.jpg"
+  },
+  {
+    "id": "tulshibaug-temple",
+    "slug": "tulshibaug-temple",
+    "name": "Tulshibaug Ram Mandir",
+    "name_mr": "तुळशीबाग राम मंदिर",
+    "category": "temples",
+    "address": "Tulshibaug, Budhwar Peth, Pune, Maharashtra 411002",
+    "has_image": true,
+    "image_url": "/images/places/tulshibaug-temple.jpg"
+  },
+  {
+    "id": "varasgaon-dam",
+    "slug": "varasgaon-dam",
+    "name": "Varasgaon Dam & Reservoir (Veer Baji Pasalkar)",
+    "name_mr": "वरसगाव धरण (वीर बाजी पासलकर जलाशय)",
+    "category": "nature",
+    "address": "Varasgaon, Velhe/Haveli Taluka, Pune District, Maharashtra 412107",
+    "has_image": true,
+    "image_url": "/images/places/varasgaon-dam.jpg"
+  },
+  {
+    "id": "vetal-tekdi",
+    "slug": "vetal-tekdi",
+    "name": "Vetal Tekdi (Highest Peak of Pune City)",
+    "name_mr": "वेताळ टेकडी (पुण्यातील सर्वोच्च टेकडी)",
+    "category": "nature",
+    "address": "Paud Road / Senapati Bapat Road, Pune, Maharashtra 411004",
+    "has_image": true,
+    "image_url": "/images/places/vetal-tekdi.jpg"
+  },
+  {
+    "id": "vikram-pendse-cycles-museum",
+    "slug": "vikram-pendse-cycles-museum",
+    "name": "Vikram Pendse Cycles & Vintage Museum",
+    "name_mr": "विक्रम पेंडसे सायकल व विंटेज म्युझियम (कर्वे नगर, पुणे)",
+    "category": "museums",
+    "address": "22 Harshawardhan Society, Lane 6, Karve Nagar, Pune, Maharashtra 411052",
+    "has_image": true,
+    "image_url": "/images/places/vikram-pendse-cycles-museum.jpg"
+  },
+  {
+    "id": "visapur-fort",
+    "slug": "visapur-fort",
+    "name": "Visapur Fort (Twin Fort of Lohagad)",
+    "name_mr": "विसापूर किल्ला (लोहगडाचा जुळा किल्ला)",
+    "category": "forts",
+    "address": "Malavali, Lonavala-Kamshet, Pune District, Maharashtra 410405",
+    "has_image": true,
+    "image_url": "/images/places/visapur-fort.jpg"
+  },
+  {
+    "id": "vishrambaug-wada",
+    "slug": "vishrambaug-wada",
+    "name": "Vishrambaug Wada",
+    "name_mr": "विश्रामबाग वाडा",
+    "category": "heritage",
+    "address": "RB Kumthekar Rd, Sadashiv Peth, Pune, Maharashtra 411030",
+    "has_image": true,
+    "image_url": "/images/places/vishrambaug-wada.jpg"
+  }
+]
