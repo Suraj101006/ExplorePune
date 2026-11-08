@@ -724,7 +724,7 @@ export default function PlannerPage() {
   };
 
   // Download PDF
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     const planToExport = isGuidedMode && activeGuidedTrip ? activeGuidedTrip : activePlan;
     if (!planToExport) return;
     setDownloadingPdf(true);
@@ -749,6 +749,37 @@ export default function PlannerPage() {
         (user?.email ? user.email.split('@')[0] : '') ||
         (isMr ? 'पुणे पर्यटक' : 'Pune Explorer');
 
+      // Pre-fetch base64 images for high-res embedding
+      const imageMap: Record<string, string> = {};
+      const loadBase64 = async (url: string) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) return null;
+          const blob = await res.blob();
+          return new Promise<string | null>((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        } catch {
+          return null;
+        }
+      };
+
+      const heroB64 = await loadBase64('/images/pune-map-hero.jpg');
+      if (heroB64) imageMap['/images/pune-map-hero.jpg'] = heroB64;
+
+      await Promise.all(
+        (planToExport.stops || []).slice(0, 8).map(async (s: any) => {
+          const imgUrl = s.image_url || (s.placeSlug ? `/images/places/${s.placeSlug}.jpg` : null);
+          if (imgUrl) {
+            const b64 = await loadBase64(imgUrl);
+            if (b64) imageMap[imgUrl] = b64;
+          }
+        })
+      );
+
       downloadItineraryPdf({
         userName: profileName,
         userEmail: user?.email || undefined,
@@ -763,11 +794,22 @@ export default function PlannerPage() {
         totalDurationMinutes: planToExport.totalDurationMinutes || 0,
         bufferMinutes: (planToExport as any).bufferMinutes || 0,
         estimatedCost: planToExport.knownCost || 0,
+        totalDistanceKm: calculatedTotalKm,
+        travelersCount: 1,
+        startDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        preferences: preferences.length > 0 ? preferences : [mode, planToExport.themeEn || 'Heritage'].filter(Boolean),
+        categories: interests.length > 0 ? interests : ['heritage', 'forts'],
         isMr,
         stops: (planToExport.stops || []).map((s: any, idx: number) => ({
           index: idx + 1,
+          placeId: s.placeId,
+          placeSlug: s.placeSlug,
           name: isMr ? s.placeName_mr || s.placeName : s.placeName,
           nameMr: s.placeName_mr,
+          category: s.category_slug || s.category,
+          image_url: s.image_url,
+          latitude: s.latitude,
+          longitude: s.longitude,
           arrivalTime: s.arrivalTime,
           departureTime: s.departureTime,
           visitMinutes: s.visitMinutes,
@@ -784,7 +826,7 @@ export default function PlannerPage() {
           ticketInfo: isMr ? s.transitDetails?.ticketInfoMr || s.transitDetails?.ticketInfoEn : s.transitDetails?.ticketInfoEn,
         })),
         warnings: (planToExport as any).warnings || [],
-      });
+      }, undefined, { imageMap });
 
       setPdfSuccess(isMr ? '✓ PDF यशस्वीरीत्या डाऊनलोड झाली!' : '✓ PDF downloaded successfully!');
       setTimeout(() => setPdfSuccess(''), 5000);
@@ -843,11 +885,22 @@ export default function PlannerPage() {
         totalDurationMinutes: planToExport.totalDurationMinutes || 0,
         bufferMinutes: (planToExport as any).bufferMinutes || 0,
         estimatedCost: planToExport.knownCost || 0,
+        totalDistanceKm: calculatedTotalKm,
+        travelersCount: 1,
+        startDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        preferences: preferences.length > 0 ? preferences : [mode, planToExport.themeEn || 'Heritage'].filter(Boolean),
+        categories: interests.length > 0 ? interests : ['heritage', 'forts'],
         isMr,
         stops: (planToExport.stops || []).map((s: any, idx: number) => ({
           index: idx + 1,
+          placeId: s.placeId,
+          placeSlug: s.placeSlug,
           name: isMr ? s.placeName_mr || s.placeName : s.placeName,
           nameMr: s.placeName_mr,
+          category: s.category_slug || s.category,
+          image_url: s.image_url,
+          latitude: s.latitude,
+          longitude: s.longitude,
           arrivalTime: s.arrivalTime,
           departureTime: s.departureTime,
           visitMinutes: s.visitMinutes,
