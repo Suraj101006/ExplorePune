@@ -4,6 +4,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
+import BrandLogo from '@/components/BrandLogo';
 import { usePathname } from 'next/navigation';
 import {
   Compass,
@@ -53,14 +54,12 @@ export default function AppHeader() {
     <header className="site-header">
       <div className="wrap site-header-inner">
         {/* Brand Identity */}
-        <Link href="/" className="brand">
-          <Image
-            src="/images/logo.svg"
-            alt="Explore Pune Logo"
-            width={38}
-            height={38}
-            className="brand-logo-img"
+        <Link href="/" className="brand" aria-label="Explore Pune Home">
+          <BrandLogo
+            size={42}
             priority
+            alt="Explore Pune Logo"
+            className="brand-logo-img"
           />
           <div className="brand-text-col" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
             <span className="brand-title" style={{ fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--ink)' }}>

@@ -72,7 +72,7 @@ const CATEGORY_NAMES_MR: Record<string, string> = {
 };
 
 const CATEGORY_BADGES: Record<string, string> = {
-  all: '/images/logo.svg',
+  all: '/assets/explore-pune-logo.png',
   forts: '/images/places/sinhagad-fort.jpg',
   heritage: '/images/places/shaniwar-wada.jpg',
   temples: '/images/places/shreemant-dagdusheth-halwai-ganpati.jpg',
@@ -1346,7 +1346,7 @@ export default function HomeExplorer({
             }}
           >
             <Image
-              src="/images/logo.svg"
+              src="/assets/explore-pune-logo.png"
               alt="All Places"
               width={22}
               height={22}

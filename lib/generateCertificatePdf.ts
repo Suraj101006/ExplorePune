@@ -1,5 +1,22 @@
 import { jsPDF } from 'jspdf';
 
+function getRuntimeLogoBase64(): string | null {
+  if (typeof window === 'undefined') {
+    try {
+      const req = eval('require');
+      const fs = req('fs');
+      const path = req('path');
+      const candidate = path.join(process.cwd(), 'public', 'assets', 'explore-pune-logo.png');
+      if (fs.existsSync(candidate)) {
+        return `data:image/png;base64,${fs.readFileSync(candidate).toString('base64')}`;
+      }
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
 export interface CertificateData {
   explorerName: string;
   milestoneTitle: string;
@@ -37,11 +54,27 @@ export function generateCertificatePdf(data: CertificateData): jsPDF {
   doc.rect(10, pageHeight - 18, 8, 8, 'F');
   doc.rect(pageWidth - 18, pageHeight - 18, 8, 8, 'F');
 
-  let y = 32;
+  const logoBase64 = getRuntimeLogoBase64();
+  let y = 18;
+
+  if (logoBase64) {
+    const logoSize = 22;
+    const logoX = (pageWidth - logoSize) / 2;
+    doc.setFillColor(255, 255, 255);
+    doc.setDrawColor(194, 65, 12);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(logoX - 2, y - 2, logoSize + 4, logoSize + 4, 3, 3, 'FD');
+    try {
+      doc.addImage(logoBase64, 'PNG', logoX, y, logoSize, logoSize);
+    } catch {}
+    y += logoSize + 6;
+  } else {
+    y = 32;
+  }
 
   // Top Title
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
+  doc.setFontSize(13);
   doc.setTextColor(194, 65, 12);
   doc.text('EXPLORE PUNE — MAHARASHTRA TOURISM INITIATIVE', pageWidth / 2, y, { align: 'center' });
 

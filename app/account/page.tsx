@@ -18,6 +18,7 @@ import { auth, db } from '@/lib/firebase';
 import { useAuth } from '@/lib/useAuth';
 import { useLanguage } from '@/lib/LanguageContext';
 import ProfileAvatar from '@/components/ProfileAvatar';
+import BrandLogo from '@/components/BrandLogo';
 import ProfileAvatarModal from '@/components/ProfileAvatarModal';
 import { getBlockedUsers, unblockUser, hasAcceptedCommunityGuidelines } from '@/lib/userSafety';
 import {
@@ -377,8 +378,9 @@ export default function AccountPage() {
           />
 
           <div>
-            <div className="hero-pill" style={{ marginBottom: 6 }}>
-              <span>👤</span> {isMr ? 'सदस्य डॅशबोर्ड' : 'Member Dashboard'}
+            <div className="hero-pill" style={{ marginBottom: 6, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <BrandLogo size={18} alt="Explore Pune" />
+              <span>{isMr ? 'अधिकृत एक्सप्लोर पुणे सदस्य' : 'Verified Explore Pune Explorer'}</span>
             </div>
             <h1 style={{ fontSize: 28, margin: '2px 0 4px', fontWeight: 800 }}>
               {d.profile?.display_name || user.displayName || 'Pune Explorer'}

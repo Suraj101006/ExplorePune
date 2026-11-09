@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { generateItineraryPdf, ItineraryPdfData } from './generateItineraryPdf';
+import { getOfficialLogoDiskPath } from './officialLogoServer';
 
 export interface FeedbackEmailParams {
   toEmail: string;
@@ -140,11 +141,23 @@ export async function sendFeedbackConfirmationEmail(params: FeedbackEmailParams)
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 24px; color: #1e293b;">
   <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
     
-    <!-- Top Decorative Header -->
-    <div style="background: linear-gradient(135deg, #c2410c 0%, #d97706 100%); padding: 32px 28px; text-align: center; color: #ffffff;">
-      <div style="font-size: 38px; margin-bottom: 8px;">🚩</div>
-      <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">Explore Pune | एक्सप्लोर पुणे</h1>
-      <p style="margin: 6px 0 0; font-size: 13.5px; opacity: 0.95; color: #fef08a;">पुणे आणि सह्याद्रीच्या ऐतिहासिक वाटा • Official Tourism & Heritage Guide</p>
+    <!-- Email Brand Header with Official Logo -->
+    <div style="background: #ffffff; padding: 26px 20px 18px; text-align: center; border-bottom: 3px solid #ff9100;">
+      <a href="https://explorepune-guide.vercel.app" target="_blank" style="text-decoration: none; display: inline-block;">
+        <img
+          src="cid:explorePuneOfficialLogo"
+          alt="Explore Pune"
+          width="112"
+          height="112"
+          style="display: block; margin: 0 auto 8px; width: 112px; height: 112px; object-fit: contain; border: 0;"
+        />
+      </a>
+      <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #1e293b; letter-spacing: -0.02em;">
+        Explore<span style="color: #ff9100;">Pune</span> | एक्सप्लोर पुणे
+      </h1>
+      <p style="margin: 4px 0 0; font-size: 13px; color: #64748b; font-weight: 600;">
+        पुणे आणि सह्याद्रीच्या ऐतिहासिक वाटा • Official Tourism & Heritage Guide
+      </p>
     </div>
 
     <!-- Letter Body -->
@@ -276,6 +289,17 @@ ExplorePune Team
 
   if (transporter) {
     try {
+      const diskPath = getOfficialLogoDiskPath();
+      const attachments = diskPath
+        ? [
+            {
+              filename: 'explore-pune-logo.png',
+              path: diskPath,
+              cid: 'explorePuneOfficialLogo',
+            },
+          ]
+        : [];
+
       const info = await transporter.sendMail({
         from: fromHeader,
         to: toEmail,
@@ -283,6 +307,7 @@ ExplorePune Team
         subject,
         text: textContent,
         html: htmlContent,
+        attachments,
       });
       return { success: true, messageId: info.messageId, mode: 'smtp' };
     } catch (err: any) {
@@ -321,7 +346,18 @@ export async function sendFeedbackAdminNotificationEmail(params: FeedbackAdminNo
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f8fafc; padding: 24px; color: #1e293b;">
   <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px;">
-    <h2 style="margin: 0 0 16px; color: #c2410c; border-bottom: 2px solid #fdba74; padding-bottom: 8px;">
+    <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #ff9100; padding-bottom: 12px;">
+      <img
+        src="cid:explorePuneOfficialLogo"
+        alt="Explore Pune"
+        width="80"
+        height="80"
+        style="display: block; margin: 0 auto 6px; width: 80px; height: 80px; object-fit: contain; border: 0;"
+      />
+      <div style="font-size: 15px; font-weight: 800; color: #1e293b;">Explore<span style="color: #ff9100;">Pune</span> Dispatcher</div>
+    </div>
+
+    <h2 style="margin: 0 0 16px; color: #c2410c; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
       🔔 New User Feedback Received
     </h2>
     
@@ -397,6 +433,17 @@ Feedback ID: ${feedbackId || 'N/A'}
 
   if (transporter) {
     try {
+      const diskPath = getOfficialLogoDiskPath();
+      const attachments = diskPath
+        ? [
+            {
+              filename: 'explore-pune-logo.png',
+              path: diskPath,
+              cid: 'explorePuneOfficialLogo',
+            },
+          ]
+        : [];
+
       const info = await transporter.sendMail({
         from: fromHeader,
         to: adminEmail,
@@ -404,6 +451,7 @@ Feedback ID: ${feedbackId || 'N/A'}
         subject,
         text: textContent,
         html: htmlContent,
+        attachments,
       });
       return { success: true, messageId: info.messageId, mode: 'smtp' };
     } catch (err: any) {
@@ -498,11 +546,21 @@ export async function sendItineraryEmail(params: ItineraryEmailParams) {
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin: 0; padding: 24px; color: #1e293b;">
   <div style="max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
     
-    <!-- Top Header Banner -->
-    <div style="background: linear-gradient(135deg, #c2410c 0%, #d97706 100%); padding: 32px 28px; text-align: center; color: #ffffff;">
-      <div style="font-size: 38px; margin-bottom: 8px;">🗺️</div>
-      <h1 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">Explore Pune | Trip Planner</h1>
-      <p style="margin: 6px 0 0; font-size: 13.5px; opacity: 0.95; color: #fef08a;">
+    <!-- Email Brand Header with Official Logo -->
+    <div style="background: #ffffff; padding: 26px 20px 18px; text-align: center; border-bottom: 3px solid #ff9100;">
+      <a href="https://explorepune-guide.vercel.app/planner" target="_blank" style="text-decoration: none; display: inline-block;">
+        <img
+          src="cid:explorePuneOfficialLogo"
+          alt="Explore Pune"
+          width="112"
+          height="112"
+          style="display: block; margin: 0 auto 8px; width: 112px; height: 112px; object-fit: contain; border: 0;"
+        />
+      </a>
+      <h1 style="margin: 0; font-size: 21px; font-weight: 800; color: #1e293b; letter-spacing: -0.02em;">
+        Explore<span style="color: #ff9100;">Pune</span> | Trip Planner
+      </h1>
+      <p style="margin: 4px 0 0; font-size: 13px; color: #64748b; font-weight: 600;">
         ${isMarathi ? 'पुणे सानुकूल सहल आराखडा आणि प्रवास मार्गदर्शक' : 'Your Custom Day Tour & Public Transit Itinerary'}
       </p>
     </div>
@@ -628,15 +686,22 @@ ExplorePune Team
   if (transporter) {
     try {
       const safeUserName = resolvedUserName.replace(/[^a-zA-Z0-9]/g, '_');
-      const attachments = pdfBuffer
-        ? [
-            {
-              filename: `Explore_Pune_${safeUserName}_Itinerary.pdf`,
-              content: pdfBuffer,
-              contentType: 'application/pdf',
-            },
-          ]
-        : [];
+      const diskPath = getOfficialLogoDiskPath();
+      const attachments: any[] = [];
+      if (diskPath) {
+        attachments.push({
+          filename: 'explore-pune-logo.png',
+          path: diskPath,
+          cid: 'explorePuneOfficialLogo',
+        });
+      }
+      if (pdfBuffer) {
+        attachments.push({
+          filename: `Explore_Pune_${safeUserName}_Itinerary.pdf`,
+          content: pdfBuffer,
+          contentType: 'application/pdf',
+        });
+      }
 
       const info = await transporter.sendMail({
         from: fromHeader,

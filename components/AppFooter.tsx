@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import BrandLogo from '@/components/BrandLogo';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function AppFooter() {
@@ -12,12 +13,10 @@ export default function AppFooter() {
       <div className="wrap">
         <div style={{ maxWidth: 540 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <Image
-              src="/images/logo.svg"
+            <BrandLogo
+              size={34}
               alt="Explore Pune Logo"
-              width={30}
-              height={30}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
+              withBadge
             />
             <strong style={{ fontSize: 16, color: 'var(--ink)' }}>Explore Pune</strong>
           </div>

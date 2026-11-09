@@ -1,5 +1,23 @@
 import { jsPDF } from 'jspdf';
 import QRCode from 'qrcode';
+
+function getRuntimeLogoBase64(): string | null {
+  if (typeof window === 'undefined') {
+    try {
+      // Safe dynamic require prevents bundlers from resolving 'fs' on client builds
+      const req = eval('require');
+      const fs = req('fs');
+      const path = req('path');
+      const candidate = path.join(process.cwd(), 'public', 'assets', 'explore-pune-logo.png');
+      if (fs.existsSync(candidate)) {
+        return `data:image/png;base64,${fs.readFileSync(candidate).toString('base64')}`;
+      }
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 import { ALL_STRUCTURED_PLACES, StructuredPlace } from './chatKnowledgeEngine';
 import { LANDMARK_SPECIFIC_FOOD } from './visitorGuidelines';
 import { getOperatingStatus } from './operatingHours';
@@ -417,25 +435,43 @@ export function generateItineraryPdf(
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
   drawHeritageBorder(doc, pageWidth, pageHeight, margin);
 
-  let y = margin + 8;
+  const officialLogoBase64 = options?.imageMap?.['official-logo'] || getRuntimeLogoBase64();
+
+  let y = margin + 5;
+
+  // Prominent Official Brand Seal & Logo Crest
+  if (officialLogoBase64) {
+    const logoSize = 22;
+    const logoX = (pageWidth - logoSize) / 2;
+    doc.setFillColor(255, 255, 255);
+    doc.setDrawColor(C_GOLD[0], C_GOLD[1], C_GOLD[2]);
+    doc.setLineWidth(0.6);
+    doc.roundedRect(logoX - 2, y - 2, logoSize + 4, logoSize + 4, 3, 3, 'FD');
+    try {
+      doc.addImage(officialLogoBase64, 'PNG', logoX, y, logoSize, logoSize);
+    } catch (e) {
+      console.warn('Could not embed official logo on cover:', e);
+    }
+    y += logoSize + 5;
+  }
 
   // Brand Header & Seal
   doc.setFillColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
-  doc.rect(margin + 4, y, contentWidth - 8, 16, 'F');
+  doc.rect(margin + 4, y, contentWidth - 8, 14, 'F');
   doc.setFillColor(C_GOLD[0], C_GOLD[1], C_GOLD[2]);
-  doc.rect(margin + 4, y + 16, contentWidth - 8, 1.2, 'F');
+  doc.rect(margin + 4, y + 14, contentWidth - 8, 1, 'F');
 
   doc.setTextColor(255, 255, 255);
   doc.setFont('times', 'bold');
-  doc.setFontSize(13);
-  doc.text('EXPLORE PUNE  •  OFFICIAL TRAVEL DOSSIER', pageWidth / 2, y + 7.5, { align: 'center' });
+  doc.setFontSize(12);
+  doc.text('EXPLORE PUNE  •  OFFICIAL TRAVEL DOSSIER', pageWidth / 2, y + 6.5, { align: 'center' });
 
   doc.setTextColor(C_GOLD_LIGHT[0], C_GOLD_LIGHT[1], C_GOLD_LIGHT[2]);
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
-  doc.text('Government Archive & Maharashtra Heritage Circuit  •  https://explorepune-guide.vercel.app', pageWidth / 2, y + 12.5, { align: 'center' });
+  doc.setFontSize(7);
+  doc.text('Government Archive & Maharashtra Heritage Circuit  •  https://explorepune-guide.vercel.app', pageWidth / 2, y + 11, { align: 'center' });
 
-  y += 24;
+  y += 20;
 
   // Title Block
   doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
@@ -1596,11 +1632,21 @@ export function generateItineraryPdf(
         { align: 'center' }
       );
     } else {
-      // Running header
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7);
-      doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
-      doc.text('EXPLORE PUNE — OFFICIAL EXPEDITION ITINERARY', margin + 2, 10);
+      // Running header with small official logo
+      if (officialLogoBase64) {
+        try {
+          doc.addImage(officialLogoBase64, 'PNG', margin + 1, 6.2, 5, 5);
+        } catch {}
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
+        doc.text('EXPLORE PUNE — OFFICIAL EXPEDITION ITINERARY', margin + 7.5, 10);
+      } else {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
+        doc.text('EXPLORE PUNE — OFFICIAL EXPEDITION ITINERARY', margin + 2, 10);
+      }
 
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);

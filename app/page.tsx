@@ -130,7 +130,7 @@ export default async function HomePage({
     '@type': 'Organization',
     name: 'Explore Pune',
     url: 'https://explorepune-guide.vercel.app',
-    logo: 'https://explorepune-guide.vercel.app/images/logo.svg',
+    logo: 'https://explorepune-guide.vercel.app/assets/explore-pune-logo.png',
     description:
       'An authoritative, locally researched field guide to Maratha forts, Peshwa-era wadas, temples, and custom travel itineraries.',
     areaServed: {

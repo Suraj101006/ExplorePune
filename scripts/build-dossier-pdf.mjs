@@ -6,6 +6,11 @@ const outputHtmlPath = 'C:/Users/Suraj/explore-pune/explore-pune-dossier.html';
 const outputPdfPath = 'C:/Users/Suraj/explore-pune/Explore_Pune_Project_Dossier_and_Viva_Guide.pdf';
 const artifactPdfPath = 'C:/Users/Suraj/.gemini/antigravity/brain/423c92e7-93f0-43f0-b5f3-a18653c595ae/Explore_Pune_Project_Dossier_and_Viva_Guide.pdf';
 
+const logoDiskPath = 'C:/Users/Suraj/explore-pune/public/assets/explore-pune-logo.png';
+const logoBase64 = fs.existsSync(logoDiskPath)
+  ? `data:image/png;base64,${fs.readFileSync(logoDiskPath).toString('base64')}`
+  : '';
+
 console.log('Generating comprehensive Project Presentation & Viva Dossier HTML...');
 
 // Read the complete dossier HTML template generator
@@ -240,6 +245,7 @@ const htmlContent = `<!DOCTYPE html>
 
   <!-- COVER PAGE -->
   <div class="cover">
+    ${logoBase64 ? `<div style="text-align: center; margin-bottom: 20px;"><img src="${logoBase64}" alt="Explore Pune Official Logo" style="width: 100px; height: 100px; object-fit: contain;" /></div>` : ''}
     <div class="badge">Official Project Presentation &amp; Viva Defense Dossier</div>
     <h1>EXPLORE PUNE</h1>
     <div class="subtitle">

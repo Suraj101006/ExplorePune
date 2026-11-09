@@ -13,13 +13,13 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     icons: [
       {
-        src: '/logo-small.png',
+        src: '/assets/explore-pune-logo.png',
         sizes: '192x192',
         type: 'image/png',
         purpose: 'any',
       },
       {
-        src: '/logo-small.png',
+        src: '/assets/explore-pune-logo.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',

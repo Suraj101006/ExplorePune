@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import BrandLogo from '@/components/BrandLogo';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -144,20 +145,8 @@ export default function LoginPage() {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 48,
-              height: 48,
-              borderRadius: '14px',
-              background: 'var(--primary-light)',
-              fontSize: '24px',
-              marginBottom: 12,
-            }}
-          >
-            🚩
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+            <BrandLogo size={58} withBadge alt="Explore Pune Official Logo" />
           </div>
           <h1 style={{ fontSize: 24, margin: '0 0 6px' }}>
             {mode === 'in' ? 'Welcome Back' : 'Create an Account'}

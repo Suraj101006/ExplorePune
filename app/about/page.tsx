@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import BrandLogo from '@/components/BrandLogo';
 import { useLanguage } from '@/lib/LanguageContext';
 
 export default function AboutPage() {
@@ -96,20 +97,23 @@ export default function AboutPage() {
           boxShadow: '0 16px 36px rgba(6, 95, 70, 0.2)',
         }}
       >
-        <div
-          style={{
-            display: 'inline-block',
-            fontSize: 11.5,
-            fontWeight: 800,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            background: 'rgba(255, 255, 255, 0.2)',
-            padding: '4px 12px',
-            borderRadius: 999,
-            marginBottom: 12,
-          }}
-        >
-          🚩 {isMr ? 'पुणे पर्यटन व सांस्कृतिक वारसा' : 'About Explore Pune'}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <BrandLogo size={48} withBadge alt="Explore Pune Official Logo" />
+          <div
+            style={{
+              display: 'inline-block',
+              fontSize: 11.5,
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              background: 'rgba(255, 255, 255, 0.2)',
+              padding: '4px 12px',
+              borderRadius: 999,
+              color: '#ffffff',
+            }}
+          >
+            {isMr ? 'पुणे पर्यटन व सांस्कृतिक वारसा' : 'Official Heritage Portal'}
+          </div>
         </div>
         <h1 style={{ fontSize: 'clamp(28px, 4vw, 42px)', margin: '0 0 12px', color: '#ffffff', fontWeight: 800 }}>
           {isMr ? 'पुण्याचा इतिहास, संस्कृती आणि सह्याद्रीची सफर' : 'Preserving Heritage, Empowering Pune Explorers'}

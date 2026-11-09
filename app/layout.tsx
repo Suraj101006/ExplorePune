@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
-    apple: '/logo-small.png',
+    apple: '/assets/explore-pune-logo.png',
   },
   manifest: '/manifest.webmanifest',
   robots: {

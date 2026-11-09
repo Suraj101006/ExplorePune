@@ -333,11 +333,11 @@ export default function IntroVideoOverlay() {
       {/* Explore Pune Brand Badge - Top Left */}
       <div className="intro-brand-badge" aria-hidden="true">
         <Image
-          src="/images/logo.svg"
+          src="/assets/explore-pune-logo.png"
           alt="Explore Pune Logo"
-          width={30}
-          height={30}
-          style={{ borderRadius: '50%', display: 'block' }}
+          width={32}
+          height={32}
+          style={{ borderRadius: '50%', background: '#ffffff', display: 'block', objectFit: 'contain' }}
           priority
         />
         <span className="intro-brand-text">
@@ -374,11 +374,11 @@ export default function IntroVideoOverlay() {
       >
         <div className="intro-title-crest">
           <Image
-            src="/images/logo.svg"
+            src="/assets/explore-pune-logo.png"
             alt="Explore Pune Crest"
             width={80}
             height={80}
-            style={{ borderRadius: '50%', display: 'block' }}
+            style={{ borderRadius: '50%', background: '#ffffff', display: 'block', objectFit: 'contain', padding: 4 }}
             priority
           />
         </div>
@@ -410,11 +410,12 @@ export default function IntroVideoOverlay() {
         aria-hidden="true"
       >
         <Image
-          src="/images/logo.svg"
+          src="/assets/explore-pune-logo.png"
           alt="Explore Pune"
           width={logoPos ? logoPos.size : 52}
           height={logoPos ? logoPos.size : 52}
           className="intro-gemini-cover-img"
+          style={{ background: '#ffffff', borderRadius: '50%', objectFit: 'contain' }}
           priority
         />
       </div>
