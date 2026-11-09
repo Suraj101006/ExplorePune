@@ -19,19 +19,19 @@ export default function ThemeToggle({
 
   const titleTooltip = isMr
     ? isDark
-      ? "लाइट थीममध्ये बदला (शॉर्टकट: 'T' दाबा)"
-      : "डार्क थीममध्ये बदला (शॉर्टकट: 'T' दाबा)"
+      ? "लाइट मोडमध्ये बदला (शॉर्टकट: 'T' दाबा)"
+      : "डार्क मोडमध्ये बदला (शॉर्टकट: 'T' दाबा)"
     : isDark
-      ? "Switch to Light Theme (Press 'T')"
-      : "Switch to Dark Theme (Press 'T')";
+      ? "Switch to Light Mode (Press 'T')"
+      : "Switch to Dark Mode (Press 'T')";
 
   const ariaLabel = isDark
     ? isMr
-      ? 'लाइट थीम चालू करा'
-      : 'Switch to light theme'
+      ? 'लाइट मोडमध्ये बदला'
+      : 'Switch to Light Mode'
     : isMr
-      ? 'डार्क थीम चालू करा'
-      : 'Switch to dark theme';
+      ? 'डार्क मोडमध्ये बदला'
+      : 'Switch to Dark Mode';
 
   return (
     <button
@@ -51,7 +51,7 @@ export default function ThemeToggle({
         borderRadius: 999,
         background: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9',
         border: '1px solid var(--line)',
-        color: isDark ? '#fbbf24' : '#065f46',
+        color: isDark ? '#38bdf8' : '#d97706',
         cursor: 'pointer',
         fontSize: 12,
         fontWeight: 700,
@@ -70,9 +70,9 @@ export default function ThemeToggle({
         }}
       >
         {isDark ? (
-          <Sun size={15} strokeWidth={2.4} style={{ color: '#fbbf24' }} />
+          <Moon size={15} strokeWidth={2.4} style={{ color: '#38bdf8' }} />
         ) : (
-          <Moon size={15} strokeWidth={2.4} style={{ color: '#065f46' }} />
+          <Sun size={15} strokeWidth={2.4} style={{ color: '#d97706' }} />
         )}
       </span>
 

@@ -115,48 +115,6 @@ html.dark,
   --shadow-xl: 0 20px 45px -6px rgba(0, 0, 0, 0.75);
 }
 
-/* Also support OS dark mode when user hasn't explicitly set theme to 'light' */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]):not(.light) {
-    color-scheme: dark;
-    --bg: #0b1120;
-    --bg-gradient: radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
-                   radial-gradient(circle at 85% 70%, rgba(217, 119, 6, 0.08) 0%, transparent 50%);
-    --card: #131d31;
-    --card-hover: #18243c;
-    --surface: #131d31;
-    --ink: #f8fafc;
-    --ink-secondary: #cbd5e1;
-    --muted: #94a3b8;
-    --line: #1e293b;
-    --line-light: #162032;
-
-    --primary: #10b981;
-    --primary-hover: #059669;
-    --primary-light: rgba(16, 185, 129, 0.14);
-    --primary-border: rgba(16, 185, 129, 0.35);
-
-    --accent: #f59e0b;
-    --accent-hover: #d97706;
-    --accent-light: rgba(245, 158, 11, 0.15);
-
-    --clay: #fb923c;
-    --clay-light: rgba(251, 146, 60, 0.15);
-
-    --sage-bg: rgba(16, 185, 129, 0.18);
-    --sage-ink: #6ee7b7;
-    --sage-border: rgba(110, 231, 183, 0.35);
-
-    --amber-bg: rgba(245, 158, 11, 0.18);
-    --amber-ink: #fde68a;
-    --amber-border: rgba(253, 230, 138, 0.35);
-
-    --blue-bg: rgba(14, 165, 233, 0.18);
-    --blue-ink: #7dd3fc;
-    --blue-border: rgba(125, 211, 252, 0.35);
-  }
-}
-
 /* Dark Theme Specific Component Styles */
 html.dark .site-header,
 [data-theme="dark"] .site-header {
@@ -210,12 +168,19 @@ html.dark .lang-btn-active,
 html.dark .theme-toggle-btn:hover,
 [data-theme="dark"] .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(52, 211, 153, 0.4) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
 }
 
 .theme-toggle-btn:hover {
   background: #e2e8f0;
   border-color: #cbd5e1;
+}
+
+html.dark .search,
+[data-theme="dark"] .search {
+  background: #131d31;
+  border-color: #1e293b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 html.dark input:not([type="checkbox"]):not([type="radio"]),
@@ -244,6 +209,107 @@ html.dark .site-footer,
 [data-theme="dark"] .site-footer {
   background: #090e1a;
   border-top-color: var(--line);
+}
+
+/* Chat Assistant Widget Dark Mode Overrides */
+html.dark .chat-panel,
+[data-theme="dark"] .chat-panel {
+  background: #131d31;
+  border-color: #1e293b;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+html.dark .chat-log,
+[data-theme="dark"] .chat-log {
+  background: #0b1120;
+}
+
+html.dark .msg.bot,
+[data-theme="dark"] .msg.bot {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .chat-place-card,
+[data-theme="dark"] .chat-place-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+html.dark .chat-place-card:hover,
+[data-theme="dark"] .chat-place-card:hover {
+  border-color: #10b981;
+  box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.25);
+}
+
+html.dark .chat-actions-bar,
+[data-theme="dark"] .chat-actions-bar {
+  background: #131d31;
+  border-top-color: var(--line);
+}
+
+html.dark .chat-action-pill,
+[data-theme="dark"] .chat-action-pill {
+  background: #1e293b;
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+html.dark .chat-action-pill:hover,
+[data-theme="dark"] .chat-action-pill:hover {
+  background: #10b981;
+  color: #ffffff;
+}
+
+html.dark .chat-form,
+[data-theme="dark"] .chat-form {
+  background: #131d31;
+  border-top-color: var(--line);
+}
+
+html.dark .chat-form input,
+[data-theme="dark"] .chat-form input {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+html.dark .chat-teaser-bubble,
+[data-theme="dark"] .chat-teaser-bubble {
+  background: #131d31;
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #f8fafc;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .chat-teaser-bubble::after,
+[data-theme="dark"] .chat-teaser-bubble::after {
+  background: #131d31;
+  border-right-color: rgba(16, 185, 129, 0.4);
+  border-bottom-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Modal and Dialog Components Dark Mode Overrides */
+html.dark .avatar-modal-card,
+[data-theme="dark"] .avatar-modal-card {
+  background: #131d31;
+  border-color: #1e293b;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+}
+
+html.dark .avatar-circle,
+[data-theme="dark"] .avatar-circle {
+  border-color: #1e293b;
+  outline-color: #334155;
+}
+
+html.dark .avatar-camera-trigger,
+[data-theme="dark"] .avatar-camera-trigger {
+  background: #1e293b;
+  color: #34d399;
+  border-color: #334155;
 }
 
 /* Toast entrance animation */

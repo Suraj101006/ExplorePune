@@ -1036,18 +1036,18 @@ export default function PlaceDetailClient({
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: 8,
-                    background: '#ffffff',
+                    background: 'var(--card)',
                     padding: '9px 12px',
                     borderRadius: 8,
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--line)',
                   }}
                 >
                   <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>
                   <div>
-                    <strong style={{ display: 'block', color: '#0f172a', fontSize: 12.5 }}>
+                    <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 12.5 }}>
                       {isMr ? 'स्थान पडताळणी' : 'Location verified'}
                     </strong>
-                    <span style={{ fontSize: 11.5, color: '#64748b' }}>
+                    <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>
                       {isMr ? 'OSM व गुगल नकाशे' : 'OpenStreetMap & Maps'}
                     </span>
                   </div>
@@ -1058,18 +1058,18 @@ export default function PlaceDetailClient({
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: 8,
-                    background: '#ffffff',
+                    background: 'var(--card)',
                     padding: '9px 12px',
                     borderRadius: 8,
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--line)',
                   }}
                 >
                   <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>
                   <div>
-                    <strong style={{ display: 'block', color: '#0f172a', fontSize: 12.5 }}>
+                    <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 12.5 }}>
                       {isMr ? 'अधिकृत संदर्भ उपलब्ध' : 'Official source available'}
                     </strong>
-                    <span style={{ fontSize: 11.5, color: '#64748b' }}>
+                    <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>
                       {isMr ? 'शासकीय / ट्रस्ट स्रोत' : 'Govt / Trust catalog'}
                     </span>
                   </div>
@@ -1080,18 +1080,18 @@ export default function PlaceDetailClient({
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: 8,
-                    background: '#ffffff',
+                    background: 'var(--card)',
                     padding: '9px 12px',
                     borderRadius: 8,
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--line)',
                   }}
                 >
                   <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>
                   <div>
-                    <strong style={{ display: 'block', color: '#0f172a', fontSize: 12.5 }}>
+                    <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 12.5 }}>
                       {isMr ? 'वेळ व वेळापत्रक तपासले' : 'Timings checked'}
                     </strong>
-                    <span style={{ fontSize: 11.5, color: '#64748b' }}>
+                    <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>
                       {isMr ? 'चालू-बंद तास प्रमाणित' : 'Operating hours verified'}
                     </span>
                   </div>
@@ -1102,18 +1102,18 @@ export default function PlaceDetailClient({
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: 8,
-                    background: '#ffffff',
+                    background: 'var(--card)',
                     padding: '9px 12px',
                     borderRadius: 8,
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--line)',
                   }}
                 >
                   <span style={{ color: '#059669', fontWeight: 800 }}>✓</span>
                   <div>
-                    <strong style={{ display: 'block', color: '#0f172a', fontSize: 12.5 }}>
+                    <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 12.5 }}>
                       {isMr ? 'प्रवेश शुल्क तपासले' : 'Entry info checked'}
                     </strong>
-                    <span style={{ fontSize: 11.5, color: '#64748b' }}>
+                    <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>
                       {isMr ? 'दरपत्रक व मोफत प्रवेश' : 'Official ticket policy'}
                     </span>
                   </div>
@@ -1421,8 +1421,8 @@ export default function PlaceDetailClient({
                     <div
                       key={itemIdx}
                       style={{
-                        background: '#ffffff',
-                        border: '1px solid #f1f5f9',
+                        background: 'var(--card)',
+                        border: '1px solid var(--line)',
                         borderRadius: 10,
                         padding: '12px 14px',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
@@ -1587,8 +1587,8 @@ export default function PlaceDetailClient({
                     <div
                       key={dIdx}
                       style={{
-                        background: '#ffffff',
-                        border: '1px solid #ffedd5',
+                        background: 'var(--card)',
+                        border: '1px solid var(--line)',
                         borderRadius: 10,
                         padding: '10px 14px',
                         display: 'flex',
@@ -1608,7 +1608,7 @@ export default function PlaceDetailClient({
                           flexShrink: 0,
                         }}
                       />
-                      <div style={{ fontSize: 12.5, lineHeight: 1.5, color: '#431407' }}>
+                      <div style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink)' }}>
                         {hasPrefix ? (
                           <>
                             <strong style={{ color: '#9a3412', fontWeight: 700 }}>{title}</strong>
@@ -1711,9 +1711,9 @@ export default function PlaceDetailClient({
                     padding: '4px 10px',
                     fontSize: 11.5,
                     borderRadius: 999,
-                    background: '#ffffff',
+                    background: 'var(--card)',
                     borderColor: '#059669',
-                    color: '#065f46',
+                    color: 'var(--ink)',
                     fontWeight: 700,
                     cursor: 'pointer',
                   }}
@@ -1732,9 +1732,9 @@ export default function PlaceDetailClient({
                     padding: '4px 10px',
                     fontSize: 11.5,
                     borderRadius: 999,
-                    background: selectedHubId === 'live-gps' ? '#ecfdf5' : '#ffffff',
-                    borderColor: selectedHubId === 'live-gps' ? '#10b981' : '#cbd5e1',
-                    color: selectedHubId === 'live-gps' ? '#047857' : '#334155',
+                    background: selectedHubId === 'live-gps' ? '#ecfdf5' : 'var(--card)',
+                    borderColor: selectedHubId === 'live-gps' ? '#10b981' : 'var(--line)',
+                    color: selectedHubId === 'live-gps' ? '#047857' : 'var(--ink)',
                     fontWeight: 700,
                     cursor: isLocatingGps ? 'wait' : 'pointer',
                   }}
@@ -1804,9 +1804,9 @@ export default function PlaceDetailClient({
                   onClick={() => handleSelectHub(pill.id)}
                   style={{
                     border: '1px solid',
-                    borderColor: selectedHubId === pill.id ? '#059669' : '#cbd5e1',
-                    background: selectedHubId === pill.id ? '#ecfdf5' : '#ffffff',
-                    color: selectedHubId === pill.id ? '#065f46' : '#475569',
+                    borderColor: selectedHubId === pill.id ? '#059669' : 'var(--line)',
+                    background: selectedHubId === pill.id ? 'var(--primary-light)' : 'var(--card)',
+                    color: selectedHubId === pill.id ? 'var(--primary)' : 'var(--ink)',
                     fontWeight: selectedHubId === pill.id ? 700 : 500,
                     borderRadius: 999,
                     padding: '3px 10px',
@@ -1822,7 +1822,7 @@ export default function PlaceDetailClient({
 
             {/* Comprehensive Locality Dropdown */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', minWidth: 0, width: '100%' }}>
-              <span style={{ fontSize: 12, color: '#64748b', whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <span style={{ fontSize: 12, color: 'var(--muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {isMr ? 'सर्व उपनगरे:' : 'All localities:'}
               </span>
               <select
@@ -1837,11 +1837,11 @@ export default function PlaceDetailClient({
                   boxSizing: 'border-box',
                   padding: '6px 12px',
                   borderRadius: 8,
-                  border: '1px solid #cbd5e1',
-                  background: '#ffffff',
+                  border: '1px solid var(--line)',
+                  background: 'var(--card)',
                   fontSize: 12.5,
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'var(--ink)',
                 }}
               >
                 <option value="central">
@@ -1913,7 +1913,7 @@ export default function PlaceDetailClient({
             {/* Metro Card */}
             <div
               style={{
-                background: '#ffffff',
+                background: 'var(--card)',
                 border: '1px solid var(--line)',
                 borderRadius: 12,
                 padding: 14,
@@ -1983,7 +1983,7 @@ export default function PlaceDetailClient({
             {/* PMPML Bus Card */}
             <div
               style={{
-                background: '#ffffff',
+                background: 'var(--card)',
                 border: '1px solid var(--line)',
                 borderRadius: 12,
                 padding: 14,
@@ -2043,11 +2043,11 @@ export default function PlaceDetailClient({
             <div
               style={{
                 marginTop: 16,
-                background: '#ffffff',
-                border: '1px solid #fed7aa',
+                background: 'var(--card)',
+                border: '1px solid var(--line)',
                 borderRadius: 14,
                 padding: '16px 18px',
-                boxShadow: '0 2px 8px rgba(249, 115, 22, 0.06)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
               }}
             >
               {/* Header */}
@@ -2200,7 +2200,7 @@ export default function PlaceDetailClient({
                           fontWeight: isDirSel ? 700 : 500,
                           cursor: 'pointer',
                           border: isDirSel ? '1px solid #ea580c' : '1px solid var(--line)',
-                          background: isDirSel ? '#ffffff' : '#f1f5f9',
+                          background: isDirSel ? 'var(--card)' : 'var(--line-light)',
                           color: isDirSel ? '#ea580c' : 'var(--muted)',
                           textAlign: 'center',
                         }}
@@ -2254,7 +2254,7 @@ export default function PlaceDetailClient({
                       <div
                         key={idx}
                         style={{
-                          background: idx === 0 ? '#10b981' : '#f8fafc',
+                          background: idx === 0 ? '#10b981' : 'var(--card)',
                           color: idx === 0 ? '#ffffff' : 'var(--ink)',
                           border: idx === 0 ? 'none' : '1px solid var(--line)',
                           borderRadius: 8,
@@ -2301,8 +2301,8 @@ export default function PlaceDetailClient({
                   style={{
                     width: '100%',
                     padding: '8px 12px',
-                    background: '#f8fafc',
-                    border: '1px dashed #cbd5e1',
+                    background: 'var(--card)',
+                    border: '1px dashed var(--line)',
                     borderRadius: 8,
                     fontSize: 12,
                     fontWeight: 600,
@@ -2329,7 +2329,7 @@ export default function PlaceDetailClient({
                     style={{
                       marginTop: 10,
                       padding: 12,
-                      background: '#fafafa',
+                      background: 'var(--bg)',
                       borderRadius: 8,
                       border: '1px solid var(--line)',
                       maxHeight: 180,
@@ -2342,8 +2342,8 @@ export default function PlaceDetailClient({
                           key={tIdx}
                           style={{
                             padding: '3px 8px',
-                            background: '#ffffff',
-                            border: '1px solid #e2e8f0',
+                            background: 'var(--card)',
+                            border: '1px solid var(--line)',
                             borderRadius: 4,
                             fontSize: 11.5,
                             color: 'var(--ink)',
@@ -2364,7 +2364,7 @@ export default function PlaceDetailClient({
           <div
             style={{
               marginTop: 16,
-              background: '#ffffff',
+              background: 'var(--card)',
               border: '1px solid var(--line)',
               borderRadius: 12,
               padding: 14,

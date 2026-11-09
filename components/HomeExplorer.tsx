@@ -1312,7 +1312,7 @@ export default function HomeExplorer({
               padding: '6px 14px',
               borderRadius: '999px',
               cursor: 'pointer',
-              background: savedLoc ? '#ecfdf5' : '#ffffff',
+              background: savedLoc ? '#ecfdf5' : 'var(--card)',
               color: savedLoc ? '#065f46' : 'var(--ink)',
               border: savedLoc ? '1.5px solid #10b981' : '1px solid var(--line)',
               fontWeight: 700,
@@ -1446,7 +1446,7 @@ export default function HomeExplorer({
                 fontSize: 12,
                 padding: '4px 12px',
                 cursor: 'pointer',
-                background: '#ffffff',
+                background: 'var(--card)',
                 border: '1px solid #10b981',
                 color: '#065f46',
                 fontWeight: 600,
@@ -2145,7 +2145,7 @@ export default function HomeExplorer({
               href="/planner"
               className="btn"
               style={{
-                background: '#ffffff',
+                background: 'var(--card)',
                 color: '#065f46',
                 fontWeight: 800,
                 padding: '11px 22px',

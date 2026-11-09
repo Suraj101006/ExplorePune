@@ -126,7 +126,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="color-scheme" content="light dark" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('punetrail_theme')||localStorage.getItem('theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&d)){document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-theme','dark');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='dark';}else{document.documentElement.classList.remove('dark');document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='light';}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('punetrail_theme')||localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-theme','dark');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='dark';}else{document.documentElement.classList.remove('dark');document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='light';}}catch(e){}})();`,
           }}
         />
 

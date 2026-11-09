@@ -148,13 +148,14 @@ describe('Dark and Light Theme Toggle & Shortcut Key Engine', () => {
     expect(shouldTriggerThemeShortcut({ key: 't', target: regularDiv })).toBe(true);
   });
 
-  it('renders ThemeToggle with accessibility attributes and shortcut key badge', () => {
+  it('renders ThemeToggle with accessibility attributes, Sun icon semantics, and shortcut key badge', () => {
     const html = renderToString(React.createElement(ThemeToggle));
 
-    // Verify switch semantics
+    // Verify switch semantics and light mode initial state
     expect(html).toContain('role="switch"');
     expect(html).toContain('aria-checked="false"');
     expect(html).toContain('aria-label=');
+    expect(html).toContain('Switch to Dark Mode');
     expect(html).toContain('Shortcut: T');
 
     // Verify visual shortcut badge

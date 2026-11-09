@@ -80,23 +80,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   // Read initial theme from DOM or localStorage on mount
+  // Requirement 4: The existing light theme must remain the default appearance for first-time visitors
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-      if (stored === 'dark' || stored === 'light') {
-        setThemeState(stored);
-        applyThemeToDOM(stored);
+      const stored = (localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem('theme')) as Theme | null;
+      if (stored === 'dark') {
+        setThemeState('dark');
+        applyThemeToDOM('dark');
       } else {
-        // Check if root already has .dark from SSR/FOUC script or system preference
-        const isDomDark = document.documentElement.classList.contains('dark') ||
-          document.documentElement.getAttribute('data-theme') === 'dark';
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initial = isDomDark || prefersDark ? 'dark' : 'light';
-        setThemeState(initial);
-        applyThemeToDOM(initial);
+        // Strict light mode default for first-time visitors
+        setThemeState('light');
+        applyThemeToDOM('light');
       }
     } catch {
       // Fallback if localStorage access is blocked
+      setThemeState('light');
+      applyThemeToDOM('light');
     }
     setMounted(true);
   }, []);
@@ -170,27 +169,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-
-  // System color-scheme preference change listener (only if no manual preference stored)
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemChange = (e: MediaQueryListEvent) => {
-      try {
-        const stored = localStorage.getItem(THEME_STORAGE_KEY);
-        // If user hasn't explicitly set a preference, follow the OS
-        if (!stored) {
-          const next = e.matches ? 'dark' : 'light';
-          setThemeState(next);
-          applyThemeToDOM(next);
-        }
-      } catch {}
-    };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
   }, []);
 
   return (
