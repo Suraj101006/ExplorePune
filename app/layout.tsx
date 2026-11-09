@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
+import { ThemeProvider } from '@/lib/ThemeContext';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
 import PageTransition from '@/components/PageTransition';
@@ -121,6 +122,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="google-site-verification" content="googleec52a74fd3fa44b1" />
         <meta name="google-site-verification" content="google9bda85abb7a0ba4d" />
 
+        {/* Color Scheme Metadata & Zero-FOUC Theme Script (Modern Web Guidance) */}
+        <meta name="color-scheme" content="light dark" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('punetrail_theme')||localStorage.getItem('theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&d)){document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-theme','dark');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='dark';}else{document.documentElement.classList.remove('dark');document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="color-scheme"]');if(m)m.content='light';}}catch(e){}})();`,
+          }}
+        />
+
         {/* Zero-flash script: ensures smooth load without blocking mobile devices or crawlers */}
         <script
           dangerouslySetInnerHTML={{
@@ -138,14 +147,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        <LanguageProvider>
-          <TravelPhotoTransitionProvider>
-            <AppHeader />
-            <PageTransition>{children}</PageTransition>
-            <AppFooter />
-            <ClientInteractiveOverlays />
-          </TravelPhotoTransitionProvider>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <TravelPhotoTransitionProvider>
+              <AppHeader />
+              <PageTransition>{children}</PageTransition>
+              <AppFooter />
+              <ClientInteractiveOverlays />
+            </TravelPhotoTransitionProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

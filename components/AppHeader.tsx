@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
+import ThemeToggle from '@/components/ThemeToggle';
 
 // Defer interactive auth & drawer modals so they do not block initial rendering or critical bundle evaluation
 const AuthNav = dynamic(() => import('@/components/AuthNav'), {
@@ -111,6 +112,11 @@ export default function AppHeader() {
             <LanguageToggle />
           </div>
 
+          {/* Dark / Light Theme Toggle Key & Button */}
+          <div className="nav-util-item">
+            <ThemeToggle />
+          </div>
+
           {/* Mobile Hamburger Toggle Button */}
           <button
             type="button"
@@ -130,7 +136,7 @@ export default function AppHeader() {
           className="mobile-nav-panel"
           style={{
             borderTop: '1px solid var(--line)',
-            background: 'rgba(255, 255, 255, 0.98)',
+            background: 'var(--card)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             padding: '16px 20px 24px',
@@ -185,14 +191,18 @@ export default function AppHeader() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              gap: 10,
+              gap: 8,
+              flexWrap: 'wrap',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <SavedPlacesDrawer />
               <EmergencyHelplineModal />
             </div>
-            <LanguageToggle />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <ThemeToggle showShortcutBadge={false} />
+              <LanguageToggle />
+            </div>
           </div>
         </div>
       )}

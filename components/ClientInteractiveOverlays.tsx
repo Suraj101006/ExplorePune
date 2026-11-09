@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import ThemeShortcutToast from '@/components/ThemeShortcutToast';
 
 // Non-critical client-side modals and floating widgets deferred with ssr: false
 const ChatWidget = dynamic(() => import('@/components/ChatWidget'), { ssr: false });
@@ -13,6 +14,7 @@ export default function ClientInteractiveOverlays() {
       <IntroVideoOverlay />
       <ChatWidget />
       <DirectionsModal />
+      <ThemeShortcutToast />
     </>
   );
 }
