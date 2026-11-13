@@ -225,18 +225,22 @@ function resolveImage(
  * Finds the complete structured place record from the database
  */
 function findStructuredPlace(stop: ItineraryPdfStop): StructuredPlace | null {
-  const targetSlug = (stop.placeSlug || '').toLowerCase();
-  const targetId = (stop.placeId || '').toLowerCase();
-  const targetName = (stop.name || '').toLowerCase();
+  const targetSlug = (stop.placeSlug || '').toLowerCase().trim();
+  const targetId = (stop.placeId || '').toLowerCase().trim();
+  const targetName = (stop.name || '').toLowerCase().trim();
+  const targetNameMr = (stop.nameMr || '').trim();
 
   const found = ALL_STRUCTURED_PLACES.find((p) => {
-    const pSlug = (p.slug || '').toLowerCase();
-    const pId = (p.id || '').toLowerCase();
-    const pName = (p.name || '').toLowerCase();
+    const pSlug = (p.slug || '').toLowerCase().trim();
+    const pId = (p.id || '').toLowerCase().trim();
+    const pName = (p.name || '').toLowerCase().trim();
+    const pNameMr = (p.name_mr || '').trim();
     return (
       (targetSlug && pSlug === targetSlug) ||
       (targetId && pId === targetId) ||
       (targetSlug && pId === targetSlug) ||
+      (targetSlug && pSlug.replace(/-/g, '') === targetSlug.replace(/-/g, '')) ||
+      (targetNameMr && pNameMr && (pNameMr === targetNameMr || pNameMr.includes(targetNameMr) || targetNameMr.includes(pNameMr))) ||
       (pName && targetName && (pName.includes(targetName) || targetName.includes(pName)))
     );
   });
@@ -363,6 +367,136 @@ function drawSectionBanner(
   doc.text(subtitle, x + 5, y + 11.2);
 
   return y + 19;
+}
+
+/**
+ * Draws the Heritage Protocols & Code of Conduct companion card
+ * Fills the second half on odd-numbered profile pages so no page is left empty
+ */
+function drawCompanionProtocolsCard(
+  doc: jsPDF,
+  margin: number,
+  y: number,
+  contentWidth: number,
+  cardH: number
+) {
+  doc.setFillColor(C_CARD_BG[0], C_CARD_BG[1], C_CARD_BG[2]);
+  doc.setDrawColor(C_LINE[0], C_LINE[1], C_LINE[2]);
+  doc.rect(margin, y, contentWidth, cardH, 'FD');
+
+  // Header Strip
+  doc.setFillColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
+  doc.rect(margin, y, contentWidth, 8, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8.5);
+  doc.text('HERITAGE EXPEDITION PROTOCOLS & FIELD CONDUCT GUIDELINES', margin + 5, y + 5.5);
+
+  doc.setFontSize(7.5);
+  doc.setTextColor(C_GOLD_LIGHT[0], C_GOLD_LIGHT[1], C_GOLD_LIGHT[2]);
+  doc.text('Official Maharashtra Tourism Invariants', margin + contentWidth - 5, y + 5.5, { align: 'right' });
+
+  // 4 structured guideline blocks in a 2x2 grid
+  const colW = (contentWidth - 12) / 2;
+  const col1X = margin + 4;
+  const col2X = margin + 4 + colW + 4;
+
+  // Block 1: Forts & Sahyadri Trekking Invariants
+  const b1Y = y + 11;
+  doc.setFillColor(C_CARD_TINT[0], C_CARD_TINT[1], C_CARD_TINT[2]);
+  doc.rect(col1X, b1Y, colW, 45, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
+  doc.text('1. SAHYADRI FORTS & MOUNTAIN TREKKING RULES', col1X + 3, b1Y + 5);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+  const b1Lines = [
+    '• Daylight Hours Only: Forest curfews mandate exit by 06:00 PM at Sinhagad & Rajgad.',
+    '• Footwear: Wear high-grip rubber-soled trekking shoes on slippery basalt rock surfaces.',
+    '• Hydration Rule: Carry at least 2 liters of water per person; refill at natural spring tanks.',
+    '• Zero Litter Law: Strictly prohibited to leave plastic bottles or alcohol on sacred bastions.',
+    '• Monsoon Alert: Stay clear of unbarricaded edges during heavy rain and fog squalls.',
+  ];
+  b1Lines.forEach((line, idx) => {
+    doc.text(line, col1X + 3, b1Y + 11 + idx * 6.5);
+  });
+
+  // Block 2: Sacred Temples & Sanctum Darshan Etiquette
+  doc.setFillColor(C_CARD_TINT[0], C_CARD_TINT[1], C_CARD_TINT[2]);
+  doc.rect(col2X, b1Y, colW, 45, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
+  doc.text('2. SACRED TEMPLE & HISTORIC WADA PROTOCOLS', col2X + 3, b1Y + 5);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+  const b2Lines = [
+    '• Footwear Protocol: Remove shoes and leather accessories at designated token counters.',
+    '• Attire: Modest traditional or semi-formal clothing covering shoulders and knees.',
+    '• Photography: Strictly restricted inside sanctums (Garbhagriha); allowed in outer mandaps.',
+    '• Wada Timings: Historic Peshwa wadas follow ASI hours (typically 09:00 AM - 05:30 PM).',
+    '• Festival Crowds: Dagdusheth and Alandi experience heavy lines on Angaraki & Ekadashi.',
+  ];
+  b2Lines.forEach((line, idx) => {
+    doc.text(line, col2X + 3, b1Y + 11 + idx * 6.5);
+  });
+
+  // Block 3: Public Transit & Smart Commuting
+  const b3Y = y + 59;
+  doc.setFillColor(C_CARD_TINT[0], C_CARD_TINT[1], C_CARD_TINT[2]);
+  doc.rect(col1X, b3Y, colW, 45, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(C_TERRACOTTA[0], C_TERRACOTTA[1], C_TERRACOTTA[2]);
+  doc.text('3. PUNE METRO & PMPML BUS COMMUTER GUIDE', col1X + 3, b3Y + 5);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+  const b3Lines = [
+    '• Metro One Card: 30% discount on Saturdays & Sundays; seamless contactless tap-and-go.',
+    '• PMPML Daily Pass: Unlimited travel across Pune & PCMC for INR 40 (Pune) / INR 50 (all lines).',
+    '• Feeder Routes: Electric feeder buses connect Swargate, Civil Court, and Station terminals.',
+    '• Auto-Rickshaws: Always request meter-based fares or pre-negotiate during night hours.',
+    '• Parking Pass: Dedicated two-wheeler / car parking available at all Metro stations.',
+  ];
+  b3Lines.forEach((line, idx) => {
+    doc.text(line, col1X + 3, b3Y + 11 + idx * 6.5);
+  });
+
+  // Block 4: Emergency Contacts & Traveler Support
+  doc.setFillColor(C_CARD_TINT[0], C_CARD_TINT[1], C_CARD_TINT[2]);
+  doc.rect(col2X, b3Y, colW, 45, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(C_TERRACOTTA[0], C_TERRACOTTA[1], C_TERRACOTTA[2]);
+  doc.text('4. EMERGENCY HELPLINES & VISITOR ASSISTANCE', col2X + 3, b3Y + 5);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.8);
+  doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+  const b4Lines = [
+    '• All-India Emergency Response Service: Dial 112 (Police, Fire & Ambulance)',
+    '• Pune City Police Control Room: 020-26126296 / WhatsApp: 8975283100',
+    '• Pune Traffic Police Helpdesk: 020-26685000 / Twitter: @PuneCityTraffic',
+    '• Maharashtra Tourism (MTDC) Helpline: 1800-229930 / https://mtdc.co.in',
+    '• Sahyadri Mountain Rescue Service: 9822982200 (Emergency Trekker Evacuation)',
+  ];
+  b4Lines.forEach((line, idx) => {
+    doc.text(line, col2X + 3, b3Y + 11 + idx * 6.5);
+  });
+
+  // Bottom strip
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(6.5);
+  doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
+  doc.text('Explore Pune Official Assurance • Maintained in partnership with local civic and transit bodies.', margin + 4, y + cardH - 2.5);
 }
 
 /**
@@ -1050,20 +1184,22 @@ export function generateItineraryPdf(
   });
 
   // =========================================================================
-  // PAGES 4 & 5: DETAILED DESTINATION PROFILES (Part 4)
+  // PAGES 4+: DETAILED DESTINATION PROFILES (Part 4) - ALL PLACES INCLUDED
   // =========================================================================
-  // Render up to 4 detailed profiles (2 per page)
-  const profileStops = data.stops.slice(0, 4);
+  // Render complete, unabridged profiles for every single destination in the trip
+  const profileStops = data.stops;
+  const totalProfilePages = Math.max(1, Math.ceil(profileStops.length / 2));
 
   profileStops.forEach((stop, pIdx) => {
-    // Start page on even profile indices (0, 2)
+    // Start page on even profile indices (0, 2, 4, 6, ...)
     if (pIdx % 2 === 0) {
       startNewPage();
       y = margin + 4;
+      const partNum = Math.floor(pIdx / 2) + 1;
       y = drawSectionBanner(
         doc,
-        `DETAILED DESTINATION PROFILES  •  PART ${Math.floor(pIdx / 2) + 1}`,
-        'Authentic Historical Context, Admission Fees, Operating Hours & Visitor Facilities',
+        `DETAILED DESTINATION PROFILES  •  PART ${partNum} OF ${totalProfilePages}`,
+        'Authentic Historical Context, Coordinates, Transit Links & Complete Visitor Guidance',
         margin,
         y,
         contentWidth
@@ -1084,18 +1220,22 @@ export function generateItineraryPdf(
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8.5);
-    doc.text(`STOP #${pIdx + 1}: ${safePdfText(stop.name).toUpperCase()}`, margin + 5, y + 5.5);
+    const localName = stop.nameMr || structPlace?.name_mr;
+    const headerTitle = localName && localName !== stop.name
+      ? `STOP #${pIdx + 1}: ${safePdfText(stop.name).toUpperCase()} (${safePdfText(localName)})`
+      : `STOP #${pIdx + 1}: ${safePdfText(stop.name).toUpperCase()}`;
+    doc.text(headerTitle.slice(0, 50), margin + 5, y + 5.5);
 
     const catBadge = safePdfText(structPlace?.category || stop.category || 'Historic Monument');
     doc.setFontSize(7.5);
     doc.setTextColor(C_GOLD_LIGHT[0], C_GOLD_LIGHT[1], C_GOLD_LIGHT[2]);
     doc.text(`Category: ${catBadge}`, pageWidth - margin - 5, y + 5.5, { align: 'right' });
 
-    // Left Column: Authentic Photograph
+    // Left Column: Authentic Photograph & Spatial Coordinates
     const photoW = 54;
-    const photoH = 38;
+    const photoH = 37;
     const pX = margin + 4;
-    const pY = y + 11;
+    const pY = y + 10;
 
     const imgSlug = stop.placeSlug || structPlace?.slug;
     const imgPath = stop.image_url || structPlace?.image_url || (imgSlug ? `/images/places/${imgSlug}.jpg` : undefined);
@@ -1126,88 +1266,133 @@ export function generateItineraryPdf(
       doc.text('Explore Pune Verified Site', pX + 4, pY + 24);
     }
 
+    // Precise Coordinates and verification tag under photo
+    const lat = structPlace?.latitude || stop.latitude || 18.5204;
+    const lng = structPlace?.longitude || stop.longitude || 73.8567;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.2);
+    doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+    doc.text(`GPS: ${lat.toFixed(4)}N, ${lng.toFixed(4)}E`, pX + 1, y + 51);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(C_GREEN[0], C_GREEN[1], C_GREEN[2]);
+    doc.text('Explore Pune Verified Landmark', pX + 1, y + 54.5);
+
     // Right Column: Location, Address & Key Visitor Facts
     const rX = margin + photoW + 8;
     const rW = contentWidth - photoW - 12;
 
     doc.setFont('times', 'bold');
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
     const cleanPlaceTitle = safePdfText(structPlace?.name || stop.name);
-    doc.text(cleanPlaceTitle, rX, y + 15);
+    doc.text(cleanPlaceTitle.slice(0, 48), rX, y + 14);
 
     // Address
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.5);
+    doc.setFontSize(7.2);
     doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
     const addrSafe = safePdfText(structPlace?.address || 'Pune, Maharashtra 411001');
-    doc.text(`Address: ${addrSafe.slice(0, 68)}`, rX, y + 20);
+    doc.text(`Address: ${addrSafe.slice(0, 68)}`, rX, y + 18.5);
 
-    // Key Visitor Metrics Mini-Table
-    const factY = y + 24;
+    // Key Visitor Metrics Mini-Table (3 structured rows)
+    const factY = y + 21.5;
     doc.setFillColor(C_CARD_TINT[0], C_CARD_TINT[1], C_CARD_TINT[2]);
-    doc.rect(rX, factY, rW, 25, 'F');
+    doc.rect(rX, factY, rW, 31, 'F');
 
+    // Row 1: Planned Visit | Admission Ticket | Operating Hours
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.8);
+    doc.setFontSize(6.5);
     doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
-    doc.text('PLANNED VISIT', rX + 3, factY + 4.5);
-    doc.text('ADMISSION TICKET', rX + 40, factY + 4.5);
-    doc.text('OPERATING HOURS', rX + 80, factY + 4.5);
+    doc.text('PLANNED VISIT', rX + 3, factY + 4);
+    doc.text('ADMISSION TICKET', rX + 40, factY + 4);
+    doc.text('OPERATING HOURS', rX + 80, factY + 4);
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
+    doc.setFontSize(7.2);
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
-    doc.text(`${stop.arrivalTime || '09:00'} - ${stop.departureTime || '10:00'} (${stop.visitMinutes}m)`, rX + 3, factY + 9.5);
+    doc.text(`${stop.arrivalTime || '09:00'} - ${stop.departureTime || '10:00'} (${stop.visitMinutes}m)`, rX + 3, factY + 8);
 
-    const feeText =
-      structPlace?.entry_fee === 0 || stop.entryCost === 0
-        ? 'Free Entry (INR 0)'
-        : structPlace?.entry_fee
-        ? `INR ${structPlace.entry_fee} (Adults)`
-        : stop.entryCost
-        ? `INR ${stop.entryCost} / adult`
-        : 'Not officially confirmed';
+    const feeDetails = structPlace?.fee_details;
+    let feeText = 'Free Entry (INR 0)';
+    if (structPlace?.entry_fee === 0 || stop.entryCost === 0) {
+      feeText = 'Free Entry (INR 0)';
+    } else if (feeDetails?.adult !== undefined && feeDetails?.adult !== null) {
+      feeText = `INR ${feeDetails.adult} (Adult)` + (feeDetails.child ? ` | INR ${feeDetails.child} (Child)` : '');
+    } else if (structPlace?.entry_fee) {
+      feeText = `INR ${structPlace.entry_fee} (Adults)`;
+    } else if (stop.entryCost) {
+      feeText = `INR ${stop.entryCost} / adult`;
+    } else {
+      feeText = 'Not officially confirmed';
+    }
     doc.setTextColor(C_GREEN[0], C_GREEN[1], C_GREEN[2]);
-    doc.text(feeText, rX + 40, factY + 9.5);
+    doc.text(feeText.slice(0, 26), rX + 40, factY + 8);
 
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
-    const hoursText = structPlace?.place_hours?.[0]
-      ? `${structPlace.place_hours[0].opens_at} - ${structPlace.place_hours[0].closes_at}`
+    const hoursObj = structPlace?.place_hours?.[0];
+    const hoursText = hoursObj?.opens_at && hoursObj?.closes_at
+      ? `${hoursObj.opens_at} - ${hoursObj.closes_at}`
       : '08:00 AM - 06:00 PM';
-    doc.text(hoursText, rX + 80, factY + 9.5);
+    doc.text(hoursText, rX + 80, factY + 8);
 
-    // Row 2 of metrics: Parking, Accessibility, Best Time
+    // Row 2: Parking Status | Accessibility | Best Time
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(6.8);
+    doc.setFontSize(6.5);
     doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
-    doc.text('PARKING STATUS', rX + 3, factY + 15.5);
-    doc.text('ACCESSIBILITY', rX + 40, factY + 15.5);
-    doc.text('BEST TIME TO VISIT', rX + 80, factY + 15.5);
+    doc.text('PARKING & TOLLS', rX + 3, factY + 13.5);
+    doc.text('ACCESSIBILITY', rX + 40, factY + 13.5);
+    doc.text('BEST TIME TO VISIT', rX + 80, factY + 13.5);
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
-    const parkingSafe = safePdfText(structPlace?.fee_details?.parking, 'Pay & Park available nearby');
-    doc.text(parkingSafe.slice(0, 26), rX + 3, factY + 20.5);
+    const parkingSafe = safePdfText(structPlace?.fee_details?.parking, 'Pay & Park available');
+    doc.text(parkingSafe.slice(0, 26), rX + 3, factY + 17.5);
 
-    const isFort = (structPlace?.category_slug || '').includes('fort');
-    const accessText = isFort ? 'Stone stairs; not wheelchair accessible' : 'Ground ramp access verified';
-    doc.text(accessText, rX + 40, factY + 20.5);
+    const isFort = (structPlace?.category_slug || '').includes('fort') || (structPlace?.category || '').toLowerCase().includes('fort');
+    const accessText = isFort ? 'Stone stairs; moderate trek' : 'Paved ground; ramp access';
+    doc.text(accessText, rX + 40, factY + 17.5);
 
     const bestTimeSafe = safePdfText(structPlace?.best_time, 'Oct - Mar (Morning)');
-    doc.text(bestTimeSafe.slice(0, 24), rX + 80, factY + 20.5);
+    doc.text(bestTimeSafe.slice(0, 24), rX + 80, factY + 17.5);
+
+    // Row 3: How to Reach (Transit) | Recommended Duration | Safety / Rules
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6.5);
+    doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
+    doc.text('HOW TO REACH (TRANSIT)', rX + 3, factY + 23);
+    doc.text('RECOMMENDED STAY', rX + 40, factY + 23);
+    doc.text('SAFETY & RULES', rX + 80, factY + 23);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6.8);
+    doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
+    const transitShort = stop.nearestMetro
+      ? `Metro: ${stop.nearestMetro.slice(0, 20)}`
+      : stop.nearestBus
+      ? `Bus: ${stop.nearestBus.slice(0, 20)}`
+      : safePdfText(stop.transitSummary, 'Direct city roads').slice(0, 24);
+    doc.text(transitShort, rX + 3, factY + 27.5);
+
+    const recMins = structPlace?.recommended_duration_minutes || stop.visitMinutes || 60;
+    const durationLabel = recMins >= 120 ? `${Math.round(recMins / 60)} hrs recommended` : `${recMins} mins recommended`;
+    doc.text(durationLabel, rX + 40, factY + 27.5);
+
+    const safetyLabel = isFort ? 'Forest sunset curfew (6PM)' : 'Sanctum etiquette applies';
+    doc.text(safetyLabel, rX + 80, factY + 27.5);
 
     // Historical Background & Experience Narrative
-    let bodyY = y + 52;
+    let bodyY = y + 57;
     doc.setFont('times', 'bold');
-    doc.setFontSize(8.5);
+    doc.setFontSize(8.2);
     doc.setTextColor(C_MAROON[0], C_MAROON[1], C_MAROON[2]);
     doc.text('HISTORICAL SIGNIFICANCE & ARCHITECTURAL HIGHLIGHTS:', margin + 4, bodyY);
 
-    bodyY += 4.5;
+    bodyY += 4.2;
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.2);
+    doc.setFontSize(7.1);
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
     const descText = safePdfText(
       structPlace?.description,
@@ -1216,15 +1401,15 @@ export function generateItineraryPdf(
     const splitDesc = doc.splitTextToSize(descText, contentWidth - 8);
     doc.text(splitDesc.slice(0, 3), margin + 4, bodyY);
 
-    bodyY += splitDesc.slice(0, 3).length * 3.6 + 2;
+    bodyY += splitDesc.slice(0, 3).length * 3.4 + 2;
 
     // Nearby Verified Food & Pro Tips
     doc.setFont('times', 'bold');
-    doc.setFontSize(8);
+    doc.setFontSize(7.8);
     doc.setTextColor(C_TERRACOTTA[0], C_TERRACOTTA[1], C_TERRACOTTA[2]);
-    doc.text('VERIFIED NEARBY FOOD & VISITOR PRECAUTIONS:', margin + 4, bodyY);
+    doc.text('VERIFIED NEARBY FOOD SPECIALTIES & VISITOR PRECAUTIONS:', margin + 4, bodyY);
 
-    bodyY += 4;
+    bodyY += 3.8;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(C_INK_DARK[0], C_INK_DARK[1], C_INK_DARK[2]);
@@ -1233,16 +1418,16 @@ export function generateItineraryPdf(
       'Authentic Puneri Misal and Poha at historic Peth establishments.',
       'Sujata Mastani and fresh cold beverages on nearby Bajirao Road.',
     ];
-    doc.text(`Food: ${safePdfText(foodList[0]).slice(0, 110)}`, margin + 4, bodyY);
+    doc.text(`Food: ${safePdfText(foodList[0]).slice(0, 115)}`, margin + 4, bodyY);
 
-    bodyY += 3.8;
+    bodyY += 3.6;
     const tipsSafe = isFort
-      ? 'Safety: Caution on wet stone bastions during monsoon. Carry 2L drinking water.'
+      ? 'Safety: Caution on wet stone bastions during monsoon. Forest curfew strictly enforced at 06:00 PM.'
       : 'Safety: Photography rules apply inside sanctum. Digital QR tickets accepted at entrance.';
     doc.text(tipsSafe, margin + 4, bodyY);
 
     // Official Source Attribution & Navigation Link
-    bodyY += 4.5;
+    bodyY += 4.2;
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(6.5);
     doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);
@@ -1257,6 +1442,13 @@ export function generateItineraryPdf(
     }
 
     y += profileBoxH + 4;
+
+    // If odd number of total stops and this is the last stop (at top of page),
+    // fill the bottom half with the companion expedition protocols card
+    if (pIdx === profileStops.length - 1 && pIdx % 2 === 0) {
+      drawCompanionProtocolsCard(doc, margin, y, contentWidth, profileBoxH);
+      y += profileBoxH + 4;
+    }
   });
 
   // =========================================================================

@@ -456,4 +456,100 @@ describe('Trip Planner PDF Professional Upgrade - Test Suite', () => {
     const pdfOutput = doc.output();
     expect(pdfOutput.length).toBeGreaterThan(50000);
   });
+
+  // Scenario 11: Generates unabridged detailed profiles for ALL stops in large itineraries (no 4-stop cap)
+  it('Scenario 11: generates detailed destination profiles for all places in a 6-stop itinerary without truncation', () => {
+    const sixStopData: ItineraryPdfData = {
+      userName: 'Tanaji Malusare Heritage Enthusiast',
+      planTitle: 'Grand 6-Stop Circuit',
+      planTheme: 'Exploring all major Pune monuments in one day',
+      badge: '🏰',
+      startLocationName: 'Pune Station',
+      startTime: '08:00 AM',
+      travelMode: 'driving',
+      totalDurationMinutes: 600,
+      bufferMinutes: 40,
+      estimatedCost: 150,
+      stops: [
+        { index: 1, placeSlug: 'shaniwar-wada', name: 'Shaniwar Wada', visitMinutes: 60, travelMinutes: 15, entryCost: 25 },
+        { index: 2, placeSlug: 'lal-mahal', name: 'Lal Mahal', visitMinutes: 45, travelMinutes: 10, entryCost: 0 },
+        { index: 3, placeSlug: 'pataleshwar-cave-temple', name: 'Pataleshwar Cave Temple', visitMinutes: 50, travelMinutes: 15, entryCost: 0 },
+        { index: 4, placeSlug: 'raja-dinkar-kelkar-museum', name: 'Raja Dinkar Kelkar Museum', visitMinutes: 75, travelMinutes: 20, entryCost: 50 },
+        { index: 5, placeSlug: 'aga-khan-palace', name: 'Aga Khan Palace', visitMinutes: 70, travelMinutes: 25, entryCost: 25 },
+        { index: 6, placeSlug: 'sinhagad-fort', name: 'Sinhagad Fort', visitMinutes: 120, travelMinutes: 45, entryCost: 50 },
+      ],
+    };
+
+    const doc = generateItineraryPdf(sixStopData);
+    expect(doc).toBeDefined();
+    const pdfOutput = doc.output();
+
+    // Verify all 6 stops are identified in their profile headers
+    expect(pdfOutput).toContain('STOP #1: SHANIWAR WADA');
+    expect(pdfOutput).toContain('STOP #2: LAL MAHAL');
+    expect(pdfOutput).toContain('STOP #3: PATALESHWAR CAVE TEMPLE');
+    expect(pdfOutput).toContain('STOP #4: RAJA DINKAR KELKAR MUSEUM');
+    expect(pdfOutput).toContain('STOP #5: AGA KHAN PALACE');
+    expect(pdfOutput).toContain('STOP #6: SINHAGAD FORT');
+
+    // Page count must account for all 3 profile pages (2 stops per page = 3 pages)
+    expect(doc.getNumberOfPages()).toBeGreaterThanOrEqual(8);
+  });
+
+  // Scenario 12: Includes comprehensive place information (GPS coordinates, transit, hours, fees, parking, history, food)
+  it('Scenario 12: includes complete destination profile intelligence in the generated PDF output', () => {
+    const richStopData: ItineraryPdfData = {
+      userName: 'Traveler Ananya',
+      planTitle: 'Detailed Historical Pilgrimage',
+      planTheme: 'Fortress and temple immersion',
+      badge: '🚩',
+      startLocationName: 'Swargate',
+      startTime: '08:30 AM',
+      travelMode: 'public_transit',
+      totalDurationMinutes: 300,
+      bufferMinutes: 25,
+      estimatedCost: 75,
+      stops: [
+        {
+          index: 1,
+          placeSlug: 'sinhagad-fort',
+          name: 'Sinhagad Fort',
+          nameMr: 'सिंहगड किल्ला',
+          arrivalTime: '09:30 AM',
+          departureTime: '12:00 PM',
+          visitMinutes: 150,
+          travelMinutes: 60,
+          entryCost: 50,
+          nearestBus: 'PMPML Bus 50 to Donje Paytha',
+          nearestMetro: 'Swargate Metro',
+        },
+      ],
+    };
+
+    const doc = generateItineraryPdf(richStopData);
+    expect(doc).toBeDefined();
+    const pdfOutput = doc.output();
+
+    // Verify GPS coordinates
+    expect(pdfOutput).toContain('GPS:');
+
+    // Verify itemized ticket admission and hours
+    expect(pdfOutput).toContain('ADMISSION TICKET');
+    expect(pdfOutput).toContain('OPERATING HOURS');
+
+    // Verify parking & transit commute details
+    expect(pdfOutput).toContain('PARKING & TOLLS');
+    expect(pdfOutput).toContain('HOW TO REACH');
+
+    // Verify history and local food
+    expect(pdfOutput).toContain('HISTORICAL SIGNIFICANCE & ARCHITECTURAL HIGHLIGHTS');
+    expect(pdfOutput).toContain('VERIFIED NEARBY FOOD SPECIALTIES & VISITOR PRECAUTIONS');
+
+    // Odd stop companion card is included
+    expect(pdfOutput).toContain('HERITAGE EXPEDITION PROTOCOLS & FIELD CONDUCT GUIDELINES');
+    expect(pdfOutput).toContain('SAHYADRI FORTS & MOUNTAIN TREKKING RULES');
+
+    // Digital guide link
+    expect(pdfOutput).toContain('View Complete Digital Guide ->');
+  });
 });
