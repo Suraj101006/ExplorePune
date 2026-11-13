@@ -64,5 +64,14 @@ describe('Destinations & Categories SEO Routing', () => {
       expect(cardCssMatch).not.toBeNull();
       expect(cardCssMatch![1]).not.toContain('word-break: break-word');
     });
+
+    it('ensures Destinations page renders destinations directly with dedicated banner, not the homepage hero', () => {
+      const destinationsPageCode = fs.readFileSync(path.resolve(__dirname, '../app/destinations/page.tsx'), 'utf8');
+      expect(destinationsPageCode).toContain('isDestinationsPage={true}');
+      expect(homeExplorerCode).toContain('isDestinations ?');
+      expect(homeExplorerCode).toContain('destinations-header-banner');
+      expect(homeExplorerCode).toContain('All Pune Destinations & Landmarks');
+      expect(homeExplorerCode).toContain("basePath = isDestinations");
+    });
   });
 });

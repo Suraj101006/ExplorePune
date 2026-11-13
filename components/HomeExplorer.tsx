@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   Compass,
   MapPin,
@@ -154,6 +155,7 @@ interface HomeExplorerProps {
   totalPages: number;
   totalCount: number;
   masterCount?: number;
+  isDestinationsPage?: boolean;
 }
 
 export default function HomeExplorer({
@@ -165,11 +167,16 @@ export default function HomeExplorer({
   totalPages,
   totalCount,
   masterCount,
+  isDestinationsPage,
 }: HomeExplorerProps) {
   const { isMr, t } = useLanguage();
+  const pathname = usePathname();
+  const isDestinations = Boolean(
+    isDestinationsPage || (typeof pathname === 'string' && pathname.startsWith('/destinations'))
+  );
   const masterTotal = masterCount || totalCount;
   const [searchInput, setSearchInput] = useState(searchTerm);
-  const [showAll, setShowAll] = useState(Boolean(currentCat || searchTerm || page > 1));
+  const [showAll, setShowAll] = useState(Boolean(isDestinations || currentCat || searchTerm || page > 1));
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [savedLoc, setSavedLoc] = useState<UserSavedLocation | null>(null);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
@@ -264,7 +271,7 @@ export default function HomeExplorer({
     setTimeout(() => setSpeakingId(null), 2500);
   };
 
-  const isDefaultHome = !currentCat && !searchTerm && page === 1;
+  const isDefaultHome = !isDestinations && !currentCat && !searchTerm && page === 1;
 
   // Attach distance from selected Pune locality
   const placesWithDistance = places.map((p) => {
@@ -307,19 +314,176 @@ export default function HomeExplorer({
         });
 
   const displayedPlaces =
-    !isDefaultHome || showAll || sortByNearMe || selectedZone !== 'all' ? zoneFilteredPlaces : zoneFilteredPlaces.slice(0, 6);
+    isDestinations || !isDefaultHome || showAll || sortByNearMe || selectedZone !== 'all'
+      ? zoneFilteredPlaces
+      : zoneFilteredPlaces.slice(0, 6);
 
-  const href = (p: number) =>
-    `/?${new URLSearchParams({
-      ...(searchTerm && { q: searchTerm }),
-      ...(currentCat && { cat: currentCat }),
-      page: String(p),
-    })}`;
+  const href = (p: number) => {
+    const basePath = isDestinations
+      ? currentCat
+        ? `/destinations/${encodeURIComponent(currentCat)}`
+        : '/destinations'
+      : '/';
+
+    const params = new URLSearchParams();
+    if (searchTerm) params.set('q', searchTerm);
+    if (!isDestinations && currentCat) params.set('cat', currentCat);
+    if (p > 1) params.set('page', String(p));
+
+    const qs = params.toString();
+    return qs ? `${basePath}?${qs}` : basePath;
+  };
 
   return (
     <>
-      {/* Hero Section: Authoritative Heritage Guide */}
-      <section className="hero wrap">
+      {isDestinations ? (
+        <section
+          className="destinations-header-banner wrap"
+          style={{
+            padding: '28px 0 16px',
+            borderBottom: '1px solid var(--line)',
+            marginBottom: '20px',
+          }}
+        >
+          {/* Breadcrumb Navigation */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              fontSize: '12.5px',
+              color: 'var(--muted)',
+              marginBottom: 10,
+            }}
+          >
+            <Link href="/" style={{ color: 'var(--muted)', textDecoration: 'none' }}>
+              {isMr ? 'मुख्यपृष्ठ' : 'Home'}
+            </Link>
+            <span style={{ opacity: 0.6 }}>/</span>
+            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>
+              {isMr ? 'पर्यटन व ऐतिहासिक ठिकाणे' : 'Destinations'}
+            </span>
+            {currentCat && (
+              <>
+                <span style={{ opacity: 0.6 }}>/</span>
+                <span style={{ color: 'var(--ink)', fontWeight: 700 }}>
+                  {isMr ? (CATEGORY_NAMES_MR[currentCat] || currentCat) : currentCat.charAt(0).toUpperCase() + currentCat.slice(1)}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              flexWrap: 'wrap',
+              gap: 16,
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '3px 10px',
+                  borderRadius: 999,
+                  background: 'var(--primary-light)',
+                  color: 'var(--primary)',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  marginBottom: 8,
+                }}
+              >
+                <span>📍</span>
+                <span>{isMr ? 'पुणे वारसा व पर्यटन सूची' : 'Pune Tourism & Heritage Catalog'}</span>
+                <span>·</span>
+                <span>{totalCount || 106}+ {isMr ? 'ठिकाणे' : 'Verified Places'}</span>
+              </div>
+              <h1
+                style={{
+                  fontSize: 'clamp(24px, 3.5vw, 34px)',
+                  fontWeight: 800,
+                  margin: '4px 0 6px',
+                  color: 'var(--ink)',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {currentCat
+                  ? (isMr ? (CATEGORY_NAMES_MR[currentCat] || currentCat) : `${currentCat.charAt(0).toUpperCase() + currentCat.slice(1)} in Pune`)
+                  : (isMr ? 'पुण्यातील सर्व पर्यटन व ऐतिहासिक ठिकाणे' : 'All Pune Destinations & Landmarks')}
+              </h1>
+              <p style={{ margin: 0, fontSize: '13.5px', color: 'var(--muted)', maxWidth: '640px', lineHeight: 1.5 }}>
+                {isMr
+                  ? 'सह्याद्रीचे अजिंक्य किल्ले, पेशवेकालीन वाडे, प्रसिद्ध मंदिरे, वस्तुसंग्रहालये आणि निसर्गरम्य वाटा — अधिकृत वेळा, तिकीट दर व थेट सार्वजनिक वाहतुकीसह.'
+                  : 'Complete field-verified directory to forts, Peshwa-era wadas, temples, museums, and scenic trails across Pune Metropolitan Region with live timings, fees, and bus/metro transit.'}
+              </p>
+            </div>
+
+            {/* Quick Locality Selector Chip */}
+            <button
+              type="button"
+              onClick={() => setIsLocationModalOpen(true)}
+              className="chip"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '8px 14px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'var(--card)',
+                border: '1px solid var(--line)',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+              title={isMr ? 'पुणे परिसर बदला' : 'Change reference locality'}
+            >
+              <MapPin size={16} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                  {isMr ? 'संदर्भ स्थान' : 'Near Locality'}
+                </div>
+                <strong style={{ fontSize: '12.5px', color: 'var(--ink)' }}>
+                  {savedLoc ? (isMr ? savedLoc.nameMr : savedLoc.nameEn) : (isMr ? 'मध्यवर्ती पुणे' : 'Central Pune')}
+                </strong>
+              </div>
+            </button>
+          </div>
+
+          {/* Quick Search on Destinations */}
+          <form
+            className="search"
+            action={currentCat ? `/destinations/${encodeURIComponent(currentCat)}` : '/destinations'}
+            role="search"
+            style={{ marginTop: 16, maxWidth: '580px' }}
+          >
+            <input
+              name="q"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder={
+                isMr
+                  ? 'किल्ला, वाडा, मंदिर किंवा परिसराचे नाव शोधा...'
+                  : 'Search fort, wada, temple, museum, or neighborhood...'
+              }
+              aria-label="Search destinations"
+            />
+            <button className="btn" type="submit">
+              <span className="btn-icon">
+                <Search size={16} />
+              </span>
+              <span>{isMr ? 'शोधा' : 'Search'}</span>
+            </button>
+          </form>
+        </section>
+      ) : (
+        <>
+          {/* Hero Section: Authoritative Heritage Guide */}
+          <section className="hero wrap">
         <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
             <div
@@ -1248,6 +1412,8 @@ export default function HomeExplorer({
           </div>
         </div>
       </section>
+        </>
+      )}
 
       {/* MAIN CATALOGUE: Fact-Rich Places Grid */}
       <div className="wrap scroll-reveal" id="explore-places">
@@ -1383,7 +1549,7 @@ export default function HomeExplorer({
 
           <Link
             className="chip"
-            href="/"
+            href={isDestinations ? "/destinations" : "/"}
             aria-current={!currentCat && !sortByNearMe}
             style={{
               display: 'inline-flex',

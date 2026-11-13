@@ -22,15 +22,10 @@ import {
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import ThemeToggle from '@/components/ThemeToggle';
-
-// Defer interactive auth & drawer modals so they do not block initial rendering or critical bundle evaluation
-const AuthNav = dynamic(() => import('@/components/AuthNav'), {
-  ssr: false,
-  loading: () => <span style={{ display: 'inline-block', width: 68, height: 32 }} />,
-});
-const MobileAuthNav = dynamic(() => import('@/components/MobileAuthNav'), { ssr: false });
-const SavedPlacesDrawer = dynamic(() => import('@/components/SavedPlacesDrawer'), { ssr: false });
-const EmergencyHelplineModal = dynamic(() => import('@/components/EmergencyHelplineModal'), { ssr: false });
+import AuthNav from '@/components/AuthNav';
+import MobileAuthNav from '@/components/MobileAuthNav';
+import SavedPlacesDrawer from '@/components/SavedPlacesDrawer';
+import EmergencyHelplineModal from '@/components/EmergencyHelplineModal';
 
 export default function AppHeader() {
   const { t, isMr } = useLanguage();

@@ -157,6 +157,7 @@ export default async function DestinationsPage({
         page={pg}
         totalPages={pages}
         totalCount={count}
+        isDestinationsPage={true}
       />
     </main>
   );

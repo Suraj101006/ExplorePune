@@ -43,11 +43,12 @@ describe('Navbar Functions & Authentication State Consistency', () => {
     expect(authNavContent).toContain('className="btn auth-signin-btn"');
     expect(authNavContent).toContain('className="mobile-auth-icon-btn"');
 
-    // After login: desktop account pill with avatar, admin check, logout button, and mobile avatar button
+    // After login: desktop account pill with avatar, admin check, logout button, and mobile avatar & logout button
     expect(authNavContent).toContain('href="/account"');
     expect(authNavContent).toContain('className="auth-user-pill"');
     expect(authNavContent).toContain('className="auth-logout-pill"');
     expect(authNavContent).toContain('className="mobile-auth-avatar-btn"');
+    expect(authNavContent).toContain('className="mobile-auth-logout-btn"');
     expect(authNavContent).toContain('href="/admin"');
   });
 

@@ -54,21 +54,23 @@ export default function SavedPlacesDrawer() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: 6,
-          padding: '6px 14px',
+          padding: '6px 12px',
           fontSize: '12.5px',
           cursor: 'pointer',
-          background: saved.length > 0 ? '#fff1f2' : 'var(--card)',
-          borderColor: saved.length > 0 ? '#fecdd3' : 'var(--line)',
+          background: saved.length > 0 ? 'rgba(225, 29, 72, 0.12)' : 'var(--card)',
+          borderColor: saved.length > 0 ? 'rgba(225, 29, 72, 0.35)' : 'var(--line)',
           color: saved.length > 0 ? '#e11d48' : 'var(--ink-secondary)',
           fontWeight: 700,
           transition: 'all 0.15s ease',
         }}
         title={isMr ? 'माझी आवडती ठिकाणे' : 'My Saved Places'}
+        aria-label={isMr ? 'माझी आवडती ठिकाणे' : 'My Saved Places'}
       >
-        <Bookmark size={13} strokeWidth={2.2} fill={saved.length > 0 ? '#e11d48' : 'none'} />
+        <Bookmark size={14} strokeWidth={2.2} fill={saved.length > 0 ? '#e11d48' : 'none'} />
         <span className="saved-chip-text hide-on-compact-desktop">{isMr ? 'जतन केलेली' : 'Saved'}</span>
         {saved.length > 0 && (
           <span
+            className="saved-count-badge"
             style={{
               background: '#e11d48',
               color: '#ffffff',

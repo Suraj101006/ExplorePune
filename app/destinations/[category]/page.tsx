@@ -239,6 +239,7 @@ export default async function CategoryDestinationsPage({
         page={pg}
         totalPages={pages}
         totalCount={count}
+        isDestinationsPage={true}
       />
     </main>
   );

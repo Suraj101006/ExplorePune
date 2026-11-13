@@ -15,7 +15,36 @@ export default function AuthNav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   if (!ready) {
-    return <span style={{ display: 'inline-block', width: 68, height: 32 }} />;
+    return (
+      <div className="auth-nav-container">
+        <div className="auth-desktop-view">
+          <Link
+            href="/login"
+            className="btn auth-signin-btn"
+            style={{
+              padding: '6px 14px',
+              fontSize: '12.5px',
+              fontWeight: 700,
+              borderRadius: 'var(--radius-sm)',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {isMr ? 'साइन इन' : 'Sign in'}
+          </Link>
+        </div>
+        <div className="auth-mobile-view">
+          <Link
+            href="/login"
+            className="mobile-auth-icon-btn"
+            title={isMr ? 'साइन इन' : 'Sign in'}
+            aria-label={isMr ? 'साइन इन' : 'Sign in'}
+          >
+            <UserIcon size={16} strokeWidth={2.2} />
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const handleLogout = async () => {
@@ -146,20 +175,32 @@ export default function AuthNav() {
       {/* 2. Mobile Compact View (<= 768px) */}
       <div className="auth-mobile-view">
         {user ? (
-          <Link
-            href="/account"
-            className="mobile-auth-avatar-btn"
-            title={displayName}
-            aria-label={`${isMr ? 'माझे खाते' : 'My Account'} (${displayName})`}
-          >
-            <ProfileAvatar
-              photoUrl={user.photoURL || (typeof window !== 'undefined' ? localStorage.getItem(`explore_pune_avatar_${user.uid}`) : null)}
-              name={user.displayName}
-              email={user.email}
-              size={24}
-            />
-            <span className="mobile-auth-online-dot" aria-hidden="true" />
-          </Link>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href="/account"
+              className="mobile-auth-avatar-btn"
+              title={displayName}
+              aria-label={`${isMr ? 'माझे खाते' : 'My Account'} (${displayName})`}
+            >
+              <ProfileAvatar
+                photoUrl={user.photoURL || (typeof window !== 'undefined' ? localStorage.getItem(`explore_pune_avatar_${user.uid}`) : null)}
+                name={user.displayName}
+                email={user.email}
+                size={24}
+              />
+              <span className="mobile-auth-online-dot" aria-hidden="true" />
+            </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="mobile-auth-logout-btn"
+              title={isMr ? 'लॉगआउट' : 'Sign out'}
+              aria-label={isMr ? 'लॉगआउट' : 'Sign out'}
+            >
+              <LogOut size={13} />
+            </button>
+          </div>
         ) : (
           <Link
             href="/login"
