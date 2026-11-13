@@ -441,7 +441,7 @@ export function generateItineraryPdf(
 
   // Prominent Official Brand Seal & Logo Crest
   if (officialLogoBase64) {
-    const logoSize = 22;
+    const logoSize = 25;
     const logoX = (pageWidth - logoSize) / 2;
     doc.setFillColor(255, 255, 255);
     doc.setDrawColor(C_GOLD[0], C_GOLD[1], C_GOLD[2]);

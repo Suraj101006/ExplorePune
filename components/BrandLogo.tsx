@@ -15,15 +15,16 @@ export interface BrandLogoProps {
   style?: React.CSSProperties;
   badgeBackground?: string;
   badgeBorderRadius?: string | number;
+  zoom?: number;
 }
 
 /**
  * Reusable official BrandLogo component for Explore Pune.
  * Renders the official uploaded logo preserving original 1:1 proportions,
- * crispness, and typography.
+ * crispness, and typography, with enhanced zoom and high-contrast badge visibility.
  */
 export default function BrandLogo({
-  size = 40,
+  size = 44,
   className = '',
   priority = false,
   alt = 'Explore Pune Official Logo',
@@ -31,6 +32,7 @@ export default function BrandLogo({
   style,
   badgeBackground = '#ffffff',
   badgeBorderRadius = '50%',
+  zoom = 1.08,
 }: BrandLogoProps) {
   const imageElement = (
     <Image
@@ -43,6 +45,8 @@ export default function BrandLogo({
         width: size,
         height: size,
         objectFit: 'contain',
+        transform: zoom && zoom !== 1 ? `scale(${zoom})` : undefined,
+        transformOrigin: '50% 50%',
         display: 'block',
         flexShrink: 0,
       }}
@@ -57,12 +61,12 @@ export default function BrandLogo({
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: size + 8,
-          height: size + 8,
+          width: size,
+          height: size,
           borderRadius: badgeBorderRadius,
           background: badgeBackground,
-          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.08)',
-          border: '1px solid rgba(0, 0, 0, 0.06)',
+          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.12)',
+          border: '1.5px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
           flexShrink: 0,
           ...style,
@@ -80,6 +84,9 @@ export default function BrandLogo({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
+        width: size,
+        height: size,
+        overflow: 'hidden',
         flexShrink: 0,
         ...style,
       }}

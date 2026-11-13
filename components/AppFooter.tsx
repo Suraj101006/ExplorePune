@@ -14,7 +14,7 @@ export default function AppFooter() {
         <div style={{ maxWidth: 540 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <BrandLogo
-              size={34}
+              size={42}
               alt="Explore Pune Logo"
               withBadge
             />

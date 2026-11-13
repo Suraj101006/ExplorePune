@@ -98,7 +98,7 @@ export default function AboutPage() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-          <BrandLogo size={48} withBadge alt="Explore Pune Official Logo" />
+          <BrandLogo size={58} withBadge alt="Explore Pune Official Logo" />
           <div
             style={{
               display: 'inline-block',

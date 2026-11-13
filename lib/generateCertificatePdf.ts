@@ -58,7 +58,7 @@ export function generateCertificatePdf(data: CertificateData): jsPDF {
   let y = 18;
 
   if (logoBase64) {
-    const logoSize = 22;
+    const logoSize = 25;
     const logoX = (pageWidth - logoSize) / 2;
     doc.setFillColor(255, 255, 255);
     doc.setDrawColor(194, 65, 12);

@@ -146,7 +146,7 @@ export default function LoginPage() {
       >
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
-            <BrandLogo size={58} withBadge alt="Explore Pune Official Logo" />
+            <BrandLogo size={68} withBadge alt="Explore Pune Official Logo" />
           </div>
           <h1 style={{ fontSize: 24, margin: '0 0 6px' }}>
             {mode === 'in' ? 'Welcome Back' : 'Create an Account'}

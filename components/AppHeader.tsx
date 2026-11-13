@@ -56,7 +56,8 @@ export default function AppHeader() {
         {/* Brand Identity */}
         <Link href="/" className="brand" aria-label="Explore Pune Home">
           <BrandLogo
-            size={42}
+            size={46}
+            withBadge
             priority
             alt="Explore Pune Logo"
             className="brand-logo-img"

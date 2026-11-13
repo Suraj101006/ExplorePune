@@ -379,7 +379,7 @@ export default function AccountPage() {
 
           <div>
             <div className="hero-pill" style={{ marginBottom: 6, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <BrandLogo size={18} alt="Explore Pune" />
+              <BrandLogo size={24} withBadge alt="Explore Pune" />
               <span>{isMr ? 'अधिकृत एक्सप्लोर पुणे सदस्य' : 'Verified Explore Pune Explorer'}</span>
             </div>
             <h1 style={{ fontSize: 28, margin: '2px 0 4px', fontWeight: 800 }}>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import BrandLogo from '@/components/BrandLogo';
 import { usePathname } from 'next/navigation';
 
 const STORAGE_KEY = 'explore_pune_intro_shown';
@@ -332,12 +333,10 @@ export default function IntroVideoOverlay() {
 
       {/* Explore Pune Brand Badge - Top Left */}
       <div className="intro-brand-badge" aria-hidden="true">
-        <Image
-          src="/assets/explore-pune-logo.png"
+        <BrandLogo
+          size={38}
+          withBadge
           alt="Explore Pune Logo"
-          width={32}
-          height={32}
-          style={{ borderRadius: '50%', background: '#ffffff', display: 'block', objectFit: 'contain' }}
           priority
         />
         <span className="intro-brand-text">
@@ -373,12 +372,10 @@ export default function IntroVideoOverlay() {
         aria-hidden={!showTitleCard}
       >
         <div className="intro-title-crest">
-          <Image
-            src="/assets/explore-pune-logo.png"
+          <BrandLogo
+            size={92}
+            withBadge
             alt="Explore Pune Crest"
-            width={80}
-            height={80}
-            style={{ borderRadius: '50%', background: '#ffffff', display: 'block', objectFit: 'contain', padding: 4 }}
             priority
           />
         </div>
@@ -409,14 +406,12 @@ export default function IntroVideoOverlay() {
         }
         aria-hidden="true"
       >
-        <Image
-          src="/assets/explore-pune-logo.png"
+        <BrandLogo
+          size={logoPos ? logoPos.size : 56}
+          withBadge
           alt="Explore Pune"
-          width={logoPos ? logoPos.size : 52}
-          height={logoPos ? logoPos.size : 52}
-          className="intro-gemini-cover-img"
-          style={{ background: '#ffffff', borderRadius: '50%', objectFit: 'contain' }}
           priority
+          className="intro-gemini-cover-img"
         />
       </div>
 
