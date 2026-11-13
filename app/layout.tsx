@@ -105,22 +105,40 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
 
-        {/* Google Tag (Container: GTM-WNTH6S92) - lazyOnload defers until browser idle time, preserving 0ms TBT */}
+        {/* Google Consent Mode v2 & Google Tag Manager (Container: GTM-WNTH6S92) */}
         <Script
-          id="google-tag-manager"
-          strategy="lazyOnload"
-          src="https://www.googletagmanager.com/gtm.js?id=GTM-WNTH6S92"
-        />
-        <Script
-          id="gtm-init"
-          strategy="lazyOnload"
+          id="gtm-consent-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+              (function(){
+                var a = 'denied';
+                try {
+                  var c = localStorage.getItem('explore_pune_consent');
+                  if (c) {
+                    var p = JSON.parse(c);
+                    if (p && p.analytics) a = 'granted';
+                  }
+                } catch(e) {}
+                gtag('consent', 'default', {
+                  'analytics_storage': a,
+                  'ad_storage': 'denied',
+                  'ad_user_data': 'denied',
+                  'ad_personalization': 'denied',
+                  'functionality_storage': 'granted',
+                  'personalization_storage': a
+                });
+              })();
               gtag('js', new Date());
             `,
           }}
+        />
+        <Script
+          id="google-tag-manager"
+          strategy="lazyOnload"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-WNTH6S92"
         />
 
         {/* Google Search Console Site Verification */}

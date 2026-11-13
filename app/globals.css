@@ -5059,3 +5059,42 @@ body.modal-open {
     padding: 14px 14px 14px;
   }
 }
+
+/* =========================================================================
+   Cookie Consent Banner & Privacy Preferences (DPDP Act 2023 Compliance)
+   ========================================================================= */
+
+@keyframes cookieBannerSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cookie-banner-dock {
+  background: var(--card-bg, #ffffff) !important;
+  color: var(--ink, #0f172a) !important;
+  border: 1px solid var(--line, rgba(226, 232, 240, 0.8)) !important;
+}
+
+.dark .cookie-banner-dock {
+  background: rgba(15, 23, 42, 0.94) !important;
+  color: #f8fafc !important;
+  border-color: rgba(51, 65, 85, 0.7) !important;
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+}
+
+@media (max-width: 640px) {
+  .cookie-banner-dock {
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    padding: 16px 16px !important;
+    border-radius: 14px !important;
+  }
+}
+

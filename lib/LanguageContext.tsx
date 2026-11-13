@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { setCookie } from '@/lib/cookies';
 
 export type Language = 'en' | 'mr';
 
@@ -312,6 +313,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem('punetrail_lang', newLang);
       document.documentElement.lang = newLang;
+      setCookie('punetrail_lang', newLang, { maxAge: 31536000, sameSite: 'lax' });
     } catch {}
   };
 

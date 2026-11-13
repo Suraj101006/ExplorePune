@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import BrandLogo from '@/components/BrandLogo';
 import { useLanguage } from '@/lib/LanguageContext';
+import { openCookiePreferencesModal } from '@/lib/cookies';
 
 export default function AppFooter() {
   const { t, isMr } = useLanguage();
@@ -57,6 +58,25 @@ export default function AppFooter() {
           <Link href="/data">{isMr ? 'डेटा पद्धत' : 'Data'}</Link>
           <Link href="/privacy">{isMr ? 'गोपनीयता (DPDP)' : 'Privacy'}</Link>
           <Link href="/terms">{isMr ? 'सेवा अटी' : 'Terms'}</Link>
+          <Link href="/cookies">{isMr ? 'कुकी धोरण' : 'Cookies'}</Link>
+          <button
+            type="button"
+            onClick={openCookiePreferencesModal}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              font: 'inherit',
+              color: 'var(--ink-secondary)',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              fontSize: 14,
+            }}
+          >
+            🍪 {isMr ? 'कुकी पसंती' : 'Cookie Settings'}
+          </button>
         </div>
 
         {/* Official Civic & Heritage Portals (Authoritative External References) */}

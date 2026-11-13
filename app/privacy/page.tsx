@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
+import { openCookiePreferencesModal } from '@/lib/cookies';
 
 export default function PrivacyPolicyPage() {
   const { isMr: globalIsMr } = useLanguage();
@@ -276,10 +277,82 @@ export default function PrivacyPolicyPage() {
           </p>
         </section>
 
-        {/* Section 6: Grievance Redressal Officer */}
+        {/* Section 6: Cookies, Device Storage & Consent Management */}
+        <section style={{ marginBottom: 32 }}>
+          <h2 style={{ fontSize: 20, color: '#0f172a', fontWeight: 800, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🍪</span> {isMr ? '६. कुकीज, स्थानिक डेटा साठा व संमती व्यवस्थापन (Cookies & Storage)' : '6. Cookies, Device Storage & Consent Management'}
+          </h2>
+          <p>
+            {isMr
+              ? 'एक्सप्लोर पुणे ऑथेंटिकेशन सुरक्षा, डार्क मोड, मराठी भाषा पसंती आणि ऑफलाइन ट्रॅव्हल बुकमार्क्ससाठी कुकीज आणि स्थानिक साठा वापरते. आम्ही कधीही त्रयस्थ जाहिराती चालवत नाही.'
+              : 'Explore Pune utilizes first-party cookies and modern browser storage to secure authentication sessions, remember your theme and language preferences, and preserve offline saved destinations. We do not participate in third-party advertising networks.'}
+          </p>
+          <div
+            style={{
+              background: '#f8fafc',
+              border: '1.5px solid var(--line, #cbd5e1)',
+              borderRadius: 12,
+              padding: 18,
+              marginTop: 12,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 12,
+            }}
+          >
+            <div>
+              <strong style={{ color: 'var(--ink, #0f172a)', display: 'block', fontSize: 14 }}>
+                {isMr ? 'तुमच्या कुकी पसंतीचे व्यवस्थापन करा' : 'Manage Your Cookie & Privacy Preferences'}
+              </strong>
+              <span style={{ fontSize: 13, color: 'var(--muted, #64748b)' }}>
+                {isMr
+                  ? 'तुम्ही कोणत्याही वेळी पर्यायी कुकीज सुरू किंवा बंद करू शकता.'
+                  : 'You can modify or withdraw your cookie consent at any time.'}
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={openCookiePreferencesModal}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  background: '#047857',
+                  color: '#ffffff',
+                  border: 'none',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                {isMr ? 'कुकी पसंती उघडा' : 'Cookie Preferences'}
+              </button>
+              <Link
+                href="/cookies"
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  background: '#ffffff',
+                  color: '#0f172a',
+                  border: '1px solid var(--line, #cbd5e1)',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                }}
+              >
+                {isMr ? 'सविस्तर कुकी धोरण →' : 'Detailed Cookie Policy →'}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7: Grievance Redressal Officer */}
         <section style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', borderRadius: 12, padding: 24 }}>
           <h2 style={{ fontSize: 19, color: '#0f172a', fontWeight: 800, marginTop: 0, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>📬</span> {isMr ? '६. तक्रार निवारण अधिकारी संपर्क (Grievance Redressal Officer)' : '6. Grievance Redressal Officer (DPDPA Statutory Notice)'}
+            <span>📬</span> {isMr ? '७. तक्रार निवारण अधिकारी संपर्क (Grievance Redressal Officer)' : '7. Grievance Redressal Officer (DPDPA Statutory Notice)'}
           </h2>
           <p style={{ fontSize: 14, margin: '0 0 14px' }}>
             {isMr

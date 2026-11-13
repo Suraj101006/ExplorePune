@@ -103,6 +103,16 @@ const nextConfig: NextConfig = {
         destination: "/.well-known/security.txt",
         permanent: true,
       },
+      {
+        source: "/cookie-policy",
+        destination: "/cookies",
+        permanent: true,
+      },
+      {
+        source: "/cookie",
+        destination: "/cookies",
+        permanent: true,
+      },
     ];
   },
   async headers() {

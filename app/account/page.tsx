@@ -30,7 +30,8 @@ import AchievementsGallery from '@/components/AchievementsGallery';
 import ShareAchievementModal from '@/components/ShareAchievementModal';
 import AchievementBadgeMedal from '@/components/AchievementBadgeMedal';
 import { downloadCertificatePdf } from '@/lib/generateCertificatePdf';
-import { Award, Sparkles, Star, Trophy } from 'lucide-react';
+import { Award, Sparkles, Star, Trophy, Cookie } from 'lucide-react';
+import { openCookiePreferencesModal } from '@/lib/cookies';
 
 const STATUS: Record<string, string> = {
   pending: 'Waiting for review',
@@ -1065,6 +1066,74 @@ export default function AccountPage() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Cookie & Device Storage Preferences Sub-panel */}
+        <div
+          style={{
+            background: 'var(--bg)',
+            border: '1px solid var(--line)',
+            borderRadius: 12,
+            padding: 16,
+            marginTop: 14,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, marginBottom: 8 }}>
+            <h3 style={{ fontSize: 14.5, fontWeight: 700, margin: 0, color: 'var(--ink)', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Cookie size={16} color="#047857" />
+              {isMr ? 'कुकीज व स्थानिक डिव्हाइस साठा' : 'Cookies & Device Storage'}
+            </h3>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '2px 8px',
+                borderRadius: 999,
+                background: '#ecfdf5',
+                color: '#065f46',
+              }}
+            >
+              DPDP Act 2023
+            </span>
+          </div>
+
+          <p style={{ margin: '0 0 12px', fontSize: 13, color: 'var(--muted)', lineHeight: 1.5 }}>
+            {isMr
+              ? 'एक्सप्लोर पुणे तुमच्या डिव्हाइसवर डार्क मोड, मराठी भाषा आणि सेव्ह केलेल्या किल्ल्यांचा स्थानिक साठा ठेवते. कोणत्याही वेळी तुमची कुकी पसंती बदला किंवा तपासा.'
+              : 'Explore Pune stores your theme, language preference, and bookmarked forts in your browser. You can inspect or update your cookie consent choices at any time.'}
+          </p>
+
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={openCookiePreferencesModal}
+              className="btn btn-outline"
+              style={{
+                fontSize: 12.5,
+                fontWeight: 600,
+                padding: '6px 14px',
+                borderRadius: 8,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              🍪 {isMr ? 'कुकी पसंती व्यवस्थापित करा' : 'Manage Cookie Preferences'}
+            </button>
+
+            <Link
+              href="/cookies"
+              style={{
+                fontSize: 12.5,
+                fontWeight: 600,
+                color: '#047857',
+                textDecoration: 'underline',
+              }}
+            >
+              {isMr ? 'सविस्तर कुकी धोरण वाचा →' : 'Read Cookie Policy →'}
+            </Link>
+          </div>
         </div>
       </section>
 

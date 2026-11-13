@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { setCookie } from '@/lib/cookies';
 
 export type Theme = 'light' | 'dark';
 
@@ -110,6 +111,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
       // Also set generic 'theme' key for ecosystem compatibility
       localStorage.setItem('theme', newTheme);
+      setCookie(THEME_STORAGE_KEY, newTheme, { maxAge: 31536000, sameSite: 'lax' });
     } catch {}
 
     // Dispatch custom event for shortcut toast feedback
@@ -133,6 +135,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       try {
         localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
         localStorage.setItem('theme', nextTheme);
+        setCookie(THEME_STORAGE_KEY, nextTheme, { maxAge: 31536000, sameSite: 'lax' });
       } catch {}
 
       if (typeof window !== 'undefined') {
