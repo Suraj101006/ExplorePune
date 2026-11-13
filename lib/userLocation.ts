@@ -5,6 +5,7 @@
  */
 
 import { calculateDistanceKm } from './publicTransit';
+export { calculateDistanceKm } from './publicTransit';
 
 export interface UserSavedLocation {
   id: string;
@@ -27,6 +28,9 @@ export interface UserSavedLocation {
     city?: string;
     postcode?: string;
     formattedAddress?: string;
+    googleMapsUrl?: string;
+    googleMapsEmbedUrl?: string;
+    placeId?: string;
   };
 }
 
@@ -107,6 +111,8 @@ export const DEFAULT_PUNE_STATIC_LOCATION: UserSavedLocation = {
     city: 'Pune',
     postcode: '411030',
     formattedAddress: 'Shaniwar Wada, Shaniwar Peth, Pune, Maharashtra 411030',
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=18.520400,73.856700',
+    googleMapsEmbedUrl: 'https://www.google.com/maps?q=18.520400,73.856700&z=15&output=embed',
   },
 };
 
@@ -175,6 +181,13 @@ export function setLocationFromLocality(localityId: string): UserSavedLocation |
     lat: loc.latitude,
     lng: loc.longitude,
     timestamp: Date.now(),
+    addressDetails: {
+      suburb: loc.nameEn.split('/')[0].trim(),
+      city: 'Pune',
+      formattedAddress: `${loc.nameEn}, Pune, Maharashtra, India`,
+      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${loc.latitude.toFixed(6)},${loc.longitude.toFixed(6)}`,
+      googleMapsEmbedUrl: `https://www.google.com/maps?q=${loc.latitude.toFixed(6)},${loc.longitude.toFixed(6)}&z=15&output=embed`,
+    },
   };
 
   setStoredUserLocation(saved);
@@ -216,13 +229,48 @@ export function findClosestPuneLocality(lat: number, lng: number): { locality: P
 }
 
 /**
- * Search Pune landmarks & streets using OpenStreetMap Nominatim bounded to Pune Metropolitan Area.
+ * Search Pune landmarks & streets using Google Maps Precision Search with OpenStreetMap & Local Fallback.
  */
 export async function searchPuneLivePlaces(query: string): Promise<PuneLocality[]> {
   const localResults = searchPuneLocalities(query);
   const q = query.trim();
-  if (q.length < 3) return localResults;
+  if (q.length < 2) return localResults;
 
+  // 1. Google Maps Search API Endpoint
+  if (typeof window !== 'undefined' && typeof fetch === 'function') {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      const res = await fetch(`/api/v1/location/search?q=${encodeURIComponent(q)}`, {
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          const gmapPlaces: PuneLocality[] = json.data.map((item: any, idx: number) => ({
+            id: `gmap-${idx}-${item.nameEn.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+            nameEn: item.nameEn,
+            nameMr: item.nameMr,
+            zoneEn: 'Google Maps Verified',
+            zoneMr: 'गुगल मॅप्स पडताळणी',
+            latitude: item.latitude,
+            longitude: item.longitude,
+            popularTransitHubEn: item.addressDetails?.formattedAddress || item.nameEn,
+            popularTransitHubMr: item.addressDetails?.formattedAddress || item.nameMr,
+          }));
+
+          return [...gmapPlaces, ...localResults];
+        }
+      }
+    } catch {
+      // Fall through to Nominatim or local matching
+    }
+  }
+
+  // 2. OpenStreetMap Nominatim Secondary Fallback
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3200);
@@ -442,10 +490,44 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
     speedKmh,
     heading: parsedHeading,
     altitudeMeters: parsedAltitude,
+    addressDetails: {
+      suburb: localityShortEn,
+      city: 'Pune',
+      formattedAddress: `${localityShortEn}, Pune, Maharashtra, India`,
+      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(6)},${longitude.toFixed(6)}`,
+      googleMapsEmbedUrl: `https://www.google.com/maps?q=${latitude.toFixed(6)},${longitude.toFixed(6)}&z=15&output=embed`,
+    },
   };
 
   lastAcquiredGpsLocation = savedLoc;
   setStoredUserLocation(savedLoc);
+
+  // Background Google Maps Reverse Geocoding Enrichment
+  if (typeof window !== 'undefined' && typeof fetch === 'function') {
+    fetch(`/api/v1/location/reverse?lat=${latitude}&lng=${longitude}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (json?.success && json?.data) {
+          const d = json.data;
+          if (d.nameEn) savedLoc.nameEn = d.nameEn;
+          if (d.nameMr) savedLoc.nameMr = d.nameMr;
+          if (d.addressDetails) {
+            savedLoc.addressDetails = {
+              ...savedLoc.addressDetails,
+              ...d.addressDetails,
+              googleMapsUrl: d.addressDetails?.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(6)},${longitude.toFixed(6)}`,
+            };
+          }
+          setStoredUserLocation(savedLoc);
+          gpsSubscribers.forEach((cb) => {
+            try { cb(savedLoc); } catch {}
+          });
+        }
+      })
+      .catch(() => {
+        // Local spatial baseline remains solid
+      });
+  }
 
   // Notify registered callbacks
   gpsSubscribers.forEach((cb) => {
