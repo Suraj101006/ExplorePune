@@ -91,7 +91,7 @@ describe('My Pune Journey Engine', () => {
     const streak = calculateExplorationStreak(journeys);
     expect(streak.totalActiveDays).toBeGreaterThan(0);
     expect(streak.currentStreak).toBeGreaterThanOrEqual(1);
-    expect(TOTAL_PUNE_PLACES_COUNT).toBe(80);
+    expect(TOTAL_PUNE_PLACES_COUNT).toBe(106);
   });
 
   it('supports saving, updating, and deleting customized journeys', () => {

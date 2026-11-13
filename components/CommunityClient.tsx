@@ -32,6 +32,7 @@ import {
   CommunityPostType,
   CommunitySortOption,
   POST_TYPE_META,
+  INITIAL_COMMUNITY_POSTS,
   getStoredCommunityPosts,
   filterCommunityPosts,
   togglePostHelpful,
@@ -75,8 +76,10 @@ function CommunityContent() {
   const { user } = useAuth();
   const searchParams = useSearchParams();
 
-  // State
-  const [posts, setPosts] = useState<CommunityPost[]>([]);
+  // State - Pre-seeded with rich authentic posts for instant SSR & first paint
+  const [posts, setPosts] = useState<CommunityPost[]>(INITIAL_COMMUNITY_POSTS);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPlaceId, setSelectedPlaceId] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -102,9 +105,31 @@ function CommunityContent() {
   const [shareToast, setShareToast] = useState(false);
   const [blockToast, setBlockToast] = useState(false);
 
+  const handleRetry = () => {
+    setIsLoading(true);
+    setHasError(false);
+    try {
+      const stored = getStoredCommunityPosts();
+      setPosts(stored);
+    } catch (err) {
+      console.error('Failed to load community discussions:', err);
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Load initial posts from storage and listen to storage updates
   useEffect(() => {
-    setPosts(getStoredCommunityPosts());
+    try {
+      const stored = getStoredCommunityPosts();
+      if (stored && stored.length > 0) {
+        setPosts(stored);
+      }
+    } catch (err) {
+      console.error('Error hydrating community posts:', err);
+      setHasError(true);
+    }
 
     const handleStorageUpdate = (e: Event) => {
       const customEvent = e as CustomEvent<CommunityPost[]>;
@@ -854,8 +879,69 @@ function CommunityContent() {
           )}
         </div>
 
+        {/* Error State with Retry Button */}
+        {hasError && (
+          <div
+            className="panel"
+            style={{
+              textAlign: 'center',
+              padding: '36px 20px',
+              borderRadius: 16,
+              background: '#fef2f2',
+              border: '1.5px solid #fecaca',
+              marginBottom: 20,
+            }}
+          >
+            <span style={{ fontSize: 36, display: 'block', marginBottom: 10 }}>⚠️</span>
+            <h3 style={{ margin: '0 0 6px', color: '#991b1b', fontSize: 17 }}>
+              {isMr ? 'सामग्री लोड करताना अडचण आली' : 'Unable to load live discussions'}
+            </h3>
+            <p style={{ color: '#b91c1c', fontSize: 13.5, margin: '0 auto 16px', maxWidth: 440 }}>
+              {isMr
+                ? 'स्थानिक चर्चा लोड करताना अडचण आली. मूळ चर्चा पाहण्यासाठी किंवा पुन्हा प्रयत्न करण्यासाठी खाली क्लिक करा.'
+                : 'Could not fetch saved discussions from local storage. Click below to retry.'}
+            </p>
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="btn"
+              style={{ background: '#dc2626', color: '#fff', padding: '8px 18px', fontSize: 13 }}
+            >
+              🔄 {isMr ? 'पुन्हा प्रयत्न करा' : 'Retry Loading'}
+            </button>
+          </div>
+        )}
+
+        {/* Loading Skeleton */}
+        {isLoading && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--line)',
+                  borderRadius: 16,
+                  padding: 22,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 12,
+                  opacity: 0.7,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--line)' }} />
+                  <div style={{ width: 140, height: 16, borderRadius: 4, background: 'var(--line)' }} />
+                </div>
+                <div style={{ width: '60%', height: 20, borderRadius: 4, background: 'var(--line)' }} />
+                <div style={{ width: '90%', height: 14, borderRadius: 4, background: 'var(--line-light)' }} />
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* 6. DISCUSSIONS FEED */}
-        {filteredPosts.length > 0 ? (
+        {!isLoading && filteredPosts.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {filteredPosts.map((post) => {
               const meta = POST_TYPE_META[post.postType] || POST_TYPE_META.experience;
@@ -1510,15 +1596,58 @@ function CommunityContent() {
   );
 }
 
+function CommunityFeedSkeleton() {
+  return (
+    <main className="wrap" style={{ paddingTop: 36, paddingBottom: 60, maxWidth: 1040 }}>
+      {/* Header Skeleton */}
+      <div style={{ marginBottom: 24, maxWidth: 640 }}>
+        <div style={{ width: 140, height: 24, borderRadius: 999, background: 'var(--line-light, #f1f5f9)', marginBottom: 12 }} />
+        <div style={{ width: 340, height: 34, borderRadius: 8, background: 'var(--line, #cbd5e1)', marginBottom: 10 }} />
+        <div style={{ width: '85%', height: 16, borderRadius: 6, background: 'var(--line-light, #f1f5f9)' }} />
+      </div>
+
+      {/* Chips Skeleton */}
+      <div style={{ display: 'flex', gap: 10, overflowX: 'hidden', marginBottom: 24 }}>
+        {[100, 130, 110, 140, 120].map((w, i) => (
+          <div key={i} style={{ width: w, height: 36, borderRadius: 999, background: 'var(--line-light, #f1f5f9)', flexShrink: 0 }} />
+        ))}
+      </div>
+
+      {/* 3 Discussion Card Skeletons */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {[1, 2, 3].map((n) => (
+          <div
+            key={n}
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--line)',
+              borderRadius: 16,
+              padding: '20px 22px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--line-light, #f1f5f9)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+                <div style={{ width: 160, height: 16, borderRadius: 4, background: 'var(--line, #cbd5e1)' }} />
+                <div style={{ width: 110, height: 12, borderRadius: 4, background: 'var(--line-light, #f1f5f9)' }} />
+              </div>
+            </div>
+            <div style={{ width: '70%', height: 20, borderRadius: 6, background: 'var(--line, #cbd5e1)' }} />
+            <div style={{ width: '95%', height: 14, borderRadius: 4, background: 'var(--line-light, #f1f5f9)' }} />
+            <div style={{ width: '85%', height: 14, borderRadius: 4, background: 'var(--line-light, #f1f5f9)' }} />
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+}
+
 export default function CommunityClient() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: 'var(--muted)', fontSize: 14 }}>Loading Pune Community...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<CommunityFeedSkeleton />}>
       <CommunityContent />
     </Suspense>
   );

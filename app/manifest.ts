@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     short_name: 'Explore Pune',
     description:
-      'Explore 80+ historic Pune destinations, Sahyadri forts, Peshwa wadas, ancient temples, and transit schedules with AI trip planning.',
+      'Explore 106+ historic Pune destinations, Sahyadri forts, Peshwa wadas, ancient temples, and transit schedules with AI trip planning.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

@@ -8,7 +8,7 @@
  * - Strict Anti-Hallucination: Emits "I don't have a verified value for this yet." if unverified.
  */
 
-import rawPlaces from '@/data/backup_places_pre_audit_20261023.json';
+import rawPlaces from '@/data/pune_places_106.json';
 import { calculateDistanceKm, getPublicTransitRoute } from './publicTransit';
 
 export interface StructuredPlace {

@@ -468,7 +468,7 @@ export default function CreateJourneyModal({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={isMr ? '८०+ पुणे ठिकाणे शोधा (उदा. शनिवार वाडा, सिंहगड, सारसबाग…)' : 'Search 80+ Pune destinations (e.g. Sinhagad, Shaniwar Wada…)'}
+                    placeholder={isMr ? '१०६+ पुणे ठिकाणे शोधा (उदा. शनिवार वाडा, सिंहगड, सारसबाग…)' : 'Search 106+ Pune destinations (e.g. Sinhagad, Shaniwar Wada…)'}
                     style={{
                       width: '100%',
                       padding: '10px 14px 10px 38px',

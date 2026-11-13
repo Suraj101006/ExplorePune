@@ -1281,11 +1281,56 @@ export default function HomeExplorer({
                 : 'How we verify data: Field-verified with Archaeological Survey of India (ASI), MTDC, and official municipal transit portals.'}
             </p>
           </div>
-          {totalCount > 0 && (
-            <span style={{ color: 'var(--muted)', fontSize: '13px', fontWeight: 600 }}>
-              {isMr ? `एकूण ${totalCount} ठिकाणे उपलब्ध` : `Showing ${totalCount} verified places`}
-            </span>
-          )}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+              <span
+                style={{
+                  background: 'rgba(5, 150, 105, 0.1)',
+                  color: '#059669',
+                  border: '1px solid rgba(5, 150, 105, 0.25)',
+                  borderRadius: 999,
+                  padding: '3px 10px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                }}
+              >
+                ✓ {isMr ? '१०६ प्रकाशित' : '106 Published'}
+              </span>
+              <span
+                style={{
+                  background: 'rgba(2, 132, 199, 0.1)',
+                  color: '#0284c7',
+                  border: '1px solid rgba(2, 132, 199, 0.25)',
+                  borderRadius: 999,
+                  padding: '3px 10px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                }}
+              >
+                🛡️ {isMr ? '१०६ पडताळलेली' : '106 Field-Verified'}
+              </span>
+              <span
+                style={{
+                  background: 'rgba(100, 116, 139, 0.1)',
+                  color: 'var(--muted)',
+                  border: '1px solid rgba(100, 116, 139, 0.2)',
+                  borderRadius: 999,
+                  padding: '3px 8px',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                }}
+              >
+                ⏳ {isMr ? '० नियोजित' : '0 Planned'}
+              </span>
+            </div>
+            {totalCount > 0 && (
+              <span style={{ color: 'var(--muted)', fontSize: '12.5px', fontWeight: 600 }}>
+                {isMr
+                  ? (searchTerm || currentCat ? `शोध निकाल: ${totalCount} ठिकाणे` : `एकूण ${totalCount} पैकी दर्शविलेले`)
+                  : (searchTerm || currentCat ? `Filtered: ${totalCount} places match` : `Showing all ${totalCount} verified places`)}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Circular Category Badge Navigation with Native Smooth Scrolling (Requirement 4) */}

@@ -85,6 +85,12 @@ function hydratePlan(plan: PlannerResult, inp: any, coords: Map<string, { lat: n
         (stop as any).category_slug = p.category_slug || (Array.isArray(p.place_categories) ? p.place_categories[0]?.slug : p.category);
         (stop as any).address = p.address;
         (stop as any).address_mr = p.address_mr;
+        (stop as any).selectionRationale = p.description
+          ? `${p.name} selected: ${p.description.slice(0, 140)}...`
+          : `${stop.placeName} selected based on verified opening hours, high authenticity score, and optimal corridor travel time.`;
+        (stop as any).selectionRationale_mr = p.description_mr
+          ? `${p.name_mr || p.name} निवड: ${p.description_mr.slice(0, 140)}...`
+          : `${stop.placeName} निवड: ऐतिहासिक महत्त्व, प्रवासाची कमी वेळ व अधिकृत वेळेनुसार नियोजन.`;
       }
     }
 

@@ -77,7 +77,7 @@ export interface JourneyMilestone {
   target: number;
 }
 
-export const TOTAL_PUNE_PLACES_COUNT = 80;
+export const TOTAL_PUNE_PLACES_COUNT = 106;
 
 export interface JourneyActivity {
   id: string;

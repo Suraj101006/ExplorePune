@@ -53,8 +53,11 @@ export async function getCachedPlacesData() {
       const livePlaces = placesSnap.docs
         .map((doc) => ({ id: doc.id, ...(doc.data() as any) }))
         .filter((p) => p.status === 'published');
-      if (livePlaces.length > 0) {
+      if (livePlaces.length >= allPlaces.length) {
         allPlaces = livePlaces;
+      } else if (livePlaces.length > 0) {
+        const liveMap = new Map(livePlaces.map((p) => [p.slug || p.id, p]));
+        allPlaces = allPlaces.map((p) => liveMap.get(p.slug || p.id) || p);
       }
     }
   } catch (err) {
