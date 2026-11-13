@@ -194,7 +194,7 @@ export default function LiveDestinationStatusBadge({
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: '11.5px', color: '#64748b' }}>
           <Clock size={12} />
           <span>
-            {isMarathi ? 'पडताळणी:' : 'Last verified:'} <strong>{lastVerifiedAt}</strong>
+            {isMarathi ? 'नियम व सुरक्षा तपासणी (IST):' : 'Advisory Evaluated (IST):'} <strong>{lastVerifiedAt}</strong>
           </span>
         </div>
       </div>

@@ -121,6 +121,48 @@ describe('chatKnowledgeEngine', () => {
       expect(res.planPayload).toBeDefined();
       expect(res.planPayload?.slugs).toContain('sinhagad-fort');
     });
+
+    it('understands complex multi-entity query: "I have three hours in Pune and I am near Deccan. I like history and local food."', () => {
+      const res = resolveLocalKnowledge('I have three hours in Pune and I am near Deccan. I like history and local food.');
+      expect(res.handled).toBe(true);
+      expect(res.planPayload).toBeDefined();
+      expect(res.planPayload?.hours).toBe(3);
+      expect(res.planPayload?.startHub).toContain('Deccan');
+      expect(res.planPayload?.foodStop).toContain('Cafe Goodluck');
+      expect(res.reply).toContain('Deccan Gymkhana');
+      expect(res.reply).toContain('Cafe Goodluck');
+      expect(res.reply).toContain('Pataleshwar');
+      expect(res.updatedItinerary?.hubKey).toBe('deccan');
+      expect(res.updatedItinerary?.foodIncluded).toBe(true);
+    });
+
+    it('handles conversational modifiers: avoid crowded places and reduce walking', () => {
+      const context = {
+        activeItinerary: {
+          hours: 3,
+          hubKey: 'deccan',
+          interests: ['history'],
+          slugs: ['shaniwar-wada', 'lal-mahal'],
+          foodIncluded: false,
+          lessCrowded: false,
+          lessWalking: false,
+          budgetFriendly: false,
+        },
+      };
+
+      const resCrowd = resolveLocalKnowledge('Avoid crowded places', context);
+      expect(resCrowd.handled).toBe(true);
+      expect(resCrowd.updatedItinerary?.lessCrowded).toBe(true);
+      expect(resCrowd.planPayload?.slugs).toContain('pataleshwar-cave-temple');
+
+      const resWalk = resolveLocalKnowledge('Reduce walking', context);
+      expect(resWalk.handled).toBe(true);
+      expect(resWalk.updatedItinerary?.lessWalking).toBe(true);
+
+      const resOneHour = resolveLocalKnowledge('I have only one hour remaining', context);
+      expect(resOneHour.handled).toBe(true);
+      expect(resOneHour.planPayload?.hours).toBe(1);
+    });
   });
 
   describe('resolveLocalKnowledge - Marathi (मराठी) Fluency', () => {

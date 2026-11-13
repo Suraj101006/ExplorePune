@@ -113,7 +113,7 @@ export default function LiveDestinationAlertsSection({
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: '12px', color: '#64748b', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <Clock size={13} />
-            <span>{isMarathi ? 'सुरक्षा सूचना तपासणी:' : 'Advisories Checked:'} {lastVerifiedAt}</span>
+            <span>{isMarathi ? 'सुरक्षा सूचना तपासणी (IST):' : 'Advisories Checked (IST):'} {lastVerifiedAt}</span>
           </span>
 
           {onRefresh && (

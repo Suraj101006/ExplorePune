@@ -161,6 +161,7 @@ export default async function HomePage({
         page={pg}
         totalPages={pages}
         totalCount={count}
+        masterCount={rawPlaces.length}
       />
     </main>
   );

@@ -153,6 +153,7 @@ interface HomeExplorerProps {
   page: number;
   totalPages: number;
   totalCount: number;
+  masterCount?: number;
 }
 
 export default function HomeExplorer({
@@ -163,8 +164,10 @@ export default function HomeExplorer({
   page,
   totalPages,
   totalCount,
+  masterCount,
 }: HomeExplorerProps) {
   const { isMr, t } = useLanguage();
+  const masterTotal = masterCount || totalCount;
   const [searchInput, setSearchInput] = useState(searchTerm);
   const [showAll, setShowAll] = useState(Boolean(currentCat || searchTerm || page > 1));
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -1294,7 +1297,7 @@ export default function HomeExplorer({
                   fontWeight: 700,
                 }}
               >
-                ✓ {isMr ? '१०६ प्रकाशित' : '106 Published'}
+                ✓ {isMr ? `${masterTotal} प्रकाशित` : `${masterTotal} Published`}
               </span>
               <span
                 style={{
@@ -1307,7 +1310,7 @@ export default function HomeExplorer({
                   fontWeight: 700,
                 }}
               >
-                🛡️ {isMr ? '१०६ पडताळलेली' : '106 Field-Verified'}
+                🛡️ {isMr ? `${masterTotal} पडताळलेली` : `${masterTotal} Field-Verified`}
               </span>
               <span
                 style={{

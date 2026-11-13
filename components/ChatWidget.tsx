@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 import LocationPickerModal from '@/components/LocationPickerModal';
 import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
-import { resolveLocalKnowledge, StructuredPlace } from '@/lib/chatKnowledgeEngine';
+import { resolveLocalKnowledge, StructuredPlace, ActiveItineraryState } from '@/lib/chatKnowledgeEngine';
 import { openDirectionsModal } from '@/lib/navigationService';
 import BrandLogo from '@/components/BrandLogo';
 
@@ -153,6 +153,7 @@ export default function ChatWidget() {
   const [isNearBottom, setIsNearBottom] = useState(true);
   const [showNewMessagePill, setShowNewMessagePill] = useState(false);
   const [lastReferencedSlug, setLastReferencedSlug] = useState<string | null>(null);
+  const [activeItinerary, setActiveItinerary] = useState<ActiveItineraryState | null>(null);
   const [lastFailedQuery, setLastFailedQuery] = useState<string | null>(null);
   const [mobileKeyboardHeight, setMobileKeyboardHeight] = useState(0);
 
@@ -411,9 +412,14 @@ export default function ChatWidget() {
       userLocation: activeLoc,
       userLocalityName: savedLoc?.nameEn,
       lang: isMr ? 'mr' : 'en',
+      activeItinerary,
     });
 
     if (localAnswer.handled) {
+      if (localAnswer.updatedItinerary) {
+        setActiveItinerary(localAnswer.updatedItinerary);
+      }
+
       // Create empty bot message shell
       setLog((prev) => [
         ...prev,

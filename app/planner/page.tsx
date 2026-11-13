@@ -279,7 +279,7 @@ export default function PlannerPage() {
   // Planning / Calculation State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<any>(SAMPLE_FEATURED_ITINERARY);
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
   const [planningStep, setPlanningStep] = useState(0);
   const [isRecalculating, setIsRecalculating] = useState(false);

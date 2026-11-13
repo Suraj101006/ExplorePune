@@ -52,11 +52,23 @@ export interface StructuredPlace {
 
 export const ALL_STRUCTURED_PLACES: StructuredPlace[] = (rawPlaces as any[]) || [];
 
+export interface ActiveItineraryState {
+  hours: number;
+  hubKey: string;
+  interests: string[];
+  slugs: string[];
+  foodIncluded: boolean;
+  lessCrowded: boolean;
+  lessWalking: boolean;
+  budgetFriendly: boolean;
+}
+
 export interface ChatContext {
   lastReferencedSlug?: string | null;
   userLocation?: { lat: number; lng: number } | null;
   userLocalityName?: string | null;
   lang?: 'en' | 'mr';
+  activeItinerary?: ActiveItineraryState | null;
 }
 
 export interface EngineResult {
@@ -69,7 +81,12 @@ export interface EngineResult {
     hours: number;
     title: string;
     slugs: string[];
+    startHub?: string;
+    foodStop?: string;
+    totalDurationMinutes?: number;
+    remainingBufferMinutes?: number;
   };
+  updatedItinerary?: ActiveItineraryState;
 }
 
 // Map for quick slug lookup
@@ -218,26 +235,63 @@ export function resolveLocalKnowledge(
   }
 
   // --------------------------------------------------------------------------
-  // 2. DURATION / TRIP PLANNING INTENT (e.g., "I have 4 hours", "6 hours in Pune", "1-day itinerary")
+  // 2. DURATION / TRIP PLANNING INTENT & NATURAL LANGUAGE CONVERSATIONAL QUERIES
+  // (e.g. "I have three hours in Pune and I am near Deccan. I like history and local food",
+  // "avoid crowded places", "reduce walking", "add food stop", "1 hour remaining")
   // --------------------------------------------------------------------------
+  const wordNumberMap: Record<string, number> = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    ten: 10,
+    '१': 1,
+    '२': 2,
+    '३': 3,
+    '४': 4,
+    '५': 5,
+    '६': 6,
+    '७': 7,
+    '८': 8,
+    '९': 9,
+    '१०': 10,
+  };
+
   const durationHourMatch = lower.match(/(\d+)\s*(hour|hr|तास)/i);
+  const wordHourMatch = lower.match(/\b(one|two|three|four|five|six|seven|eight|nine|ten|[०-९]+)\s*(hour|hr|तास)/i);
   const durationDayMatch = lower.match(/(\d+)\s*(-|\s)?(day|दिवस)/i);
+  const wordDayMatch = lower.match(/\b(one|two|three|four|five)\s*(-|\s)?(day|दिवस)/i);
+
   let durationHours: number | null = null;
   if (durationHourMatch) {
     durationHours = parseInt(durationHourMatch[1], 10);
+  } else if (wordHourMatch && wordNumberMap[wordHourMatch[1].toLowerCase()]) {
+    durationHours = wordNumberMap[wordHourMatch[1].toLowerCase()];
   } else if (durationDayMatch) {
-    durationHours = 7; // Full day mapped to 7 hours of sightseeing
+    durationHours = 7;
+  } else if (wordDayMatch) {
+    durationHours = 7;
   } else if (lower.includes('half day') || lower.includes('अर्धा दिवस')) {
     durationHours = 4;
-  } else if (lower.includes('full day') || lower.includes('पूर्ण दिवस')) {
+  } else if (lower.includes('full day') || lower.includes('पूर्ण दिवस') || lower.includes('1-day') || lower.includes('1 day')) {
     durationHours = 7;
+  } else if (lower.includes('one hour remaining') || lower.includes('1 hour remaining') || lower.includes('only 1 hour') || lower.includes('एकच तास')) {
+    durationHours = 1;
   }
 
-  const isTripIntent = /(plan|itinerary|trip|tour|सहल|नियोजन|भेट देण्यासारखे)/i.test(lower) || durationHours !== null;
+  const isItineraryModifier = /(avoid crowd|less crowd|crowded|hidden gem|offbeat|reduce walk|less walk|minimal walk|food stop|local food|replace|swap|budget|free entry|गर्दी|शांत|खाद्य|पायी|बदला|स्वस्त|मोफत)/i.test(lower);
+  const isTripIntent =
+    /(plan|itinerary|trip|tour|safar|route|सहल|नियोजन|भ्रमण|भेट देण्यासारखे|फिरणे|कसे फिरावे)/i.test(lower) ||
+    durationHours !== null ||
+    (isItineraryModifier && Boolean(context.activeItinerary));
 
-  if (durationHours !== null && isTripIntent) {
-    const hours = Math.min(10, Math.max(2, durationHours));
-    return generateLocalItinerary(hours, isMr);
+  if (isTripIntent) {
+    return generateTailoredItinerary(durationHours, isMr, query, context);
   }
 
   // --------------------------------------------------------------------------
@@ -636,44 +690,345 @@ function formatNearbyPlaces(context: ChatContext, isMr: boolean): EngineResult {
   };
 }
 
-function generateLocalItinerary(hours: number, isMr: boolean): EngineResult {
-  let selectedSlugs: string[] = [];
-  let title = '';
-  let titleMr = '';
+interface PuneTransitHub {
+  key: string;
+  nameEn: string;
+  nameMr: string;
+  lat: number;
+  lng: number;
+  aliases: string[];
+  foodStopEn: string;
+  foodStopMr: string;
+  foodDescriptionEn: string;
+  foodDescriptionMr: string;
+}
 
-  if (hours <= 3) {
-    selectedSlugs = ['shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati'];
-    title = '3-Hour Central Heritage Walking Trail';
-    titleMr = '३ तासांची मध्यवर्ती ऐतिहासिक पायी भ्रमंती';
-  } else if (hours <= 5) {
-    selectedSlugs = ['shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati', 'vishrambaug-wada', 'pataleshwar-cave-temple'];
-    title = '5-Hour Peshwa Legacy & Wada Trail';
-    titleMr = '५ तासांची पेशवेकालीन वास्तू व लेणी सफर';
-  } else {
-    selectedSlugs = ['sinhagad-fort', 'khadakwasla-dam', 'shaniwar-wada', 'shreemant-dagdusheth-halwai-ganpati', 'sarasbaug'];
-    title = `${hours}-Hour Full Day Pune Explorer`;
-    titleMr = `${hours} तासांचे परिपूर्ण पुणे दर्शन`;
+const PUNE_HUBS: PuneTransitHub[] = [
+  {
+    key: 'deccan',
+    nameEn: 'Deccan Gymkhana (F.C. Road)',
+    nameMr: 'डेक्कन जिमखाना (एफ.सी. रोड)',
+    lat: 18.5167,
+    lng: 73.8417,
+    aliases: ['deccan', 'fc road', 'f.c. road', 'jm road', 'डेक्कन', 'गरवारे'],
+    foodStopEn: 'Cafe Goodluck / F.C. Road',
+    foodStopMr: 'कॅफे गुडलक / एफ.सी. रोड',
+    foodDescriptionEn: 'Legendary Irani bun maska, chai & keema pav (est. 1935)',
+    foodDescriptionMr: 'प्रसिद्ध इराणी बन मस्का, चहा आणि नाश्ता (स्थापना १९३५)',
+  },
+  {
+    key: 'swargate',
+    nameEn: 'Swargate Hub',
+    nameMr: 'स्वारगेट परिसर',
+    lat: 18.5018,
+    lng: 73.858,
+    aliases: ['swargate', 'स्वारगेट', 'सारसबाग'],
+    foodStopEn: 'Sarasbaug Chaupati / Bhel Stall',
+    foodStopMr: 'सारसबाग चौपाटी / भेळ व कुल्फी',
+    foodDescriptionEn: 'Traditional Puneri bhel, pani puri, and kulfi',
+    foodDescriptionMr: 'पारंपरिक पुणेरी भेळ, पाणीपुरी व मलाई कुल्फी',
+  },
+  {
+    key: 'station',
+    nameEn: 'Pune Railway Station',
+    nameMr: 'पुणे रेल्वे स्टेशन',
+    lat: 18.5284,
+    lng: 73.8744,
+    aliases: ['station', 'pune station', 'रेल्वे स्टेशन', 'स्टेशन'],
+    foodStopEn: 'Dorabjee & Sons / Camp Parsi Food',
+    foodStopMr: 'दोराबजी अँड सन्स / कॅम्प पारशी खाद्य',
+    foodDescriptionEn: 'Pune’s oldest heritage Parsi eatery (est. 1878)',
+    foodDescriptionMr: 'पुण्यातील सर्वात जुने पारशी उपाहारगृह (स्थापना १८७८)',
+  },
+  {
+    key: 'camp',
+    nameEn: 'Pune Camp & Cantonment',
+    nameMr: 'पुणे कॅम्प व लष्कर परिसर',
+    lat: 18.5144,
+    lng: 73.8789,
+    aliases: ['camp', 'mg road', 'कॅम्प', 'कॅन्टोन्मेंट'],
+    foodStopEn: 'Kayani Bakery & George Restaurant',
+    foodStopMr: 'कयानी बेकरी व जॉर्ज रेस्टॉरंट',
+    foodDescriptionEn: 'World-famous Shrewsbury biscuits and biryani',
+    foodDescriptionMr: 'जगप्रसिद्ध श्रुजबरी बिस्किटे आणि बिर्याणी',
+  },
+  {
+    key: 'kothrud',
+    nameEn: 'Kothrud & Karve Road',
+    nameMr: 'कोथरूड व कर्वे रस्ता',
+    lat: 18.5074,
+    lng: 73.8077,
+    aliases: ['kothrud', 'karve', 'कोथरूड', 'कर्वे'],
+    foodStopEn: 'Kothrud Chaupati / Misal',
+    foodStopMr: 'कोथरूड चौपाटी / अस्सल मिसळ',
+    foodDescriptionEn: 'Puneri spicy misal pav and poha',
+    foodDescriptionMr: 'झणझणीत पुणेरी मिसळ पाव व कांदे पोहे',
+  },
+  {
+    key: 'central',
+    nameEn: 'Central Pune (Shaniwar Wada / Peths)',
+    nameMr: 'मध्यवर्ती पुणे (शनिवार वाडा / पेठा)',
+    lat: 18.5204,
+    lng: 73.8567,
+    aliases: ['central', 'peth', 'shaniwar wada', 'शनिवार वाडा', 'पेठ'],
+    foodStopEn: 'Bedekar Misal & Sujata Mastani',
+    foodStopMr: 'बेडेकर मिसळ व सुजाता मस्तानी',
+    foodDescriptionEn: 'Legendary Puneri Misal and iconic mango mastani ice cream drink',
+    foodDescriptionMr: 'ऐतिहासिक बेडेकर मिसळ आणि प्रसिद्ध सुजाता मस्तानी',
+  },
+];
+
+function detectHubFromQuery(text: string, context?: ChatContext): PuneTransitHub {
+  const lower = text.toLowerCase();
+  for (const hub of PUNE_HUBS) {
+    if (hub.aliases.some((a) => lower.includes(a))) {
+      return hub;
+    }
   }
+  if (context?.userLocalityName) {
+    const locLower = context.userLocalityName.toLowerCase();
+    for (const hub of PUNE_HUBS) {
+      if (hub.aliases.some((a) => locLower.includes(a))) {
+        return hub;
+      }
+    }
+  }
+  return PUNE_HUBS[5]; // Default to Central Pune
+}
+
+export function generateTailoredItinerary(
+  requestedHours: number | null,
+  isMr: boolean,
+  query: string,
+  context?: ChatContext
+): EngineResult {
+  const lower = query.toLowerCase();
+  const prevItin = context?.activeItinerary;
+
+  // 1. Duration Determination
+  let hours = requestedHours || prevItin?.hours || 3;
+  if (lower.includes('1 hour remaining') || lower.includes('one hour remaining') || lower.includes('only 1 hour') || lower.includes('एकच तास')) {
+    hours = 1;
+  }
+  hours = Math.min(10, Math.max(1, hours));
+
+  // 2. Hub Determination
+  const hub = detectHubFromQuery(query, context) || (prevItin ? PUNE_HUBS.find((h) => h.key === prevItin.hubKey) : PUNE_HUBS[0]);
+
+  // 3. User Interests & Modifier Intent Flags
+  const wantsFood =
+    /(food|eat|snack|chai|misal|mastani|pav|lunch|breakfast|खाद्य|जेवण|नाश्ता|चहा|मिसळ)/i.test(lower) ||
+    Boolean(prevItin?.foodIncluded);
+
+  const wantsHistory =
+    /(history|heritage|wada|peshwa|fort|monument|इतिहास|वारसा|वाडे|किल्ला)/i.test(lower) ||
+    !/(nature|temple|garden|park)/i.test(lower);
+
+  const wantsTemples = /(temple|darshan|ganpati|mandir|मंदिर|दर्शन|गणपती)/i.test(lower);
+  const wantsNature = /(nature|lake|tekdi|hill|green|निसर्ग|टेकडी|तलाव)/i.test(lower);
+
+  const isAvoidCrowds = /(avoid crowd|less crowd|crowded|quiet|peaceful|गर्दी नको|शांत|कमी गर्दी)/i.test(lower) || Boolean(prevItin?.lessCrowded);
+  const isLessWalking = /(less walk|reduce walk|minimal walk|walking less|पायी कमी|चालणे कमी)/i.test(lower) || Boolean(prevItin?.lessWalking);
+  const isBudgetFree = /(budget|free entry|cheap|zero fee|स्वस्त|मोफत|कमी खर्च)/i.test(lower) || Boolean(prevItin?.budgetFriendly);
+  const isReplaceStop = /(replace|swap|another|different place|बदला|दुसरे ठिकाण)/i.test(lower);
+
+  // 4. Candidate Place Selection Tailored by Hub & Modifiers
+  let selectedSlugs: string[] = [];
+
+  if (hours === 1) {
+    if (hub.key === 'deccan') {
+      selectedSlugs = ['pataleshwar-cave-temple'];
+    } else if (hub.key === 'swargate') {
+      selectedSlugs = ['sarasbaug'];
+    } else if (hub.key === 'camp' || hub.key === 'station') {
+      selectedSlugs = ['tribal-museum'];
+    } else {
+      selectedSlugs = ['shaniwar-wada'];
+    }
+  } else if (isAvoidCrowds) {
+    // Uncrowded, serene, spacious destinations
+    if (hub.key === 'deccan' || hub.key === 'kothrud') {
+      selectedSlugs = ['pataleshwar-cave-temple', 'vetal-tekdi', 'okayama-friendship-garden'];
+    } else {
+      selectedSlugs = ['pataleshwar-cave-temple', 'shinde-chhatri', 'taljai-hills'];
+    }
+  } else if (isLessWalking) {
+    // Co-located cluster within 250m walking
+    selectedSlugs = ['shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati'];
+  } else if (isBudgetFree) {
+    // ₹0 admission spots
+    selectedSlugs = ['pataleshwar-cave-temple', 'kasba-ganpati', 'vetal-tekdi', 'lal-mahal'];
+  } else if (hub.key === 'deccan') {
+    if (hours <= 3) {
+      selectedSlugs = ['pataleshwar-cave-temple', 'shaniwar-wada', 'lal-mahal'];
+    } else if (hours <= 5) {
+      selectedSlugs = ['pataleshwar-cave-temple', 'shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati', 'raja-dinkar-kelkar-museum'];
+    } else {
+      selectedSlugs = ['sinhagad-fort', 'khadakwasla-dam', 'pataleshwar-cave-temple', 'shaniwar-wada'];
+    }
+  } else if (hub.key === 'swargate') {
+    if (hours <= 3) {
+      selectedSlugs = ['sarasbaug', 'parvati-hill-temples', 'shaniwar-wada'];
+    } else if (hours <= 5) {
+      selectedSlugs = ['sarasbaug', 'parvati-hill-temples', 'shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati'];
+    } else {
+      selectedSlugs = ['sinhagad-fort', 'khadakwasla-dam', 'sarasbaug', 'shaniwar-wada'];
+    }
+  } else if (wantsNature) {
+    selectedSlugs = ['vetal-tekdi', 'okayama-friendship-garden', 'khadakwasla-dam'];
+  } else if (wantsTemples) {
+    selectedSlugs = ['shreemant-dagdusheth-halwai-ganpati', 'kasba-ganpati', 'pataleshwar-cave-temple', 'parvati-hill-temples'];
+  } else {
+    // Default Balanced Trail
+    if (hours <= 3) {
+      selectedSlugs = ['shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati'];
+    } else if (hours <= 5) {
+      selectedSlugs = ['shaniwar-wada', 'lal-mahal', 'shreemant-dagdusheth-halwai-ganpati', 'vishrambaug-wada', 'pataleshwar-cave-temple'];
+    } else {
+      selectedSlugs = ['sinhagad-fort', 'khadakwasla-dam', 'shaniwar-wada', 'shreemant-dagdusheth-halwai-ganpati', 'sarasbaug'];
+    }
+  }
+
+  // Handle conversational replacement
+  if (isReplaceStop && prevItin?.slugs?.length) {
+    const pool = ['pataleshwar-cave-temple', 'raja-dinkar-kelkar-museum', 'shinde-chhatri', 'vishrambaug-wada', 'kasba-ganpati', 'vetal-tekdi'];
+    const current = new Set(prevItin.slugs);
+    const replacement = pool.find((s) => !current.has(s));
+    if (replacement) {
+      selectedSlugs = [...prevItin.slugs.slice(0, prevItin.slugs.length - 1), replacement];
+    }
+  }
+
+  // Trim to fit available hours
+  const maxStops = Math.max(1, Math.min(hours <= 2 ? 2 : hours <= 4 ? 3 : 5, selectedSlugs.length));
+  selectedSlugs = selectedSlugs.slice(0, maxStops);
 
   const places = selectedSlugs.map((s) => PLACES_MAP.get(s)).filter(Boolean) as StructuredPlace[];
 
-  const stopsList = places
-    .map((p, i) => {
-      const name = isMr && p.name_mr ? p.name_mr : p.name;
-      const duration = p.recommended_duration_minutes ? `~${Math.round(p.recommended_duration_minutes / 60 * 10) / 10} hr` : '1 hr';
-      return `${i + 1}. **[${name}](/places/${p.slug})** (${duration})`;
-    })
-    .join('\n');
+  // 5. Calculate Realistic Travel Times, Distances, and Visits
+  let runningLat = hub.lat;
+  let runningLng = hub.lng;
+  let totalTravelMinutes = 0;
+  let totalVisitMinutes = 0;
 
-  const reply = isMr
-    ? `🗺️ **${titleMr} (${hours} तास)**\n\n` +
-      `${stopsList}\n\n` +
+  const stopsBreakdown: string[] = [];
+
+  places.forEach((p, idx) => {
+    const distKm = Math.round(calculateDistanceKm(runningLat, runningLng, p.latitude, p.longitude) * 10) / 10;
+    const travelMin = Math.max(5, Math.round(distKm * 3.5 + 4));
+    const visitMin = p.recommended_duration_minutes || (hours <= 2 ? 35 : 45);
+
+    totalTravelMinutes += travelMin;
+    totalVisitMinutes += visitMin;
+    runningLat = p.latitude;
+    runningLng = p.longitude;
+
+    const name = isMr && p.name_mr ? p.name_mr : p.name;
+    const categoryIcon = p.category_slug === 'forts' ? '🏰' : p.category_slug === 'temples' ? '🛕' : p.category_slug === 'nature' ? '🌿' : '🏛️';
+
+    const transitNote = idx === 0
+      ? isMr
+        ? `~${travelMin} मिनिटे (${distKm} किमी - ${hub.nameMr} वरून)`
+        : `~${travelMin} min transit (${distKm} km from ${hub.nameEn})`
+      : isMr
+        ? `~${travelMin} मिनिटे (${distKm} किमी मागील ठिकाणावरून)`
+        : `~${travelMin} min transit (${distKm} km from previous stop)`;
+
+    stopsBreakdown.push(
+      `${idx + 1}. ${categoryIcon} **[${name}](/places/${p.slug})**\n` +
+      `   • ${isMr ? 'प्रवास:' : 'Travel:'} ${transitNote}\n` +
+      `   • ${isMr ? 'भेट वेळ:' : 'Sightseeing:'} ~${visitMin} ${isMr ? 'मि.' : 'min'} (${isMr ? 'प्रवेश:' : 'Entry:'} ${p.fee_status === 'free' ? (isMr ? 'मोफत' : 'Free ₹0') : `₹${p.entry_fee || 25}`})`
+    );
+  });
+
+  const foodMinutes = wantsFood ? 35 : 0;
+  const totalAllocated = totalTravelMinutes + totalVisitMinutes + foodMinutes;
+  const totalAvailableMinutes = hours * 60;
+  const remainingBuffer = Math.max(0, totalAvailableMinutes - totalAllocated);
+
+  const hubName = isMr ? hub.nameMr : hub.nameEn;
+  const foodStopName = isMr ? hub.foodStopMr : hub.foodStopEn;
+  const foodDesc = isMr ? hub.foodDescriptionMr : hub.foodDescriptionEn;
+
+  // 6. Assemble Comprehensive Bilingual Narrative
+  let title = `${hours}-Hour ${hub.nameEn} Curated Heritage & City Trail`;
+  let titleMr = `${hub.nameMr} वरून ${hours} तासांची नियोजित ऐतिहासिक व शहर सफर`;
+
+  let reply = '';
+  if (isMr) {
+    reply =
+      `🗺️ **${titleMr}**\n\n` +
+      `📍 **आरंभ स्थान:** ${hubName}\n` +
+      `⏱️ **एकूण वेळ:** ${hours} तास (~${totalAllocated} मिनिटे खर्च | ~${remainingBuffer} मिनिटे बफर)\n\n` +
+      `**नियोजित मार्ग व स्थळे:**\n\n` +
+      `${stopsBreakdown.join('\n\n')}\n\n`;
+
+    if (wantsFood) {
+      reply +=
+        `☕ **स्थानिक खाद्यपदार्थ शिफारस (Food Stop):**\n` +
+        `• **${foodStopName}** (~३५ मिनिटे)\n` +
+        `  *${foodDesc}*\n\n`;
+    }
+
+    reply +=
+      `📊 **वेळेचे अचूक विभाजन:**\n` +
+      `• प्रत्यक्ष स्थळ दर्शन: ~${totalVisitMinutes} मिनिटे\n` +
+      `• स्थानिक वाहतूक व प्रवास: ~${totalTravelMinutes} मिनिटे\n` +
+      (wantsFood ? `• खाद्यपदार्थ आस्वाद: ~${foodMinutes} मिनिटे\n` : '') +
+      `• शिल्लक सुरक्षित वेळ (Buffer): ~${remainingBuffer} मिनिटे\n\n` +
       `💡 **सहल नियोजक (Trip Planner) एकत्रीकरण:**\n` +
-      `हा मार्ग थेट आमच्या परस्परसंवादी ट्रिप प्लॅनरमध्ये उघडून सविस्तर मेट्रो व बस वेळेसह पाहण्यासाठी खालील **'Plan this trip →'** बटण दाबा.`
-    : `🗺️ **${title} (${hours} Hours)**\n\n` +
-      `${stopsList}\n\n` +
+      `हा मार्ग थेट ट्रिप प्लॅनरमध्ये उघडून नकाशा, मेट्रो मार्ग व बस वेळापत्रकासह पाहण्यासाठी खालील **'Plan this trip →'** बटण दाबा.`;
+  } else {
+    reply =
+      `🗺️ **${title}**\n\n` +
+      `📍 **Starting Hub:** ${hubName}\n` +
+      `⏱️ **Allocated Duration:** ${hours} Hours (~${totalAllocated}m planned | ~${remainingBuffer}m buffer)\n\n` +
+      `**Recommended Itinerary Sequence:**\n\n` +
+      `${stopsBreakdown.join('\n\n')}\n\n`;
+
+    if (wantsFood) {
+      reply +=
+        `☕ **Curated Local Food Stop:**\n` +
+        `• **${foodStopName}** (~35 mins)\n` +
+        `  *${foodDesc}*\n\n`;
+    }
+
+    reply +=
+      `📊 **Realistic Duration Breakdown:**\n` +
+      `• Sightseeing at Attractions: ~${totalVisitMinutes} mins\n` +
+      `• Inter-Stop Travel (traffic-weighted): ~${totalTravelMinutes} mins\n` +
+      (wantsFood ? `• Local Food Heritage: ~${foodMinutes} mins\n` : '') +
+      `• Remaining Safety Buffer: ~${remainingBuffer} mins\n\n` +
       `💡 **Trip Planner Integration:**\n` +
       `Click **'Plan this trip →'** below to load this exact route into the interactive Trip Planner with live Metro and PMPML transit schedules!`;
+  }
+
+  const updatedItinerary: ActiveItineraryState = {
+    hours,
+    hubKey: hub.key,
+    interests: [wantsHistory ? 'history' : '', wantsFood ? 'food' : '', wantsTemples ? 'temples' : '', wantsNature ? 'nature' : ''].filter(Boolean),
+    slugs: selectedSlugs,
+    foodIncluded: wantsFood,
+    lessCrowded: isAvoidCrowds,
+    lessWalking: isLessWalking,
+    budgetFriendly: isBudgetFree,
+  };
+
+  const suggestions = isMr
+    ? [
+        wantsFood ? '🌿 कमी गर्दीची ठिकाणे' : '☕ स्थानिक खाद्यपदार्थ जोडा',
+        '🚶 कमी पायी चालणे',
+        '💰 मोफत प्रवेश ठिकाणे',
+        '🔄 दुसरे ठिकाण बदला',
+        'पुणे मेट्रो मार्ग',
+      ]
+    : [
+        wantsFood ? '🌿 Avoid crowded places' : '☕ Add local food stop',
+        '🚶 Reduce walking',
+        '💰 Free entry places',
+        '🔄 Replace one destination',
+        'Pune Metro transit routes',
+      ];
 
   return {
     handled: true,
@@ -683,9 +1038,12 @@ function generateLocalItinerary(hours: number, isMr: boolean): EngineResult {
       hours,
       title: isMr ? titleMr : title,
       slugs: selectedSlugs,
+      startHub: hub.nameEn,
+      foodStop: wantsFood ? foodStopName : undefined,
+      totalDurationMinutes: totalAllocated,
+      remainingBufferMinutes: remainingBuffer,
     },
-    suggestions: isMr
-      ? ['सिंहगड किल्ला बस वेळापत्रक', 'शनिवार वाडा प्रवेश शुल्क', 'माझ्याजवळील ठिकाणे']
-      : ['Sinhagad bus timetable', 'Shaniwar Wada entry fee', 'Places near me'],
+    updatedItinerary,
+    suggestions,
   };
 }
