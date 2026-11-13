@@ -726,3 +726,124 @@ ExplorePune Team
   );
   return { success: true, mode: 'simulated_fallback', userName: resolvedUserName };
 }
+
+export interface AuthVerificationCodeParams {
+  toEmail: string;
+  code: string;
+  userName?: string;
+  isMarathi?: boolean;
+}
+
+/**
+ * SENDS A SECURE 6-DIGIT VERIFICATION CODE (OTP) FOR EXPLORE PUNE SIGN-IN / REGISTRATION
+ */
+export async function sendAuthVerificationCodeEmail(params: AuthVerificationCodeParams) {
+  const { toEmail, code, userName, isMarathi } = params;
+  if (!toEmail || !toEmail.includes('@')) {
+    return { success: false, reason: 'Invalid email address' };
+  }
+
+  const fromHeader = getExplorePuneFromHeader();
+  const subject = isMarathi
+    ? `🔐 एक्सप्लोर पुणे पडताळणी कोड: ${code}`
+    : `🔐 Explore Pune Sign-In Verification Code: ${code}`;
+
+  const greeting = isMarathi
+    ? `नमस्कार${userName ? ` ${userName}` : ''}! 🙏`
+    : `Hello${userName ? ` ${userName}` : ''}! 👋`;
+
+  const textContent = isMarathi
+    ? `${greeting}\n\nएक्सप्लोर पुणे मध्ये सुरक्षित साइन इन करण्यासाठी आपला ६-अंकी पडताळणी कोड (OTP) खालीलप्रमाणे आहे:\n\n👉 ${code}\n\nहा कोड १० मिनिटांसाठी वैध आहे.\nहा कोड कोणाशीही शेअर करू नका.\n\nआपले नम्र,\nसुरज ढोक, साहिल जाधव आणि ईशान काकडे\nएक्सप्लोर पुणे टीम (ExplorePune Team)\nhttps://explorepune-guide.vercel.app`
+    : `${greeting}\n\nYour 6-digit verification code to sign in to Explore Pune is:\n\n👉 ${code}\n\nThis verification code will expire in 10 minutes.\nFor your security, never share this code with anyone.\n\nWarm regards,\nSuraj Dhok, Sahil Jadhav & Ishan Kakade\nExplore Pune Team\nhttps://explorepune-guide.vercel.app`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>${subject}</title>
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 32px 16px;">
+          <tr>
+            <td align="center">
+              <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; border: 1.5px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);">
+                <tr>
+                  <td style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 24px; text-align: center;">
+                    <div style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">
+                      Explore<span style="color: #ea580c;"> Pune</span>
+                    </div>
+                    <div style="font-size: 11px; font-weight: 700; color: #fb923c; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px;">
+                      ${isMarathi ? 'पुण्यनगरी • सह्याद्री • वारसा' : 'Heritage & Travel Field Guide'}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 32px 28px;">
+                    <h2 style="margin: 0 0 12px; font-size: 20px; color: #0f172a;">
+                      ${greeting}
+                    </h2>
+                    <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: #475569;">
+                      ${
+                        isMarathi
+                          ? 'आपल्या एक्सप्लोर पुणे खात्यामध्ये सुरक्षितपणे साइन इन करण्यासाठी खालील ६-अंकी पडताळणी कोड वापरा:'
+                          : 'Use the following 6-digit verification code to securely sign in to your Explore Pune account:'
+                      }
+                    </p>
+                    <div style="text-align: center; margin: 28px 0; padding: 20px; background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%); border: 2px dashed #f97316; border-radius: 12px;">
+                      <div style="font-size: 11px; font-weight: 800; color: #c2410c; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">
+                        ${isMarathi ? 'आपला पडताळणी कोड' : 'Your Verification Code'}
+                      </div>
+                      <div style="font-size: 36px; font-weight: 900; letter-spacing: 8px; color: #0f172a; font-family: monospace;">
+                        ${code}
+                      </div>
+                      <div style="font-size: 12px; color: #9a3412; margin-top: 8px; font-weight: 600;">
+                        ⏱️ ${isMarathi ? 'हा कोड १० मिनिटांसाठी वैध आहे' : 'Valid for 10 minutes'}
+                      </div>
+                    </div>
+                    <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin: 0 0 20px;">
+                      ${
+                        isMarathi
+                          ? 'जर तुम्ही हा कोड मागवला नसेल, तर कृपया या ईमेलकडे दुर्लक्ष करा. सुरक्षेसाठी हा कोड कोणाशीही शेअर करू नका.'
+                          : 'If you did not request this verification code, please ignore this email. For your security, never share this code with anyone.'
+                      }
+                    </p>
+                    <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 13px; color: #334155;">
+                      ${
+                        isMarathi
+                          ? 'आपले नम्र,<br><strong style="color: #0f172a;">सुरज ढोक, साहिल जाधव आणि ईशान काकडे</strong><br><span style="color: #64748b;">एक्सप्लोर पुणे टीम</span>'
+                          : 'Warm regards,<br><strong style="color: #0f172a;">Suraj Dhok, Sahil Jadhav & Ishan Kakade</strong><br><span style="color: #64748b;">Explore Pune Engineering Team</span>'
+                      }
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+
+  await saveToEmailOutbox('auth_verification_code', toEmail, subject, textContent, { code });
+
+  const transporter = getTransporter();
+  if (transporter) {
+    try {
+      const info = await transporter.sendMail({
+        from: fromHeader,
+        to: toEmail,
+        replyTo: DEFAULT_EXPLORE_EMAIL,
+        subject,
+        text: textContent,
+        html: htmlContent,
+      });
+      return { success: true, messageId: info.messageId, mode: 'smtp' };
+    } catch (err: any) {
+      console.warn('Failed to send verification code email via SMTP:', err?.message || err);
+      return { success: true, mode: 'outbox_fallback', error: err?.message };
+    }
+  }
+
+  return { success: true, mode: 'outbox_saved' };
+}
