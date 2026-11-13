@@ -96,4 +96,30 @@ describe('Explore Pune Web Performance & Core Web Vitals Optimizations', () => {
     const feedbackContent = fs.readFileSync(feedbackPath, 'utf8');
     expect(feedbackContent).toContain('section-deferred');
   });
+
+  it('7. components/CinematicPlaceSlideshow.tsx prioritizes the hero image for optimal LCP', () => {
+    const slideshowPath = path.join(rootDir, 'components/CinematicPlaceSlideshow.tsx');
+    const content = fs.readFileSync(slideshowPath, 'utf8');
+
+    expect(content).toContain("loading={idx === 0 ? 'eager' : 'lazy'}");
+    expect(content).toContain("fetchPriority={idx === 0 ? 'high' : 'auto'}");
+    expect(content).toContain("decoding={idx === 0 ? 'sync' : 'async'}");
+  });
+
+  it('8. components/PlaceDetailClient.tsx splits heavy map and gallery bundles with dynamic imports', () => {
+    const placeDetailPath = path.join(rootDir, 'components/PlaceDetailClient.tsx');
+    const content = fs.readFileSync(placeDetailPath, 'utf8');
+
+    expect(content).toContain("dynamic(() => import('@/components/PlaceMapWrapper')");
+    expect(content).toContain("dynamic(() => import('@/components/TransitRouteMap')");
+    expect(content).toContain("dynamic(() => import('@/components/CommunityGallery')");
+  });
+
+  it('9. app/globals.css includes ultra-compact mobile overrides for 320px-360px viewports', () => {
+    const cssPath = path.join(rootDir, 'app/globals.css');
+    const content = fs.readFileSync(cssPath, 'utf8');
+
+    expect(content).toContain('@media (max-width: 360px)');
+    expect(content).toContain('padding-inline: 10px;');
+  });
 });

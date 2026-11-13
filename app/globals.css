@@ -541,6 +541,12 @@ a:hover {
   box-sizing: border-box;
 }
 
+@media (max-width: 360px) {
+  .wrap {
+    padding-inline: 10px;
+  }
+}
+
 /* Header & Navigation - Responsive navbar displaying all functions cleanly without static sticky lock */
 .site-header {
   position: relative !important;
@@ -1923,6 +1929,19 @@ html.dark .theme-toggle-kbd,
   border-radius: var(--radius-lg);
   padding: 28px;
   box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 18px 14px;
+    border-radius: var(--radius-md);
+  }
+}
+
+@media (max-width: 360px) {
+  .panel {
+    padding: 14px 10px;
+  }
 }
 
 .field {

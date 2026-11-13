@@ -1644,7 +1644,8 @@ export default function HomeExplorer({
                               width={360}
                               height={225}
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
-                              loading="lazy"
+                              loading={idx < 2 && page === 1 ? 'eager' : 'lazy'}
+                              priority={idx === 0 && page === 1}
                               className="place-card-img-zoom"
                               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                             />

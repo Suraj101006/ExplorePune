@@ -328,6 +328,9 @@ export default function CinematicPlaceSlideshow({
                 alt={photo.caption || photo.title || primaryTitle}
                 className={isActive ? effectClass : ''}
                 onError={() => handleImageError(photo.url)}
+                loading={idx === 0 ? 'eager' : 'lazy'}
+                fetchPriority={idx === 0 ? 'high' : 'auto'}
+                decoding={idx === 0 ? 'sync' : 'async'}
                 style={{
                   width: '100%',
                   height: '100%',

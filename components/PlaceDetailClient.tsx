@@ -6,10 +6,52 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/LanguageContext';
 import PlaceActions from '@/components/PlaceActions';
 import Reviews from '@/components/Reviews';
-import PlaceMap from '@/components/PlaceMapWrapper';
-import CommunityGallery from '@/components/CommunityGallery';
-import TransitRouteMap from '@/components/TransitRouteMap';
 import dynamic from 'next/dynamic';
+
+const PlaceMap = dynamic(() => import('@/components/PlaceMapWrapper'), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: 380,
+        background: 'var(--line-light)',
+        borderRadius: 'var(--radius-md)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'var(--muted)',
+        fontSize: 14,
+      }}
+    >
+      <span>🗺️ Loading Interactive Map…</span>
+    </div>
+  ),
+});
+
+const TransitRouteMap = dynamic(() => import('@/components/TransitRouteMap'), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: 320,
+        background: 'var(--line-light)',
+        borderRadius: 'var(--radius-md)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'var(--muted)',
+        fontSize: 14,
+      }}
+    >
+      <span>🚍 Loading Transit Route…</span>
+    </div>
+  ),
+});
+
+const CommunityGallery = dynamic(() => import('@/components/CommunityGallery'), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 180 }} aria-hidden="true" />,
+});
 
 const LocationPickerModal = dynamic(() => import('@/components/LocationPickerModal'), {
   ssr: false,
@@ -666,7 +708,7 @@ export default function PlaceDetailClient({
           className="panel scroll-reveal place-section-reveal"
           style={{
             marginBottom: 24,
-            padding: '32px',
+            padding: 'clamp(16px, 4vw, 32px)',
             position: 'relative',
             overflow: 'hidden',
           }}
