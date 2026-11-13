@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
     '/feed.xml',
     '/rss.xml',
     '/llms.txt',
+    '/llms-full.txt',
     '/sitemap.xml',
     '/sitemap_index.xml',
     '/video-sitemap.xml',

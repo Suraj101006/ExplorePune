@@ -1,9 +1,16 @@
 import type { MetadataRoute } from 'next';
 import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 
 export const revalidate = 3600;
+
+function withTimeout<T>(promise: Promise<T>, ms = 1500): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error('timeout')), ms)),
+  ]);
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
@@ -98,15 +105,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Try fetching live published places from Firestore
   try {
-    const snap = await getDocs(collection(db, 'places'));
+    const snap = await withTimeout(getDocs(collection(db, 'places')), 1200);
     snap.docs.forEach((d) => {
       const data = d.data();
       if (data.status === 'published' && data.slug) {
         placeSlugs.add(data.slug);
       }
     });
-  } catch (err) {
-    console.warn('[sitemap] Firestore fetch fallback to verified structured places', err);
+  } catch {
+    // Graceful fallback to verified structured places
   }
 
   // Ensure all structured places are covered as baseline
@@ -125,5 +132,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     images: [`${baseUrl}/images/places/${encodeURIComponent(slug)}.jpg`],
   }));
 
-  return [...staticRoutes, ...destinationRoutes];
+  // Published blog stories
+  const blogRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const blogSnap = await withTimeout(
+      getDocs(query(collection(db, 'blogs'), where('status', '==', 'published'))),
+      1200
+    );
+    blogSnap.docs.forEach((d) => {
+      const data = d.data();
+      if (data.slug && !data.is_draft) {
+        blogRoutes.push({
+          url: `${baseUrl}/blogs/${encodeURIComponent(data.slug)}`,
+          lastModified: data.published_at ? new Date(data.published_at) : now,
+          changeFrequency: 'monthly',
+          priority: 0.75,
+        });
+      }
+    });
+  } catch {
+    // Graceful fallback if blogs not fetched during build
+  }
+
+  return [...staticRoutes, ...destinationRoutes, ...blogRoutes];
 }

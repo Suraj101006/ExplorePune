@@ -273,6 +273,11 @@ export default async function PlaceDetailPage({
     description: place.description || undefined,
     image: place.image_url ? `https://explorepune-guide.vercel.app${place.image_url}` : undefined,
     url: `https://explorepune-guide.vercel.app/places/${slug}`,
+    mainEntityOfPage: `https://explorepune-guide.vercel.app/places/${slug}`,
+    hasMap:
+      place.latitude && place.longitude
+        ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`
+        : undefined,
     address: {
       '@type': 'PostalAddress',
       streetAddress: place.address || undefined,
@@ -292,7 +297,30 @@ export default async function PlaceDetailPage({
     priceRange: place.fee_status === 'free' || place.entry_fee === 0 ? 'Free' : `₹${place.entry_fee}`,
     currenciesAccepted: 'INR',
     publicAccess: true,
-    touristType: ['Heritage', 'History', 'Culture', 'Tourism'],
+    touristType: ['Heritage', 'History', 'Culture', 'Tourism', 'Sightseeing'],
+    offers: {
+      '@type': 'Offer',
+      price: place.fee_status === 'free' || place.entry_fee === 0 ? '0' : String(place.entry_fee || '0'),
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: `https://explorepune-guide.vercel.app/places/${slug}`,
+    },
+    openingHoursSpecification:
+      place.place_hours && place.place_hours.length > 0
+        ? place.place_hours.map((h: any) => ({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: h.opens_at || '06:00',
+            closes: h.closes_at || '18:00',
+          }))
+        : [
+            {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+              opens: '06:00',
+              closes: '18:00',
+            },
+          ],
   };
 
   const { places: pool } = await getCachedPlacesData();

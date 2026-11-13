@@ -630,6 +630,37 @@ export default function PlaceDetailClient({
           }}
         />
 
+        {/* Accessible Breadcrumb Trail (SEO & Semantic Hierarchy) */}
+        <nav
+          aria-label="Breadcrumb"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 12.5,
+            color: 'var(--muted)',
+            margin: '16px 0 20px',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Link href="/" style={{ color: 'var(--muted)', textDecoration: 'none' }}>
+            {isMr ? 'मुख्यपृष्ठ' : 'Home'}
+          </Link>
+          <span style={{ opacity: 0.5 }}>/</span>
+          <Link href="/destinations" style={{ color: 'var(--muted)', textDecoration: 'none' }}>
+            {isMr ? 'सर्व स्थळे' : 'Destinations'}
+          </Link>
+          <span style={{ opacity: 0.5 }}>/</span>
+          <Link
+            href={`/destinations/${place.category_slug || place.category || 'heritage'}`}
+            style={{ color: 'var(--muted)', textDecoration: 'none' }}
+          >
+            {categoryDisplayName}
+          </Link>
+          <span style={{ opacity: 0.5 }}>/</span>
+          <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{primaryName}</span>
+        </nav>
+
         {/* Hero Header (Requirement 8) */}
         <header
           className="panel scroll-reveal place-section-reveal"
@@ -894,6 +925,99 @@ export default function PlaceDetailClient({
 
         {/* Place Actions (Save, Record Visit) */}
         <PlaceActions placeId={place.id} placeSlug={place.slug} placeName={place.name} />
+
+        {/* At-a-Glance Verified Visitor Summary (GEO & Answer Engine Optimization) */}
+        <div
+          className="panel"
+          style={{
+            marginBottom: 24,
+            padding: '18px 22px',
+            background: 'var(--line-light)',
+            border: '1px solid var(--line)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 12,
+              flexWrap: 'wrap',
+              gap: 8,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 11.5,
+                fontWeight: 800,
+                color: 'var(--primary)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.07em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span>⚡</span>
+              <span>{isMr ? 'महत्त्वाचे तपशील एका दृष्टीक्षेपात' : 'Verified Visitor Summary • At a Glance'}</span>
+            </span>
+            <span style={{ fontSize: 11, color: 'var(--muted)' }}>
+              {isMr ? 'अधिकृत नोंदीनुसार तपासणी' : 'Field-verified facts for travelers & search answers'}
+            </span>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+              gap: 12,
+              fontSize: 13,
+            }}
+          >
+            <div style={{ background: 'var(--card)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+              <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600 }}>
+                {isMr ? 'प्रवेश शुल्क' : 'Admission'}
+              </div>
+              <div style={{ fontWeight: 800, color: 'var(--clay)', marginTop: 2 }}>
+                {place.fee_status === 'free' || place.entry_fee === 0
+                  ? (isMr ? 'विनामूल्य (₹०)' : 'Free Entry (₹0)')
+                  : (place.entry_fee ? `₹${place.entry_fee} per person` : (isMr ? 'स्थानिक तिकीट' : 'Entry Ticket'))}
+              </div>
+            </div>
+
+            <div style={{ background: 'var(--card)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+              <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600 }}>
+                {isMr ? 'वेळ / तास' : 'Visiting Hours'}
+              </div>
+              <div style={{ fontWeight: 700, color: 'var(--ink)', marginTop: 2 }}>
+                {place.place_hours && place.place_hours.length > 0
+                  ? `${place.place_hours[0].opens_at || '9:00 AM'} - ${place.place_hours[0].closes_at || '6:00 PM'}`
+                  : (isMr ? 'सूर्य्योदय ते सूर्यास्त' : 'Sunrise to Sunset')}
+              </div>
+            </div>
+
+            <div style={{ background: 'var(--card)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+              <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600 }}>
+                {isMr ? 'अपेक्षित कालावधी' : 'Typical Duration'}
+              </div>
+              <div style={{ fontWeight: 700, color: 'var(--ink)', marginTop: 2 }}>
+                {place.recommended_duration_minutes
+                  ? `~${Math.round((place.recommended_duration_minutes / 60) * 10) / 10} ${isMr ? 'तास' : 'hours'}`
+                  : (isMr ? '~१ ते २ तास' : '~1 - 2 hours')}
+              </div>
+            </div>
+
+            <div style={{ background: 'var(--card)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--line)' }}>
+              <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600 }}>
+                {isMr ? 'उत्तम ऋतू / काळ' : 'Best Season'}
+              </div>
+              <div style={{ fontWeight: 700, color: 'var(--ink)', marginTop: 2, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                {bestTime || (isMr ? 'ऑक्टोबर ते मार्च' : 'October - March')}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Live Status & Safety Alerts Section (Prompt Requirements 1-5) */}
         {liveStatus && (

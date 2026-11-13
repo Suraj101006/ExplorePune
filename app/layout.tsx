@@ -9,6 +9,7 @@ import { LanguageProvider } from '@/lib/LanguageContext';
 import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransition';
 import PageTransition from '@/components/PageTransition';
 import ClientInteractiveOverlays from '@/components/ClientInteractiveOverlays';
+import SiteJsonLd from '@/components/SiteJsonLd';
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -154,6 +155,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <LanguageProvider>
             <TravelPhotoTransitionProvider>
+              <SiteJsonLd />
               <AppHeader />
               <PageTransition>{children}</PageTransition>
               <AppFooter />

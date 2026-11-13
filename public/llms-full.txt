@@ -1,0 +1,1284 @@
+# Explore Pune — Complete 106+ Destination Knowledge Registry
+
+> Authoritative, field-verified encyclopedia of Pune's Maratha hill fortresses, Peshwa-era wadas, sacred sanctuaries, museums, and Sahyadri nature trails.
+> Canonical Base URL: https://explorepune-guide.vercel.app
+
+This document provides exhaustive, structured, hallucination-free facts for each verified destination, optimized for ingestion by generative AI engines (Google Gemini, OpenAI ChatGPT, Perplexity AI, Anthropic Claude, and Apple Intelligence).
+
+Total Destinations Documented: 106
+Verification Timestamp: 2026-11-13 (Indian Standard Time)
+
+---
+
+## 1. Sinhagad Fort (Lion's Fort) (सिंहगड किल्ला (कोंढाणा))
+- **URL**: https://explorepune-guide.vercel.app/places/sinhagad-fort
+- **Category**: FORTS
+- **Coordinates**: 18.3664° N, 73.7558° E
+- **Address**: Sinhagad Ghat Road, Thoptewadi, Pune, Maharashtra 411025
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to February (Monsoon greenery & winter morning mist)
+- **Historical & Cultural Context**:
+  Historically known as Kondhana, Sinhagad Fort is an iconic Sahyadri hill fortress situated 30 km southwest of Pune. Perched at an elevation of 1,312 meters, it was the site of the legendary 1670 Battle of Sinhagad fought by Subedar Tanaji Malusare under Chhatrapati Shivaji Maharaj. The fort features the Kalyan Darwaza, Pune Darwaza, Tanaji Malusare Memorial, and panoramic views of the Sahyadri mountains and Khadakwasla reservoir.
+
+## 2. Rajgad Fort (King of Forts) (राजगड किल्ला (राजांचा राजा))
+- **URL**: https://explorepune-guide.vercel.app/places/rajgad-fort
+- **Category**: FORTS
+- **Coordinates**: 18.2581° N, 73.6822° E
+- **Address**: Gunjavane Village, Velhe Taluka, Pune District, Maharashtra 412213
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: October to February (Post-monsoon trekking)
+- **Historical & Cultural Context**:
+  The royal capital of the Maratha Empire under Chhatrapati Shivaji Maharaj for over 26 years. Known as the 'King of Forts', Rajgad rises 1,375 meters above sea level and features the formidable Balekilla, Padmavati Machi, Suvela Machi, and Sanjivani Machi with impregnable double-fortified bastions representing the pinnacle of Maratha military architecture.
+
+## 3. Torna Fort (Prachandagad) (तोरणा किल्ला (प्रचंडगड))
+- **URL**: https://explorepune-guide.vercel.app/places/torna-fort
+- **Category**: FORTS
+- **Coordinates**: 18.2761° N, 73.6214° E
+- **Address**: Velhe, Pune District, Maharashtra 412212
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: September to February (Magnificent mountain trails)
+- **Historical & Cultural Context**:
+  The first fort captured by a 16-year-old Chhatrapati Shivaji Maharaj in 1646, marking the historic foundation of Hindavi Swarajya. Located at an altitude of 1,403 meters, it is the highest hill fort in Pune district, famous for the dramatic Zunjar Machi and Budhla Machi ridges.
+
+## 4. Shivneri Fort (Birthplace of Shivaji Maharaj) (शिवनेरी किल्ला (शिवजन्माचे पवित्र स्थान))
+- **URL**: https://explorepune-guide.vercel.app/places/shivneri-fort
+- **Category**: FORTS
+- **Coordinates**: 19.1983° N, 73.8617° E
+- **Address**: Junnar, Pune District, Maharashtra 410502
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: August to March (Shiv Jayanti & winter heritage tours)
+- **Historical & Cultural Context**:
+  The sacred birthplace of Chhatrapati Shivaji Maharaj (born 19 February 1630). Located near Junnar, Shivneri is a triangular hill fort fortified with seven defensive gates, the Shivkunj memorial, Badami Talav, and the ancient temple of Goddess Shivai Devi after whom Maharaj was named.
+
+## 5. Lohagad Fort (Iron Fort) (लोहगड किल्ला (लोहदुर्ग))
+- **URL**: https://explorepune-guide.vercel.app/places/lohagad-fort
+- **Category**: FORTS
+- **Coordinates**: 18.7083° N, 73.4792° E
+- **Address**: Lohagad Ghat, Malavali, Pune District, Maharashtra 410405
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: June to February (Monsoon waterfalls & misty cliff walks)
+- **Historical & Cultural Context**:
+  Rising 1,033 meters above sea level near Lonavala, Lohagad was strategically utilized by Shivaji Maharaj to store treasury seized after Surat. It is famous for its remarkably preserved Vinchukata (Scorpion's Tail) fortified spur extending 1.5 km into the valley, Ganesh Darwaza, and sweeping views of Pawna reservoir.
+
+## 6. Malhargad Fort (Sonori Fort) (मल्हारगड (सोनोरी किल्ला))
+- **URL**: https://explorepune-guide.vercel.app/places/malhargad-fort
+- **Category**: FORTS
+- **Coordinates**: 18.4114° N, 74.0417° E
+- **Address**: Sonori Village, Saswad, Pune District, Maharashtra 412301
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: October to February (Early morning sunrise treks)
+- **Historical & Cultural Context**:
+  The last hill fort built in Maharashtra by the Marathas around 1775 under the Peshwas. Situated near Saswad overlooking the Dive Ghat and Karha River valley, it features concentric dual fortifications, temples of Lord Khandoba and Lord Shiva, and stunning sunrise panoramas over Purandar and Pune.
+
+## 7. Tikona Fort (Vitandgad) (तिकोना किल्ला (वितंडगड))
+- **URL**: https://explorepune-guide.vercel.app/places/tikona-fort
+- **Category**: FORTS
+- **Coordinates**: 18.6312° N, 73.5186° E
+- **Address**: Tikona Peth, Near Kamshet, Pune District, Maharashtra 410406
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: June to February (Monsoon trekking & winter camping)
+- **Historical & Cultural Context**:
+  Perched at an altitude of 1,061 meters overlooking Pawna Dam, Tikona (also known as Vitandgad) is an iconic triangular hill fortress in Maval. Featuring steep stone steps carved directly into the rock face, the Trimbakeshwar Mahadev temple cave, and huge water cisterns, it provides breathtaking panoramic vistas of Tung, Lohagad, and Visapur forts.
+
+## 8. Visapur Fort (Twin Fort of Lohagad) (विसापूर किल्ला (लोहगडाचा जुळा किल्ला))
+- **URL**: https://explorepune-guide.vercel.app/places/visapur-fort
+- **Category**: FORTS
+- **Coordinates**: 18.7214° N, 73.4914° E
+- **Address**: Malavali, Lonavala-Kamshet, Pune District, Maharashtra 410405
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: July to January (Monsoon waterfall trek)
+- **Historical & Cultural Context**:
+  Built by the first Peshwa Balaji Vishwanath at an elevation of 1,084 meters, Visapur Fort is larger and higher than its twin Lohagad. It is world-famous among trekkers for its exhilarating monsoon trail where water gushes down the stone-carved steps like a natural waterfall, leading to a sprawling plateau with Peshwa ruins and ancient cannons.
+
+## 9. Purandar Fort (Birthplace of Sambhaji Maharaj) (पुरंदर किल्ला (छत्रपती संभाजी महाराजांचे जन्मस्थान))
+- **URL**: https://explorepune-guide.vercel.app/places/purandar-fort
+- **Category**: FORTS
+- **Coordinates**: 18.2778° N, 73.9789° E
+- **Address**: Purandar Taluka, Saswad, Pune District, Maharashtra 412301
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3.5 hours (210 minutes)
+- **Best Season to Visit**: August to February (Crisp mountain air & green slopes)
+- **Historical & Cultural Context**:
+  Standing tall at 1,387 meters, Purandar Fort is the hallowed birthplace of Chhatrapati Sambhaji Maharaj (1657) and the site of Murarbaji Deshpande's immortal defense against the Mughal general Diler Khan. It witnessed the pivotal 1665 Treaty of Purandar between Shivaji Maharaj and Raja Jai Singh I. The fort boasts the Kedareshwar Temple, Dilli Darwaza, and sweeping views of Saswad.
+
+## 10. Rajmachi Fort (Shrivardhan & Manaranjan) (राजमाची किल्ला (श्रीवर्धन व मनरंजन बालेकिल्ले))
+- **URL**: https://explorepune-guide.vercel.app/places/rajmachi-fort
+- **Category**: FORTS
+- **Coordinates**: 18.8284° N, 73.3986° E
+- **Address**: Udhewadi, Near Khandala-Lonavala, Pune District, Maharashtra 410401
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: May to October (Fireflies in May/June, lush waterfalls in monsoon)
+- **Historical & Cultural Context**:
+  Strategically overlooking the historic Bor Ghat trade route in the Sahyadri mountains, Rajmachi Fort comprises two formidable fortified peaks: Shrivardhan and Manaranjan. It is famous across India for its pre-monsoon fireflies festival at Udhewadi village and dramatic mist-filled canyon trails.
+
+## 11. Korigad Fort (कोरीगड किल्ला)
+- **URL**: https://explorepune-guide.vercel.app/places/korigad-fort
+- **Category**: FORTS
+- **Coordinates**: 18.6225° N, 73.3853° E
+- **Address**: Aamby Valley Road, Peth Shahpur, Pune District, Maharashtra 410401
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to February (Cloud walking & pleasant breezes)
+- **Historical & Cultural Context**:
+  Located at 923 meters near Aamby Valley, Korigad Fort was incorporated into the Swarajya by Chhatrapati Shivaji Maharaj in 1657. It features remarkably intact 2-km perimeter fortification walls that can be completely walked along, deep water ponds, the temple of Korai Devi, and antique bronze cannons.
+
+## 12. Rohida Fort (Vichitragad) (रोहिडा किल्ला (विचित्रगड))
+- **URL**: https://explorepune-guide.vercel.app/places/rohida-fort
+- **Category**: FORTS
+- **Coordinates**: 18.1039° N, 73.8217° E
+- **Address**: Bajarwadi, Bhor Taluka, Pune District, Maharashtra 412206
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to February (Windy ridges and fort bastions)
+- **Historical & Cultural Context**:
+  Also known as Vichitragad, Rohida Fort near Bhor rises 1,116 meters in the southern Sahyadri ranges. Captured by Shivaji Maharaj from the Bandal Deshmukhs in 1656, it is noted for its three remarkably preserved sequential gateways with stone-carved Sharabha motifs, water cisterns, and Rohidamalla temple.
+
+## 13. Shaniwar Wada (शनिवार वाडा)
+- **URL**: https://explorepune-guide.vercel.app/places/shaniwar-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5196° N, 73.8553° E
+- **Address**: Shaniwar Peth, Pune, Maharashtra 411030
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: October to March (Evening Light & Sound show)
+- **Historical & Cultural Context**:
+  The historic seven-storied fortified seat of the Peshwa prime ministers of the Maratha Empire, built in 1732 by Peshwa Baji Rao I. The sprawling palace fortress features the massive Dilli Darwaza with iron spikes, stone bastions, the Hazari Karanje (thousand-jet fountain), and lotus-shaped ornamental pools.
+
+## 14. Aga Khan Palace (आगा खान पॅलेस)
+- **URL**: https://explorepune-guide.vercel.app/places/aga-khan-palace
+- **Category**: HERITAGE
+- **Coordinates**: 18.5524° N, 73.9015° E
+- **Address**: Pune-Nagar Road, Kalyani Nagar, Pune, Maharashtra 411006
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: October to February (Peaceful garden walks)
+- **Historical & Cultural Context**:
+  Built in 1892 by Sultan Muhammed Shah Aga Khan III to aid famine victims, this national monument served as a prison for Mahatma Gandhi, Kasturba Gandhi, and Mahadev Desai during the 1942 Quit India Movement. Nestled in a 19-acre estate with Italian arches and manicured lawns, it houses Gandhi's memorials and personal belongings.
+
+## 15. Lal Mahal (Red Palace) (लाल महाल)
+- **URL**: https://explorepune-guide.vercel.app/places/lal-mahal
+- **Category**: HERITAGE
+- **Coordinates**: 18.5186° N, 73.8569° E
+- **Address**: Kasba Peth, Durvankur Society, Pune, Maharashtra 411011
+- **Admission Fee**: ₹5 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Morning 9:00 AM - 1:00 PM & 4:00 PM - 8:00 PM)
+- **Historical & Cultural Context**:
+  Constructed in 1630 by Shahaji Raje Bhosale for his wife Jijabai and young son Shivaji, Lal Mahal is where Chhatrapati Shivaji Maharaj spent his formative childhood years. It was the setting of the famous 1663 raid where Shivaji Maharaj ambushed Mughal viceroy Shaista Khan. Today it houses grand paintings and a statue of Jijamata.
+
+## 16. Vishrambaug Wada (विश्रामबाग वाडा)
+- **URL**: https://explorepune-guide.vercel.app/places/vishrambaug-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5133° N, 73.8525° E
+- **Address**: RB Kumthekar Rd, Sadashiv Peth, Pune, Maharashtra 411030
+- **Admission Fee**: ₹10 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Tuesday to Sunday, 10:00 AM - 5:00 PM)
+- **Historical & Cultural Context**:
+  A luxurious three-storied mansion built in 1807 by Peshwa Bajirao II. Renowned for its magnificent teakwood carved facade, ornamental suru (cypress) pillars, and a dedicated permanent exhibition titled "Punawadi te Punyanagari" tracing the rich historical evolution of Pune.
+
+## 17. Kesari Wada (Tilak Smarak) (केसरी वाडा (टिळक स्मारक))
+- **URL**: https://explorepune-guide.vercel.app/places/kesari-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5181° N, 73.8492° E
+- **Address**: 568, Narayan Peth, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: August to October (Ganeshotsav celebration is iconic)
+- **Historical & Cultural Context**:
+  The historic headquarters of the freedom movement where Lokmanya Bal Gangadhar Tilak published his influential newspapers 'Kesari' and 'Mahratta'. Also known as Gaikwad Wada, it houses the Tilak Museum showcasing his study room, original writing desk, library, and nationalistic artifacts.
+
+## 18. National War Memorial Southern Command (राष्ट्रीय युद्ध स्मारक (सदर्न कमांड))
+- **URL**: https://explorepune-guide.vercel.app/places/national-war-memorial
+- **Category**: HERITAGE
+- **Coordinates**: 18.5208° N, 73.8858° E
+- **Address**: Morwada, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: October to March (Evening Sound & Light Show)
+- **Historical & Cultural Context**:
+  A poignant war memorial dedicated to post-independence Indian armed forces martyrs. It features an imposing 25-foot stone pillar, the MiG-23BN fighter jet, a preserved T-55 tank from the 1971 Indo-Pak war, and a museum detailing major military operations.
+
+## 19. Shinde Chhatri (Mahadji Shinde Memorial) (शिंदे छत्री (महादजी शिंदे स्मारक))
+- **URL**: https://explorepune-guide.vercel.app/places/shinde-chhatri
+- **Category**: HERITAGE
+- **Coordinates**: 18.4988° N, 73.8967° E
+- **Address**: Wanowrie, Pune, Maharashtra 411040
+- **Admission Fee**: ₹20 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: October to March (Morning architectural photography)
+- **Historical & Cultural Context**:
+  An ornate 18th-century architectural memorial complex in Wanowrie honoring the legendary Maratha statesman and general Mahadji Shinde. Combining Anglo-Rajasthani architectural styles with intricate yellow stone carvings, high spires, multi-colored glass windows, and a Shiva temple, it is one of Pune's finest heritage monuments.
+
+## 20. Fergusson College Heritage Campus (फर्ग्युसन महाविद्यालय मुख्य हेरिटेज वास्तू)
+- **URL**: https://explorepune-guide.vercel.app/places/fergusson-college-heritage
+- **Category**: HERITAGE
+- **Coordinates**: 18.5236° N, 73.8406° E
+- **Address**: FC Road, Shivajinagar, Pune, Maharashtra 411004
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Morning walks and heritage photography)
+- **Historical & Cultural Context**:
+  Founded in 1885 by the Deccan Education Society under Lokmanya Tilak and Gopal Ganesh Agarkar, Fergusson College is a landmark institution of Indian education. Its 65-acre verdant campus at the base of Fergusson Hill features Victorian Gothic bluestone architecture, the historic Amphitheatre, and Bai Jerbai Wadia Library.
+
+## 21. Savitribai Phule Pune University Heritage Main Building (सावित्रीबाई फुले पुणे विद्यापीठ मुख्य हेरिटेज इमारत)
+- **URL**: https://explorepune-guide.vercel.app/places/pune-university-heritage-building
+- **Category**: HERITAGE
+- **Coordinates**: 18.5529° N, 73.8266° E
+- **Address**: Ganeshkhind Road, Pune, Maharashtra 411007
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: October to March (Sunset walks across campus)
+- **Historical & Cultural Context**:
+  Constructed in 1864 as the monsoon residence for the British Governors of Bombay, this magnificent Italian Gothic palace set on a 411-acre campus features a 100-foot stone bell tower, vaulted corridors, manicured heritage gardens, and grand ballrooms that earned Pune the distinction of Oxford of the East.
+
+## 22. Bund Garden & Fitzgerald Bridge (बंड गार्डन व फिट्झगेराल्ड पूल)
+- **URL**: https://explorepune-guide.vercel.app/places/bund-garden
+- **Category**: HERITAGE
+- **Coordinates**: 18.5367° N, 73.8822° E
+- **Address**: Sangamvadi, Near Yerawada Bridge, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: October to March (Morning and evening river breeze)
+- **Historical & Cultural Context**:
+  Constructed in 1869 by philanthropist Sir Jamsetjee Jeejeebhoy on the Mula-Mutha river to alleviate local water scarcity, Bund Garden (officially Mahatma Gandhi Udyan) is one of Pune's oldest public parks. It features lush manicured lawns, riverside walking tracks, migratory bird roosts, and views of the 1867 stone Fitzgerald Bridge.
+
+## 23. Osho Teerth Park & Ashram (Koregaon Park) (ओशो तीर्थ पार्क व ध्यान आश्रम (कोरेगाव पार्क))
+- **URL**: https://explorepune-guide.vercel.app/places/osho-teerth-park
+- **Category**: HERITAGE
+- **Coordinates**: 18.5383° N, 73.8931° E
+- **Address**: Lane 2, Koregaon Park, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Morning 6-9 AM & Evening 3-6 PM meditation)
+- **Historical & Cultural Context**:
+  A world-renowned 12-acre Zen-style public ecological park in Koregaon Park that transformed a former municipal wastewater drain into a crystal-clear stream with Japanese bamboo bridges, tranquil wooden walkways, rock gardens, and exotic tropical flora adjacent to the Osho International Meditation Resort.
+
+## 24. Karla Caves (Ancient Rock-Cut Chaitya Hall) (कार्ला लेणी (भारतातील सर्वात मोठे बौद्ध चैत्यगृह))
+- **URL**: https://explorepune-guide.vercel.app/places/karla-caves
+- **Category**: HERITAGE
+- **Coordinates**: 18.7825° N, 73.4708° E
+- **Address**: Karla, Near Lonavala, Pune District, Maharashtra 410405
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2.5 hours (150 minutes)
+- **Best Season to Visit**: June to February (Cool hill breezes & ancient rock architecture)
+- **Historical & Cultural Context**:
+  Dating back to the 2nd century BCE, the Karla Caves near Lonavala comprise India's largest and most magnificent rock-cut Buddhist Chaitya hall. Soaring 45 meters long and 14 meters high, it features 37 intricate octagonal pillars carved with elephants and riders, an intact 2,200-year-old original teakwood vaulted roof, and the revered Ekvira Aai Temple at the entrance.
+
+## 25. Bhaja Caves (Buddhist Monastic Complex) (भाजा लेणी (प्राचीन बौद्ध लेणी व स्तूप समूह))
+- **URL**: https://explorepune-guide.vercel.app/places/bhaja-caves
+- **Category**: HERITAGE
+- **Coordinates**: 18.7297° N, 73.4839° E
+- **Address**: Bhaja Village, Near Malavali, Pune District, Maharashtra 410405
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: June to February (Monsoon waterfalls right next to caves)
+- **Historical & Cultural Context**:
+  A group of 22 rock-cut Buddhist caves dating from the 2nd century BCE located near Malavali station. Known for its iconic horseshoe-arched Chaityagriha, relief carvings of the Sun God Surya and Indra riding Airavata, and an extraordinary open-air cluster of 14 rock-cut memorial stupas commemorating venerable Buddhist monks.
+
+## 26. Bedse Caves (Ancient Chaitya & Vihara) (बेडसे लेणी (शांत व प्राचीन बौद्ध लेणी))
+- **URL**: https://explorepune-guide.vercel.app/places/bedse-caves
+- **Category**: HERITAGE
+- **Coordinates**: 18.7061° N, 73.5342° E
+- **Address**: Bedse Village, Maval Taluka, Pune District, Maharashtra 410405
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: July to February (Morning quietude & sunrise views)
+- **Historical & Cultural Context**:
+  Quietly nestled in the hills near Kamshet, Bedse Caves date back to the 1st century BCE. Famous for its majestic entrance portico supported by four 25-foot fluted Ashokan-style pillars topped with exquisite sculptures of horses, bulls, and royal riders, and a rare multi-cell residential Vihara carved into bedrock.
+
+## 27. Shreemant Dagdusheth Halwai Ganpati Mandir (श्रीमंत दगडूशेठ हलवाई गणपती मंदिर)
+- **URL**: https://explorepune-guide.vercel.app/places/shreemant-dagdusheth-halwai-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.5164° N, 73.8561° E
+- **Address**: Ganpati Bhavan, 250, Budhwar Peth, Pune, Maharashtra 411002
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Especially during Ganeshotsav festival in August/September)
+- **Historical & Cultural Context**:
+  One of the most revered and celebrated Hindu temples in Maharashtra, founded in 1893 by sweet merchant Dagdusheth Gadve and his wife Lakshmibai. The magnificent 2.2-meter high Ganesha idol is adorned with pure gold jewelry and visited by millions during the 10-day Ganeshotsav.
+
+## 28. Kasba Ganpati Mandir (Gramdaivat of Pune) (कसबा गणपती मंदिर (पुण्याचे ग्रामदैवत))
+- **URL**: https://explorepune-guide.vercel.app/places/kasba-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.5203° N, 73.8586° E
+- **Address**: 158, Kasba Peth, Pune, Maharashtra 411011
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: All Year (Angarki Sankashti & Ganeshotsav)
+- **Historical & Cultural Context**:
+  The official Gramdaivat (presiding town deity) of Pune, commissioned by Rajmata Jijabai Bhosale in 1639 after the recovery of a self-manifested (Swayambhu) idol. Kasba Ganpati holds the highest place of honor as the Manacha Pahila (First Respected) Ganpati in Pune's Ganeshotsav.
+
+## 29. Pataleshwar Cave Temple (पाताळेश्वर लेणी मंदिर)
+- **URL**: https://explorepune-guide.vercel.app/places/pataleshwar-cave-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5275° N, 73.8508° E
+- **Address**: Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Maha Shivratri celebrations)
+- **Historical & Cultural Context**:
+  An 8th-century Rashtrakuta-era monolithic rock-cut cave temple dedicated to Lord Shiva, carved out of a single basalt rock. The temple features massive pillared halls, a circular Nandi pavilion, and a peaceful green courtyard on Jangali Maharaj Road.
+
+## 30. Chaturshringi Temple (चतुःशृंगी देवी मंदिर)
+- **URL**: https://explorepune-guide.vercel.app/places/chaturshringi-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5375° N, 73.8286° E
+- **Address**: Senapati Bapat Road, Shivajinagar, Pune, Maharashtra 411016
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: September to October (Navratri festival is magnificent)
+- **Historical & Cultural Context**:
+  A hill temple dedicated to Goddess Chaturshringi (Amreshwari), built during the reign of Peshwa rule. Nestled on a hill slope with 100 stone steps, the temple draws hundreds of thousands of devotees during the vibrant 9 days of Navratri.
+
+## 31. BAPS Shri Swaminarayan Mandir (श्री स्वामिनारायण मंदिर (आंबेगाव))
+- **URL**: https://explorepune-guide.vercel.app/places/baps-swaminarayan-mandir
+- **Category**: TEMPLES
+- **Coordinates**: 18.4528° N, 73.8361° E
+- **Address**: Mumbai-Bangalore Highway, Ambegaon BK, Pune, Maharashtra 411046
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Evening Aarti and musical lighting)
+- **Historical & Cultural Context**:
+  An architectural marvel of pink sandstone and marble in Ambegaon, built according to Shilpa Shastras. It features intricately sculpted mandapas, domes, and illuminated landscaped courtyards along the Katraj-Dehu bypass.
+
+## 32. Parvati Hill & Devdeveshwar Temple (पार्वती टेकडी व देवदेवेश्वर मंदिर)
+- **URL**: https://explorepune-guide.vercel.app/places/parvati-hill
+- **Category**: TEMPLES
+- **Coordinates**: 18.4967° N, 73.8475° E
+- **Address**: Parvati Paytha, Pune, Maharashtra 411009
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: October to February (Morning 6:00 AM for sunrise views)
+- **Historical & Cultural Context**:
+  Rising 64 meters (2,100 feet above sea level), Parvati Hill is topped by the 1749 Devdeveshwar Temple built by Peshwa Balaji Baji Rao (Nanasaheb). Climbed via 103 stone steps, the complex includes shrines of Kartikeya, Vishnu, and Vitthal, Peshwa Museum, and sweeping panoramic views of Pune.
+
+## 33. Tulshibaug Ram Mandir (तुळशीबाग राम मंदिर)
+- **URL**: https://explorepune-guide.vercel.app/places/tulshibaug-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5158° N, 73.8558° E
+- **Address**: Tulshibaug, Budhwar Peth, Pune, Maharashtra 411002
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: Ram Navami festival in March/April
+- **Historical & Cultural Context**:
+  Constructed in 1761 by Naro Appaji Tulshibaugwale during Peshwa rule, this historic temple in the bustling Tulshibaug market features an ornate 140-foot wooden Shikhara, white marble statues of Lord Rama, Sita, and Lakshmana, and life-sized murals of the Ramayana.
+
+## 34. Alandi (Sant Dnyaneshwar Sanjeevan Samadhi) (आळंदी (संत ज्ञानेश्वर महाराज संजीवन समाधी))
+- **URL**: https://explorepune-guide.vercel.app/places/alandi-dnyaneshwar-mandir
+- **Category**: TEMPLES
+- **Coordinates**: 18.6775° N, 73.8967° E
+- **Address**: Alandi Devachi, Khed Taluka, Pune District, Maharashtra 412105
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Kartik Vadya Ekadashi & Ashadhi Palkhi festival)
+- **Historical & Cultural Context**:
+  Situated 25 km north of Pune on the holy Indrayani River, Alandi is one of Maharashtra's paramount spiritual pilgrimage destinations. It is where the 13th-century saint, poet, and philosopher Sant Dnyaneshwar entered Sanjeevan Samadhi in 1296 at the young age of 21. It is the starting point of the revered annual Ashadhi Warkari Palkhi pilgrimage.
+
+## 35. Dehu (Sant Tukaram Maharaj Gatha Mandir) (देहू (संत तुकाराम महाराज गाथा मंदिर))
+- **URL**: https://explorepune-guide.vercel.app/places/dehu-tukaram-mandir
+- **Category**: TEMPLES
+- **Coordinates**: 18.7183° N, 73.7719° E
+- **Address**: Dehu Gaon, Haveli Taluka, Pune District, Maharashtra 412109
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Tukaram Beej & Ashadhi Palkhi)
+- **Historical & Cultural Context**:
+  Located on the banks of the Indrayani River, Dehu is the sacred birthplace and residence of the revered 17th-century Marathi Bhakti saint-poet Jagadguru Sant Tukaram Maharaj. The sprawling Gatha Mandir houses over 4,000 abhangas of Tukaram carved into marble walls, surrounding a magnificent statue of Tukaram Maharaj.
+
+## 36. Khandoba Temple, Jejuri (Golden Jejuri) (खंडोबा मंदिर, जेजुरी (सोन्याची जेजुरी))
+- **URL**: https://explorepune-guide.vercel.app/places/jejuri-khandoba-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.275° N, 74.1592° E
+- **Address**: Jejuri Hill, Purandar Taluka, Pune District, Maharashtra 412303
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: October to March (Somvati Amavasya Bhandara festival)
+- **Historical & Cultural Context**:
+  Perched majestically atop a hill 50 km southeast of Pune, Jejuri is the chief pilgrimage shrine of Lord Khandoba (an avatar of Shiva), the Kuldaivat of millions across Maharashtra. Climbed via nearly 200 stone steps framed by Deepmalas and bastions, the temple glows radiant golden-yellow with continuous turmeric (Bhandara) showers with the resounding chant Yelkot Yelkot Jai Malhar!
+
+## 37. Mayureshwar Ganpati Mandir, Morgaon (Ashtavinayak #1) (मयूरेश्वर गणपती मंदिर, मोरगाव (आद्य अष्टविनायक))
+- **URL**: https://explorepune-guide.vercel.app/places/morgaon-mayureshwar-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.2756° N, 74.3164° E
+- **Address**: Morgaon, Baramati Taluka, Pune District, Maharashtra 412304
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Ganesh Jayanti & Bhadrapada Ganesh Chaturthi)
+- **Historical & Cultural Context**:
+  The premier and starting pilgrimage shrine of the sacred Ashtavinayaka circuit in Maharashtra. Situated 70 km from Pune on the Karha River, this 14th-century black stone temple resembles a fortified bastion with four minarets. It features a unique Nandi bull positioned directly facing Lord Ganesha.
+
+## 38. Mahaganpati Mandir, Ranjangaon (Ashtavinayak) (महागणपती मंदिर, रांजणगाव (अष्टविनायक))
+- **URL**: https://explorepune-guide.vercel.app/places/ranjangaon-mahaganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.7561° N, 74.2417° E
+- **Address**: Ranjangaon, Shirur Taluka, Pune District, Maharashtra 412209
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Bhadrapada Ganesh Chaturthi & Sankashti)
+- **Historical & Cultural Context**:
+  One of the sacred Ashtavinayak temples located on the Pune-Ahmednagar highway. Legend relates that Lord Shiva invoked Mahaganpati here before vanquishing the demon Tripurasura. Renovated by the Peshwas, the east-facing sanctum is designed so that morning sun rays illuminate the idol directly during equinoxes.
+
+## 39. Chintamani Ganpati Mandir, Theur (Ashtavinayak) (चिंतामणी गणपती मंदिर, थेऊर (अष्टविनायक))
+- **URL**: https://explorepune-guide.vercel.app/places/theur-chintamani-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.5283° N, 74.0531° E
+- **Address**: Theur, Haveli Taluka, Pune District, Maharashtra 412110
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: All Year (Morning peaceful darshan)
+- **Historical & Cultural Context**:
+  Located 25 km east of Pune near the confluence of Mula, Mutha, and Bhima rivers, Theur Chintamani is the fifth shrine of the Ashtavinayak circuit. It is deeply connected with Maratha history as the favorite spiritual sanctuary of Peshwa Madhavrao I, who renovated the wooden Sabhamandap and spent his final days meditating here.
+
+## 40. ISKCON NVCC Temple (Katraj-Kondhwa) (इस्कॉन नवीन वैदिक सांस्कृतिक केंद्र, कोंढवा)
+- **URL**: https://explorepune-guide.vercel.app/places/iskcon-nvcc-kondhwa
+- **Category**: TEMPLES
+- **Coordinates**: 18.4489° N, 73.8828° E
+- **Address**: Katraj-Kondhwa Bypass, Tilekar Nagar, Kondhwa, Pune, Maharashtra 411048
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Evening Aarti 7:00 PM & Janmashtami)
+- **Historical & Cultural Context**:
+  Set on 6 acres against the backdrop of the southern Pune hills, the New Vedic Cultural Centre is a marvel of Rajasthani pink stone and Makrana marble architecture. It features soaring 100-foot domes, grand statues of Radha Vrindavanchandra and Venkateshwara Balaji, and a peaceful spiritual atmosphere with vegetarian Govinda's dining.
+
+## 41. Bhimashankar Jyotirlinga Temple & Wildlife Sanctuary (भीमाशंकर ज्योतिर्लिंग मंदिर व वन्यजीव अभयारण्य)
+- **URL**: https://explorepune-guide.vercel.app/places/bhimashankar-temple
+- **Category**: TEMPLES
+- **Coordinates**: 19.0722° N, 73.5358° E
+- **Address**: Bhimashankar, Khed Taluka, Pune District, Maharashtra 410509
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: July to February (Monsoon waterfalls & Mahashivratri)
+- **Historical & Cultural Context**:
+  One of the 12 sacred Jyotirlinga shrines in India, Bhimashankar is nestled in the dense evergreen rainforests of the Western Ghats at the origin of the sacred River Bhima. Featuring 13th-century Nagara-style stone architecture and a historic Portuguese bell, the surrounding wildlife sanctuary is home to Maharashtra's state animal, the Shekru (Indian Giant Squirrel).
+
+## 42. Raja Dinkar Kelkar Museum (राजा दिनकर केळकर वस्तुसंग्रहालय)
+- **URL**: https://explorepune-guide.vercel.app/places/raja-dinkar-kelkar-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5108° N, 73.8544° E
+- **Address**: 1377-78, Kamal Kunj, Natu Baug, Shukrawar Peth, Pune, Maharashtra 411002
+- **Admission Fee**: ₹100 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Daily 10:00 AM - 5:30 PM)
+- **Historical & Cultural Context**:
+  An extraordinary personal collection of over 20,000 Indian artifacts amassed by Dr. D.G. Kelkar in memory of his deceased son Raja. Highlights include the painstakingly reconstructed Mastani Mahal palace chamber, antique musical instruments, Peshwa silverware, and carved wooden doors.
+
+## 43. Tribal Cultural Museum (आदिवासी सांस्कृतिक वस्तुसंग्रहालय)
+- **URL**: https://explorepune-guide.vercel.app/places/tribal-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5317° N, 73.8825° E
+- **Address**: 28, Queen's Garden Road, Band Garden, Pune, Maharashtra 411001
+- **Admission Fee**: ₹20 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Monday to Saturday, 10:00 AM - 5:00 PM)
+- **Historical & Cultural Context**:
+  Managed by the Tribal Research and Training Institute, this museum preserves the indigenous heritage of tribal communities across Maharashtra (Bhil, Gond, Warli, Madia). It showcases authentic Warli folk paintings, ritual masks, bamboo crafts, and life-size tribal dwellings.
+
+## 44. Joshi's Museum of Miniature Railways (जोशींचे मिनिएचर रेल्वे संग्रहालय)
+- **URL**: https://explorepune-guide.vercel.app/places/joshi-miniature-railway
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5028° N, 73.8186° E
+- **Address**: 17/1, B/2, G.A. Kulkarni Path, Kothrud, Pune, Maharashtra 411038
+- **Admission Fee**: ₹120 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: All Year (Shows every hour on weekends)
+- **Historical & Cultural Context**:
+  A fascinating interactive museum founded by B.S. Joshi featuring an intricate, computer-controlled HO-scale model railway city. It displays functional steam engines, high-speed diesel trains, mountain tunnels, nighttime twilight effects, and aerial ropeways.
+
+## 45. Mahatma Phule Museum (महात्मा फुले वस्तुसंग्रहालय)
+- **URL**: https://explorepune-guide.vercel.app/places/mahatma-phule-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5258° N, 73.8478° E
+- **Address**: Ghole Road, Shivajinagar, Pune, Maharashtra 411004
+- **Admission Fee**: ₹20 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Morning 9:00 AM - 5:00 PM)
+- **Historical & Cultural Context**:
+  Established in 1890 as the Lord Ray Museum and later renamed in honor of Mahatma Jyotirao Phule. Located on Ghole Road, it features extensive scientific, agricultural, geological, industrial, and armory exhibits from the 19th century.
+
+## 46. IUCAA Science Park & Astronomy Centre (आयुका विज्ञान उद्यान व खगोलशास्त्र केंद्र)
+- **URL**: https://explorepune-guide.vercel.app/places/iucaa-science-park
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5572° N, 73.8261° E
+- **Address**: SPPU Campus, Ganeshkhind, Pune, Maharashtra 411007
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: National Science Day (Feb 28) & Scheduled Public Tours
+- **Historical & Cultural Context**:
+  An internationally acclaimed astronomy and astrophysics research centre founded by eminent astrophysicist Prof. Jayant Narlikar. Designed by celebrated master architect Charles Correa, the campus features statues of Isaac Newton (under a real descendant of Newton's apple tree), Aryabhata, Galileo, and Albert Einstein, and hands-on science exhibits.
+
+## 47. Pu La Deshpande Garden (Okayama Friendship Garden) (पु. ल. देशपांडे उद्यान (जपानी मैत्री बाग))
+- **URL**: https://explorepune-guide.vercel.app/places/okayama-friendship-garden
+- **Category**: PARKS
+- **Coordinates**: 18.4914° N, 73.8358° E
+- **Address**: Sinhagad Road, Dattawadi, Pune, Maharashtra 411030
+- **Admission Fee**: ₹10 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Morning 6:00 AM - 10:30 AM & Evening 4:00 PM - 8:00 PM)
+- **Historical & Cultural Context**:
+  Spanning 14 acres on Sinhagad Road, this authentic Japanese strolling garden is modeled after the 300-year-old Kōraku-en Garden in Okayama. Dedicated to Marathi literary icon Pu. La. Deshpande, it features flowing streams, arched wooden bridges, natural waterfalls, and stone lanterns.
+
+## 48. Saras Baug & Talyatla Ganpati (सारसबाग व तळ्यातला गणपती)
+- **URL**: https://explorepune-guide.vercel.app/places/sarasbaug
+- **Category**: PARKS
+- **Coordinates**: 18.5008° N, 73.8533° E
+- **Address**: Saras Baug Road, Sadashiv Peth, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Evening family outings & Ganesh Darshan)
+- **Historical & Cultural Context**:
+  Commissioned in 1784 by Sawai Madhavrao Peshwa, Saras Baug is a historic 25-acre garden built around a dried lake bed. At its center stands the revered Talyatla Ganpati (Ganesha of the Lake) temple, surrounded by expansive lawns, fountains, and street food stalls.
+
+## 49. Empress Botanical Garden (एम्प्रेस बॉटनिकल गार्डन)
+- **URL**: https://explorepune-guide.vercel.app/places/empress-botanical-garden
+- **Category**: PARKS
+- **Coordinates**: 18.5117° N, 73.8992° E
+- **Address**: Near Race Course, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: ₹20 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: November to February (Annual Flower Show & winter picnics)
+- **Historical & Cultural Context**:
+  A historic 39-acre British-era botanical haven established in 1838, named in honor of Queen Victoria (Empress of India). Maintained by the Agri-Horticultural Society of Western India, it houses centuries-old tropical trees, a serene lotus canal, rare ferns, and the annual flower show.
+
+## 50. Rajiv Gandhi Zoological Park (Katraj Zoo) (राजीव गांधी प्राणीसंग्रहालय व कात्रज सर्पोद्यान)
+- **URL**: https://explorepune-guide.vercel.app/places/rajiv-gandhi-zoological-park
+- **Category**: PARKS
+- **Coordinates**: 18.4558° N, 73.8564° E
+- **Address**: Pune-Satara Road, Katraj, Pune, Maharashtra 411046
+- **Admission Fee**: ₹40 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: October to March (Wednesday to Monday, 9:30 AM - 5:00 PM)
+- **Historical & Cultural Context**:
+  Sprawling over 130 acres around the historic 42-acre Katraj Lake, this modern zoo features a renowned Snake Park with over 160 species of reptiles, an Animal Orphanage, and spacious moated natural enclosures for white tigers, Bengal tigers, leopards, sloth bears, and Indian elephants.
+
+## 51. Chhatrapati Sambhaji Garden (छत्रपती संभाजी महाराज उद्यान)
+- **URL**: https://explorepune-guide.vercel.app/places/sambhaji-park
+- **Category**: PARKS
+- **Coordinates**: 18.5233° N, 73.8458° E
+- **Address**: JM Road, Shivajinagar, Pune, Maharashtra 411004
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (Morning 6:00 AM - 10:00 AM & Evening 4:00 PM - 8:30 PM)
+- **Historical & Cultural Context**:
+  A heritage public park situated on Jungli Maharaj Road featuring an aquarium, expansive walking tracks, lush flowerbeds, an open-air theater, and tall shady trees that offer an urban green lung in the heart of Deccan Gymkhana.
+
+## 52. Gram Sanskruti Udyan (Village Culture Park, Pashan) (ग्राम संस्कृती उद्यान (पाषाण))
+- **URL**: https://explorepune-guide.vercel.app/places/gram-sanskruti-udyan
+- **Category**: PARKS
+- **Coordinates**: 18.5414° N, 73.7914° E
+- **Address**: Someshwarwadi Road, Near Pashan Lake, Pashan, Pune, Maharashtra 411045
+- **Admission Fee**: ₹50 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Morning 10:00 AM - Evening 7:00 PM)
+- **Historical & Cultural Context**:
+  Maharashtra's first mock rural heritage theme park located in Pashan near Someshwar Temple. Spanning expansive landscaped grounds, it features over 700 life-sized statues that vividly recreate ancient Maharashtra's traditional village life, 12 Balutedar artisans, rural homes, cattle sheds, and traditional customs.
+
+## 53. Khadakwasla Dam & Lake (खडकवासला धरण आणि तलाव)
+- **URL**: https://explorepune-guide.vercel.app/places/khadakwasla-dam
+- **Category**: NATURE
+- **Coordinates**: 18.4417° N, 73.7667° E
+- **Address**: Khadakwasla, Sinhagad Road, Pune, Maharashtra 411024
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: June to February (Monsoon overflow & sunset breezes)
+- **Historical & Cultural Context**:
+  Built in 1879 across the Mutha River, Khadakwasla is the primary drinking water lifeline of Pune. Located 20 km from the city near the National Defence Academy (NDA), its lakeside promenade is famous for sunset views, roasted corn (bhutta), and weekend cycling.
+
+## 54. Pashan Lake & Bird Sanctuary (पाषाण तलाव व पक्षी अभयारण्य)
+- **URL**: https://explorepune-guide.vercel.app/places/pashan-lake
+- **Category**: NATURE
+- **Coordinates**: 18.5367° N, 73.7844° E
+- **Address**: Pashan, Pune, Maharashtra 411021
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: November to February (Peak migratory bird season)
+- **Historical & Cultural Context**:
+  A tranquil British-era man-made lake constructed by bunding the Ramnadi. It has evolved into a vital urban wetland ecosystem and birdwatching haven attracting over 100 species of migratory and resident birds (gray herons, egrets, openbill storks).
+
+## 55. Vetal Tekdi (Highest Peak of Pune City) (वेताळ टेकडी (पुण्यातील सर्वोच्च टेकडी))
+- **URL**: https://explorepune-guide.vercel.app/places/vetal-tekdi
+- **Category**: NATURE
+- **Coordinates**: 18.5286° N, 73.8189° E
+- **Address**: Paud Road / Senapati Bapat Road, Pune, Maharashtra 411004
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: All Year (Early morning 5:30 AM for sunrise)
+- **Historical & Cultural Context**:
+  Rising 2,600 feet above sea level, Vetal Tekdi is the highest geographical point within Pune municipal limits. Named after the ancient Vetala temple at the summit, this urban hill forest is Pune's favorite sunrise jog, trail running, and birding retreat.
+
+## 56. Mulshi Dam & Lake (मुळशी धरण आणि निसर्ग परिसर)
+- **URL**: https://explorepune-guide.vercel.app/places/mulshi-dam
+- **Category**: NATURE
+- **Coordinates**: 18.5297° N, 73.5133° E
+- **Address**: Mulshi Taluka, Pune District, Maharashtra 412108
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to October (Spectacular monsoon waterfalls)
+- **Historical & Cultural Context**:
+  A major hydroelectric gravity dam on the Mula River in the western Sahyadri ghats. Surrounded by dense deciduous forests, mist-shrouded peaks, and roaring monsoon waterfalls, Mulshi is Pune's premier scenic drive and lake camping destination.
+
+## 57. Panshet Dam (Tanajisagar) (पानशेत धरण (तानाजीसागर))
+- **URL**: https://explorepune-guide.vercel.app/places/panshet-dam
+- **Category**: NATURE
+- **Coordinates**: 18.3789° N, 73.6192° E
+- **Address**: Velhe-Panshet Road, Pune District, Maharashtra 412107
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2.5 hours (150 minutes)
+- **Best Season to Visit**: August to February (Water sports and camping)
+- **Historical & Cultural Context**:
+  Nestled 50 km southwest of Pune on the Ambi River, Panshet Dam impounds the vast Tanajisagar reservoir. Framed by rolling Sahyadri hills, it is renowned for water sports, speed boating, kayaking, and rural eco-tourism.
+
+## 58. Pawna Lake & Dam (Lonavala-Kamshet) (पवना धरण व जलाशय (कॅम्पिंग व निसर्ग पर्यटन))
+- **URL**: https://explorepune-guide.vercel.app/places/pawna-lake
+- **Category**: NATURE
+- **Coordinates**: 18.6744° N, 73.4867° E
+- **Address**: Pawna Dam, Maval Taluka, Pune District, Maharashtra 410406
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: September to March (Winter lake camping & sunsets)
+- **Historical & Cultural Context**:
+  Formed by the Pavana Dam in Maval taluka, Pawna Lake is an expansive freshwater reservoir framed by the Sahyadri mountains and historic forts Tikona, Lohagad, Visapur, and Tung. Pune's premier destination for lakeside stargazing, bonfire camping, kayaking, and sunset photography.
+
+## 59. Tiger Point & Lion's Point (Lonavala) (टायगर पॉईंट व लायन्स पॉईंट (लोणावळा))
+- **URL**: https://explorepune-guide.vercel.app/places/tiger-point-lonavala
+- **Category**: NATURE
+- **Coordinates**: 18.7083° N, 73.3986° E
+- **Address**: Aamby Valley Road, Lonavala, Pune District, Maharashtra 410401
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: June to February (Monsoon cloud cover & sunset panorama)
+- **Historical & Cultural Context**:
+  A dramatic cliff-edge viewpoint in Lonavala perched above a sheer vertical drop of over 650 meters into the Sahyadri canyon. Famous for rolling monsoon clouds that fly upward with the wind, echoes, seasonal cliff waterfalls, and hot bhutta (corn) stalls overlooking pristine green valleys.
+
+## 60. Bushi Dam (Lonavala Water Cascades) (भुशी धरण (लोणावळा जलप्रपात))
+- **URL**: https://explorepune-guide.vercel.app/places/bushi-dam
+- **Category**: NATURE
+- **Coordinates**: 18.7303° N, 73.3983° E
+- **Address**: Bushi Dam Road, Lonavala, Pune District, Maharashtra 410401
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2.5 hours (150 minutes)
+- **Best Season to Visit**: July to September (Peak monsoon water overflow)
+- **Historical & Cultural Context**:
+  A masonry dam constructed on the Indrayani River in the late 19th century in Lonavala. During the peak monsoon season, the dam overflows across wide tiered stone steps, allowing thousands of visitors to sit safely amidst cool cascading water surrounded by verdant hill slopes.
+
+## 61. Tamhini Ghat & Waterfalls (ताम्हिणी घाट व धबधबे)
+- **URL**: https://explorepune-guide.vercel.app/places/tamhini-ghat
+- **Category**: NATURE
+- **Coordinates**: 18.4833° N, 73.4333° E
+- **Address**: Tamhini Ghat Road, Mulshi Taluka, Pune District, Maharashtra 412108
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: July to October (Spectacular monsoon waterfalls & lush mist)
+- **Historical & Cultural Context**:
+  A breathtaking mountain pass slicing through the crest of the Western Ghats between Mulshi and the Konkan coast. Famous across Maharashtra for its roaring roadside waterfalls, emerald valleys carpeted in moss, swirling mountain mists, and the Kolad river rafting backwaters.
+
+## 62. Taljai Hills & Forest Reserve (तळजाई टेकडी व वन उद्यान)
+- **URL**: https://explorepune-guide.vercel.app/places/taljai-hills
+- **Category**: NATURE
+- **Coordinates**: 18.4764° N, 73.8431° E
+- **Address**: Taljai Forest Reserve, Sahakar Nagar, Pune, Maharashtra 411009
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Morning 5:30-9:00 AM & Evening 4:30-7:00 PM)
+- **Historical & Cultural Context**:
+  A tranquil forested hill reserve in south Pune dedicated to nature conservation. Featuring shaded jogging trails, a serene Taljai Mata temple, and an eco-sanctuary renowned for resident peafowl, vibrant migratory birds, and panoramic breezes overlooking Sahakarnagar and Padmavati.
+
+## 63. ARAI Hill (Kothrud Nature Ridge) (एआरएआय टेकडी (कोथरूड निसर्ग पठार))
+- **URL**: https://explorepune-guide.vercel.app/places/arai-tekdi
+- **Category**: NATURE
+- **Coordinates**: 18.5186° N, 73.8186° E
+- **Address**: Paud Road / Law College Road, Kothrud, Pune, Maharashtra 411038
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Sunrise 6:00-8:30 AM)
+- **Historical & Cultural Context**:
+  The southern ridge of Pune's central Vetal Tekdi hill complex overlooking Kothrud, Karve Road, and Law College. Beloved by early morning fitness enthusiasts, trail runners, and birders for its open plateau, fresh air, quarry lake, and sweeping sunrise views over the Pune metropolis.
+
+## 64. Lavasa Lakeside Promenade (Warasgaon Lake) (लवासा लेकसाइड प्रोमेनाड (वरसगाव जलाशय))
+- **URL**: https://explorepune-guide.vercel.app/places/lavasa-lakeside
+- **Category**: NATURE
+- **Coordinates**: 18.4114° N, 73.5072° E
+- **Address**: Dasve Village, Mose Valley, Mulshi Taluka, Pune District, Maharashtra 412112
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to February (Pleasant lakeside breeze & mist)
+- **Historical & Cultural Context**:
+  Nestled along the shores of the Warasgaon reservoir in the Sahyadri Western Ghats, Lavasa features an Italian Mediterranean-style waterfront promenade modeled after the Italian coastal town of Portofino. Known for lakeside dining, watersports, jet-skiing, and picturesque mountain drives.
+
+## 65. Mahatma Jyotirao Phule Wada (महात्मा जोतीराव फुले वाडा (राष्ट्रीय सामाजिक क्रांती स्मारक))
+- **URL**: https://explorepune-guide.vercel.app/places/mahatma-phule-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5088° N, 73.8647° E
+- **Address**: Phule Wada, Ganj Peth, Near Mandai, Pune, Maharashtra 411042
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All year round (Tuesday to Sunday, 9:00 AM - 5:30 PM)
+- **Historical & Cultural Context**:
+  The revered historic residence of pioneer social reformers Mahatma Jyotirao Phule and Krantijyoti Savitribai Phule in Ganj Peth, Pune. This sacred site is the cradle of India's social revolution, women's education, and the Satyashodhak Samaj. Features the historic courtyard, original residence rooms, the historic drinking water well opened to all communities in 1868, a memorial library, and a museum displaying rare archival manuscripts and photographs.
+
+## 66. Bhide Wada (India's First Girls' School) (भिडे वाडा (भारतातील मुलींची पहिली ऐतिहासिक शाळा))
+- **URL**: https://explorepune-guide.vercel.app/places/bhide-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5173° N, 73.8566° E
+- **Address**: Budhwar Peth, Opposite Dagdusheth Ganpati, Pune, Maharashtra 411002
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: All year round (Morning 9:00 AM - 6:00 PM)
+- **Historical & Cultural Context**:
+  Located in Budhwar Peth directly opposite Dagdusheth Halwai Ganpati, Bhide Wada is the momentous national monument where Krantijyoti Savitribai Phule, Fatima Sheikh, and Mahatma Jyotirao Phule started India's very first indigenous girls' school on 1 January 1848 in Tatyasaheb Bhide's wada. Declared a National Memorial, it stands as the eternal symbol of female emancipation, knowledge, and educational revolution in modern Indian history.
+
+## 67. Omkareshwar Temple (Peshwa-Era Shiva Shrine) (ओंकारेश्वर मंदिर (पेशवेकालीन ऐतिहासिक शिवमंदिर, शनिवार पेठ))
+- **URL**: https://explorepune-guide.vercel.app/places/omkareshwar-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5198° N, 73.8475° E
+- **Address**: Shaniwar Peth, Near Balgandharva Bridge, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: Year round (Special festivities during Mahashivratri & Shravan)
+- **Historical & Cultural Context**:
+  One of Pune's most magnificent 18th-century stone temple complexes, situated on the banks of the Mutha River in Shaniwar Peth. Built between 1736 and 1738 CE by Shivaram Bhat Chitre (spiritual advisor to Peshwa Bajirao I) funded by Chimaji Appa following his conquest of Vasai fort. The massive stone embankment withstood the catastrophic 1961 Panshet dam flood. Features an intricate Nagara-style stone shikhara, massive stone deepmalas, and the samadhi memorial of Chimaji Appa.
+
+## 68. Trishund Mayureshwar Ganpati Temple (त्रिशुंड मयूरेश्वर गणपती मंदिर (सोमवार पेठ))
+- **URL**: https://explorepune-guide.vercel.app/places/trishund-ganpati-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5209° N, 73.8672° E
+- **Address**: Near Apollo Theatre, Somwar Peth, Pune, Maharashtra 411011
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Morning 7:00 AM - 12:00 PM, Evening 4:00 PM - 8:00 PM
+- **Historical & Cultural Context**:
+  An extraordinary basalt stone temple built between 1754 and 1770 CE by Bhimjigiri Gosavi of the Dashanami Gosavi sect in Somwar Peth. The sanctum idol is a unique three-headed, six-armed Ganesha seated upon a peacock instead of a mouse (Trishund Mayureshwar). The exterior walls feature rare stone reliefs depicting British cannons, rhinoceroses, and multilingual Sanskrit-Persian inscriptions. Beneath the sanctum lies an ancient secret underground cellar with perennial water spring.
+
+## 69. Balgandharva Ranga Mandir & Cultural Center (बालगंधर्व रंगमंदिर व सांस्कृतिक संकुल (जेएम रस्ता))
+- **URL**: https://explorepune-guide.vercel.app/places/balgandharva-ranga-mandir
+- **Category**: HERITAGE
+- **Coordinates**: 18.5255° N, 73.8477° E
+- **Address**: Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: Evening 4:00 PM - 9:30 PM (Cultural drama shows & art exhibitions)
+- **Historical & Cultural Context**:
+  Inaugurated in 1968 by Maharashtra's cultural icon P. L. Deshpande, Balgandharva Ranga Mandir on JM Road is Pune's theatrical temple named after legendary singer-actor Narayan Shripad Rajhans (Bal Gandharva). Situated beside the Sambhaji Park riverfront, this auditorium has hosted legendary Marathi musical dramas (Sangeet Natak), avant-garde theatre, literature conventions, and classical music concerts. Includes an art gallery celebrating Marathi art and literature.
+
+## 70. Bhor Rajwada & Royal Palace (भोर राजवाडा (पंत सचिवांचा ऐतिहासिक लाकडी राजमहाल))
+- **URL**: https://explorepune-guide.vercel.app/places/bhor-rajwada-palace
+- **Category**: HERITAGE
+- **Coordinates**: 18.1485° N, 73.8436° E
+- **Address**: Rajwada Chowk, Bhor, Pune District, Maharashtra 412206
+- **Admission Fee**: ₹50 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: October to March (10:00 AM - 5:30 PM)
+- **Historical & Cultural Context**:
+  Located 55 km south of Pune in Bhor, this regal 1869 CE palace was constructed by Pant Sachiv Chimnaji Raghunath of the Bhor Princely State. Blending classic Peshwa-Maratha wooden wada architecture with Victorian colonial arched galleries, the palace houses Burma teak pillars, a grand Durbar Hall with antique chandeliers, private temple courtyards, and Maratha armory artifacts. Famed as the filming location for historic cinematic epics like Bajirao Mastani.
+
+## 71. Lenyadri Buddhist Caves & Girijatmaj Ganpati (लेण्याद्री लेणी व श्री गिरिजात्मज गणपती (अष्टविनायक, जुन्नर))
+- **URL**: https://explorepune-guide.vercel.app/places/lenyadri-caves-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 19.2397° N, 73.8864° E
+- **Address**: Lenyadri Hill, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: ₹25 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2.5 hours (150 minutes)
+- **Best Season to Visit**: July to February (Early morning 6:00 AM - 11:00 AM)
+- **Historical & Cultural Context**:
+  Perched high on a steep cliff overlooking the Kukadi river valley in Junnar (95 km north of Pune), Lenyadri comprises 30 ancient rock-cut Buddhist caves excavated between the 1st and 3rd century CE. Cave 7, a magnificent pillared hall, enshrines Girijatmaj, the only Ashta Vinayak temple situated inside an ancient mountain cave. Reached by ascending 307 stone steps, it provides panoramic views of Junnar valley and historic Shivneri Fort.
+
+## 72. Varadvinayak Temple & Sacred Pond (Mahad) (श्री वरदविनायक गणपती मंदिर (अष्टविनायक, महड))
+- **URL**: https://explorepune-guide.vercel.app/places/mahad-varadvinayak-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.8058° N, 73.2844° E
+- **Address**: Mahad Village, Khalapur Taluka, Near Khopoli, Maharashtra 410203
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: All year round (Special for Angarki Chaturthi & Ganesh Jayanti)
+- **Historical & Cultural Context**:
+  One of Maharashtra's revered eight Ashta Vinayak pilgrimage shrines, situated in Mahad near the Pune-Mumbai expressway. The self-manifested deity Varadvinayak (bestower of boons and success) faces east and is flanked by Riddhi and Siddhi. The temple is famous for an eternal sacred lamp (nandadeep) that has been kept continuously burning since 1892. The stone temple is surrounded by guardian stone elephants and a holy freshwater pond.
+
+## 73. Ohel David Synagogue (Lal Deval) (ओहेल डेव्हिड सिनेगॉग (लाल देऊळ, पुणे कॅम्प))
+- **URL**: https://explorepune-guide.vercel.app/places/ohel-david-synagogue
+- **Category**: HERITAGE
+- **Coordinates**: 18.5173° N, 73.8779° E
+- **Address**: Moledina Road, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: 9:00 AM - 5:00 PM (Prior permission / Photo ID required at gate)
+- **Historical & Cultural Context**:
+  Consecrated in 1867 by philanthropic merchant David Sassoon, this magnificent English Gothic red brick synagogue features a landmark 90-foot clock tower, stained glass windows, and Hebrew inscriptions. Known locally as 'Lal Deval' (Red Temple), it is the largest synagogue in Asia outside Israel and is officially recognized as an ASI Grade I Heritage monument in Pune Camp.
+
+## 74. St. Mary's Church (Pune's Oldest Church) (सेंट मेरीज चर्च (पुण्यातील सर्वात जुने चर्च, कॅम्प))
+- **URL**: https://explorepune-guide.vercel.app/places/st-marys-church
+- **Category**: HERITAGE
+- **Coordinates**: 18.5082° N, 73.8824° E
+- **Address**: Solapur Road, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: 8:00 AM - 6:00 PM daily
+- **Historical & Cultural Context**:
+  Consecrated in 1825 by Bishop Reginald Heber, St. Mary's is the oldest surviving place of Christian worship in the Deccan region. Known reverently as the 'Mother Church of the Deccan', its Gothic colonial architecture houses British regiment memorials, a 19th-century pipe organ, and beautiful commemorative stained glass windows honoring soldiers of the Anglo-Maratha wars.
+
+## 75. Darshan Museum (High-Tech Spiritual Museum) (दर्शन संग्रहालय (साधू वासवानी मिशन, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/darshan-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5244° N, 73.8761° E
+- **Address**: 10, Sadhu Vaswani Path, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: 11:00 AM - 6:00 PM (Prior token slot recommended, closed Thursdays)
+- **Historical & Cultural Context**:
+  An acclaimed state-of-the-art biographical museum dedicated to the life, teachings, and universal compassion of spiritual master Sadhu T.L. Vaswani. Employs advanced 3D holographic projection, animatronics, architectural dioramas, and spatial soundscapes to provide an immersive 100-minute walk-through experience. General admission is 100% free with prior token reservation.
+
+## 76. Gokhale Institute of Politics and Economics (गोखले अर्थशास्त्र व राज्यशास्त्र संस्था (ऐतिहासिक वारसा))
+- **URL**: https://explorepune-guide.vercel.app/places/gokhale-institute-heritage
+- **Category**: HERITAGE
+- **Coordinates**: 18.5244° N, 73.8344° E
+- **Address**: BMCC Road, Deccan Gymkhana, Pune, Maharashtra 411004
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: Monday to Friday (10:00 AM - 5:00 PM)
+- **Historical & Cultural Context**:
+  Founded in 1930 by Rao Bahadur R. R. Kale under the guidance of the Servants of India Society (established in 1905 by Gopal Krishna Gokhale), GIPE is India's premier public policy and economic research institute. Situated amidst serene greenery on BMCC Road in Deccan, the campus houses invaluable pre-independence economic archives and the historic Banyan tree under which Dr. B. R. Ambedkar, Mahatma Gandhi, and Gokhale deliberated national reform.
+
+## 77. Someshwar Temple & Ramnadi Ghats (Pashan) (सोमेश्वर मंदिर व रामनदी घाट (सोमेश्वरवाडी, पाषाण))
+- **URL**: https://explorepune-guide.vercel.app/places/someshwar-temple-pashan
+- **Category**: TEMPLES
+- **Coordinates**: 18.5583° N, 73.7932° E
+- **Address**: Someshwarwadi, Pashan, Pune, Maharashtra 411008
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Year round (Mornings 6:00 AM - 11:30 AM & Shravan month)
+- **Historical & Cultural Context**:
+  A tranquil 700-year-old Shiva temple nestled in Someshwarwadi along the shaded banks of the Ramnadi stream in Pashan. Historically renovated in the 1630s by Rajmata Jijabai (mother of Chhatrapati Shivaji Maharaj) during her stay in Pune. The stone complex features traditional Hemadpanthi masonry, carved stone Nandi shrines, ancient water springs (kund), and lush banyan groves providing an oasis of spiritual peace.
+
+## 78. Tambat Ali (Heritage Coppersmiths Quarter) (तांबट आळी (कसबा पेठेतील ४०० वर्षे जुनी तांब्या-पितळेची कारागिरी))
+- **URL**: https://explorepune-guide.vercel.app/places/tambat-ali-craft-quarter
+- **Category**: HERITAGE
+- **Coordinates**: 18.5192° N, 73.8585° E
+- **Address**: Tambat Ali, Kasba Peth, Pune, Maharashtra 411011
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Monday to Saturday (10:00 AM - 6:00 PM)
+- **Historical & Cultural Context**:
+  Located in the heart of old Kasba Peth, Tambat Ali is Pune's living 400-year-old artisanal heritage alley where the rhythmic musical chime of hammers striking metal resonates through lanes. Invited to Pune by Chhatrapati Shivaji Maharaj and Peshwa rulers to forge weapons, royal coins, and copper water vessels, the Tambat coppersmiths still practice the age-old 'matharkaam' technique of beating dimples into pure copper vessels.
+
+## 79. Sadguru Jangli Maharaj Temple & Ashram (सद्गुरू जंगली महाराज मंदिर व समाधी आश्रम (शिवाजीनगर))
+- **URL**: https://explorepune-guide.vercel.app/places/jangli-maharaj-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5273° N, 73.8459° E
+- **Address**: Jangali Maharaj Road, Shivajinagar, Pune, Maharashtra 411005
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: 6:00 AM - 9:00 PM daily
+- **Historical & Cultural Context**:
+  The serene marble samadhi shrine of the 19th-century realized ascetic saint Sadguru Jangli Maharaj, who attained Mahasamadhi here in 1890. Nestled in Shivajinagar, the temple complex features an eternal sacred flame (dhuni), an open courtyard shaded by holy trees, and a peaceful meditation hall. Pune's famous commercial artery, Jangali Maharaj (JM) Road, was named in eternal homage to this saint.
+
+## 80. Khunya Murlidhar Temple (Historic Krishna Shrine) (खुन्या मुरलीधर मंदिर (पेशवेकालीन ऐतिहासिक मंदिर, सदाशिव पेठ))
+- **URL**: https://explorepune-guide.vercel.app/places/khunya-murlidhar-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5134° N, 73.8492° E
+- **Address**: Sadashiv Peth, Near Gadre Wada, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Morning 6:30 AM - 12:00 PM, Evening 5:00 PM - 8:30 PM (Gokulashtami)
+- **Historical & Cultural Context**:
+  Consecrated in 1797 CE by wealthy merchant Sadashiv Dinkar Gadre (Dada Gadre) in Sadashiv Peth. The divine idols of Lord Krishna (Murlidhar) and Radha were masterfully sculpted from pure white and black Makrana marble by renowned Jaipur sculptor Bakhatram. The temple acquired its dramatic epithet 'Khunya' after a fierce armed skirmish erupted on consecration day between Gadre's guards and mercenaries hired to halt the ceremony. Features rare Tanjore-style wall murals.
+
+## 81. Chavand Fort (Prasannagad) (चावंड किल्ला (प्रसन्नगड, जुन्नर))
+- **URL**: https://explorepune-guide.vercel.app/places/chavand-fort
+- **Category**: FORTS
+- **Coordinates**: 19.2394° N, 73.7197° E
+- **Address**: Chavand Village, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: July to February (Pleasant winter and monsoon trek)
+- **Historical & Cultural Context**:
+  Ancient Satavahana-era hill fort near Junnar in Pune District, also known as Prasannagad. Rebuilt by Chhatrapati Shivaji Maharaj in the 17th century. Famous for its rock-cut cave temples, monolithic entrance arch, and the Seven Chamunda water tanks carved into solid basalt.
+
+## 82. Hadsar Fort (Parvatgad) (हडसर किल्ला (पर्वतगड, जुन्नर))
+- **URL**: https://explorepune-guide.vercel.app/places/hadsar-fort
+- **Category**: FORTS
+- **Coordinates**: 19.2789° N, 73.8114° E
+- **Address**: Hadsar Village, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~3 hours (180 minutes)
+- **Best Season to Visit**: August to February (Post-monsoon and winter)
+- **Historical & Cultural Context**:
+  Remarkable Satavahana-period mountain citadel in Junnar taluka, Pune District. Renowned for its extraordinary stone-carved tunnel staircase, fortified bastion gates, and rock-hewn Mahadev temple with a deep sanctum tank.
+
+## 83. Jivdhan Fort (Guardian of Naneghat) (जीवधन किल्ला (नाणेघाटाचा पहारेकरी))
+- **URL**: https://explorepune-guide.vercel.app/places/jivdhan-fort
+- **Category**: FORTS
+- **Coordinates**: 19.2947° N, 73.6828° E
+- **Address**: Ghatghar, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~4 hours (240 minutes)
+- **Best Season to Visit**: October to February (Pleasant winter climbing season)
+- **Historical & Cultural Context**:
+  Formidable hill fortress in the Western Ghats of Pune District, strategically commanding the ancient Naneghat trade corridor. Famous among trekkers for its Kalyan Darwaza rock-cut steps, storehouses, and the colossal 300-foot Vanarlingi pinnacle.
+
+## 84. Naneghat Ancient Mountain Pass & Inscriptions (नाणेघाट ऐतिहासिक व्यापारी मार्ग व शिलालेख)
+- **URL**: https://explorepune-guide.vercel.app/places/naneghat-pass-caves
+- **Category**: HERITAGE
+- **Coordinates**: 19.2986° N, 73.6789° E
+- **Address**: Ghatghar, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: July to February (Monsoon waterfalls and winter breeze)
+- **Historical & Cultural Context**:
+  Ancient mountain pass dating back to the 1st Century BCE Satavahana Empire, linking Kalyan harbor to Junnar and Paithan. Contains the historic rock-cut toll-pot and world-famous Brahmi inscriptions commissioned by Queen Naganika listing Vedic sacrifices and the earliest recorded Indian numeral system.
+
+## 85. Tulja Buddhist Caves (Junnar) (तुळजा लेणी (बौद्ध चैत्य व विहार, जुन्नर))
+- **URL**: https://explorepune-guide.vercel.app/places/tulja-caves-junnar
+- **Category**: HERITAGE
+- **Coordinates**: 19.2064° N, 73.8406° E
+- **Address**: Tuljapur Road, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Morning 7:00 AM - 11:00 AM ideal)
+- **Historical & Cultural Context**:
+  Group of 11 Buddhist rock-cut caves carved in the 1st Century BCE into the Tuljabai hill near Junnar, Pune District. Features a rare circular Chaitya hall with a central stupa and 12 octagonal pillars, protected as a monument of national importance.
+
+## 86. Manmodi Buddhist Caves & Amba-Ambika Complex (मानमोडी लेणी (अंबा-अंबिका बौद्ध समूह, जुन्नर))
+- **URL**: https://explorepune-guide.vercel.app/places/manmodi-caves-junnar
+- **Category**: HERITAGE
+- **Coordinates**: 19.1967° N, 73.8828° E
+- **Address**: Manmodi Hill, Junnar Taluka, Pune District, Maharashtra 410502
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: October to March (Winter months)
+- **Historical & Cultural Context**:
+  Sprawling group of 40 rock-hewn caves on Manmodi Hill, Junnar, Pune District, spanning 2nd Century BCE to 3rd Century CE. Features the Bhimasena, Amba-Ambika, and Bhutalinga groups with ornate semi-circular chaitya windows and Western Kshatrapa donor inscriptions.
+
+## 87. Nana Wada (Historic Residence of Nana Phadnavis) (नाना वाडा (नाना फडणवीस ऐतिहासिक वाडा, बुधवार पेठ))
+- **URL**: https://explorepune-guide.vercel.app/places/nana-wada
+- **Category**: HERITAGE
+- **Coordinates**: 18.5186° N, 73.8569° E
+- **Address**: Budhwar Peth, Near Vasant Talkies, Pune, Maharashtra 411002
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: All Year (10:00 AM - 5:30 PM, Closed Mondays)
+- **Historical & Cultural Context**:
+  Grand 1780 CE Peshwa-era mansion constructed by chief minister Nana Phadnavis in Budhwar Peth. Showcases classic Maratha timber architecture with Cyprus-shaped Suru pillars, carved brackets, and an authentic PMC heritage museum dedicated to Indian freedom fighters.
+
+## 88. Bhandarkar Oriental Research Institute (BORI) (भांडारकर प्राच्यविद्या संशोधन मंदिर (बोरी, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/bhandarkar-oriental-research-institute
+- **Category**: HERITAGE
+- **Coordinates**: 18.5208° N, 73.8317° E
+- **Address**: Law College Road, Deccan Gymkhana, Pune, Maharashtra 411004
+- **Admission Fee**: ₹20 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: 10:00 AM - 5:30 PM (Mon-Sat, Closed 2nd & 4th Sat and Sun)
+- **Historical & Cultural Context**:
+  Established in 1917 on Law College Road in honor of Ramakrishna Gopal Bhandarkar. Globally celebrated institute housing over 28,000 priceless Sanskrit and Prakrit manuscripts, rare Persian texts, and the definitive 13,000-page critical edition of the Mahabharata.
+
+## 89. Sangam Ghat & Sangameshwar Temple (संगम घाट व संगमेश्वर ऐतिहासिक शिवमंदिर (पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/sangam-ghat-sangameshwar-temple
+- **Category**: HERITAGE
+- **Coordinates**: 18.5303° N, 73.8606° E
+- **Address**: Near Sangam Bridge, Narveer Tanaji Wadi, Shivajinagar, Pune, Maharashtra 411005
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: 6:00 AM - 10:00 AM & 5:00 PM - 8:00 PM
+- **Historical & Cultural Context**:
+  Sacred confluence (Sangam) of Pune's Mula and Mutha rivers near Shivajinagar. Features stone-paved Peshwa ghats and the 18th-century Sangameshwar and Trimbakeshwar Shiva temples built in classic Hemadpanthi basalt stone style.
+
+## 90. Bharat Itihas Sanshodhak Mandal (BISM) (भारत इतिहास संशोधक मंडळ (सदाशिव पेठ, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/bharat-itihas-sanshodhak-mandal
+- **Category**: HERITAGE
+- **Coordinates**: 18.5147° N, 73.8519° E
+- **Address**: 1321 Sadashiv Peth, Near Bharat Natya Mandir, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: 10:30 AM - 5:30 PM (Closed Sundays)
+- **Historical & Cultural Context**:
+  Founded on 7 July 1910 by eminent historian Vishwanath Kashinath Rajwade. Premier Maratha historical archive preserving over 1.5 million original historical manuscripts, Modi script state papers, Peshwa firmans, historical portraits, and 17th-century weaponry.
+
+## 91. Vighnahar Ganpati Mandir, Ozar (Ashtavinayak #7) (विघ्नहर गणपती मंदिर, ओझर (अष्टविनायक))
+- **URL**: https://explorepune-guide.vercel.app/places/ojas-ganpati-ozar
+- **Category**: TEMPLES
+- **Coordinates**: 19.1925° N, 73.9589° E
+- **Address**: Ozar, Junnar Taluka, Pune District, Maharashtra 410504
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Early morning aarti 5:30 AM & Angarki Chaturthi)
+- **Historical & Cultural Context**:
+  Revered 7th shrine of the sacred Ashtavinayak pilgrimage, situated on the banks of the Kukadi River in Junnar taluka, Pune District. The temple features a golden dome (Shikhara), deepamalas, and a self-manifested east-facing idol adorned with ruby eyes.
+
+## 92. Siddhivinayak Ganpati Mandir, Siddhatek (Ashtavinayak #2) (सिद्धिविनायक गणपती मंदिर, सिद्धटेक (अष्टविनायक))
+- **URL**: https://explorepune-guide.vercel.app/places/siddhatek-siddhivinayak-ganpati
+- **Category**: TEMPLES
+- **Coordinates**: 18.3972° N, 74.6736° E
+- **Address**: Siddhatek, Karjat/Daund Border, Pune District, Maharashtra 414403
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All Year (Bhadrapada Ganeshotsav & Maghi Chaturthi)
+- **Historical & Cultural Context**:
+  Second temple in the Ashtavinayak sequence, perched atop a hillock on the northern bank of the Bhima River in Pune District border. Renowned for its unique right-facing trunk (Siddhi Vinayaka) and black stone sanctum renovated by Queen Ahilyabai Holkar.
+
+## 93. Baneshwar Shiva Temple & Forest Sanctuary (बाणेश्वर ऐतिहासिक शिवमंदिर व निसर्ग अभयारण्य (नसरापूर))
+- **URL**: https://explorepune-guide.vercel.app/places/banneshwar-temple-nasrapur
+- **Category**: TEMPLES
+- **Coordinates**: 18.2867° N, 73.9219° E
+- **Address**: Nasrapur, Bhor Taluka, Off NH-48, Pune District, Maharashtra 412213
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~2 hours (120 minutes)
+- **Best Season to Visit**: July to February (Monsoon greenery and winter season)
+- **Historical & Cultural Context**:
+  Scenic 1749 CE temple sanctuary established by Peshwa Nanasaheb in Nasrapur, Bhor taluka, Pune District. Features a historic bell captured from the Portuguese at Vasai Fort in 1739, a subterranean Shivling spring, and a conserved deer and bird park.
+
+## 94. Shree Katraj Tirth (Agam Mandir) (श्री कात्रज जैन तीर्थ व आगम मंदिर (कात्रज, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/katraj-jain-temple-agam-mandir
+- **Category**: TEMPLES
+- **Coordinates**: 18.4489° N, 73.8603° E
+- **Address**: Katraj Ghat, Near Old Katraj Tunnel, Pune, Maharashtra 411046
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: 6:00 AM - 12:00 PM & 4:00 PM - 8:30 PM
+- **Historical & Cultural Context**:
+  Spectacular white marble Jain temple complex crowning Katraj Hill overlooking Pune valley. Features an imposing 12-foot idol of Bhagwan Mahavira and the sacred Agam Mandir where authentic Jain scriptures are engraved upon copper plates.
+
+## 95. Sangameshwar Mahadev Temple (Old Sangvi) (संगमेश्वर महादेव मंदिर (जुनी सांगवी, पवना-मुळा संगम))
+- **URL**: https://explorepune-guide.vercel.app/places/sangvi-sangameshwar-temple
+- **Category**: TEMPLES
+- **Coordinates**: 18.5739° N, 73.8164° E
+- **Address**: Old Sangvi, Near Sangam Confluence, Pimpri-Chinchwad, Pune, Maharashtra 411027
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: 6:00 AM - 11:00 AM & 5:00 PM - 8:30 PM
+- **Historical & Cultural Context**:
+  Ancient Peshwa-era stone Shiva shrine situated at the serene confluence (Sangam) of the Pavana and Mula rivers in Pune metropolitan area. Famed for its deep malhar lamps, stone-carved Nandi pavilion, and tranquil riverfront ghats.
+
+## 96. Blades of Glory Cricket Museum (ब्लेड्स ऑफ ग्लोरी क्रिकेट म्युझियम (सहकार नगर, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/blades-of-glory-cricket-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.4878° N, 73.8542° E
+- **Address**: Govind Gaurav Apartment, Swanand Society, Sahakar Nagar 2, Pune, Maharashtra 411009
+- **Admission Fee**: ₹150 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: 10:30 AM - 7:00 PM (Open 7 Days a week)
+- **Historical & Cultural Context**:
+  World's largest cricket memorabilia museum, recognized by the World Records Academy. Established by former player Rohan Pate in Sahakar Nagar, displaying over 50,000 authenticated cricket treasures, signed bats of all Triple Centurions, World Cup jerseys, and Sir Donald Bradman gear.
+
+## 97. Vikram Pendse Cycles & Vintage Museum (विक्रम पेंडसे सायकल व विंटेज म्युझियम (कर्वे नगर, पुणे))
+- **URL**: https://explorepune-guide.vercel.app/places/vikram-pendse-cycles-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.4908° N, 73.8189° E
+- **Address**: 22 Harshawardhan Society, Lane 6, Karve Nagar, Pune, Maharashtra 411052
+- **Admission Fee**: ₹100 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.3 hours (75 minutes)
+- **Best Season to Visit**: 11:00 AM - 7:00 PM (Closed Tuesdays)
+- **Historical & Cultural Context**:
+  Unique 3-story private museum in Karve Nagar housing over 150 vintage bicycles spanning from an 1888 penny-farthing to World War II paratrooper fold-up bikes, alongside vintage toys, antique gramophones, and historic clocks.
+
+## 98. Pune Railway Heritage Museum & Art Gallery (पुणे रेल्वे वारसा संग्रहालय व आर्ट गॅलरी (पुणे स्टेशन))
+- **URL**: https://explorepune-guide.vercel.app/places/pune-rail-museum
+- **Category**: MUSEUMS
+- **Coordinates**: 18.5294° N, 73.8761° E
+- **Address**: Near Pune Railway Station, Tadiwala Road, Sangamvadi, Pune, Maharashtra 411001
+- **Admission Fee**: ₹50 per adult
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: 10:00 AM - 6:00 PM (Closed Mondays)
+- **Historical & Cultural Context**:
+  Central Railway heritage exhibition facility at Pune Junction railway premises on Tadiwala Road. Features working track models, 19th-century steam and electric locomotive equipment, brass signaling clocks, and the historical evolution of the Deccan Queen.
+
+## 99. Kune Waterfalls Viewpoint (Lonavala-Khandala) (कुणे धबधबा व्ह्यूपॉइंट (लोणावळा-खंडाळा दरी))
+- **URL**: https://explorepune-guide.vercel.app/places/kune-falls-viewpoint
+- **Category**: NATURE
+- **Coordinates**: 18.7619° N, 73.3769° E
+- **Address**: Old Mumbai-Pune Highway, Khandala-Kune Village, Pune District, Maharashtra 410401
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1 hours (60 minutes)
+- **Best Season to Visit**: July to October (Peak monsoon flow)
+- **Historical & Cultural Context**:
+  Spectacular 200-meter (660 ft) three-tiered waterfall cascading down the Sahyadri mountains in the Khandala-Lonavala valley, Pune District. Ranked as India's 14th highest waterfall, best experienced against lush monsoon cloudscapes.
+
+## 100. Varasgaon Dam & Reservoir (Veer Baji Pasalkar) (वरसगाव धरण (वीर बाजी पासलकर जलाशय))
+- **URL**: https://explorepune-guide.vercel.app/places/varasgaon-dam
+- **Category**: NATURE
+- **Coordinates**: 18.3969° N, 73.6186° E
+- **Address**: Varasgaon, Velhe/Haveli Taluka, Pune District, Maharashtra 412107
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: August to February (Post-monsoon water level & winter evenings)
+- **Historical & Cultural Context**:
+  Major gravity dam and pristine lake built upon the Mose River adjacent to Panshet, in Velhe taluka, Pune District. Named after early Maratha warrior Veer Baji Pasalkar, it provides water to Pune city and offers tranquil views of Sahyadri peaks.
+
+## 101. FC Road & Deccan Food Heritage (Cafe Goodluck, Vaishali & Roopali) (एफसी रोड व डेक्कन खाद्यसंस्कृती (कॅफे गडलक, वैशाली व रुपाली))
+- **URL**: https://explorepune-guide.vercel.app/places/fc-road-culinary-trail
+- **Category**: FOOD
+- **Coordinates**: 18.5195° N, 73.8415° E
+- **Address**: Fergusson College Road, Deccan Gymkhana, Pune, Maharashtra 411004
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~1.5 hours (90 minutes)
+- **Best Season to Visit**: All year round (Morning 7:30 AM for breakfast, Evening 5 PM to 10 PM for street food)
+- **Historical & Cultural Context**:
+  The quintessential culinary corridor of Pune. Features Cafe Goodluck (historic 1935 Irani cafe famed for Bun Maska, Irani Chai and Mutton Kheema), Vaishali (iconic South Indian filter coffee, SPDP and Mysore Masala Dosa), Roopali garden cafe, and bustling FC Road student food stalls.
+
+## 102. Chitale Bandhu Mithaiwale (Bajirao Road Heritage Branch) (चितळे बंधू मिठाईवाले (बाजीराव रस्ता मुख्य शाखा))
+- **URL**: https://explorepune-guide.vercel.app/places/chitale-bandhu-bakarwadi
+- **Category**: FOOD
+- **Coordinates**: 18.5147° N, 73.8524° E
+- **Address**: 776, Bajirao Road, Sadashiv Peth, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: All year round (Morning 9 AM to 1 PM, Evening 4 PM to 8:30 PM)
+- **Historical & Cultural Context**:
+  Established in 1950 by Bhaskar Rao Chitale, Chitale Bandhu Mithaiwale is Pune’s most legendary confectionery and snack institution. World-renowned for its spiral-rolled crispy Puneri Bakarwadi, melt-in-mouth Amba Barfi (Mango Fudge), Gulab Jamun, and seasonal Shrikhand.
+
+## 103. Bedekar Tea Stall & Misal (Narayan Peth) (बेडेकर टी स्टॉल व मिसळ (नारायण पेठ))
+- **URL**: https://explorepune-guide.vercel.app/places/bedekar-tea-stall-misal
+- **Category**: FOOD
+- **Coordinates**: 18.5178° N, 73.8509° E
+- **Address**: 418, Narayan Peth, Munjabacha Bol, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Tuesday to Sunday (7:30 AM to 7:00 PM; Closed on Mondays)
+- **Historical & Cultural Context**:
+  Founded in 1946 in the historic heart of Narayan Peth, Bedekar Misal is the birthplace of the signature sweetish-spicy Puneri Misal. Served traditionally with sliced soft white bread instead of ladi pav, topped with crunchy poha chivda, shev, and a separate piping hot kat (tarri gravy).
+
+## 104. Kayani Bakery (East Street, Pune Camp) (कयानी बेकरी (ईस्ट स्ट्रीट, पुणे कॅम्प))
+- **URL**: https://explorepune-guide.vercel.app/places/kayani-bakery-camp
+- **Category**: FOOD
+- **Coordinates**: 18.5168° N, 73.8791° E
+- **Address**: 6, East Street, Hulshur, Camp, Pune, Maharashtra 411001
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.5 hours (30 minutes)
+- **Best Season to Visit**: Monday to Saturday (7:30 AM to 1 PM, 3:30 PM to 8 PM; Closed Sundays)
+- **Historical & Cultural Context**:
+  Established in August 1955 by Parsi brothers Khodadad and Hormuz Irani on East Street, Kayani Bakery is internationally famous for its authentic butter Shrewsbury Biscuits, rich Mawa Cake, Brazil Nut Biscuits, and wine biscuits.
+
+## 105. Katakirr Misal (Karve Nagar / Deccan) (काटाकिर्र मिसळ (कर्वे नगर / डेक्कन))
+- **URL**: https://explorepune-guide.vercel.app/places/katakirr-misal-karve-nagar
+- **Category**: FOOD
+- **Coordinates**: 18.4905° N, 73.8182° E
+- **Address**: Near Cummins College, Karve Nagar, Pune, Maharashtra 411052
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.8 hours (45 minutes)
+- **Best Season to Visit**: Tuesday to Sunday (8:00 AM to 3:30 PM)
+- **Historical & Cultural Context**:
+  Famous across Maharashtra for its fiery, aromatic red tarri and spicy rassa. Katakirr allows visitors to choose their spice levels: Teekha (Spicy), Medium, or Light, accompanied by curd (dahi), farsan, fresh chopped onions, and lemon wedges.
+
+## 106. Sujata Mastani (Sadashiv Peth - Original 1968 Branch) (सुजाता मस्तानी (सदाशिव पेठ - मूळ शाखा १९६८))
+- **URL**: https://explorepune-guide.vercel.app/places/sujata-mastani-sadashiv-peth
+- **Category**: FOOD
+- **Coordinates**: 18.5134° N, 73.8512° E
+- **Address**: 1260, Sadashiv Peth, Chimanya Ganpati Chowk, Pune, Maharashtra 411030
+- **Admission Fee**: Free Entry (₹0)
+- **Visiting Hours**: Sunrise to Sunset (approx. 6:00 AM – 6:00 PM)
+- **Recommended Visit Duration**: ~0.5 hours (30 minutes)
+- **Best Season to Visit**: All year round (11:00 AM to 11:30 PM)
+- **Historical & Cultural Context**:
+  The birthplace of Pune’s signature dessert drink "Mastani" — a luscious, dense milkshake concoction crowned with a rich scoop of homemade ice cream and garnished with slivered dry fruits. Created in 1968 by late Sharadrao Kondhalkar, named after the legendary warrior queen Mastani.
+

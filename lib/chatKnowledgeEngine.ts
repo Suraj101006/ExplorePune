@@ -934,10 +934,16 @@ export function generateTailoredItinerary(
         ? `~${travelMin} मिनिटे (${distKm} किमी मागील ठिकाणावरून)`
         : `~${travelMin} min transit (${distKm} km from previous stop)`;
 
+    const interestReason = wantsHistory ? (isMr ? 'ऐतिहासिक वारसा' : 'historical interest') : wantsTemples ? (isMr ? 'धार्मिक व अध्यात्मिक' : 'spiritual & temple interest') : (isMr ? 'निसर्गरम्य परिसर' : 'nature & scenic interest');
+    const whyRecommended = isMr
+      ? `${hub.nameMr} पासून जवळ (${distKm} किमी), आपल्या ${interestReason} प्राधान्याशी सुसंगत आणि ${hours} तासांच्या वेळेत योग्य बसणारे.`
+      : `Close to ${hub.nameEn} (${distKm} km), matches your ${interestReason} preference, and fits your ${hours}-hour available time.`;
+
     stopsBreakdown.push(
       `${idx + 1}. ${categoryIcon} **[${name}](/places/${p.slug})**\n` +
       `   • ${isMr ? 'प्रवास:' : 'Travel:'} ${transitNote}\n` +
-      `   • ${isMr ? 'भेट वेळ:' : 'Sightseeing:'} ~${visitMin} ${isMr ? 'मि.' : 'min'} (${isMr ? 'प्रवेश:' : 'Entry:'} ${p.fee_status === 'free' ? (isMr ? 'मोफत' : 'Free ₹0') : `₹${p.entry_fee || 25}`})`
+      `   • ${isMr ? 'भेट वेळ:' : 'Sightseeing:'} ~${visitMin} ${isMr ? 'मि.' : 'min'} (${isMr ? 'प्रवेश:' : 'Entry:'} ${p.fee_status === 'free' ? (isMr ? 'मोफत' : 'Free ₹0') : `₹${p.entry_fee || 25}`})\n` +
+      `   • 💡 ${isMr ? 'शिफारसीचे कारण:' : 'Why recommended:'} ${whyRecommended}`
     );
   });
 
