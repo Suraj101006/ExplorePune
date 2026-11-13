@@ -32,7 +32,7 @@ export default function BrandLogo({
   style,
   badgeBackground = '#ffffff',
   badgeBorderRadius = '50%',
-  zoom = 1.08,
+  zoom = 1.22,
 }: BrandLogoProps) {
   const imageElement = (
     <Image

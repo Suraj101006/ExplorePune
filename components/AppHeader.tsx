@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   Users,
+  HelpCircle,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
@@ -43,6 +44,11 @@ export default function AppHeader() {
     { href: '/milestones', label: t('nav.milestones'), Icon: Award },
     { href: '/blogs', label: t('nav.blogs'), Icon: BookOpen },
     { href: '/about', label: t('nav.about'), Icon: Info },
+  ];
+
+  const mobileNavLinks = [
+    ...navLinks,
+    { href: '/help/website-guide', label: isMr ? 'मार्गदर्शिका' : 'Website Guide', Icon: HelpCircle },
   ];
 
   const isLinkActive = (href: string) => {
@@ -102,6 +108,33 @@ export default function AppHeader() {
             <AuthNav />
           </div>
 
+          {/* Interactive Website Guide / Handbook Link */}
+          <div className="nav-util-item hide-on-mobile hide-on-compact-desktop">
+            <Link
+              href="/help/website-guide"
+              className={`nav-guide-link ${isLinkActive('/help') ? 'active-nav-link' : ''}`}
+              title={isMr ? 'वेबसाइट मार्गदर्शिका (Website Guide)' : 'Interactive Website Guide & Explorer Handbook'}
+              aria-label="Website Guide"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '6px 10px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '12.5px',
+                fontWeight: 650,
+                textDecoration: 'none',
+                color: isLinkActive('/help') ? 'var(--primary)' : 'var(--ink-secondary)',
+                border: '1px solid var(--line)',
+                background: isLinkActive('/help') ? 'var(--primary-light)' : 'transparent',
+                transition: 'all 0.18s ease',
+              }}
+            >
+              <HelpCircle size={14} strokeWidth={2.2} />
+              <span>{isMr ? 'मार्गदर्शिका' : 'Guide'}</span>
+            </Link>
+          </div>
+
           {/* Saved Places Wishlist Drawer */}
           <div className="nav-util-item">
             <SavedPlacesDrawer />
@@ -151,7 +184,7 @@ export default function AppHeader() {
 
           {/* Navigation Links */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {navLinks.map((item) => {
+            {mobileNavLinks.map((item) => {
               const active = isLinkActive(item.href);
               const { Icon } = item;
               return (
