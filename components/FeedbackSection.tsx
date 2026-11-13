@@ -341,7 +341,8 @@ export default function FeedbackSection() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: '#ffffff',
+              background: 'var(--card)',
+              color: 'var(--ink)',
               borderRadius: 'var(--radius)',
               maxWidth: 480,
               width: '100%',
@@ -369,11 +370,11 @@ export default function FeedbackSection() {
               ✓
             </div>
 
-            <h3 style={{ margin: '0 0 10px', fontSize: 20, color: '#065f46', fontWeight: 800 }}>
+            <h3 style={{ margin: '0 0 10px', fontSize: 20, color: 'var(--primary)', fontWeight: 800 }}>
               {isMr ? 'आपल्या बहुमोल मतासाठी मनःपूर्वक धन्यवाद! 🙏' : 'Thank You for Your Valuable Feedback! 🙏'}
             </h3>
 
-            <p style={{ fontSize: 14.5, color: '#334155', lineHeight: 1.6, margin: '0 0 16px' }}>
+            <p style={{ fontSize: 14.5, color: 'var(--ink-secondary)', lineHeight: 1.6, margin: '0 0 16px' }}>
               {isMr
                 ? 'एक्सप्लोर पुणे अधिक समृद्ध आणि परिपूर्ण बनवण्यासाठी आपल्या विचारपूर्वक दिलेल्या सूचनेचा आम्ही मनापासून आदर करतो. आपली नोंद सुरक्षितपणे जतन करण्यात आली आहे.'
                 : 'We truly appreciate you taking the time to share your feedback and suggestions. Your input is vital in making Explore Pune better and more verified for everyone visiting Pune.'}

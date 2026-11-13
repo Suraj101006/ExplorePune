@@ -179,4 +179,39 @@ describe('Dark and Light Theme Toggle & Shortcut Key Engine', () => {
   it('uses standard storage key for cross-tab theme persistence', () => {
     expect(THEME_STORAGE_KEY).toBe('punetrail_theme');
   });
+
+  describe('Dark Mode Text Visibility & Component Theming Invariants', () => {
+    const fs = require('node:fs');
+    const path = require('node:path');
+    const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
+
+    it('enforces dark mode input styling with !important to prevent white-on-white text rendering', () => {
+      expect(globalsCss).toContain('background-color: #131d31 !important;');
+      expect(globalsCss).toContain('color: #f8fafc !important;');
+      expect(globalsCss).toContain('border-color: #334155 !important;');
+    });
+
+    it('enforces universal heading protection in dark mode so headings are never invisible', () => {
+      expect(globalsCss).toContain('html.dark h1:not([class*="gradient"])');
+      expect(globalsCss).toContain('color: var(--ink) !important;');
+    });
+
+    it('provides high-specificity CSS overrides for hardcoded dark inline text colors', () => {
+      expect(globalsCss).toContain('html.dark [style*="color: #0f172a"]');
+      expect(globalsCss).toContain('html.dark [style*="color: #1e293b"]');
+      expect(globalsCss).toContain('html.dark [style*="color: #334155"]');
+      expect(globalsCss).toContain('[data-theme="dark"] [style*="color: #0f172a"]');
+    });
+
+    it('provides high-specificity CSS overrides for hardcoded white backgrounds in dark mode', () => {
+      expect(globalsCss).toContain('html.dark [style*="background: #ffffff"]');
+      expect(globalsCss).toContain('background: var(--card) !important;');
+    });
+
+    it('guarantees SavedPlacesDrawer uses dynamic var(--card) and var(--ink) instead of fixed white', () => {
+      const drawerFile = fs.readFileSync(path.resolve(__dirname, '../components/SavedPlacesDrawer.tsx'), 'utf8');
+      expect(drawerFile).toContain("background: 'var(--card)'");
+      expect(drawerFile).toContain("color: 'var(--ink)'");
+    });
+  });
 });

@@ -122,8 +122,9 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
             padding: '52px 24px',
             textAlign: 'center',
             borderRadius: 20,
-            background: '#ffffff',
-            border: '1.5px dashed #cbd5e1',
+            background: 'var(--card)',
+            color: 'var(--ink)',
+            border: '1.5px dashed var(--line)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -145,7 +146,7 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
             <Film size={30} />
           </div>
           <div>
-            <h4 style={{ fontSize: 17, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+            <h4 style={{ fontSize: 17, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
               {isMr ? 'अद्याप कोणतेही रील तयार केलेले नाही' : 'No cinematic reels created yet'}
             </h4>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b', maxWidth: 440 }}>
@@ -191,8 +192,9 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
                 key={item.id || idx}
                 style={{
                   borderRadius: 18,
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  background: 'var(--card)',
+                  color: 'var(--ink)',
+                  border: '1px solid var(--line)',
                   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
                   overflow: 'hidden',
                   display: 'flex',
@@ -286,7 +288,7 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
                 {/* Content Details */}
                 <div style={{ padding: '14px 16px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 10 }}>
                   <div>
-                    <h4 style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+                    <h4 style={{ fontSize: 15, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
                       {isMr && item.titleMr ? item.titleMr : item.title}
                     </h4>
 
@@ -370,11 +372,13 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
             <div
               style={{
                 width: 'min(92vw, 400px)',
-                background: '#ffffff',
+                background: 'var(--card)',
+                color: 'var(--ink)',
                 borderRadius: 18,
                 padding: '24px',
                 margin: 'auto',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                border: '1px solid var(--line)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 16,
@@ -398,7 +402,7 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
                   <Trash2 size={20} />
                 </div>
                 <div>
-                  <h4 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#0f172a' }}>
+                  <h4 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--ink)' }}>
                     {isMr ? 'व्हिडिओ रील हटवायचे आहे का?' : 'Delete Travel Reel?'}
                   </h4>
                   <p style={{ margin: '2px 0 0', fontSize: 12.5, color: '#64748b' }}>
@@ -414,9 +418,9 @@ export default function ReelLibraryTab({ onPlayReel, onOpenCreateReel, userId }:
                   style={{
                     padding: '8px 16px',
                     borderRadius: 8,
-                    border: '1px solid #cbd5e1',
-                    background: '#ffffff',
-                    color: '#475569',
+                    border: '1px solid var(--line)',
+                    background: 'var(--line-light)',
+                    color: 'var(--ink)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',

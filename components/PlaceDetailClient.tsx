@@ -941,7 +941,7 @@ export default function PlaceDetailClient({
                   style={{
                     fontSize: 15,
                     fontWeight: 800,
-                    color: '#0f172a',
+                    color: 'var(--ink)',
                     margin: '0 0 14px',
                     display: 'flex',
                     alignItems: 'center',
@@ -960,9 +960,9 @@ export default function PlaceDetailClient({
               style={{
                 marginTop: 20,
                 padding: '18px 20px',
-                background: '#f8fafc',
+                background: 'var(--line-light)',
                 borderRadius: 12,
-                border: '1.5px solid #e2e8f0',
+                border: '1.5px solid var(--line)',
               }}
             >
               <div
@@ -974,16 +974,16 @@ export default function PlaceDetailClient({
                   gap: 8,
                   marginBottom: 12,
                   paddingBottom: 10,
-                  borderBottom: '1px solid #e2e8f0',
+                  borderBottom: '1px solid var(--line)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ fontSize: 20 }}>🛡️</span>
                   <div>
-                    <strong style={{ fontSize: 14.5, color: '#0f172a' }}>
+                    <strong style={{ fontSize: 14.5, color: 'var(--ink)' }}>
                       {isMr ? 'सत्यापित पर्यटन माहिती' : 'Verified Information'}
                     </strong>
-                    <div style={{ fontSize: 12, color: '#64748b' }}>
+                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>
                       {isMr
                         ? 'शासकीय व अधिकृत संस्थांद्वारे प्रमाणित तथ्ये'
                         : 'Source-backed data curated from authoritative heritage records'}
@@ -1011,9 +1011,9 @@ export default function PlaceDetailClient({
                       fontWeight: 700,
                       padding: '3px 10px',
                       borderRadius: 999,
-                      background: '#f1f5f9',
-                      color: '#334155',
-                      border: '1px solid #cbd5e1',
+                      background: 'var(--card)',
+                      color: 'var(--ink-secondary)',
+                      border: '1px solid var(--line)',
                     }}
                   >
                     ✓ {isMr ? authenticity.confidenceLabelMr : authenticity.confidenceLabelEn}
@@ -1135,7 +1135,7 @@ export default function PlaceDetailClient({
                 }}
               >
                 <div>
-                  <strong style={{ color: '#1e293b' }}>
+                  <strong style={{ color: 'var(--ink)' }}>
                     {isMr ? 'अधिकृत संदर्भ (Sources):' : 'Sources:'}
                   </strong>{' '}
                   <span>
@@ -1146,9 +1146,9 @@ export default function PlaceDetailClient({
                       : 'Archaeological Survey of India (ASI) • Maharashtra Tourism (MTDC) • PMC Heritage'}
                   </span>
                 </div>
-                <div style={{ color: '#64748b', fontSize: 11.5 }}>
+                <div style={{ color: 'var(--muted)', fontSize: 11.5 }}>
                   {isMr ? 'अंतिम पडताळणी:' : 'Last verified:'}{' '}
-                  <strong style={{ color: '#334155' }}>
+                  <strong style={{ color: 'var(--ink)' }}>
                     {place.verification?.lastChecked || authenticity.lastVerified || '23 October 2026'}
                   </strong>
                 </div>
@@ -1688,7 +1688,7 @@ export default function PlaceDetailClient({
                 style={{
                   fontSize: 13,
                   fontWeight: 700,
-                  color: '#1e293b',
+                  color: 'var(--ink)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6,

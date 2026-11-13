@@ -327,7 +327,7 @@ export default function HomeExplorer({
                 gap: 6,
                 padding: '4px 12px',
                 borderRadius: '999px',
-                background: '#f8fafc',
+                background: 'var(--card)',
                 border: '1px solid var(--line)',
                 fontSize: '11.5px',
                 fontWeight: 700,
@@ -405,7 +405,7 @@ export default function HomeExplorer({
                   padding: '3px 10px',
                   fontSize: '11.5px',
                   borderRadius: '999px',
-                  background: '#f8fafc',
+                  background: 'var(--card)',
                   border: '1px solid var(--line)',
                   color: 'var(--ink-secondary)',
                   textDecoration: 'none',
@@ -1192,8 +1192,8 @@ export default function HomeExplorer({
             }}
           >
             {/* 2 Hours */}
-            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0369a1', textTransform: 'uppercase' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: 'var(--card)', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--accent)', textTransform: 'uppercase' }}>
                 {isMr ? '२ तास' : '2 Hours'}
               </span>
               <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
@@ -1205,8 +1205,8 @@ export default function HomeExplorer({
             </div>
 
             {/* Half Day */}
-            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#c2410c', textTransform: 'uppercase' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: 'var(--card)', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--clay)', textTransform: 'uppercase' }}>
                 {isMr ? 'अर्धा दिवस (४–५ तास)' : 'Half Day (4–5 Hours)'}
               </span>
               <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
@@ -1218,8 +1218,8 @@ export default function HomeExplorer({
             </div>
 
             {/* Full Day */}
-            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#047857', textTransform: 'uppercase' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: 'var(--card)', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase' }}>
                 {isMr ? 'पूर्ण दिवस (८ तास)' : 'Full Day (8 Hours)'}
               </span>
               <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>
@@ -1231,8 +1231,8 @@ export default function HomeExplorer({
             </div>
 
             {/* Weekend */}
-            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: '#f8fafc', border: '1px solid var(--line)' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#7c3aed', textTransform: 'uppercase' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--radius-sm)', background: 'var(--card)', border: '1px solid var(--line)' }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#a855f7', textTransform: 'uppercase' }}>
                 {isMr ? '२ दिवसांची सहल' : 'Weekend (2 Days)'}
               </span>
               <strong style={{ display: 'block', fontSize: '14px', color: 'var(--ink)', margin: '4px 0 2px' }}>

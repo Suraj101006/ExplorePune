@@ -124,22 +124,22 @@ export default function DataMethodologyPage() {
       {/* Main Content Article */}
       <article
         style={{
-          background: '#ffffff',
+          background: 'var(--card)',
           border: '1px solid var(--line)',
           borderRadius: 'var(--radius-lg)',
           padding: '36px 32px',
           lineHeight: 1.7,
           fontSize: 15,
-          color: '#334155',
+          color: 'var(--ink)',
           boxShadow: 'var(--shadow-sm)',
         }}
       >
         {/* 3-Tier Source Hierarchy & Authenticity Scoring System */}
-        <section style={{ marginBottom: 36, borderBottom: '1px solid #e2e8f0', paddingBottom: 32 }}>
+        <section style={{ marginBottom: 36, borderBottom: '1px solid var(--line)', paddingBottom: 32 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
             <span style={{ fontSize: 24 }}>🛡️</span>
             <div>
-              <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, margin: 0 }}>
+              <h2 style={{ fontSize: 22, color: 'var(--ink)', fontWeight: 800, margin: 0 }}>
                 {isMr ? 'त्रिस्तरीय सत्यता व स्रोत पडताळणी पद्धत (3-Tier Authority Hierarchy)' : 'Authentic Sourcing & 3-Tier Verification Hierarchy'}
               </h2>
               <span style={{ fontSize: 13, color: '#64748b' }}>

@@ -80,15 +80,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   // Read initial theme from DOM or localStorage on mount
-  // Requirement 4: The existing light theme must remain the default appearance for first-time visitors
   useEffect(() => {
     try {
+      const isDomDark = typeof document !== 'undefined' && (
+        document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark'
+      );
       const stored = (localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem('theme')) as Theme | null;
-      if (stored === 'dark') {
+      if (stored === 'dark' || (!stored && isDomDark)) {
         setThemeState('dark');
         applyThemeToDOM('dark');
       } else {
-        // Strict light mode default for first-time visitors
+        // Strict light mode default for first-time visitors unless stored
         setThemeState('light');
         applyThemeToDOM('light');
       }
@@ -121,7 +124,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => {
-      const nextTheme = prev === 'dark' ? 'light' : 'dark';
+      // Check current DOM class as well to avoid any desynchronization with inline scripts
+      const currentlyDark = typeof document !== 'undefined'
+        ? (document.documentElement.classList.contains('dark') || document.documentElement.getAttribute('data-theme') === 'dark')
+        : prev === 'dark';
+      const nextTheme = currentlyDark ? 'light' : 'dark';
       applyThemeToDOM(nextTheme);
       try {
         localStorage.setItem(THEME_STORAGE_KEY, nextTheme);

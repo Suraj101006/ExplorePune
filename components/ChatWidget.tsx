@@ -1034,12 +1034,12 @@ export default function ChatWidget() {
 
                     {/* Nearest Metro Station */}
                     {m.transit.nearestMetro && (
-                      <div style={{ background: '#ffffff', border: '1px solid #d1fae5', borderRadius: 8, padding: '8px 10px', fontSize: 12 }}>
+                      <div style={{ background: 'var(--card)', color: 'var(--ink)', border: '1px solid var(--primary-border)', borderRadius: 8, padding: '8px 10px', fontSize: 12 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
                           <span style={{ background: m.transit.nearestMetro.lineColor || '#7c3aed', color: '#fff', fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4 }}>
                             Metro
                           </span>
-                          <strong>{isMr ? m.transit.nearestMetro.stationNameMr : m.transit.nearestMetro.stationNameEn}</strong>
+                          <strong style={{ color: 'var(--ink)' }}>{isMr ? m.transit.nearestMetro.stationNameMr : m.transit.nearestMetro.stationNameEn}</strong>
                         </div>
                         <div style={{ color: 'var(--muted)', fontSize: 11 }}>
                           🚶 {m.transit.nearestMetro.distanceKm} km (~{m.transit.nearestMetro.walkingMinutes} {isMr ? 'मिनिटे पायी' : 'min walk'})
@@ -1049,15 +1049,15 @@ export default function ChatWidget() {
 
                     {/* Nearest Bus Stop */}
                     {m.transit.nearestBus && (
-                      <div style={{ background: '#ffffff', border: '1px solid #d1fae5', borderRadius: 8, padding: '8px 10px', fontSize: 12 }}>
+                      <div style={{ background: 'var(--card)', color: 'var(--ink)', border: '1px solid var(--primary-border)', borderRadius: 8, padding: '8px 10px', fontSize: 12 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
                           <span style={{ background: '#f97316', color: '#fff', fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 4 }}>
                             PMPML
                           </span>
-                          <strong>{isMr ? m.transit.nearestBus.stopNameMr : m.transit.nearestBus.stopNameEn}</strong>
+                          <strong style={{ color: 'var(--ink)' }}>{isMr ? m.transit.nearestBus.stopNameMr : m.transit.nearestBus.stopNameEn}</strong>
                         </div>
                         <div style={{ color: 'var(--muted)', fontSize: 11 }}>
-                          🚌 {isMr ? 'बस क्र.:' : 'Routes:'} <strong>{m.transit.nearestBus.routeNumbers.join(', ')}</strong>
+                          🚌 {isMr ? 'बस क्र.:' : 'Routes:'} <strong style={{ color: 'var(--ink)' }}>{m.transit.nearestBus.routeNumbers.join(', ')}</strong>
                         </div>
                       </div>
                     )}

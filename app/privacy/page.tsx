@@ -127,19 +127,19 @@ export default function PrivacyPolicyPage() {
       {/* Main Legal Content */}
       <article
         style={{
-          background: '#ffffff',
+          background: 'var(--card)',
           border: '1px solid var(--line)',
           borderRadius: 'var(--radius-lg)',
           padding: '36px 32px',
           lineHeight: 1.7,
           fontSize: 15,
-          color: '#334155',
+          color: 'var(--ink)',
           boxShadow: 'var(--shadow-sm)',
         }}
       >
         {/* Section 1: Data Fiduciary Identity */}
         <section style={{ marginBottom: 32 }}>
-          <h2 style={{ fontSize: 20, color: '#0f172a', fontWeight: 800, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h2 style={{ fontSize: 20, color: 'var(--ink)', fontWeight: 800, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
             <span>🏢</span> {isMr ? '१. डेटा फिड्युशियरी ओळख (Data Fiduciary Identity)' : '1. Data Fiduciary Details'}
           </h2>
           <p>

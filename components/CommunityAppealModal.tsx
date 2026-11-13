@@ -85,9 +85,11 @@ export default function CommunityAppealModal({
         style={{
           width: '100%',
           maxWidth: 480,
-          background: '#ffffff',
+          background: 'var(--card)',
+          color: 'var(--ink)',
           borderRadius: 16,
           boxShadow: '0 20px 45px rgba(0,0,0,0.25)',
+          border: '1px solid var(--line)',
           overflow: 'hidden',
           animation: 'modalSlideUp 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
         }}

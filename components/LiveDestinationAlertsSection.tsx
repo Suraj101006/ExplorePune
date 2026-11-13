@@ -239,12 +239,12 @@ export default function LiveDestinationAlertsSection({
                         margin: '0 0 6px',
                         fontSize: '15px',
                         fontWeight: 700,
-                        color: isUrgent ? '#9f1239' : isRestr ? '#92400e' : '#1e293b',
+                        color: isUrgent ? '#e11d48' : isRestr ? '#f59e0b' : 'var(--ink)',
                       }}
                     >
                       {isMarathi && alert.titleMr ? alert.titleMr : alert.title}
                     </h4>
-                    <p style={{ margin: 0, fontSize: '13.5px', lineHeight: 1.55, color: '#334155' }}>
+                    <p style={{ margin: 0, fontSize: '13.5px', lineHeight: 1.55, color: 'var(--ink-secondary)' }}>
                       {isMarathi && alert.summaryMr ? alert.summaryMr : alert.summary}
                     </p>
                   </div>
@@ -252,10 +252,11 @@ export default function LiveDestinationAlertsSection({
                   {/* Granular Visitor Permissions Card */}
                   <div
                     style={{
-                      background: '#ffffff',
+                      background: 'var(--card)',
+                      color: 'var(--ink)',
                       borderRadius: 8,
                       padding: '8px 12px',
-                      border: '1px solid #e2e8f0',
+                      border: '1px solid var(--line)',
                       display: 'flex',
                       gap: 16,
                       flexWrap: 'wrap',
@@ -424,8 +425,9 @@ export default function LiveDestinationAlertsSection({
                 key={news.id}
                 style={{
                   borderRadius: 'var(--radius-sm, 8px)',
-                  border: '1px solid #e2e8f0',
-                  background: '#ffffff',
+                  border: '1px solid var(--line)',
+                  background: 'var(--card)',
+                  color: 'var(--ink)',
                   padding: '12px 14px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -435,15 +437,15 @@ export default function LiveDestinationAlertsSection({
                 }}
               >
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', marginBottom: 4 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--muted)', marginBottom: 4 }}>
                     <span style={{ fontWeight: 700, color: 'var(--primary, #047857)' }}>{news.sourceName}</span>
                     <span>{formatIstTimestamp(news.effectiveFrom).split(',')[0]}</span>
                   </div>
-                  <h4 style={{ margin: '0 0 6px', fontSize: '13.5px', fontWeight: 700, lineHeight: 1.4, color: '#1e293b' }}>
+                  <h4 style={{ margin: '0 0 6px', fontSize: '13.5px', fontWeight: 700, lineHeight: 1.4, color: 'var(--ink)' }}>
                     {news.title}
                   </h4>
                   {news.summary && news.summary !== news.title && (
-                    <p style={{ margin: 0, fontSize: '12px', color: '#475569', lineHeight: 1.45 }}>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--muted)', lineHeight: 1.45 }}>
                       {news.summary.slice(0, 140)}...
                     </p>
                   )}

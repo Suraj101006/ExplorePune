@@ -128,19 +128,19 @@ export default function AboutPage() {
       {/* Main Content Article */}
       <article
         style={{
-          background: '#ffffff',
+          background: 'var(--card)',
           border: '1px solid var(--line)',
           borderRadius: 'var(--radius-lg)',
           padding: '36px 32px',
           lineHeight: 1.7,
           fontSize: 15,
-          color: '#334155',
+          color: 'var(--ink)',
           boxShadow: 'var(--shadow-sm)',
         }}
       >
         {/* Mission & Vision */}
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 14 }}>
+          <h2 style={{ fontSize: 22, color: 'var(--ink)', fontWeight: 800, marginBottom: 14 }}>
             🎯 {isMr ? 'आमचे ध्येय व संकल्पना (Our Mission)' : 'Our Mission & Vision'}
           </h2>
           <p>
@@ -157,8 +157,8 @@ export default function AboutPage() {
         </section>
 
         {/* Founders / Engineering & Advisory Team */}
-        <section style={{ marginBottom: 36, borderTop: '1px solid #e2e8f0', paddingTop: 28 }}>
-          <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 18 }}>
+        <section style={{ marginBottom: 36, borderTop: '1px solid var(--line)', paddingTop: 28 }}>
+          <h2 style={{ fontSize: 22, color: 'var(--ink)', fontWeight: 800, marginBottom: 18 }}>
             👥 {isMr ? 'संस्थापक, सल्लागार व विकासक संघ (Leadership & Advisory Team)' : 'Meet the Founders, Advisor & Leadership Team'}
           </h2>
 
@@ -391,14 +391,14 @@ export default function AboutPage() {
         </section>
 
         {/* 5 Core Pillars */}
-        <section style={{ marginBottom: 36, borderTop: '1px solid #e2e8f0', paddingTop: 28 }}>
-          <h2 style={{ fontSize: 22, color: '#0f172a', fontWeight: 800, marginBottom: 16 }}>
+        <section style={{ marginBottom: 36, borderTop: '1px solid var(--line)', paddingTop: 28 }}>
+          <h2 style={{ fontSize: 22, color: 'var(--ink)', fontWeight: 800, marginBottom: 16 }}>
             ⭐ {isMr ? 'आमची ५ मुख्य वैशिष्ट्ये (Our Core Pillars)' : 'Our 5 Core Pillars'}
           </h2>
 
           <div style={{ display: 'grid', gap: 14 }}>
             <div style={{ borderLeft: '3.5px solid #047857', paddingLeft: 16 }}>
-              <strong style={{ color: '#0f172a', fontSize: 15.5 }}>1. {isMr ? '१००% मोफत व पारदर्शक पर्यटन:' : '100% Free & Open Community Platform:'}</strong>
+              <strong style={{ color: 'var(--ink)', fontSize: 15.5 }}>1. {isMr ? '१००% मोफत व पारदर्शक पर्यटन:' : '100% Free & Open Community Platform:'}</strong>
               <p style={{ margin: '4px 0 0', fontSize: 14 }}>
                 {isMr
                   ? 'सर्व सहल नियोजन, मेट्रो व बस मार्गदर्शक आणि सानुकूल PDF डाउनलोड पूर्णपणे मोफत आहेत.'
@@ -407,7 +407,7 @@ export default function AboutPage() {
             </div>
 
             <div style={{ borderLeft: '3.5px solid #047857', paddingLeft: 16 }}>
-              <strong style={{ color: '#0f172a', fontSize: 15.5 }}>2. {isMr ? 'प्रत्यक्ष PMPML बस व पुणे मेट्रो जोडणी:' : 'Integrated Pune Metro & PMPML Corridors:'}</strong>
+              <strong style={{ color: 'var(--ink)', fontSize: 15.5 }}>2. {isMr ? 'प्रत्यक्ष PMPML बस व पुणे मेट्रो जोडणी:' : 'Integrated Pune Metro & PMPML Corridors:'}</strong>
               <p style={{ margin: '4px 0 0', fontSize: 14 }}>
                 {isMr
                   ? 'प्रत्येक ठिकाणासाठी थेट बस क्रमांक (उदा. हडपसर ते निगडी बस १४९) आणि जिल्हा न्यायालय मेट्रो इंटरचेंजचे अचूक मार्गदर्शन.'
@@ -416,7 +416,7 @@ export default function AboutPage() {
             </div>
 
             <div style={{ borderLeft: '3.5px solid #047857', paddingLeft: 16 }}>
-              <strong style={{ color: '#0f172a', fontSize: 15.5 }}>3. {isMr ? 'DPDP कायदा २०२३ अंतर्गत डेटा सुरक्षा:' : 'DPDP Act 2023 Compliant Privacy:'}</strong>
+              <strong style={{ color: 'var(--ink)', fontSize: 15.5 }}>3. {isMr ? 'DPDP कायदा २०२३ अंतर्गत डेटा सुरक्षा:' : 'DPDP Act 2023 Compliant Privacy:'}</strong>
               <p style={{ margin: '4px 0 0', fontSize: 14 }}>
                 {isMr
                   ? 'वापरकर्त्याचा जीपीएस किंवा वैयक्तिक डेटा कोणत्याही तिसऱ्या पक्षाला विकला जात नाही. वापरकर्त्याचे स्वतःच्या डेटावर पूर्ण सार्वभौमत्व आहे.'
@@ -425,7 +425,7 @@ export default function AboutPage() {
             </div>
 
             <div style={{ borderLeft: '3.5px solid #047857', paddingLeft: 16 }}>
-              <strong style={{ color: '#0f172a', fontSize: 15.5 }}>4. {isMr ? 'माझी सफर (My Journey) - खरा प्रवास इतिहास:' : 'My Journey - Authentic Travel Journal:'}</strong>
+              <strong style={{ color: 'var(--ink)', fontSize: 15.5 }}>4. {isMr ? 'माझी सफर (My Journey) - खरा प्रवास इतिहास:' : 'My Journey - Authentic Travel Journal:'}</strong>
               <p style={{ margin: '4px 0 0', fontSize: 14 }}>
                 {isMr
                   ? 'साइन इन केलेल्या वापरकर्त्याला त्याने प्रत्यक्ष भेट दिलेल्या ठिकाणांचा खरा नकाशा, अंतर आणि तारीखवार इतिहास दिसतो.'
@@ -434,7 +434,7 @@ export default function AboutPage() {
             </div>
 
             <div style={{ borderLeft: '3.5px solid #047857', paddingLeft: 16 }}>
-              <strong style={{ color: '#0f172a', fontSize: 15.5 }}>5. {isMr ? 'द्विभाषिक सुविधा (मराठी व इंग्रजी):' : 'Bilingual First (English & Marathi):'}</strong>
+              <strong style={{ color: 'var(--ink)', fontSize: 15.5 }}>5. {isMr ? 'द्विभाषिक सुविधा (मराठी व इंग्रजी):' : 'Bilingual First (English & Marathi):'}</strong>
               <p style={{ margin: '4px 0 0', fontSize: 14 }}>
                 {isMr
                   ? 'महाराष्ट्राची संस्कृती आणि मराठी भाषेचा आदर राखून प्रत्येक माहिती अस्सल मराठीत उपलब्ध.'
@@ -445,8 +445,8 @@ export default function AboutPage() {
         </section>
 
         {/* Contact & Support Box */}
-        <section style={{ background: '#f8fafc', border: '1.5px solid #cbd5e1', borderRadius: 14, padding: 24 }}>
-          <h3 style={{ fontSize: 18, color: '#0f172a', fontWeight: 800, marginTop: 0, marginBottom: 10 }}>
+        <section style={{ background: 'var(--line-light)', border: '1.5px solid var(--line)', borderRadius: 14, padding: 24 }}>
+          <h3 style={{ fontSize: 18, color: 'var(--ink)', fontWeight: 800, marginTop: 0, marginBottom: 10 }}>
             📬 {isMr ? 'आमच्याशी संपर्क साधा (Direct Contact Emails)' : 'Contact the Explore Pune Team'}
           </h3>
           <p style={{ fontSize: 14, margin: '0 0 16px', lineHeight: 1.6 }}>

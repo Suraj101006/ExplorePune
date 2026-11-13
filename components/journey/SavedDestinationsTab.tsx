@@ -35,7 +35,7 @@ export default function SavedDestinationsTab({ onPlanWithPlace }: SavedDestinati
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: '0 0 2px' }}>
+          <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', margin: '0 0 2px' }}>
             {isMr ? 'जतन केलेली आवडती ठिकाणे' : 'Saved Pune Destinations'}
           </h3>
           <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>
@@ -50,8 +50,9 @@ export default function SavedDestinationsTab({ onPlanWithPlace }: SavedDestinati
             padding: '48px 24px',
             textAlign: 'center',
             borderRadius: 18,
-            background: '#ffffff',
-            border: '1.5px dashed #cbd5e1',
+            background: 'var(--card)',
+            color: 'var(--ink)',
+            border: '1.5px dashed var(--line)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -73,7 +74,7 @@ export default function SavedDestinationsTab({ onPlanWithPlace }: SavedDestinati
             <Bookmark size={26} />
           </div>
           <div>
-            <h4 style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+            <h4 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
               {isMr ? 'अद्याप कोणतेही ठिकाण जतन केलेले नाही' : 'No destinations bookmarked yet'}
             </h4>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b', maxWidth: 400 }}>
@@ -111,8 +112,9 @@ export default function SavedDestinationsTab({ onPlanWithPlace }: SavedDestinati
               key={place.id}
               style={{
                 borderRadius: 16,
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
+                background: 'var(--card)',
+                color: 'var(--ink)',
+                border: '1px solid var(--line)',
                 overflow: 'hidden',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.03)',
                 display: 'flex',
@@ -152,7 +154,7 @@ export default function SavedDestinationsTab({ onPlanWithPlace }: SavedDestinati
 
               <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <div>
-                  <h4 style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', margin: '0 0 2px' }}>
+                  <h4 style={{ fontSize: 15, fontWeight: 800, color: 'var(--ink)', margin: '0 0 2px' }}>
                     {isMr && place.name_mr ? place.name_mr : place.name}
                   </h4>
                   <span style={{ fontSize: 12, color: '#64748b' }}>

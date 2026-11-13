@@ -2064,7 +2064,7 @@ export default function PlannerPage() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ fontSize: 18 }}>🏰</span>
-                  <strong style={{ fontSize: 13, color: '#0f172a' }}>{isMr ? '१. सिंहगड / ऐतिहासिक वास्तू' : '1. Sinhagad / Historical Hub'}</strong>
+                  <strong style={{ fontSize: 13, color: 'var(--ink)' }}>{isMr ? '१. सिंहगड / ऐतिहासिक वास्तू' : '1. Sinhagad / Historical Hub'}</strong>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingLeft: 6 }}>
@@ -2078,7 +2078,7 @@ export default function PlannerPage() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ fontSize: 18 }}>🏛️</span>
-                  <strong style={{ fontSize: 13, color: '#0f172a' }}>{isMr ? '२. शनिवार वाडा / वारसा स्थळ' : '2. Heritage Site / Cultural Hub'}</strong>
+                  <strong style={{ fontSize: 13, color: 'var(--ink)' }}>{isMr ? '२. शनिवार वाडा / वारसा स्थळ' : '2. Heritage Site / Cultural Hub'}</strong>
                 </div>
               </div>
 
@@ -2483,7 +2483,7 @@ export default function PlannerPage() {
                   <form onSubmit={handleSendEmail} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: '#065f46', marginBottom: 4 }}>
+                        <label style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>
                           👤 {isMr ? 'तुमचे नाव:' : 'Your Name:'}
                         </label>
                         <input
@@ -2492,12 +2492,12 @@ export default function PlannerPage() {
                           value={itineraryUserName}
                           onChange={(e) => setItineraryUserName(e.target.value)}
                           placeholder={isMr ? 'तुमचे नाव (उदा. सुरज ढोक)' : 'Your Name (e.g. Suraj Dhok)'}
-                          style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 13, background: '#ffffff', boxSizing: 'border-box' }}
+                          style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', fontSize: 13, background: 'var(--card)', color: 'var(--ink)', boxSizing: 'border-box' }}
                         />
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: '#065f46', marginBottom: 4 }}>
+                        <label style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>
                           ✉️ {isMr ? 'तुमचा ईमेल पत्ता:' : 'Your Email Address:'}
                         </label>
                         <input
@@ -2506,7 +2506,7 @@ export default function PlannerPage() {
                           value={emailAddress}
                           onChange={(e) => setEmailAddress(e.target.value)}
                           placeholder="user@example.com"
-                          style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid #cbd5e1', fontSize: 13, background: '#ffffff', boxSizing: 'border-box' }}
+                          style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--line)', fontSize: 13, background: 'var(--card)', color: 'var(--ink)', boxSizing: 'border-box' }}
                         />
                       </div>
                     </div>

@@ -172,7 +172,8 @@ export default function LocationPickerModal({
           width: '100%',
           maxWidth: '560px',
           maxHeight: '88vh',
-          background: '#ffffff',
+          background: 'var(--card)',
+          color: 'var(--ink)',
           borderRadius: '20px',
           boxShadow: '0 24px 60px rgba(0, 0, 0, 0.25)',
           display: 'flex',
@@ -185,15 +186,15 @@ export default function LocationPickerModal({
         <div
           style={{
             padding: '18px 22px',
-            borderBottom: '1px solid #e2e8f0',
+            borderBottom: '1px solid var(--line)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+            background: 'var(--line-light)',
           }}
         >
           <div>
-            <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: 'var(--ink)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span>📍</span>
               <span>{isMr ? 'तुमचा पुणे परिसर निवडा' : 'Select Your Pune Area'}</span>
             </h3>

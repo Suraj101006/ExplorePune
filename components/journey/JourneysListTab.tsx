@@ -188,9 +188,10 @@ export default function JourneysListTab({
               width: '100%',
               padding: '8px 12px 8px 36px',
               borderRadius: 10,
-              border: '1.5px solid #cbd5e1',
+              border: '1.5px solid var(--line)',
               fontSize: 13,
-              background: '#ffffff',
+              background: 'var(--card)',
+              color: 'var(--ink)',
               boxSizing: 'border-box',
             }}
           />
@@ -204,8 +205,8 @@ export default function JourneysListTab({
             padding: '52px 24px',
             textAlign: 'center',
             borderRadius: 20,
-            background: '#ffffff',
-            border: '1.5px dashed #cbd5e1',
+            background: 'var(--card)',
+            border: '1.5px dashed var(--line)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -227,7 +228,7 @@ export default function JourneysListTab({
             <Compass size={28} />
           </div>
           <div>
-            <h4 style={{ fontSize: 17, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+            <h4 style={{ fontSize: 17, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
               {isMr ? 'कोणतीही सफर आढळली नाही' : 'No journeys found'}
             </h4>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b', maxWidth: 420 }}>
@@ -277,8 +278,9 @@ export default function JourneysListTab({
                 key={journey.id || journey.date}
                 style={{
                   borderRadius: 18,
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
+                  background: 'var(--card)',
+                  color: 'var(--ink)',
+                  border: '1px solid var(--line)',
                   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
                   overflow: 'hidden',
                   display: 'flex',

@@ -174,7 +174,8 @@ export default function EmergencyHelplineModal() {
         >
           <div
             style={{
-              background: '#ffffff',
+              background: 'var(--card)',
+              color: 'var(--ink)',
               borderRadius: 'var(--radius-lg)',
               maxWidth: '680px',
               width: '100%',

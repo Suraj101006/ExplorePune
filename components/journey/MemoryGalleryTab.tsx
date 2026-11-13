@@ -118,8 +118,9 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: 
         style={{
           padding: '22px 24px',
           borderRadius: 18,
-          background: '#ffffff',
-          border: '1px solid #e2e8f0',
+          background: 'var(--card)',
+          color: 'var(--ink)',
+          border: '1px solid var(--line)',
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
           display: 'flex',
           flexDirection: 'column',
@@ -128,7 +129,7 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: 
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
               {isMr ? 'वैयक्तिक आठवणी गॅलरी' : 'Personal Memory Gallery'}
             </h3>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>
@@ -253,8 +254,9 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: 
             padding: '48px 24px',
             textAlign: 'center',
             borderRadius: 18,
-            background: '#ffffff',
-            border: '1.5px dashed #cbd5e1',
+            background: 'var(--card)',
+            color: 'var(--ink)',
+            border: '1.5px dashed var(--line)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -276,7 +278,7 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: 
             <Camera size={28} />
           </div>
           <div>
-            <h4 style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', margin: '0 0 4px' }}>
+            <h4 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>
               {isMr ? 'अजून कोणतीही आठवण जोडली नाही' : 'No personal memories uploaded yet'}
             </h4>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b', maxWidth: 420 }}>
@@ -316,8 +318,9 @@ export default function MemoryGalleryTab({ onOpenCreateReel, userId: _userId }: 
               key={idx}
               style={{
                 borderRadius: 16,
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
+                background: 'var(--card)',
+                color: 'var(--ink)',
+                border: '1px solid var(--line)',
                 overflow: 'hidden',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.03)',
                 display: 'flex',

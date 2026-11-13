@@ -189,15 +189,129 @@ html.dark select,
 [data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
 [data-theme="dark"] textarea,
 [data-theme="dark"] select {
-  background-color: #131d31;
-  color: #f8fafc;
-  border-color: #1e293b;
+  background-color: #131d31 !important;
+  background: #131d31 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
 }
 
+html.dark input::placeholder,
+html.dark textarea::placeholder,
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+html.dark select option,
+[data-theme="dark"] select option {
+  background-color: #131d31 !important;
+  background: #131d31 !important;
+  color: #f8fafc !important;
+}
+
+/* Universal Typography & Text Visibility Protection in Dark Mode */
+html.dark h1:not([class*="gradient"]),
+html.dark h2:not([class*="gradient"]),
+html.dark h3:not([class*="gradient"]),
+html.dark h4:not([class*="gradient"]),
+html.dark h5:not([class*="gradient"]),
+html.dark h6:not([class*="gradient"]),
+[data-theme="dark"] h1:not([class*="gradient"]),
+[data-theme="dark"] h2:not([class*="gradient"]),
+[data-theme="dark"] h3:not([class*="gradient"]),
+[data-theme="dark"] h4:not([class*="gradient"]),
+[data-theme="dark"] h5:not([class*="gradient"]),
+[data-theme="dark"] h6:not([class*="gradient"]) {
+  color: var(--ink) !important;
+}
+
+/* High-specificity override for hardcoded dark inline text colors in dark mode */
+html.dark [style*="color: #0f172a"],
+html.dark [style*="color:#0f172a"],
+html.dark [style*="color: #1e293b"],
+html.dark [style*="color:#1e293b"],
+html.dark [style*="color: #334155"],
+html.dark [style*="color:#334155"],
+html.dark [style*="color: #111827"],
+html.dark [style*="color:#111827"],
+html.dark [style*="color: #000000"],
+html.dark [style*="color:#000000"],
+html.dark [style*="color: #000"],
+html.dark [style*="color:#000"],
+html.dark [style*="color: black"],
+html.dark [style*="color:black"],
+[data-theme="dark"] [style*="color: #0f172a"],
+[data-theme="dark"] [style*="color:#0f172a"],
+[data-theme="dark"] [style*="color: #1e293b"],
+[data-theme="dark"] [style*="color:#1e293b"],
+[data-theme="dark"] [style*="color: #334155"],
+[data-theme="dark"] [style*="color:#334155"],
+[data-theme="dark"] [style*="color: #111827"],
+[data-theme="dark"] [style*="color:#111827"],
+[data-theme="dark"] [style*="color: #000000"],
+[data-theme="dark"] [style*="color:#000000"],
+[data-theme="dark"] [style*="color: #000"],
+[data-theme="dark"] [style*="color:#000"],
+[data-theme="dark"] [style*="color: black"],
+[data-theme="dark"] [style*="color:black"] {
+  color: var(--ink) !important;
+}
+
+/* High-specificity override for hardcoded white backgrounds in dark mode */
+html.dark [style*="background: #ffffff"],
+html.dark [style*="background:#ffffff"],
+html.dark [style*="background-color: #ffffff"],
+html.dark [style*="background-color:#ffffff"],
+html.dark [style*="background: #fff"],
+html.dark [style*="background:#fff"],
+html.dark [style*="background-color: #fff"],
+html.dark [style*="background-color:#fff"],
+[data-theme="dark"] [style*="background: #ffffff"],
+[data-theme="dark"] [style*="background:#ffffff"],
+[data-theme="dark"] [style*="background-color: #ffffff"],
+[data-theme="dark"] [style*="background-color:#ffffff"],
+[data-theme="dark"] [style*="background: #fff"],
+[data-theme="dark"] [style*="background:#fff"],
+[data-theme="dark"] [style*="background-color: #fff"],
+[data-theme="dark"] [style*="background-color:#fff"] {
+  background: var(--card) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+/* High-specificity override for light gray card/badge backgrounds in dark mode */
+html.dark [style*="background: #f8fafc"],
+html.dark [style*="background:#f8fafc"],
+html.dark [style*="background-color: #f8fafc"],
+html.dark [style*="background-color:#f8fafc"],
+html.dark [style*="background: #f1f5f9"],
+html.dark [style*="background:#f1f5f9"],
+html.dark [style*="background-color: #f1f5f9"],
+html.dark [style*="background-color:#f1f5f9"],
+[data-theme="dark"] [style*="background: #f8fafc"],
+[data-theme="dark"] [style*="background:#f8fafc"],
+[data-theme="dark"] [style*="background-color: #f8fafc"],
+[data-theme="dark"] [style*="background-color:#f8fafc"],
+[data-theme="dark"] [style*="background: #f1f5f9"],
+[data-theme="dark"] [style*="background:#f1f5f9"],
+[data-theme="dark"] [style*="background-color: #f1f5f9"],
+[data-theme="dark"] [style*="background-color:#f1f5f9"] {
+  background: var(--line-light) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+/* Modal, Drawer & Dialog Structural Panels in Dark Mode */
+html.dark article,
+[data-theme="dark"] article,
+html.dark .panel,
+[data-theme="dark"] .panel,
 html.dark .card,
 [data-theme="dark"] .card {
-  background: var(--card);
-  border-color: var(--line);
+  background: var(--card) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
 }
 
 html.dark .card-body,

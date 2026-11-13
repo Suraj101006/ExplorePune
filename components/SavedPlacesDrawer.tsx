@@ -107,7 +107,8 @@ export default function SavedPlacesDrawer() {
             style={{
               width: '100%',
               maxWidth: '420px',
-              background: '#ffffff',
+              background: 'var(--card)',
+              color: 'var(--ink)',
               height: '100%',
               boxShadow: 'var(--shadow-xl)',
               display: 'flex',
@@ -195,7 +196,7 @@ export default function SavedPlacesDrawer() {
                         padding: '10px 12px',
                         borderRadius: 'var(--radius-md)',
                         border: '1px solid var(--line)',
-                        background: '#f8fafc',
+                        background: 'var(--line-light)',
                         position: 'relative',
                       }}
                     >
@@ -251,7 +252,7 @@ export default function SavedPlacesDrawer() {
                           background: 'transparent',
                           border: 0,
                           cursor: 'pointer',
-                          color: '#94a3b8',
+                          color: 'var(--muted)',
                           fontSize: '16px',
                           padding: '4px',
                         }}
@@ -271,7 +272,7 @@ export default function SavedPlacesDrawer() {
                 style={{
                   padding: '16px 20px',
                   borderTop: '1px solid var(--line)',
-                  background: '#f8fafc',
+                  background: 'var(--card)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '10px',
