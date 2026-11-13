@@ -1350,6 +1350,8 @@ export default function HomeExplorer({
               alt="All Places"
               width={22}
               height={22}
+              loading="lazy"
+              decoding="async"
               className="cat-badge-img"
             />
             <span>{isMr ? 'सर्व ठिकाणे' : 'All Places'}</span>
@@ -1397,6 +1399,8 @@ export default function HomeExplorer({
                   alt={c.name}
                   width={22}
                   height={22}
+                  loading="lazy"
+                  decoding="async"
                   className="cat-badge-img"
                 />
                 <span>{displayName}</span>
@@ -1996,7 +2000,7 @@ export default function HomeExplorer({
         )}
 
         {/* EDITORIAL FIELD NOTES & HISTORICAL ESSAYS */}
-        <section className="scroll-reveal" style={{ marginTop: '48px', marginBottom: '36px' }}>
+        <section className="scroll-reveal section-deferred" style={{ marginTop: '48px', marginBottom: '36px' }}>
           <div style={{ marginBottom: 16 }}>
             <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--primary)' }}>
               {isMr ? 'ऐतिहासिक नोंदी व संदर्भ' : 'Cultural Context & Field Notes'}
@@ -2096,6 +2100,7 @@ export default function HomeExplorer({
 
         {/* Smart Trip Planner Callout */}
         <div
+          className="section-deferred"
           style={{
             marginTop: '20px',
             marginBottom: '40px',

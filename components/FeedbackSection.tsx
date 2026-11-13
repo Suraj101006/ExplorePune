@@ -98,7 +98,7 @@ export default function FeedbackSection() {
   }
 
   return (
-    <section className="wrap" style={{ margin: '48px auto 32px' }}>
+    <section className="wrap section-deferred" style={{ margin: '48px auto 32px' }}>
       <div
         className="panel"
         style={{

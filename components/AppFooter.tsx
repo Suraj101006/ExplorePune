@@ -9,7 +9,7 @@ export default function AppFooter() {
   const { t, isMr } = useLanguage();
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer footer-deferred">
       <div className="wrap">
         <div style={{ maxWidth: 540 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>

@@ -2488,7 +2488,7 @@ export default function PlaceDetailClient({
         {/* Continue Your Pune Journey — Explore Related Attractions (Internal Linking Network) */}
         {relatedPlaces && relatedPlaces.length > 0 && (
           <section
-            className="panel scroll-reveal place-section-reveal"
+            className="panel scroll-reveal place-section-reveal section-deferred"
             style={{
               marginTop: 28,
               marginBottom: 28,
