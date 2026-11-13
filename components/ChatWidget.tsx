@@ -9,6 +9,7 @@ import LocationPickerModal from '@/components/LocationPickerModal';
 import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
 import { resolveLocalKnowledge, StructuredPlace } from '@/lib/chatKnowledgeEngine';
 import { openDirectionsModal } from '@/lib/navigationService';
+import BrandLogo from '@/components/BrandLogo';
 
 interface TransitData {
   hasTransit: boolean;
@@ -265,6 +266,30 @@ export default function ChatWidget() {
       window.visualViewport?.removeEventListener('scroll', handleViewportChange);
     };
   }, []);
+
+  // Prevent background body scroll on mobile/tablet when chat is open
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (open && window.innerWidth <= 768) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [open]);
+
+  // Close chat on Escape key press
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
 
 
   // Smart auto-scroll observer (Requirement 14)
@@ -628,7 +653,7 @@ export default function ChatWidget() {
           }
         >
           <div className="chat-fab-pulse" />
-          <span style={{ fontSize: 20 }}>🚩</span>
+          <BrandLogo size={24} withBadge alt="Explore Pune AI" />
           <span style={{ fontSize: 13.5, fontWeight: 700 }}>
             {open
               ? isMr
@@ -640,6 +665,15 @@ export default function ChatWidget() {
           </span>
         </button>
       </div>
+
+      {/* Backdrop overlay for mobile & tablet focus */}
+      {open && (
+        <div
+          className="chat-backdrop"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Interactive Chat Panel Shell (Requirement 2 & 11) */}
       {open && (
@@ -659,145 +693,105 @@ export default function ChatWidget() {
         >
           {/* Header */}
           <div className="chat-panel-header">
-            <span style={{ fontSize: 22 }}>🚩</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 800,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}
-              >
-                <span>{isMr ? 'Explore Pune AI' : 'Explore Pune Travel Assistant'}</span>
-                <span className="chat-gemini-shimmer">
-                  ⚡ Smart Concierge
-                </span>
-              </div>
-
-              {/* Status and Locality Tag */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3 }}>
-                <span
+            <div className="chat-mobile-drag-handle" onClick={() => setOpen(false)} aria-label="Close sheet" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', minWidth: 0 }}>
+              <BrandLogo size={32} withBadge alt="Explore Pune Assistant" />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
                   style={{
-                    display: 'inline-flex',
+                    fontSize: 14,
+                    fontWeight: 800,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'flex',
                     alignItems: 'center',
-                    gap: 3,
-                    fontSize: 9.5,
-                    color: '#a7f3d0',
-                    fontWeight: 600,
+                    gap: 6,
                   }}
                 >
+                  <span>{isMr ? 'Explore Pune AI' : 'Explore Pune Assistant'}</span>
+                  <span className="chat-gemini-shimmer">
+                    ⚡ Smart Concierge
+                  </span>
+                </div>
+
+                {/* Status and Locality Tag */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3 }}>
                   <span
                     style={{
-                      width: 5,
-                      height: 5,
-                      borderRadius: '50%',
-                      background: '#34d399',
-                      boxShadow: '0 0 5px #34d399',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 3,
+                      fontSize: 9.5,
+                      color: '#a7f3d0',
+                      fontWeight: 600,
                     }}
-                  />
-                  Live Guide
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => setIsLocationModalOpen(true)}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    border: '1px solid rgba(255, 255, 255, 0.35)',
-                    color: '#ffffff',
-                    padding: '1px 8px',
-                    borderRadius: 999,
-                    fontSize: 10,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                  title={isMr ? 'पुणे परिसर निवडा किंवा बदला' : 'Choose or change Pune locality'}
-                >
-                  <span>📍</span>
-                  <span>
-                    {savedLoc
-                      ? isMr
-                        ? savedLoc.nameMr
-                        : savedLoc.nameEn
-                      : isMr
-                      ? 'परिसर निवडा'
-                      : 'Choose Area'}
+                  >
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: '50%',
+                        background: '#34d399',
+                        boxShadow: '0 0 5px #34d399',
+                      }}
+                    />
+                    Live Guide
                   </span>
-                  <span style={{ opacity: 0.8, fontSize: 9 }}>✏️</span>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsLocationModalOpen(true)}
+                    className="chat-locality-btn"
+                    title={isMr ? 'पुणे परिसर निवडा किंवा बदला' : 'Choose or change Pune locality'}
+                  >
+                    <span>📍</span>
+                    <span>
+                      {savedLoc
+                        ? isMr
+                          ? savedLoc.nameMr
+                          : savedLoc.nameEn
+                        : isMr
+                        ? 'परिसर निवडा'
+                        : 'Choose Area'}
+                    </span>
+                    <span style={{ opacity: 0.8, fontSize: 9 }}>✏️</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Action buttons in header */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                {/* New Chat Button (Requirement 15) */}
+                <button
+                  onClick={handleNewChat}
+                  title={isMr ? 'नवीन चॅट सुरू करा' : 'Start a new conversation'}
+                  className="chat-header-action-btn"
+                >
+                  <span>+</span>
+                  <span className="hide-on-mobile">{isMr ? 'नवीन' : 'New'}</span>
+                </button>
+
+                {/* Expand / Minimize Window (Desktop) */}
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  title={isExpanded ? 'Minimize' : 'Expand'}
+                  className="chat-header-action-btn chat-expand-btn hide-on-mobile"
+                  aria-label={isExpanded ? 'Minimize chat' : 'Expand chat'}
+                >
+                  {isExpanded ? '❐' : '⛶'}
+                </button>
+
+                {/* Close Button */}
+                <button
+                  onClick={() => setOpen(false)}
+                  className="chat-header-close-btn"
+                  aria-label="Close Explore Pune Assistant"
+                >
+                  ✕
                 </button>
               </div>
             </div>
-
-            {/* New Chat Button (Requirement 15) */}
-            <button
-              onClick={handleNewChat}
-              title={isMr ? 'नवीन चॅट सुरू करा' : 'Start a new conversation'}
-              style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                border: 0,
-                color: '#fff',
-                padding: '4px 8px',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: 11,
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
-            >
-              <span>+</span>
-              <span>{isMr ? 'नवीन' : 'New Chat'}</span>
-            </button>
-
-            {/* Expand / Minimize Window (Desktop) */}
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              title={isExpanded ? 'Minimize' : 'Expand'}
-              style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                border: 0,
-                color: '#fff',
-                width: 26,
-                height: 26,
-                borderRadius: '6px',
-                cursor: 'pointer',
-                display: 'grid',
-                placeItems: 'center',
-                fontSize: 12,
-              }}
-              aria-label={isExpanded ? 'Minimize chat' : 'Expand chat'}
-            >
-              {isExpanded ? '❐' : '⛶'}
-            </button>
-
-            {/* Close Button */}
-            <button
-              onClick={() => setOpen(false)}
-              style={{
-                background: 'rgba(255, 255, 255, 0.25)',
-                border: 0,
-                color: '#fff',
-                width: 26,
-                height: 26,
-                borderRadius: '50%',
-                cursor: 'pointer',
-                display: 'grid',
-                placeItems: 'center',
-                fontSize: 14,
-              }}
-              aria-label="Close Explore Pune Assistant"
-            >
-              ✕
-            </button>
           </div>
 
           {/* Messages Log (Requirement 13 & 14) */}
@@ -910,7 +904,7 @@ export default function ChatWidget() {
 
                 {/* Structured Place Cards (Requirement 10) */}
                 {m.places && m.places.length > 0 && (
-                  <div style={{ display: 'grid', gap: 8, marginTop: 4, maxWidth: '98%' }}>
+                  <div className="chat-places-grid">
                     {m.places.map((p) => {
                       const verified = p.data_tier === 'verified' || p.verification?.status === 'verified';
                       const feeStatus =
@@ -969,22 +963,10 @@ export default function ChatWidget() {
                             </p>
                           )}
 
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              gap: 6,
-                              marginTop: 2,
-                              paddingTop: 6,
-                              borderTop: '1px solid var(--line)',
-                              flexWrap: 'wrap',
-                            }}
-                          >
+                          <div className="chat-place-actions-row">
                             <Link
                               href={`/places/${p.slug}`}
-                              className="btn outline"
-                              style={{ padding: '4px 8px', fontSize: 11, textDecoration: 'none' }}
+                              className="btn outline chat-place-btn"
                             >
                               {isMr ? 'तपशील' : 'Details'}
                             </Link>
@@ -1003,16 +985,7 @@ export default function ChatWidget() {
                                   imageUrl: p.image_url,
                                 })
                               }
-                              className="btn outline"
-                              style={{
-                                padding: '4px 8px',
-                                fontSize: 11,
-                                borderColor: '#10b981',
-                                color: '#065f46',
-                                background: '#ecfdf5',
-                                fontWeight: 700,
-                                cursor: 'pointer',
-                              }}
+                              className="btn outline chat-place-btn directions"
                               title={isMr ? `${p.name_mr || p.name} चा थेट मार्ग मिळवा` : `Get directions to ${p.name}`}
                             >
                               📍 {isMr ? 'मार्ग मिळवा' : 'Directions'}
@@ -1027,8 +1000,7 @@ export default function ChatWidget() {
                                     : `How to reach ${p.name} by Metro or PMPML bus?`
                                 )
                               }
-                              className="btn clay"
-                              style={{ padding: '4px 8px', fontSize: 11 }}
+                              className="btn clay chat-place-btn transit"
                             >
                               🚌 {isMr ? 'वाहतूक' : 'Transit'}
                             </button>
@@ -1266,24 +1238,11 @@ export default function ChatWidget() {
               e.preventDefault();
               send(input);
             }}
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
           >
             <button
               type="button"
               onClick={handleNearMeClick}
-              style={{
-                background: '#ecfdf5',
-                border: '1px solid #10b981',
-                color: '#065f46',
-                borderRadius: 'var(--radius-sm)',
-                padding: '8px 10px',
-                fontSize: 14,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
+              className="chat-loc-btn"
               title={isMr ? 'माझ्या परिसराजवळील ठिकाणे' : 'Find places near my area'}
               aria-label={isMr ? 'माझ्या परिसराजवळील ठिकाणे' : 'Find places near my area'}
             >
@@ -1307,34 +1266,17 @@ export default function ChatWidget() {
                   : 'Ask about Pune places, forts, metro, timings, or itineraries...'
               }
               aria-label={isMr ? 'तुमचा प्रश्न' : 'Your question'}
-              style={{ flex: 1 }}
+              className="chat-input-field"
             />
 
             <button
               type="submit"
-              className="btn"
+              className="chat-send-btn"
               disabled={busy || !input.trim()}
-              style={{
-                padding: '10px 18px',
-                fontSize: 13.5,
-                fontWeight: 700,
-                flexShrink: 0,
-                borderRadius: 12,
-                background:
-                  busy || !input.trim()
-                    ? '#e2e8f0'
-                    : 'linear-gradient(135deg, #047857 0%, #059669 100%)',
-                color: busy || !input.trim() ? '#94a3b8' : '#ffffff',
-                border: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                cursor: busy || !input.trim() ? 'not-allowed' : 'pointer',
-                transition: 'all 0.15s ease',
-              }}
+              aria-label={isMr ? 'विचारा' : 'Send'}
             >
-              <span>{isMr ? 'विचारा' : 'Send'}</span>
-              <span>➤</span>
+              <span className="chat-send-label">{isMr ? 'विचारा' : 'Send'}</span>
+              <span className="chat-send-icon">➤</span>
             </button>
           </form>
         </section>
