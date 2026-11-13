@@ -61,6 +61,7 @@ export default function ThemeToggle({
       }}
     >
       <span
+        className="theme-toggle-icon"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -77,6 +78,7 @@ export default function ThemeToggle({
       </span>
 
       <span
+        className="theme-toggle-label"
         style={{
           fontSize: 11.5,
           color: 'var(--ink)',
@@ -89,6 +91,7 @@ export default function ThemeToggle({
 
       {showShortcutBadge && (
         <kbd
+          className="theme-toggle-kbd"
           style={{
             fontSize: 9.5,
             fontFamily: 'monospace',

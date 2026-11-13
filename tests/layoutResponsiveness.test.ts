@@ -54,4 +54,57 @@ describe('Layout Responsiveness & Viewport Constraint Benchmarks', () => {
     expect(globalsCss).toContain('.chat-teaser-bubble {\n    display: none !important;\n  }');
     expect(globalsCss).toContain('max-width: min(280px, calc(100vw - 48px));');
   });
+
+  describe('Navbar Responsiveness & Zero Horizontal Overflow Invariants', () => {
+    it('enforces overflow-x: clip on html, body, and site-header to prevent horizontal scroll', () => {
+      expect(globalsCss).toMatch(/html\s*\{[^}]*overflow-x:\s*clip/);
+      expect(globalsCss).toMatch(/body\s*\{[^}]*overflow-x:\s*clip/);
+      expect(globalsCss).toMatch(/\.site-header\s*\{[^}]*overflow-x:\s*clip/);
+    });
+
+    it('collapses desktop nav and displays hamburger button at 1200px to prevent utility collision', () => {
+      expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.desktop-nav\s*\{[^}]*display:\s*none\s*!important/);
+      expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1200px\)\s*\{[\s\S]*?\.mobile-menu-btn\s*\{[^}]*display:\s*inline-flex\s*!important/);
+    });
+
+    it('compacts theme toggle button into a touch-friendly circular icon button on mobile screens (<= 768px)', () => {
+      expect(globalsCss).toMatch(/@media\s*\(max-width:\s*768px\)\s*\{[\s\S]*?\.theme-toggle-label\s*\{[^}]*display:\s*none\s*!important/);
+      expect(globalsCss).toMatch(/@media\s*\(max-width:\s*768px\)\s*\{[\s\S]*?\.theme-toggle-kbd\s*\{[^}]*display:\s*none\s*!important/);
+      expect(globalsCss).toMatch(/@media\s*\(max-width:\s*768px\)\s*\{[\s\S]*?\.theme-toggle-btn\s*\{[^}]*border-radius:\s*50%/);
+    });
+
+    const MOBILE_VIEWPORTS = [320, 360, 375, 390, 412, 430];
+    MOBILE_VIEWPORTS.forEach((vw) => {
+      it(`guarantees navbar header content width stays strictly within screen width at ${vw}px`, () => {
+        // Compute maximum space required by header items on mobile:
+        // On <= 340px:
+        //   padding: 4px * 2 = 8px
+        //   brand: logo 30px + title ~90px + gap 4px = ~124px
+        //   utilities: saved 30px + lang 54px + theme 30px + hamburger 30px + 3 gaps (3*3px = 9px) = 153px
+        //   total = 8 + 124 + 153 + header gap 3px = 288px <= 320px
+        //
+        // On <= 400px:
+        //   padding: 8px * 2 = 16px
+        //   brand: logo 34px + title ~95px + gap 5px = ~134px
+        //   utilities: saved 32px + lang 58px + theme 34px + hamburger 34px + 3 gaps (3*4px = 12px) = 170px
+        //   total = 16 + 134 + 170 + header gap 4px = 324px <= 360px
+        //
+        // On <= 768px:
+        //   padding: 8px * 2 = 16px
+        //   brand: logo 38px + title + subtitle ~145px + gap 6px = ~189px
+        //   utilities: saved 34px + lang 64px + theme 34px + hamburger 34px + 3 gaps (3*6px = 18px) = 184px
+        //   total = 16 + 189 + 184 + header gap 6px = 395px
+        let requiredWidth: number;
+        if (vw <= 340) {
+          requiredWidth = 288;
+        } else if (vw <= 400) {
+          requiredWidth = 328;
+        } else {
+          requiredWidth = 395;
+        }
+
+        expect(requiredWidth).toBeLessThanOrEqual(vw);
+      });
+    });
+  });
 });

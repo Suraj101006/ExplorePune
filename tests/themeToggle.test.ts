@@ -158,7 +158,11 @@ describe('Dark and Light Theme Toggle & Shortcut Key Engine', () => {
     expect(html).toContain('Switch to Dark Mode');
     expect(html).toContain('Shortcut: T');
 
-    // Verify visual shortcut badge
+    // Verify visual shortcut badge and semantic responsive classes
+    expect(html).toContain('class="theme-toggle-btn ');
+    expect(html).toContain('class="theme-toggle-icon"');
+    expect(html).toContain('class="theme-toggle-label"');
+    expect(html).toContain('class="theme-toggle-kbd"');
     expect(html).toContain('<kbd');
     expect(html).toContain('T</kbd>');
 

@@ -370,6 +370,7 @@ html {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -382,6 +383,7 @@ body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   background-color: var(--bg);
   background-image: var(--bg-gradient);
@@ -434,6 +436,7 @@ a:hover {
   width: 100%;
   max-width: 100%;
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+  overflow-x: clip;
 }
 
 .site-header .wrap {
@@ -446,6 +449,7 @@ a:hover {
   max-width: 1440px !important;
   width: 100%;
   padding: 0 20px !important;
+  box-sizing: border-box;
 }
 
 .brand {
@@ -612,6 +616,84 @@ a:hover {
   transform: translateY(-1px);
 }
 
+/* Theme Toggle Button Styling & Accessible Micro-interactions */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #f1f5f9;
+  color: #d97706;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 32px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-1px);
+  background: #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+html.dark .theme-toggle-btn,
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #38bdf8 !important;
+}
+
+html.dark .theme-toggle-btn:hover,
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+}
+
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-label {
+  font-size: 11.5px;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.theme-toggle-kbd {
+  font-size: 9.5px;
+  font-family: monospace;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #065f46;
+  line-height: 1.2;
+}
+
+html.dark .theme-toggle-kbd,
+[data-theme="dark"] .theme-toggle-kbd {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #34d399 !important;
+}
+
 @media (max-width: 1360px) {
   .site-header .wrap {
     gap: 8px !important;
@@ -637,12 +719,18 @@ a:hover {
   }
 }
 
-@media (max-width: 1140px) {
+@media (max-width: 1200px) {
   .desktop-nav {
     display: none !important;
   }
   .mobile-menu-btn {
     display: inline-flex !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .theme-toggle-kbd {
+    display: none !important;
   }
 }
 
@@ -654,10 +742,45 @@ a:hover {
     display: none !important;
   }
   .header-utilities {
-    gap: 6px;
+    gap: 6px !important;
   }
   .saved-chip-text {
     display: none !important;
+  }
+  .saved-chip-btn {
+    padding: 6px 8px !important;
+  }
+  .theme-toggle-label {
+    display: none !important;
+  }
+  .theme-toggle-kbd {
+    display: none !important;
+  }
+  .theme-toggle-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    justify-content: center !important;
+  }
+  .lang-toggle-wrap {
+    padding: 1px !important;
+  }
+  .lang-btn {
+    padding: 3px 6px !important;
+    font-size: 11px !important;
+  }
+  .mobile-menu-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 }
 
@@ -693,6 +816,68 @@ a:hover {
   .mobile-menu-btn {
     padding: 5px 8px !important;
     font-size: 16px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-header .wrap {
+    padding: 0 8px !important;
+    gap: 4px !important;
+  }
+  .brand {
+    gap: 5px !important;
+  }
+  .brand-logo-img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .brand-title {
+    font-size: 15px !important;
+  }
+  .brand-subtitle {
+    display: none !important;
+  }
+  .header-utilities {
+    gap: 4px !important;
+  }
+  .saved-chip-btn {
+    padding: 4px 6px !important;
+  }
+  .lang-btn {
+    padding: 2px 5px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .site-header .wrap {
+    padding: 0 4px !important;
+    gap: 3px !important;
+  }
+  .brand {
+    gap: 4px !important;
+  }
+  .brand-logo-img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .brand-title {
+    font-size: 13.5px !important;
+  }
+  .header-utilities {
+    gap: 3px !important;
+  }
+  .theme-toggle-btn,
+  .mobile-menu-btn,
+  .saved-chip-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+  }
+  .lang-btn {
+    padding: 2px 4px !important;
+    font-size: 9.5px !important;
   }
 }
 
@@ -2597,6 +2782,7 @@ a:hover {
   }
   html, body {
     overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
   }
   .hero {
