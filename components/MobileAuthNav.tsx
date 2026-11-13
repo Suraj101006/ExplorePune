@@ -31,8 +31,9 @@ export default function MobileAuthNav({ onClose }: { onClose: () => void }) {
   if (user) {
     return (
       <div
+        className="mobile-auth-card"
         style={{
-          background: 'rgba(255, 255, 255, 0.7)',
+          background: 'var(--card)',
           backdropFilter: 'blur(8px)',
           border: '1px solid var(--line)',
           borderRadius: 'var(--radius-md)',
@@ -101,7 +102,9 @@ export default function MobileAuthNav({ onClose }: { onClose: () => void }) {
               fontSize: '12.5px',
               fontWeight: 700,
               justifyContent: 'center',
-              background: '#fff',
+              background: 'var(--card)',
+              color: 'var(--ink)',
+              borderColor: 'var(--line)',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
@@ -121,9 +124,9 @@ export default function MobileAuthNav({ onClose }: { onClose: () => void }) {
               fontSize: '12.5px',
               fontWeight: 700,
               justifyContent: 'center',
-              background: '#fff',
-              borderColor: '#fca5a5',
-              color: '#dc2626',
+              background: 'var(--card)',
+              borderColor: 'rgba(239, 68, 68, 0.4)',
+              color: '#ef4444',
               cursor: isLoggingOut ? 'wait' : 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
