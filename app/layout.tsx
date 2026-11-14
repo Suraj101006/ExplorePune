@@ -58,17 +58,34 @@ export const metadata: Metadata = {
         height: 630,
         alt: 'Explore Pune - Heritage, Forts & Travel Guide',
       },
+      {
+        url: '/assets/explore-pune-logo.png',
+        width: 1024,
+        height: 1024,
+        alt: 'Explore Pune Official Insignia Logo',
+      },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Explore Pune | Historic Forts, Wadas & Trip Planner',
     description: 'Explore 106+ historic Pune destinations with verified visiting hours, ticket entry fees, Sahyadri trekking trails, local cuisine guides, and custom AI trip planning.',
-    images: ['/images/pune-map-hero.jpg'],
+    images: ['/images/pune-map-hero.jpg', '/assets/explore-pune-logo.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/assets/explore-pune-logo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/assets/explore-pune-logo.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/assets/explore-pune-logo.png', sizes: '512x512', type: 'image/png' },
+    ],
   },
   manifest: '/manifest.webmanifest',
   robots: {
@@ -95,6 +112,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
     >
       <head>
+        {/* Google Search Official Favicon & Logo Links (Google Search Central Guidelines) */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/assets/explore-pune-logo.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
         {/* Preconnect & DNS prefetch for critical origins */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

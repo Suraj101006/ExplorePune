@@ -13,16 +13,34 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     icons: [
       {
-        src: '/assets/explore-pune-logo.png',
+        src: '/favicon-48x48.png',
+        sizes: '48x48',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/favicon-96x96.png',
+        sizes: '96x96',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/favicon-192x192.png',
         sizes: '192x192',
         type: 'image/png',
         purpose: 'any',
       },
       {
-        src: '/assets/explore-pune-logo.png',
+        src: '/favicon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',
+      },
+      {
+        src: '/assets/explore-pune-logo.png',
+        sizes: '1024x1024',
+        type: 'image/png',
+        purpose: 'any',
       },
     ],
   };

@@ -10,19 +10,16 @@ export default function SiteJsonLd() {
 
   const organizationSchema = {
     '@context': 'https://schema.org',
-    '@type': 'TouristInformationCenter',
+    '@type': ['Organization', 'TouristInformationCenter'],
     '@id': `${siteUrl}/#organization`,
     name: 'Explore Pune',
-    alternateName: ['एक्सप्लोर पुणे', 'ExplorePune Guide', 'Explore Pune Heritage Initiative'],
+    alternateName: ['एक्सप्लोर पुणे', 'ExplorePune Guide', 'Explore Pune Heritage Initiative', 'ExplorePune'],
     url: siteUrl,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${siteUrl}/assets/explore-pune-logo.png`,
-      width: 1024,
-      height: 1024,
-      caption: 'Explore Pune Official Insignia',
-    },
-    image: `${siteUrl}/images/pune-map-hero.jpg`,
+    logo: `${siteUrl}/assets/explore-pune-logo.png`,
+    image: [
+      `${siteUrl}/assets/explore-pune-logo.png`,
+      `${siteUrl}/images/pune-map-hero.jpg`,
+    ],
     description:
       'The authoritative, field-verified digital guide and itinerary planner for Pune, Maharashtra — covering 106+ Maratha hill forts, Peshwa-era wadas, ancient Hemadpanthi temples, and Sahyadri nature trails.',
     areaServed: [

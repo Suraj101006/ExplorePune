@@ -112,4 +112,105 @@ describe('Explore Pune Official Logo Integration & Brand Consistency', () => {
     const output = doc.output();
     expect(output.length).toBeGreaterThan(10000);
   });
+
+  describe('Google Search Favicon & Organization Logo Compliance', () => {
+    const rootDir = path.resolve(__dirname, '..');
+
+    it('9. verifies all Google Search required favicon files exist with valid dimensions and PNG/ICO headers', () => {
+      const requiredFiles = [
+        { file: 'public/favicon-48x48.png', width: 48, height: 48 },
+        { file: 'public/favicon-96x96.png', width: 96, height: 96 },
+        { file: 'public/favicon-144x144.png', width: 144, height: 144 },
+        { file: 'public/favicon-192x192.png', width: 192, height: 192 },
+        { file: 'public/favicon-512x512.png', width: 512, height: 512 },
+        { file: 'public/apple-touch-icon.png', width: 180, height: 180 },
+        { file: 'public/apple-icon.png', width: 180, height: 180 },
+        { file: 'app/apple-icon.png', width: 180, height: 180 },
+        { file: 'public/icon.png', width: 512, height: 512 },
+        { file: 'app/icon.png', width: 512, height: 512 },
+      ];
+
+      for (const item of requiredFiles) {
+        const filePath = path.join(rootDir, item.file);
+        expect(fs.existsSync(filePath), `Missing ${item.file}`).toBe(true);
+
+        const buf = fs.readFileSync(filePath);
+        expect(buf.length).toBeGreaterThan(500);
+
+        // Check PNG signature: 89 50 4E 47 0D 0A 1A 0A
+        expect(buf[0]).toBe(0x89);
+        expect(buf[1]).toBe(0x50);
+        expect(buf[2]).toBe(0x4e);
+        expect(buf[3]).toBe(0x47);
+
+        // Check PNG IHDR dimensions at offset 16 and 20
+        const w = buf.readUInt32BE(16);
+        const h = buf.readUInt32BE(20);
+        expect(w).toBe(item.width);
+        expect(h).toBe(item.height);
+      }
+    });
+
+    it('10. verifies multi-resolution favicon.ico exists in both public/ and app/ containing 48x48, 32x32, and 16x16 layers', () => {
+      const icoFiles = ['public/favicon.ico', 'app/favicon.ico'];
+
+      for (const relPath of icoFiles) {
+        const fullPath = path.join(rootDir, relPath);
+        expect(fs.existsSync(fullPath)).toBe(true);
+
+        const buf = fs.readFileSync(fullPath);
+        // Header: 00 00 (reserved), 01 00 (type 1 for ICO), count (16-bit LE)
+        expect(buf.readUInt16LE(0)).toBe(0);
+        expect(buf.readUInt16LE(2)).toBe(1);
+
+        const count = buf.readUInt16LE(4);
+        expect(count).toBeGreaterThanOrEqual(3);
+
+        const sizes: number[] = [];
+        for (let i = 0; i < count; i++) {
+          const entryOffset = 6 + i * 16;
+          const w = buf[entryOffset] || 256;
+          sizes.push(w);
+        }
+
+        // Google requires a multiple of 48px square (48x48), alongside standard 32x32 and 16x16
+        expect(sizes).toContain(48);
+        expect(sizes).toContain(32);
+        expect(sizes).toContain(16);
+      }
+    });
+
+    it('11. verifies app/layout.tsx specifies Google Search compliant favicon link tags and OpenGraph logo', () => {
+      const layoutContent = fs.readFileSync(path.join(rootDir, 'app/layout.tsx'), 'utf8');
+
+      // Link tags for Google Favicon bot
+      expect(layoutContent).toContain('<link rel="icon" href="/favicon.ico" sizes="any" />');
+      expect(layoutContent).toContain('sizes="48x48" href="/favicon-48x48.png"');
+      expect(layoutContent).toContain('sizes="96x96" href="/favicon-96x96.png"');
+      expect(layoutContent).toContain('sizes="192x192" href="/favicon-192x192.png"');
+      expect(layoutContent).toContain('sizes="512x512" href="/assets/explore-pune-logo.png"');
+      expect(layoutContent).toContain('<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />');
+
+      // OpenGraph and Twitter cards include official logo
+      expect(layoutContent).toContain('/assets/explore-pune-logo.png');
+    });
+
+    it('12. verifies components/SiteJsonLd.tsx contains Organization schema with official logo for Google Knowledge Graph', () => {
+      const jsonLdContent = fs.readFileSync(path.join(rootDir, 'components/SiteJsonLd.tsx'), 'utf8');
+
+      expect(jsonLdContent).toContain("'Organization'");
+      expect(jsonLdContent).toContain('logo: `${siteUrl}/assets/explore-pune-logo.png`');
+      expect(jsonLdContent).toContain('publisher:');
+    });
+
+    it('13. verifies app/robots.ts explicitly allows Googlebot and Googlebot-Image to crawl all logo and favicon assets', () => {
+      const robotsContent = fs.readFileSync(path.join(rootDir, 'app/robots.ts'), 'utf8');
+
+      expect(robotsContent).toContain("'/assets/'");
+      expect(robotsContent).toContain("'/favicon.ico'");
+      expect(robotsContent).toContain("'/favicon-48x48.png'");
+      expect(robotsContent).toContain("'/icon.png'");
+      expect(robotsContent).toContain("'/apple-icon.png'");
+    });
+  });
 });
