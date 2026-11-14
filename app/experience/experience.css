@@ -1,0 +1,429 @@
+/* =========================================================================
+   EXPLORE PUNE: BEYOND THE ORDINARY — IMMERSIVE 3D EXPERIENCE STYLESHEET
+   Scoped exclusively under .experience-root to ensure zero global leakage.
+   ========================================================================= */
+
+.experience-root {
+  background-color: #040406;
+  color: #f8fafc;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  cursor: default;
+  user-select: none;
+}
+
+/* Three.js Fixed Background Canvas Container */
+.exp-canvas-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.exp-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Atmospheric Ambient Vignette and Gradients */
+.exp-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03) 0%, rgba(4, 4, 6, 0.85) 75%, #040406 100%);
+}
+
+.exp-grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,0.8) 0%, transparent 80%);
+}
+
+/* Main Content Wrapper (Above 3D Canvas) */
+.exp-content-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Common Scene Section Architecture */
+.exp-scene {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  box-sizing: border-box;
+}
+
+/* Scene 1: The Portal */
+.exp-portal-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 75%);
+  filter: blur(40px);
+  animation: expPulseGlow 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes expPulseGlow {
+  0% { transform: scale(0.85); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+.exp-portal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #d4af37;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 24px;
+}
+
+.exp-hero-title {
+  font-size: clamp(3.2rem, 9vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 20%, #e2e8f0 60%, rgba(212, 175, 55, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 20px;
+  max-width: 1100px;
+}
+
+.exp-hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: #94a3b8;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: 600px;
+  margin: 0 0 40px;
+}
+
+/* Scroll Indicator */
+.exp-scroll-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  animation: expBobbing 2.4s ease-in-out infinite;
+}
+
+.exp-scroll-mouse {
+  width: 20px;
+  height: 32px;
+  border-radius: 12px;
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.exp-scroll-dot {
+  width: 4px;
+  height: 6px;
+  border-radius: 2px;
+  background: #d4af37;
+  animation: expScrollWheel 1.6s ease-in-out infinite;
+}
+
+@keyframes expBobbing {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes expScrollWheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* Scene 2: Infinite Universe Stats & Coordinates */
+.exp-universe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 40px;
+}
+
+.exp-universe-card {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-universe-card:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Scene 3: Kinetic Typography */
+.exp-kinetic-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.exp-kinetic-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.exp-kinetic-highlight {
+  color: #d4af37;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+.exp-kinetic-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.35);
+  transition: all 0.3s ease;
+}
+
+.exp-kinetic-outline:hover {
+  color: #f8fafc;
+  -webkit-text-stroke: 1.5px #f8fafc;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+/* Scene 4: Cinematic Visual Gallery */
+.exp-gallery-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
+}
+
+.exp-gallery-card {
+  position: relative;
+  height: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.exp-gallery-card:hover {
+  transform: scale(1.03);
+  border-color: #d4af37;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.exp-gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-gallery-card:hover img {
+  transform: scale(1.1);
+}
+
+.exp-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(4, 4, 6, 0.9) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+}
+
+/* Scene 6: Motion Lab Interactive Nodes */
+.exp-lab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 40px;
+}
+
+.exp-lab-node {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-lab-node:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: #d4af37;
+  transform: translateY(-6px);
+  box-shadow: 0 14px 35px rgba(212, 175, 55, 0.15);
+}
+
+/* Scene 7: The Grand Finale */
+.exp-finale-title {
+  font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 24px;
+}
+
+/* Custom Interactive Cursor (Desktop) */
+.exp-custom-cursor {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #d4af37;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+  mix-blend-mode: difference;
+}
+
+.exp-custom-cursor.active {
+  width: 56px;
+  height: 56px;
+  background-color: rgba(212, 175, 55, 0.2);
+}
+
+/* Audio & Scene Scrubber Controls Overlay */
+.exp-controls-dock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.exp-control-btn {
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.exp-control-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  color: #d4af37;
+}
+
+.exp-control-btn.active {
+  background: #d4af37;
+  color: #040406;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .exp-gallery-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .exp-gallery-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .exp-custom-cursor {
+    display: none;
+  }
+  .exp-kinetic-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* Accessibility: Prefers-Reduced-Motion */
+@media (prefers-reduced-motion: reduce) {
+  .exp-portal-glow,
+  .exp-scroll-pill,
+  .exp-scroll-dot {
+    animation: none !important;
+  }
+  .exp-universe-card,
+  .exp-gallery-card,
+  .exp-lab-node {
+    transition: none !important;
+  }
+}

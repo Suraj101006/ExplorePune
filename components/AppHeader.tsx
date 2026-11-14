@@ -18,6 +18,7 @@ import {
   Users,
   HelpCircle,
   MapPin,
+  Sparkles,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
@@ -37,6 +38,7 @@ export default function AppHeader() {
     { href: '/destinations', label: isMr ? 'सर्व ठिकाणे' : 'Destinations', Icon: MapPin },
     { href: '/journey', label: t('nav.journey') || (isMr ? 'माझी सफर' : 'My Journey'), Icon: Footprints },
     { href: '/planner', label: t('nav.planner'), Icon: Route },
+    { href: '/experience', label: isMr ? 'अनुभव ३डी' : 'Experience', Icon: Sparkles },
     { href: '/community', label: isMr ? 'समुदाय' : 'Community', Icon: Users },
     { href: '/milestones', label: t('nav.milestones'), Icon: Award },
     { href: '/blogs', label: t('nav.blogs'), Icon: BookOpen },

@@ -19,6 +19,7 @@ describe('Navbar Functions & Authentication State Consistency', () => {
     expect(appHeaderContent).toContain("href: '/destinations'");
     expect(appHeaderContent).toContain("href: '/journey'");
     expect(appHeaderContent).toContain("href: '/planner'");
+    expect(appHeaderContent).toContain("href: '/experience'");
     expect(appHeaderContent).toContain("href: '/community'");
     expect(appHeaderContent).toContain("href: '/milestones'");
     expect(appHeaderContent).toContain("href: '/blogs'");
