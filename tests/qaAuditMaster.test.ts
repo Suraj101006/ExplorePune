@@ -5,6 +5,22 @@ import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 import { sanitizeUserText, moderateCommunityContent } from '@/lib/communityModeration';
 import { getReelTemplateForPlace } from '@/lib/reelTemplates106';
 import { recommendReelSong, REAL_SONG_CATALOG } from '@/lib/reelSongLibrary';
+import {
+  getAllMemories,
+  saveMemoryItem,
+  updateMemoryItem,
+  deleteMemoryItem,
+  toggleFavoriteMemory,
+  getAllDestinationVisits,
+  addDestinationVisit,
+  deleteDestinationVisit,
+  getAllProjectDrafts,
+  saveProjectDraft,
+  deleteProjectDraft,
+  getAllRenderedExports,
+  saveRenderedExport,
+  deleteRenderedExport,
+} from '@/lib/memoryAlbumStorage';
 
 // In-memory localStorage mock for node test environment
 const localStorageMock = (() => {
@@ -35,16 +51,22 @@ describe('Professional End-to-End QA Audit & Quality Certification Suite', () =>
     });
   });
 
-  describe('1. Navigation, Route Architecture & 404 Resilience', () => {
-    it('verifies branded 404 not-found and global error pages exist in app directory', () => {
+  describe('1. Navigation, Route Architecture, 404 & Global Error Resilience', () => {
+    it('verifies branded 404 not-found, error boundary, and global-error pages exist in app directory', () => {
       expect(fs.existsSync(path.resolve(__dirname, '../app/not-found.tsx'))).toBe(true);
       expect(fs.existsSync(path.resolve(__dirname, '../app/error.tsx'))).toBe(true);
+      expect(fs.existsSync(path.resolve(__dirname, '../app/global-error.tsx'))).toBe(true);
 
       const notFoundContent = fs.readFileSync(path.resolve(__dirname, '../app/not-found.tsx'), 'utf8');
       expect(notFoundContent).toContain('404 Not Found');
       expect(notFoundContent).toContain('/destinations');
       expect(notFoundContent).toContain('/journey');
       expect(notFoundContent).toContain('/planner');
+
+      const globalErrorContent = fs.readFileSync(path.resolve(__dirname, '../app/global-error.tsx'), 'utf8');
+      expect(globalErrorContent).toContain('<html');
+      expect(globalErrorContent).toContain('<body');
+      expect(globalErrorContent).toContain('reset()');
     });
 
     it('verifies all 106 destinations have valid geographical coordinates and non-empty categories', () => {
@@ -77,6 +99,7 @@ describe('Professional End-to-End QA Audit & Quality Certification Suite', () =>
         // On mobile viewports <= 860px, journey-grid-layout must force 1 column
         if (vw <= 860) {
           expect(globalsCss).toMatch(/@media\s*\(max-width:\s*860px\)[\s\S]*?\.journey-grid-layout\s*\{[^}]*grid-template-columns:\s*1fr\s*!important/);
+          expect(globalsCss).toMatch(/@media\s*\(max-width:\s*860px\)[\s\S]*?\.reel-studio-workspace\s*\{[^}]*grid-template-columns:\s*1fr\s*!important/);
         }
       });
     });
@@ -134,6 +157,84 @@ describe('Professional End-to-End QA Audit & Quality Certification Suite', () =>
         expect(track.license).toBeDefined();
         expect(track.sections.length).toBeGreaterThanOrEqual(1);
       }
+    });
+  });
+
+  describe('5. Memory Album Storage CRUD & User Isolation', () => {
+    it('performs full CRUD lifecycle on memory items with user isolation', () => {
+      const itemA = saveMemoryItem({
+        userId: 'user_alpha',
+        placeId: 'shaniwar-wada',
+        mediaUrl: 'https://example.com/alpha.jpg',
+        caption: 'Alpha Wada visit',
+      });
+      expect(itemA.id).toBeDefined();
+      expect(itemA.isFavorite).toBe(false);
+
+      const itemB = saveMemoryItem({
+        userId: 'user_beta',
+        placeId: 'sinhagad-fort',
+        mediaUrl: 'https://example.com/beta.jpg',
+        caption: 'Beta Fort visit',
+      });
+
+      // User alpha must not see user beta memories
+      const alphaMemories = getAllMemories('user_alpha');
+      expect(alphaMemories.length).toBe(1);
+      expect(alphaMemories[0].caption).toBe('Alpha Wada visit');
+
+      const betaMemories = getAllMemories('user_beta');
+      expect(betaMemories.length).toBe(1);
+      expect(betaMemories[0].caption).toBe('Beta Fort visit');
+
+      // Toggle favorite
+      const isFav = toggleFavoriteMemory(itemA.id, 'user_alpha');
+      expect(isFav).toBe(true);
+
+      // Update caption
+      const updated = updateMemoryItem(itemA.id, { caption: 'Updated Alpha caption' }, 'user_alpha');
+      expect(updated?.caption).toBe('Updated Alpha caption');
+
+      // Delete memory
+      const deleted = deleteMemoryItem(itemA.id, 'user_alpha');
+      expect(deleted).toBe(true);
+      expect(getAllMemories('user_alpha').length).toBe(0);
+    });
+
+    it('handles destination visits, project drafts, and rendered exports', () => {
+      const visit = addDestinationVisit({
+        userId: 'traveler_1',
+        placeId: 'aga-khan-palace',
+        placeName: 'Aga Khan Palace',
+        notes: 'Peaceful memorial gardens',
+      });
+      expect(visit.id).toBeDefined();
+      expect(getAllDestinationVisits('traveler_1').length).toBe(1);
+
+      const draft = saveProjectDraft({
+        userId: 'traveler_1',
+        title: 'Aga Khan Reel Draft',
+        placeId: 'aga-khan-palace',
+      });
+      expect(draft.id).toBeDefined();
+      expect(getAllProjectDrafts('traveler_1').length).toBe(1);
+
+      const exportRec = saveRenderedExport({
+        userId: 'traveler_1',
+        title: 'Aga Khan Final 1080p',
+        videoUrl: 'blob:https://explorepune-guide.vercel.app/test.mp4',
+      });
+      expect(exportRec.id).toBeDefined();
+      expect(getAllRenderedExports('traveler_1').length).toBe(1);
+
+      // Cleanup
+      deleteDestinationVisit(visit.id, 'traveler_1');
+      deleteProjectDraft(draft.id, 'traveler_1');
+      deleteRenderedExport(exportRec.id, 'traveler_1');
+
+      expect(getAllDestinationVisits('traveler_1').length).toBe(0);
+      expect(getAllProjectDrafts('traveler_1').length).toBe(0);
+      expect(getAllRenderedExports('traveler_1').length).toBe(0);
     });
   });
 });

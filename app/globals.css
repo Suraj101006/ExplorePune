@@ -5284,8 +5284,12 @@ body.modal-open {
     position: relative !important;
     top: 0 !important;
     margin-bottom: 8px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible !important;
+    padding: 8px 10px !important;
+  }
+
+  .journey-sidebar > div:first-child {
+    display: none !important;
   }
 
   .journey-sidebar > div:nth-child(2) {
@@ -5293,8 +5297,15 @@ body.modal-open {
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
     padding-bottom: 6px !important;
     gap: 8px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .journey-sidebar > div:nth-child(2)::-webkit-scrollbar {
+    display: none;
   }
 
   .journey-sidebar button {
@@ -5302,9 +5313,7 @@ body.modal-open {
     flex-shrink: 0 !important;
     width: auto !important;
   }
-}
 
-@media (max-width: 768px) {
   .reel-studio-workspace {
     grid-template-columns: 1fr !important;
     gap: 18px !important;
