@@ -77,13 +77,6 @@ export default function AppHeader() {
         <div className="header-two-floor-right">
           {/* Floor 1 (Upper Layer): Utility Controls, Helplines & Account Buttons */}
           <div className="header-floor-top">
-            <div className="header-floor-top-left hide-on-mobile hide-on-compact-desktop">
-              <span className="header-top-tagline">
-                <span className="header-tagline-dot" />
-                <span>{isMr ? 'पुणे पर्यटन • १०६+ ऐतिहासिक स्थळे व सह्याद्री ट्रेक्स' : 'Official Guide • 106+ Historic Forts, Wadas & Trails'}</span>
-              </span>
-            </div>
-
             <div className="header-utilities">
               {/* Emergency Tourist Helpline Modal */}
               <div className="nav-util-item hide-on-mobile">
