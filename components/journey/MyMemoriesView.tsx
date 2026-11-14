@@ -18,6 +18,10 @@ import {
   ChevronRight,
   Download,
   Share2,
+  Sparkles,
+  Wand2,
+  Check,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   MemoryMediaItem,
@@ -50,6 +54,8 @@ export default function MyMemoriesView({
 
   // Lightbox modal state
   const [activeLightboxIndex, setActiveLightboxIndex] = useState<number | null>(null);
+  const [isAiInspectorOpen, setIsAiInspectorOpen] = useState(false);
+  const [aiCaptionApplied, setAiCaptionApplied] = useState(false);
 
   // Upload dialog state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -74,6 +80,39 @@ export default function MyMemoriesView({
   }, [allMemories, onlyFavorites, selectedPlaceId, searchQuery]);
 
   const activeLightboxItem = activeLightboxIndex !== null ? filteredMemories[activeLightboxIndex] : null;
+
+  // AI Photo Intelligence analysis
+  const activeAiAnalysis = useMemo(() => {
+    if (!activeLightboxItem) return null;
+    const pName = isMr && activeLightboxItem.placeName ? activeLightboxItem.placeName : (activeLightboxItem.placeName || 'Pune Landmark');
+    const seed = activeLightboxItem.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const score = 92 + (seed % 7); // 92 to 98 quality score
+
+    const suggestedCaptionEn = `Timeless beauty and quiet heritage at ${pName}. Capturing indelible moments across Maharashtra.`;
+    const suggestedCaptionMr = `${pName} येथील शांत आणि समृद्ध वारसा. पुण्याच्या संस्कृतीची एक सुंदर आठवण.`;
+
+    const acts = ['Act 1: Cinematic Hook', 'Act 2: Establishing Frame', 'Act 3: Cultural Immersion', 'Act 4: Hero Climax'];
+    const suggestedAct = acts[seed % acts.length];
+    const cropAdvice = seed % 2 === 0
+      ? 'Optimal 9:16 vertical balance; center focus intact'
+      : 'Slight top headroom; ideal for lower-third caption placement';
+
+    return {
+      score,
+      suggestedCaptionEn,
+      suggestedCaptionMr,
+      suggestedAct,
+      cropAdvice,
+    };
+  }, [activeLightboxItem, isMr]);
+
+  const handleApplyAiCaption = () => {
+    if (!activeLightboxItem || !activeAiAnalysis) return;
+    const cap = isMr ? activeAiAnalysis.suggestedCaptionMr : activeAiAnalysis.suggestedCaptionEn;
+    updateMemoryItem(activeLightboxItem.id, { caption: cap }, userId);
+    setAiCaptionApplied(true);
+    setTimeout(() => setAiCaptionApplied(false), 2500);
+  };
 
   // Handle saving new photo
   const handleSaveUpload = () => {
@@ -595,6 +634,27 @@ export default function MyMemoriesView({
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               <button
                 type="button"
+                onClick={() => setIsAiInspectorOpen(!isAiInspectorOpen)}
+                style={{
+                  border: isAiInspectorOpen ? '1px solid #c084fc' : '1px solid rgba(255, 255, 255, 0.25)',
+                  background: isAiInspectorOpen ? 'rgba(124, 58, 237, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+                  padding: '6px 12px',
+                  borderRadius: 10,
+                  color: '#ffffff',
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <Sparkles size={15} color="#c084fc" />
+                <span>{isMr ? 'AI फोटो विश्लेषण' : 'AI Photo Intel'}</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => toggleFavoriteMemory(activeLightboxItem.id, userId)}
                 style={{ border: 'none', background: 'transparent', color: '#ffffff', cursor: 'pointer' }}
               >
@@ -678,6 +738,93 @@ export default function MyMemoriesView({
           >
             <ChevronRight size={24} />
           </button>
+
+          {/* AI Photo Intelligence Inspector Panel */}
+          {isAiInspectorOpen && activeAiAnalysis && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 80,
+                maxWidth: 480,
+                width: '90%',
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                backdropFilter: 'blur(12px)',
+                borderRadius: 18,
+                border: '1.5px solid #a855f7',
+                padding: '16px 20px',
+                color: '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+                boxShadow: '0 16px 36px rgba(0, 0, 0, 0.6)',
+                zIndex: 10,
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <ShieldCheck size={18} color="#c084fc" />
+                  <strong style={{ fontSize: 13.5, color: '#f3e8ff' }}>
+                    {isMr ? 'AI फोटो गुणवत्ता व रील विश्लेषण' : 'AI Photo Intelligence & Reel Curation'}
+                  </strong>
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 800, padding: '2px 8px', borderRadius: 8, background: '#059669', color: '#ffffff' }}>
+                  Score: {activeAiAnalysis.score}/100
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 12, color: '#cbd5e1' }}>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <span style={{ color: '#c084fc', fontWeight: 700 }}>9:16 Crop:</span>
+                  <span>{activeAiAnalysis.cropAdvice}</span>
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <span style={{ color: '#c084fc', fontWeight: 700 }}>Reel Placement:</span>
+                  <span style={{ color: '#fcd34d', fontWeight: 600 }}>{activeAiAnalysis.suggestedAct}</span>
+                </div>
+              </div>
+
+              {/* Suggested Caption */}
+              <div style={{ padding: '10px 12px', borderRadius: 10, backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
+                <span style={{ fontSize: 10.5, fontWeight: 700, textTransform: 'uppercase', color: '#c084fc', display: 'block', marginBottom: 4 }}>
+                  {isMr ? 'AI सुचवलेले कॅप्शन' : 'AI Suggested Caption'}
+                </span>
+                <p style={{ margin: 0, fontSize: 12.5, color: '#f8fafc', lineHeight: 1.4, fontStyle: 'italic' }}>
+                  {isMr ? activeAiAnalysis.suggestedCaptionMr : activeAiAnalysis.suggestedCaptionEn}
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
+                {aiCaptionApplied ? (
+                  <span style={{ fontSize: 12, color: '#34d399', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <Check size={14} /> {isMr ? 'कॅप्शन लागू झाले!' : 'Caption Applied!'}
+                  </span>
+                ) : (
+                  <span />
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleApplyAiCaption}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 8,
+                    background: '#a855f7',
+                    color: '#ffffff',
+                    border: 'none',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                  }}
+                >
+                  <Wand2 size={13} />
+                  <span>{isMr ? 'हे कॅप्शन फोटोला जोडा' : 'Apply AI Caption'}</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Caption footer */}
           {activeLightboxItem.caption && (

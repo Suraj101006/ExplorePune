@@ -407,8 +407,25 @@ export default function MyJourneyClient() {
                     allPlaces={ALL_STRUCTURED_PLACES}
                     isMr={isMr}
                     onOpenCreateReelForJourney={(j) => {
-                      const firstPlace = ALL_STRUCTURED_PLACES.find((p) => p.name === j.places[0]?.placeName);
-                      if (firstPlace) setSelectedPlace(firstPlace);
+                      const firstPlace =
+                        ALL_STRUCTURED_PLACES.find(
+                          (p) => p.name === j.places[0]?.placeName || p.id === j.places[0]?.placeId
+                        ) || ALL_STRUCTURED_PLACES[0];
+                      const dayDraft: ReelProjectDraft = {
+                        id: `draft_day_${j.id || j.date}`,
+                        title: isMr ? `पुण्यातील एक दिवस • ${j.date}` : `My Day in Pune • ${j.date}`,
+                        placeId: firstPlace.id,
+                        placeName: firstPlace.name,
+                        creationMode: 'auto',
+                        durationSec: 15,
+                        aspectRatio: '9:16',
+                        quality: '720p',
+                        scenes: [],
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                      };
+                      setActiveDraft(dayDraft);
+                      setSelectedPlace(firstPlace);
                       handleNavigateView('studio');
                     }}
                     onPlanNewJourney={() => setIsCreateJourneyOpen(true)}
@@ -424,6 +441,27 @@ export default function MyJourneyClient() {
                     allPlaces={ALL_STRUCTURED_PLACES}
                     isMr={isMr}
                     onLaunchMonthlyReel={({ monthPrefix, durationTier }) => {
+                      const monthVisits = visits.filter((v) => (v.visitDate || v.visitedDate || '').startsWith(monthPrefix));
+                      const primaryPlace = monthVisits.length > 0
+                        ? ALL_STRUCTURED_PLACES.find((p) => p.id === monthVisits[0].placeId || p.slug === monthVisits[0].placeSlug)
+                        : ALL_STRUCTURED_PLACES[0];
+                      const targetPlace = primaryPlace || ALL_STRUCTURED_PLACES[0];
+
+                      const monthDraft: ReelProjectDraft = {
+                        id: `draft_month_${monthPrefix}`,
+                        title: isMr ? `माझा पुणे महिना • ${monthPrefix}` : `My Month in Pune • ${monthPrefix}`,
+                        placeId: targetPlace.id,
+                        placeName: targetPlace.name,
+                        creationMode: 'auto',
+                        durationSec: durationTier === 'short' ? 30 : durationTier === 'extended' ? 90 : 60,
+                        aspectRatio: '9:16',
+                        quality: '720p',
+                        scenes: [],
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                      };
+                      setActiveDraft(monthDraft);
+                      setSelectedPlace(targetPlace);
                       handleNavigateView('studio');
                     }}
                     onSelectPlaceDetails={handleSelectPlaceDetails}

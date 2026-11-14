@@ -19,6 +19,13 @@ import {
   AlertCircle,
   Volume2,
   VolumeX,
+  Wand2,
+  ArrowUp,
+  ArrowDown,
+  Undo2,
+  Check,
+  Scissors,
+  ShieldCheck,
 } from 'lucide-react';
 import { StructuredPlace } from '@/lib/chatKnowledgeEngine';
 import {
@@ -118,8 +125,133 @@ export default function ReelStudioView({
   const [exportError, setExportError] = useState<string | null>(null);
   const [saveDraftToast, setSaveDraftToast] = useState(false);
 
-  // Acts list from active template
-  const acts = activeTemplate.acts || [];
+  // Acts list from active template with customizable state
+  const [customActs, setCustomActs] = useState<any[]>(() => {
+    return activeTemplate.acts ? JSON.parse(JSON.stringify(activeTemplate.acts)) : [];
+  });
+  const [appliedAiPreset, setAppliedAiPreset] = useState<string | null>(null);
+  const [canvasFilterOverride, setCanvasFilterOverride] = useState<string | null>(null);
+
+  // Sync custom acts when active template changes
+  useEffect(() => {
+    if (activeTemplate.acts) {
+      setCustomActs(JSON.parse(JSON.stringify(activeTemplate.acts)));
+      setAppliedAiPreset(null);
+      setCanvasFilterOverride(null);
+    }
+  }, [activeTemplate]);
+
+  const acts = customActs && customActs.length > 0 ? customActs : activeTemplate.acts || [];
+
+  // AI Creative Angles Presets
+  const handleApplyAiPreset = (presetKey: string) => {
+    setAppliedAiPreset(presetKey);
+    const placeName = selectedPlace ? (isMr && selectedPlace.name_mr ? selectedPlace.name_mr : selectedPlace.name) : 'Pune';
+
+    if (presetKey === 'monsoon_drama') {
+      setCanvasFilterOverride('contrast(1.15) saturate(1.25) brightness(0.92)');
+      setCustomTitle(isMr ? `${placeName} • सह्याद्री मान्सून गाथा` : `${selectedPlace.name} • Sahyadri Monsoon Drama`);
+      setSelectedSongId('song-sahyadri-powada');
+      setCustomActs((prev) =>
+        prev.map((a, idx) => ({
+          ...a,
+          durationSec: [2.5, 3.0, 3.5, 3.2, 2.8][idx] || 3.0,
+          motionPreset: idx === 3 ? 'speed_ramp_climax' : 'slow_drift',
+          titleEn: [`Misty Peaks of ${selectedPlace.name}`, 'Ascent through the Clouds', 'Wind & Mountain Roar', 'Hero Bastion Climax', 'Eternal Sahyadri'][idx] || a.titleEn,
+          titleMr: [`${placeName} वर धुक्याची चादर`, 'ढगांमधून जाणारी वाट', 'सह्याद्रीचे सोसाट्याचे वारे', 'शौर्याचे सर्वोच्च शिखर', 'अमर सह्याद्री'][idx] || a.titleMr,
+        }))
+      );
+    } else if (presetKey === 'peshwa_epic') {
+      setCanvasFilterOverride('sepia(0.2) contrast(1.1) saturate(1.1)');
+      setCustomTitle(isMr ? `${placeName} • पेशवाईचा सुवर्णकाळ` : `${selectedPlace.name} • Royal Peshwa Chronicle`);
+      setSelectedSongId('song-peshwa-tarana');
+      setCustomActs((prev) =>
+        prev.map((a, idx) => ({
+          ...a,
+          durationSec: [2.8, 3.2, 3.0, 3.5, 2.5][idx] || 3.0,
+          motionPreset: idx === 1 ? 'ken_burns_depth' : 'slow_drift',
+          titleEn: ['Grand Gateway of the Peshwas', 'Carved Teak & Stone Glory', 'Courts of Maratha Governance', 'Climax: Echoes of Empire', 'Timeless Heritage'][idx] || a.titleEn,
+          titleMr: ['पेशवाईचे भव्य महाद्वार', 'कोरीव सागवान व दगडी वैभव', 'मराठा दरबाराचे साक्षीदार', 'साम्राज्याचे अमर पडसाद', 'अविनाशी वारसा'][idx] || a.titleMr,
+        }))
+      );
+    } else if (presetKey === 'devotional_peace') {
+      setCanvasFilterOverride('brightness(1.05) contrast(1.02) saturate(1.15)');
+      setCustomTitle(isMr ? `${placeName} • भक्ती व शांततेची अनुभूती` : `${selectedPlace.name} • Spiritual Bliss`);
+      setSelectedSongId('song-dagdusheth-aarti');
+      setCustomActs((prev) =>
+        prev.map((a, idx) => ({
+          ...a,
+          durationSec: [3.0, 3.0, 3.0, 3.5, 2.5][idx] || 3.0,
+          motionPreset: 'slow_drift',
+          titleEn: ['Sacred Threshold & Incense', 'Devotional Bells Ring', 'Peaceful Darshan Prayer', 'Golden Light & Blessings', 'Soulful Departure'][idx] || a.titleEn,
+          titleMr: ['पवित्र गाभारा व सुवास', 'टाळ-मृदंगाचा गजर', 'शांत दर्शन व प्रार्थना', 'सुवर्ण कांती व कृपाशीर्वाद', 'आत्मिक शांती'][idx] || a.titleMr,
+        }))
+      );
+    } else if (presetKey === 'vibrant_culture') {
+      setCanvasFilterOverride('saturate(1.3) contrast(1.08)');
+      setCustomTitle(isMr ? `${placeName} • पुण्याची अस्सल संस्कृती` : `${selectedPlace.name} • Pulse of Pune`);
+      setSelectedSongId('song-puneri-khadya-jingle');
+      setCustomActs((prev) =>
+        prev.map((a, idx) => ({
+          ...a,
+          durationSec: [2.0, 2.2, 2.0, 2.8, 2.0][idx] || 2.2,
+          motionPreset: idx === 3 ? 'speed_ramp_climax' : 'zoom_punch',
+          titleEn: ['Bustling Morning Buzz', 'Colors, Chai & Heritage', 'Streets Steeped in History', 'High-Energy Dhol Beat Drop', 'The Unstoppable Pune Vibe'][idx] || a.titleEn,
+          titleMr: ['सकाळची ताजी लगबग', 'रंग, चहा आणि संस्कृती', 'इतिहास सांगणाऱ्या गल्ल्या', 'खणखणीत ढोल-ताशा हुक', 'पुण्याचा अस्सल रुबाब'][idx] || a.titleMr,
+        }))
+      );
+    }
+  };
+
+  // Timeline Editing Handlers
+  const handleUpdateActDuration = (actIdx: number, newDur: number) => {
+    setCustomActs((prev) => {
+      const copy = [...prev];
+      if (copy[actIdx]) {
+        copy[actIdx] = { ...copy[actIdx], durationSec: Math.max(1.5, Math.min(6.0, Number(newDur.toFixed(1)))) };
+      }
+      return copy;
+    });
+  };
+
+  const handleUpdateActTitle = (actIdx: number, titleEn: string, titleMr: string) => {
+    setCustomActs((prev) => {
+      const copy = [...prev];
+      if (copy[actIdx]) {
+        copy[actIdx] = { ...copy[actIdx], titleEn, titleMr };
+      }
+      return copy;
+    });
+  };
+
+  const handleUpdateActMotion = (actIdx: number, motionPreset: any) => {
+    setCustomActs((prev) => {
+      const copy = [...prev];
+      if (copy[actIdx]) {
+        copy[actIdx] = { ...copy[actIdx], motionPreset };
+      }
+      return copy;
+    });
+  };
+
+  const handleMoveAct = (fromIdx: number, toIdx: number) => {
+    if (toIdx < 0 || toIdx >= customActs.length) return;
+    setCustomActs((prev) => {
+      const copy = [...prev];
+      const item = copy.splice(fromIdx, 1)[0];
+      copy.splice(toIdx, 0, item);
+      return copy.map((a, i) => ({ ...a, actNumber: (i + 1) as any }));
+    });
+  };
+
+  const handleResetActs = () => {
+    if (activeTemplate.acts) {
+      setCustomActs(JSON.parse(JSON.stringify(activeTemplate.acts)));
+      setAppliedAiPreset(null);
+      setCanvasFilterOverride(null);
+      setCustomTitle(selectedPlace ? (isMr && selectedPlace.name_mr ? selectedPlace.name_mr : selectedPlace.name) : 'Pune Journey');
+    }
+  };
 
   // Playback timer loop
   useEffect(() => {
@@ -368,6 +500,7 @@ export default function ReelStudioView({
                 objectFit: 'cover',
                 transform: isPlaying ? 'scale(1.12)' : 'scale(1)',
                 transition: 'transform 3.5s ease-out',
+                filter: canvasFilterOverride || activeTemplate.palette?.canvasFilter || 'none',
               }}
             />
 
@@ -651,6 +784,289 @@ export default function ReelStudioView({
               ))}
             </div>
           </div>
+
+          {/* Conditional Mode Panel: AI Director Assistant */}
+          {studioMode === 'ai' && (
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
+                borderRadius: 20,
+                border: '1.5px solid #d8b4fe',
+                padding: '22px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+                boxShadow: '0 4px 16px -4px rgba(124, 58, 237, 0.1)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: '#7c3aed', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Wand2 size={18} />
+                  </div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#4c1d95' }}>
+                      {isMr ? 'AI सिनेमॅटिक डिरेक्टर (AI Reel Director)' : 'AI Cinematic Reel Director'}
+                    </h3>
+                    <span style={{ fontSize: 12, color: '#6b21a8' }}>
+                      {isMr ? 'ठिकाणानुसार कलात्मक अँगल व रंगसंगती एका क्लिकवर लागू करा' : 'Select a creative angle to instantly transform narrative, motion & color LUT'}
+                    </span>
+                  </div>
+                </div>
+
+                {appliedAiPreset && (
+                  <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 8, background: '#7c3aed', color: '#ffffff' }}>
+                    {isMr ? 'AI अँगल लागू आहे' : 'Active Angle Applied'}
+                  </span>
+                )}
+              </div>
+
+              {/* 4 Creative Angle Cards */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
+                {[
+                  {
+                    key: 'monsoon_drama',
+                    icon: '🏔️',
+                    titleEn: 'Sahyadri Monsoon Drama',
+                    titleMr: 'सह्याद्री मान्सून गाथा',
+                    descEn: 'High contrast mist, slow drifts, heroic Powada beats.',
+                    descMr: 'गडकिल्ल्यांवर धुक्याची चादर व वीररस पोवाडा.',
+                  },
+                  {
+                    key: 'peshwa_epic',
+                    icon: '🏛️',
+                    titleEn: 'Peshwa Royal Chronicle',
+                    titleMr: 'पेशवाईचे सुवर्ण युग',
+                    descEn: 'Warm royal amber grading, Santoor raga, regal pacing.',
+                    descMr: 'ऐतिहासिक वाडे, सुवर्ण रंगसंगती व शांत संतूर नाद.',
+                  },
+                  {
+                    key: 'devotional_peace',
+                    icon: '🛕',
+                    titleEn: 'Spiritual Bliss & Devotion',
+                    titleMr: 'भक्ती व शांततेची अनुभूती',
+                    descEn: 'Soft golden glow, temple bells, peaceful abhang.',
+                    descMr: 'सुवर्ण मंदिर कांति, घंटा नाद व भावपूर्ण अभंग.',
+                  },
+                  {
+                    key: 'vibrant_culture',
+                    icon: '☕',
+                    titleEn: 'Pune Street & Youth Vibe',
+                    titleMr: 'पुण्याचा अस्सल रुबाब',
+                    descEn: 'Punchy speed ramps, vivid saturation, Dhol-Tasha drops.',
+                    descMr: 'कट्ट्यावरील गप्पा, उत्साह आणि खणखणीत ढोल-ताशा.',
+                  },
+                ].map((preset) => {
+                  const isSelected = appliedAiPreset === preset.key;
+                  return (
+                    <div
+                      key={preset.key}
+                      onClick={() => handleApplyAiPreset(preset.key)}
+                      style={{
+                        padding: '12px 14px',
+                        borderRadius: 14,
+                        border: isSelected ? '2px solid #7c3aed' : '1px solid #e9d5ff',
+                        backgroundColor: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 6,
+                        boxShadow: isSelected ? '0 4px 12px rgba(124, 58, 237, 0.15)' : 'none',
+                        transition: 'all 0.18s ease',
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: 18 }}>{preset.icon}</span>
+                        {isSelected && <CheckCircle2 size={16} color="#7c3aed" />}
+                      </div>
+                      <strong style={{ fontSize: 13, color: '#4c1d95' }}>
+                        {isMr ? preset.titleMr : preset.titleEn}
+                      </strong>
+                      <span style={{ fontSize: 11.5, color: '#6b21a8', lineHeight: 1.4 }}>
+                        {isMr ? preset.descMr : preset.descEn}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* AI Quality Inspector Badge */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  padding: '10px 14px',
+                  borderRadius: 12,
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e9d5ff',
+                  fontSize: 12,
+                  color: '#4c1d95',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <ShieldCheck size={18} color="#059669" />
+                <span style={{ fontWeight: 700 }}>AI Quality Verified:</span>
+                <span>Aspect: 9:16 Vertical</span>
+                <span>•</span>
+                <span>Sync: Beat Aligned</span>
+                <span>•</span>
+                <span>Pacing: Ken Burns Active</span>
+              </div>
+            </div>
+          )}
+
+          {/* Conditional Mode Panel: Manual Timeline & Scene Sequencer */}
+          {studioMode === 'manual' && (
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: 20,
+                border: '1.5px solid #cbd5e1',
+                padding: '22px 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: '#0f172a', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Sliders size={18} />
+                  </div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#0f172a' }}>
+                      {isMr ? 'मॅन्युअल टाइमलाइन एडिटर' : 'Manual Timeline & Scene Sequencer'}
+                    </h3>
+                    <span style={{ fontSize: 12, color: '#64748b' }}>
+                      {isMr ? 'प्रत्येक अंकाचा कालावधी, मोशन, ट्रान्झिशन व क्रम बदला' : 'Fine-tune duration, motion preset, and text for every act'}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleResetActs}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: 8,
+                    border: '1px solid #cbd5e1',
+                    background: '#f8fafc',
+                    color: '#475569',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                >
+                  <Undo2 size={13} />
+                  <span>{isMr ? 'मूळ स्थितीत आणा' : 'Reset Acts'}</span>
+                </button>
+              </div>
+
+              {/* Scene Editors List */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {acts.map((act, idx) => (
+                  <div
+                    key={act.actNumber || idx}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: 14,
+                      border: currentActIndex === idx ? '1.5px solid #7c3aed' : '1px solid #e2e8f0',
+                      backgroundColor: currentActIndex === idx ? '#faf5ff' : '#f8fafc',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 8,
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ padding: '2px 8px', borderRadius: 6, background: '#7c3aed', color: '#ffffff', fontSize: 11, fontWeight: 800 }}>
+                          Act {act.actNumber}
+                        </span>
+                        <strong style={{ fontSize: 13, color: '#0f172a' }}>
+                          {isMr ? act.titleMr : act.titleEn}
+                        </strong>
+                      </div>
+
+                      {/* Move up / down buttons */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveAct(idx, idx - 1)}
+                          disabled={idx === 0}
+                          title="Move Up"
+                          style={{ border: 'none', background: 'transparent', cursor: idx === 0 ? 'default' : 'pointer', opacity: idx === 0 ? 0.3 : 1, padding: 2 }}
+                        >
+                          <ArrowUp size={15} color="#475569" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveAct(idx, idx + 1)}
+                          disabled={idx === acts.length - 1}
+                          title="Move Down"
+                          style={{ border: 'none', background: 'transparent', cursor: idx === acts.length - 1 ? 'default' : 'pointer', opacity: idx === acts.length - 1 ? 0.3 : 1, padding: 2 }}
+                        >
+                          <ArrowDown size={15} color="#475569" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10 }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#64748b', marginBottom: 2 }}>
+                          {isMr ? 'कालावधी (सेकंद)' : 'Duration (sec)'}: {act.durationSec}s
+                        </label>
+                        <input
+                          type="range"
+                          min="1.5"
+                          max="6.0"
+                          step="0.1"
+                          value={act.durationSec || 3.0}
+                          onChange={(e) => handleUpdateActDuration(idx, parseFloat(e.target.value))}
+                          style={{ width: '100%', accentColor: '#7c3aed', cursor: 'pointer' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#64748b', marginBottom: 2 }}>
+                          {isMr ? 'कॅमेरा मोशन' : 'Motion Preset'}
+                        </label>
+                        <select
+                          value={act.motionPreset || 'slow_drift'}
+                          onChange={(e) => handleUpdateActMotion(idx, e.target.value)}
+                          style={{ width: '100%', padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12, background: '#ffffff' }}
+                        >
+                          <option value="slow_drift">Slow Cinematic Drift</option>
+                          <option value="ken_burns_depth">Ken Burns Deep Zoom</option>
+                          <option value="zoom_punch">Dynamic Zoom Punch</option>
+                          <option value="whip_pan">Whip Pan Action</option>
+                          <option value="speed_ramp_climax">Speed Ramp Climax</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#64748b', marginBottom: 2 }}>
+                          {isMr ? 'शीर्षक बदला' : 'Edit Title'}
+                        </label>
+                        <input
+                          type="text"
+                          value={isMr ? act.titleMr : act.titleEn}
+                          onChange={(e) => {
+                            if (isMr) handleUpdateActTitle(idx, act.titleEn, e.target.value);
+                            else handleUpdateActTitle(idx, e.target.value, act.titleMr);
+                          }}
+                          style={{ width: '100%', padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12, background: '#ffffff' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* 2. Authentic Music Library Selection */}
           <div

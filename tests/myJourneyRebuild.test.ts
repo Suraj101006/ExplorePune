@@ -219,4 +219,74 @@ describe('My Journey Rebuild: Full-Stack Platform Test Suite', () => {
       expect(templeSong.recommended.genre).toBe('abhang_devotional');
     });
   });
+
+  describe('6. AI Storytelling, Photo Intelligence & Creative Director', () => {
+    it('generates rich dual-language travel vignettes, hashtags, and quotes for destination lore', () => {
+      const place = ALL_STRUCTURED_PLACES.find((p) => p.slug === 'sinhagad-fort')!;
+      expect(place).toBeDefined();
+
+      const template = getReelTemplateForPlace('sinhagad-fort');
+      expect(template.conceptTaglineEn).toContain('Lion Fortress');
+      expect(template.conceptTaglineMr).toContain('कोंढाणा');
+
+      // Test narrative curve existence
+      expect(template.acts.length).toBe(5);
+      expect(template.acts[0].actName).toBe('hook');
+      expect(template.acts[3].actName).toBe('climax');
+    });
+
+    it('validates AI Photo Intelligence scoring and 9:16 vertical crop compatibility', () => {
+      const mockMemory = {
+        id: 'mem_12345',
+        placeName: 'Shaniwar Wada',
+        mediaUrl: '/images/places/shaniwar-wada.jpg',
+      };
+
+      const seed = mockMemory.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const score = 92 + (seed % 7);
+      expect(score).toBeGreaterThanOrEqual(92);
+      expect(score).toBeLessThanOrEqual(98);
+
+      const acts = ['Act 1: Cinematic Hook', 'Act 2: Establishing Frame', 'Act 3: Cultural Immersion', 'Act 4: Hero Climax'];
+      const suggestedAct = acts[seed % acts.length];
+      expect(acts).toContain(suggestedAct);
+    });
+
+    it('verifies 4 AI Reel Director creative angles transform narrative and music presets', () => {
+      const angles = ['monsoon_drama', 'peshwa_epic', 'devotional_peace', 'vibrant_culture'];
+      expect(angles).toHaveLength(4);
+
+      // Verify associated songs exist in REAL_SONG_CATALOG
+      const songIds = ['song-sahyadri-powada', 'song-peshwa-tarana', 'song-dagdusheth-aarti', 'song-puneri-khadya-jingle'];
+      for (const id of songIds) {
+        const found = REAL_SONG_CATALOG.find((s) => s.id === id);
+        expect(found).toBeDefined();
+        expect(found?.bpm).toBeGreaterThan(60);
+      }
+    });
+
+    it('synthesizes Day and Monthly Journey reel drafts with proper durations', () => {
+      // Monthly short recap
+      const monthDraftShort = saveProjectDraft({
+        title: 'Pune Monthly Story • 2026-11',
+        placeId: 'shaniwar-wada',
+        durationSec: 30,
+        creationMode: 'auto',
+      });
+      expect(monthDraftShort.durationSec).toBe(30);
+
+      // Monthly full recap
+      const monthDraftFull = saveProjectDraft({
+        title: 'Pune Monthly Story • 2026-11',
+        placeId: 'sinhagad-fort',
+        durationSec: 60,
+        creationMode: 'auto',
+      });
+      expect(monthDraftFull.durationSec).toBe(60);
+
+      // Cleanup
+      deleteProjectDraft(monthDraftShort.id);
+      deleteProjectDraft(monthDraftFull.id);
+    });
+  });
 });

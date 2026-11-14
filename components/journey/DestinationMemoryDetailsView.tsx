@@ -18,6 +18,10 @@ import {
   Share2,
   Star,
   ExternalLink,
+  Sparkles,
+  Wand2,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { StructuredPlace } from '@/lib/chatKnowledgeEngine';
 import {
@@ -60,6 +64,7 @@ export default function DestinationMemoryDetailsView({
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
   const [newPhotoCaption, setNewPhotoCaption] = useState('');
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [copiedToast, setCopiedToast] = useState<string | null>(null);
 
   // Template and recommended music lookup
   const reelTemplate = useMemo(() => findReelTemplate(place.id) || findReelTemplate(place.slug), [place]);
@@ -69,6 +74,45 @@ export default function DestinationMemoryDetailsView({
     ]);
     return res?.recommended || null;
   }, [place]);
+
+  // AI Memory Storytelling synthesis
+  const aiGeneratedStory = useMemo(() => {
+    const placeName = isMr && place.name_mr ? place.name_mr : place.name;
+    const tagEn = reelTemplate?.conceptTaglineEn || `${place.name} is one of Pune's most celebrated landmarks.`;
+    const tagMr = reelTemplate?.conceptTaglineMr || `${placeName} हे पुण्यातील अत्यंत प्रसिद्ध आणि संस्मरणीय ठिकाण आहे.`;
+
+    const recentNote = visits.find((v) => v.notes)?.notes;
+    const visitCountTextEn = visits.length > 0 ? `Having explored this sanctuary ${visits.length} time${visits.length > 1 ? 's' : ''}, ` : '';
+    const visitCountTextMr = visits.length > 0 ? `येथे एकूण ${visits.length} वेळा भेट देऊन, ` : '';
+
+    const vignetteEn = `${visitCountTextEn}${tagEn} Standing here evokes the timeless pulse of Pune. ${recentNote ? `Personal memory: "${recentNote}".` : ''} Every stone and breeze carries echoes of Sahyadri history, leaving an indelible imprint on the traveler's heart.`;
+
+    const vignetteMr = `${visitCountTextMr}${tagMr} येथे आल्यावर पुण्यातील समृद्ध इतिहासाचा आणि संस्कृतीचा प्रत्यक्ष अनुभव येतो. ${recentNote ? `वैयक्तिक आठवण: "${recentNote}".` : ''} सह्याद्रीचे वारे आणि या भूमीचे वैभव मनाला एक नवी ऊर्जा आणि शांतता देऊन जाते.`;
+
+    const captionEn = `Echoes of Pune • ${place.name} 🌿✨\n${tagEn}\n\nCaptured memories from the cultural capital of Maharashtra.\n#ExplorePune #${(place.slug || 'pune').replace(/-/g, '')} #PuneTravel #IncredibleMaharashtra #TravelDiaries`;
+
+    const captionMr = `पुण्यातील अविस्मरणीय सफर • ${placeName} 🚩✨\n${tagMr}\n\nसह्याद्रीच्या कुशीतील आणि पुण्याच्या इतिहासातील एक अनमोल ठेवा.\n#ExplorePune #${(place.slug || 'pune').replace(/-/g, '')} #पुणे #पुणेकर #महाराष्ट्रपर्यटन #माझीसफर`;
+
+    const diaryQuoteEn = `“In ${place.name}, time slows down just enough to hear the quiet poetry of history.”`;
+    const diaryQuoteMr = `“${placeName} येथे आल्यावर काळाची गती थांबते आणि इतिहासाचे मूक काव्य मनाला स्पर्श करते.”`;
+
+    return {
+      vignetteEn,
+      vignetteMr,
+      captionEn,
+      captionMr,
+      diaryQuoteEn,
+      diaryQuoteMr,
+    };
+  }, [place, reelTemplate, visits, isMr]);
+
+  const handleCopyStory = (text: string, label: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopiedToast(label);
+      setTimeout(() => setCopiedToast(null), 2500);
+    }
+  };
 
   // First visit and latest visit
   const sortedVisits = useMemo(() => {
@@ -803,6 +847,201 @@ export default function DestinationMemoryDetailsView({
               : 'No personal photos added for this destination yet. Add photos to feature them in your reel!'}
           </div>
         )}
+      </div>
+
+      {/* AI Memory Storytelling & Caption Generator Section */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+          borderRadius: 20,
+          border: '1.5px solid #fed7aa',
+          padding: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          boxShadow: '0 4px 18px -4px rgba(234, 88, 12, 0.1)',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 12,
+                background: '#ea580c',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Wand2 size={20} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: '#c2410c', letterSpacing: '0.05em' }}>
+                  AI Destination Intelligence
+                </span>
+                <span style={{ fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 6, background: '#ea580c', color: '#ffffff' }}>
+                  Live Storytelling
+                </span>
+              </div>
+              <h3 style={{ margin: '2px 0 0', fontSize: 17, fontWeight: 900, color: '#9a3412' }}>
+                {isMr ? 'AI वैयक्तिक प्रवास गाथा व कॅप्शन्स' : 'AI Personal Memory Storyteller & Captions'}
+              </h3>
+            </div>
+          </div>
+
+          {copiedToast && (
+            <span style={{ padding: '4px 10px', borderRadius: 8, background: '#059669', color: '#ffffff', fontSize: 12, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <Check size={14} />
+              {copiedToast} Copied!
+            </span>
+          )}
+        </div>
+
+        {/* Narrative Vignette Card */}
+        <div
+          style={{
+            padding: '16px 18px',
+            borderRadius: 14,
+            background: '#ffffff',
+            border: '1px solid #fed7aa',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#ea580c', textTransform: 'uppercase' }}>
+              📜 {isMr ? 'साहित्यिक प्रवास विग्नेट (Travel Vignette)' : 'Evocative Travel Vignette'}
+            </span>
+            <button
+              type="button"
+              onClick={() => handleCopyStory(isMr ? aiGeneratedStory.vignetteMr : aiGeneratedStory.vignetteEn, 'Story Vignette')}
+              style={{
+                border: 'none',
+                background: '#f8fafc',
+                padding: '4px 8px',
+                borderRadius: 6,
+                fontSize: 11.5,
+                fontWeight: 600,
+                color: '#475569',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              <Copy size={13} />
+              <span>{isMr ? 'कॉपी करा' : 'Copy'}</span>
+            </button>
+          </div>
+          <p style={{ margin: 0, fontSize: 13.5, color: '#334155', lineHeight: 1.6, fontStyle: 'italic' }}>
+            {isMr ? aiGeneratedStory.vignetteMr : aiGeneratedStory.vignetteEn}
+          </p>
+        </div>
+
+        {/* Two-Column Grid: Social Caption + Diary Quote */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
+          {/* Social Caption */}
+          <div
+            style={{
+              padding: '14px 16px',
+              borderRadius: 14,
+              background: '#ffffff',
+              border: '1px solid #fed7aa',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, fontWeight: 800, color: '#ea580c', textTransform: 'uppercase' }}>
+                📸 {isMr ? 'सोशल मीडिया रील कॅप्शन' : 'Social Media Caption & Tags'}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleCopyStory(isMr ? aiGeneratedStory.captionMr : aiGeneratedStory.captionEn, 'Caption')}
+                style={{
+                  border: 'none',
+                  background: '#f8fafc',
+                  padding: '4px 8px',
+                  borderRadius: 6,
+                  fontSize: 11.5,
+                  fontWeight: 600,
+                  color: '#475569',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                <Copy size={13} />
+                <span>{isMr ? 'कॅप्शन कॉपी' : 'Copy'}</span>
+              </button>
+            </div>
+            <pre
+              style={{
+                margin: 0,
+                fontFamily: 'inherit',
+                fontSize: 12,
+                color: '#475569',
+                whiteSpace: 'pre-wrap',
+                lineHeight: 1.5,
+              }}
+            >
+              {isMr ? aiGeneratedStory.captionMr : aiGeneratedStory.captionEn}
+            </pre>
+          </div>
+
+          {/* Diary Reflection */}
+          <div
+            style={{
+              padding: '14px 16px',
+              borderRadius: 14,
+              background: '#ffffff',
+              border: '1px solid #fed7aa',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <span style={{ fontSize: 12, fontWeight: 800, color: '#ea580c', textTransform: 'uppercase' }}>
+                💭 {isMr ? 'डायरी सुविचार (Travel Reflection)' : 'Traveler Diary Quote'}
+              </span>
+              <blockquote style={{ margin: '8px 0 0', fontSize: 13, color: '#1e293b', fontStyle: 'italic', lineHeight: 1.5 }}>
+                {isMr ? aiGeneratedStory.diaryQuoteMr : aiGeneratedStory.diaryQuoteEn}
+              </blockquote>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onCreateLocationReel(place)}
+              style={{
+                alignSelf: 'flex-start',
+                marginTop: 8,
+                padding: '7px 14px',
+                borderRadius: 8,
+                background: '#ea580c',
+                color: '#ffffff',
+                border: 'none',
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <Film size={13} />
+              <span>{isMr ? 'हा कथाभाग रीलमध्ये वापरा' : 'Apply to Reel Studio'}</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Recommended Soundtrack Section */}
