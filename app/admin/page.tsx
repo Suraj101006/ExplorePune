@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { useAuth } from '@/lib/useAuth';
 import CommunityModerationDashboard from '@/components/CommunityModerationDashboard';
+import AdminVerificationDashboard from '@/components/AdminVerificationDashboard';
 
 const slugify = (t: string) =>
   t
@@ -279,108 +280,117 @@ function Places() {
   }
 
   return (
-    <div className="two" style={{ gridTemplateColumns: '1fr 2fr' }}>
-      <section className="panel">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            search();
-          }}
-          className="search"
-          style={{ margin: 0 }}
-        >
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search places"
-            aria-label="Search places"
-          />
-          <button className="btn">Go</button>
-        </form>
-        <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
-          {list.map((p) => (
-            <li key={p.id}>
-              <button
-                className="chip"
-                style={{ width: '100%', textAlign: 'left', margin: '4px 0' }}
-                onClick={() => {
-                  setSel(p);
-                  setMsg('');
-                }}
-              >
-                {p.name} <small>({p.data_tier}, {p.status})</small>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <AdminVerificationDashboard />
 
-      <section className="panel">
-        {!sel ? (
-          <p>{msg || 'Choose a place to edit or verify.'}</p>
-        ) : (
-          <form key={sel.id} onSubmit={save} style={{ display: 'grid', gap: 10 }}>
-            <h2 style={{ margin: 0 }}>{sel.name}</h2>
-            <label>
-              Description
-              <textarea name="description" rows={4} defaultValue={sel.description ?? ''} style={box} />
-            </label>
-            <label>
-              Address
-              <input name="address" defaultValue={sel.address ?? ''} style={box} />
-            </label>
-            <label>
-              Website
-              <input name="website_url" defaultValue={sel.website_url ?? ''} style={box} />
-            </label>
-            <label>
-              Recommended visit (minutes)
+      <details style={{ marginTop: 20, borderTop: '1px solid var(--line)', paddingTop: 16 }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 700, fontSize: 14, color: 'var(--ink)' }}>
+          🛠️ Direct Firestore Document Editor (Advanced)
+        </summary>
+        <div className="two" style={{ gridTemplateColumns: '1fr 2fr', marginTop: 16 }}>
+          <section className="panel">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                search();
+              }}
+              className="search"
+              style={{ margin: 0 }}
+            >
               <input
-                name="dur"
-                type="number"
-                min={5}
-                defaultValue={sel.recommended_duration_minutes ?? ''}
-                style={box}
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search places"
+                aria-label="Search places"
               />
-            </label>
-            <label>
-              Status
-              <select name="status" defaultValue={sel.status} style={box}>
-                <option value="published">Published</option>
-                <option value="draft">Draft</option>
-                <option value="archived">Archived</option>
-              </select>
-            </label>
-            <fieldset style={{ border: '1px solid var(--line)', borderRadius: 8 }}>
-              <legend>Verify hours and fees (needs an official source)</legend>
-              <label>
-                Source URL
-                <input name="source_url" type="url" style={box} />
-              </label>
-              <label>
-                Opens
-                <input name="opens" type="time" style={box} />
-              </label>
-              <label>
-                Closes
-                <input name="closes" type="time" style={box} />
-              </label>
-              <label>
-                Adult fee (₹)
-                <input name="fee" type="number" min={0} style={box} />
-              </label>
-              <label>
-                <input type="checkbox" name="free" /> Free entry
-              </label>
-              <p style={{ fontSize: 13, color: 'var(--muted)', margin: '6px 0 0' }}>
-                Hours apply to all 7 days. Leave the fee blank if unknown.
-              </p>
-            </fieldset>
-            {msg && <p className="note">{msg}</p>}
-            <button className="btn">Save</button>
-          </form>
-        )}
-      </section>
+              <button className="btn">Go</button>
+            </form>
+            <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
+              {list.map((p) => (
+                <li key={p.id}>
+                  <button
+                    className="chip"
+                    style={{ width: '100%', textAlign: 'left', margin: '4px 0' }}
+                    onClick={() => {
+                      setSel(p);
+                      setMsg('');
+                    }}
+                  >
+                    {p.name} <small>({p.data_tier}, {p.status})</small>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="panel">
+            {!sel ? (
+              <p>{msg || 'Choose a place to edit or verify.'}</p>
+            ) : (
+              <form key={sel.id} onSubmit={save} style={{ display: 'grid', gap: 10 }}>
+                <h2 style={{ margin: 0 }}>{sel.name}</h2>
+                <label>
+                  Description
+                  <textarea name="description" rows={4} defaultValue={sel.description ?? ''} style={box} />
+                </label>
+                <label>
+                  Address
+                  <input name="address" defaultValue={sel.address ?? ''} style={box} />
+                </label>
+                <label>
+                  Website
+                  <input name="website_url" defaultValue={sel.website_url ?? ''} style={box} />
+                </label>
+                <label>
+                  Recommended visit (minutes)
+                  <input
+                    name="dur"
+                    type="number"
+                    min={5}
+                    defaultValue={sel.recommended_duration_minutes ?? ''}
+                    style={box}
+                  />
+                </label>
+                <label>
+                  Status
+                  <select name="status" defaultValue={sel.status} style={box}>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </label>
+                <fieldset style={{ border: '1px solid var(--line)', borderRadius: 8 }}>
+                  <legend>Verify hours and fees (needs an official source)</legend>
+                  <label>
+                    Source URL
+                    <input name="source_url" type="url" style={box} />
+                  </label>
+                  <label>
+                    Opens
+                    <input name="opens" type="time" style={box} />
+                  </label>
+                  <label>
+                    Closes
+                    <input name="closes" type="time" style={box} />
+                  </label>
+                  <label>
+                    Adult fee (₹)
+                    <input name="fee" type="number" min={0} style={box} />
+                  </label>
+                  <label>
+                    <input type="checkbox" name="free" /> Free entry
+                  </label>
+                  <p style={{ fontSize: 13, color: 'var(--muted)', margin: '6px 0 0' }}>
+                    Hours apply to all 7 days. Leave the fee blank if unknown.
+                  </p>
+                </fieldset>
+                {msg && <p className="note">{msg}</p>}
+                <button className="btn">Save</button>
+              </form>
+            )}
+          </section>
+        </div>
+      </details>
     </div>
   );
 }

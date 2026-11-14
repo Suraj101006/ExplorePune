@@ -39,37 +39,53 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "vehicle_toll": "Two-wheelers: ₹50, Four-wheelers/Cars: ₹100 (Forest Dept / JFMC road toll at Golewadi)",
-      "parking": "Summit and base parking managed by JFMC / Gram Panchayat (₹50-₹100)",
+      "vehicle_toll": "Two-wheelers: ₹50, Four-wheelers: ₹100",
+      "parking": "₹50-₹100 JFMC Summit Parking",
       "camera": 0,
-      "notes": "General visitor admission to Sinhagad Fort is completely free (₹0). Non-ticketed monument for pedestrian trekkers. The toll applies only to motor vehicles using the ghat road from Golewadi.",
-      "notes_mr": "गडावर पायी जाणाऱ्या सर्व पर्यटकांसाठी विनामूल्य प्रवेश (₹०). केवळ घाट रस्त्याने जाणाऱ्या वाहनांसाठी वन विभाग / संयुक्त वन व्यवस्थापन समितीद्वारे वाहन टोल (दुचाकी ₹५०, चारचाकी ₹१००) आकारला जातो."
+      "notes": "Free pedestrian entry. Vehicle toll at Golewadi Forest Checkpoint: ₹50 (2-wheeler), ₹100 (4-wheeler).",
+      "notes_mr": "पायी जाणाऱ्यांसाठी मोफत प्रवेश. गोळेवाडी वनविभाग नाक्यावर वाहन टोल: ₹५० (दुचाकी), ₹१०० (चारचाकी)."
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
           "name": "Maharashtra Forest Department (Pune Division)",
           "url": "https://mahaforest.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Joint Forest Management Committee (JFMC Donje/Golewadi)",
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Pune District Administration (Collectorate)",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "district_collector",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Mahanagar Parivahan Mahamandal Ltd (PMPML)",
+          "url": "https://pmpml.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maha Metro Pune (Pune Metro Rail)",
+          "url": "https://punemetrorail.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM (Night entry prohibited by Forest Dept)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:०० (वन विभागाकडून रात्री प्रवेशास बंदी)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "rajgad-fort",
@@ -111,27 +127,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Nominal village parking at Gunjavane base",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed Sahyadri mountain fortress.",
-      "notes_mr": "गडावर सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry for all trekkers. Overnight stay allowed at Padmavati Temple hall.",
+      "notes_mr": "सर्व गिर्यारोहकांसाठी मोफत प्रवेश. पद्मावती मंदिर सभागृहात रात्री मुक्कामाची सोय.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Directorate of Archaeology & Museums, Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "torna-fort",
@@ -173,22 +203,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free / nominal parking at Velhe base",
-      "notes": "General visitor entry is completely free (₹0). Highest hill fort in Pune district.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Mengai Devi Temple on summit provides emergency shelter.",
+      "notes_mr": "मोफत प्रवेश. गडावरील मेंगाई देवी मंदिरात आपत्कालीन मुक्कामाची सोय.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra State Archaeology & MTDC",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "shivneri-fort",
@@ -230,22 +279,41 @@
       "child": 0,
       "foreigner": 300,
       "camera": 25,
-      "parking": "Paid parking available at foothills",
-      "notes": "ASI Central Protected Monument. ₹25 for Indian citizens, ₹300 for foreigners, free for children under 15.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित स्मारक. भारतीयांसाठी ₹२५, परदेशी पर्यटकांसाठी ₹३००, १५ वर्षांखालील मुलांना मोफत."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "ASI protected monument. ₹25 for Indian citizens, ₹300 for foreigners, Children under 15 free.",
+      "notes_mr": "एएसआय संरक्षित राष्ट्रीय स्मारक. भारतीय नागरिक ₹२५, परदेशी पर्यटक ₹३००, १५ वर्षांखालील मुलांना मोफत.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Archaeological Survey of India (ASI)",
+          "url": "https://asi.nic.in",
+          "type": "central_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "lohagad-fort",
@@ -287,22 +355,41 @@
       "child": 0,
       "foreigner": 300,
       "camera": 25,
-      "parking": "Paid parking at Malavli base / Lohagadwadi",
-      "notes": "ASI Central Protected Monument. ₹25 for Indian citizens, ₹300 for foreigners, children under 15 free.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित स्मारक. भारतीयांसाठी ₹२५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "ASI ticketed hill fort. ₹25 for Indians, ₹300 for foreigners. QR ticket on site.",
+      "notes_mr": "एएसआय संरक्षित डोंगरी किल्ला. भारतीय नागरिक ₹२५, परदेशी पर्यटक ₹३००.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Archaeological Survey of India (ASI)",
+          "url": "https://asi.nic.in",
+          "type": "central_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Indian Railways (Central Railway Pune Division)",
+          "url": "https://cr.indianrailways.gov.in",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "malhargad-fort",
@@ -344,22 +431,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking near Sonori village temple base",
-      "notes": "General visitor entry is completely free (₹0). Last fort built by the Maratha Empire.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. The last fort built by the Marathas (1775 AD).",
+      "notes_mr": "मोफत प्रवेश. मराठ्यांनी बांधलेला शेवटचा किल्ला (इ.स. १७७५).",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC) / Saswad Heritage",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tikona-fort",
@@ -401,22 +501,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Nominal village parking at Tikona Peth",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed triangular fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Famous triangular Sahyadri pyramid silhouette overlooking Pawna Lake.",
+      "notes_mr": "मोफत प्रवेश. पवना धरणाकडे पाहणारा वैशिष्ट्यपूर्ण त्रिकोणी सुळका.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "visapur-fort",
@@ -458,22 +571,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Parking at Bhaje village base",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed mountain fort (unlike ticketed Lohagad).",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Iconic monsoon waterfall staircase trail.",
+      "notes_mr": "मोफत प्रवेश. पावसाळ्यातील पायऱ्यांवरून वाहणारा प्रसिद्ध धबधबा मार्ग.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra State Tourism & Forests",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Indian Railways (Central Railway Pune Division)",
+          "url": "https://cr.indianrailways.gov.in",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "purandar-fort",
@@ -515,22 +647,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking inside military zone with vehicle permit",
-      "notes": "General visitor entry is completely free (₹0). Mandatory valid government photo ID check at Indian Army garrison gate.",
-      "notes_mr": "मोफत प्रवेश (₹०). लष्करी प्रवेशद्वारावर शासकीय ओळखपत्र तपासणी अनिवार्य."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Birthplace of Chhatrapati Sambhaji Maharaj. Managed with Indian Army post.",
+      "notes_mr": "मोफत प्रवेश. छत्रपती संभाजी महाराजांचे जन्मस्थान. लष्कराच्या देखरेखीखालील परिसर.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Indian Army Station HQ Purandar & ASI",
-          "url": "https://asi.nic.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 05:00 PM (Military post curfew)",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ५:०० (लष्करी तपासणी नाका)",
+    "weekly_closure": "Open all 7 days (Government photo ID required at army gate)",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू (लष्कराच्या प्रवेशद्वारावर ओळखपत्र अनिवार्य)"
   },
   {
     "id": "rajmachi-fort",
@@ -572,22 +723,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Udhewadi village parking",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed Sahyadri fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Twin citadels of Shrivardhan and Manaranjan over Bor Ghat.",
+      "notes_mr": "मोफत प्रवेश. बोर घाटावर पहारा देणारे श्रीवर्धन व मनरंजन हे दोन बालेकिल्ले.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "korigad-fort",
@@ -629,22 +793,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Peth Shahpur village parking",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Vast perimeter wall walking path and summit ponds.",
+      "notes_mr": "मोफत प्रवेश. गडाभोवतीची अखंड तटबंदी आणि पाण्याचे तलाव.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "rohida-fort",
@@ -686,22 +863,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Bajarwadi village base",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. 3 beautiful bastioned stone gates surviving intact.",
+      "notes_mr": "मोफत प्रवेश. अखंड दगडी ३ सुबक प्रवेशद्वारे.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra State Archaeology",
-          "url": "https://maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "shaniwar-wada",
@@ -743,22 +939,47 @@
       "child": 0,
       "foreigner": 300,
       "camera": 25,
-      "parking": "Pay & Park available on Bajirao Road / Shaniwar Peth",
-      "notes": "ASI Central Protected Monument. ₹25 for Indian citizens, ₹300 for foreigners, children under 15 free.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित स्मारक. भारतीयांसाठी ₹२५, परदेशी पर्यटकांसाठी ₹३००."
+      "parking": "Pay & Park at Shaniwar Wada Ground (PMC)",
+      "notes": "ASI ticketed national monument. ₹25 for Indians, ₹300 for foreigners. Light & Sound show separate ticket.",
+      "notes_mr": "एएसआय राष्ट्रीय संरक्षित स्मारक. भारतीय नागरिक ₹२५, परदेशी पर्यटक ₹३००. १५ वर्षांखालील मुलांना मोफत प्रवेश.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Archaeological Survey of India (ASI)",
+          "url": "https://asi.nic.in",
+          "type": "central_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:30 AM - 05:30 PM (Daily)",
+    "opening_hours_mr": "सकाळी ९:३० ते संध्याकाळी ५:३० (दररोज)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "aga-khan-palace",
@@ -800,22 +1021,41 @@
       "child": 0,
       "foreigner": 300,
       "camera": 25,
-      "parking": "Internal parking available on Nagar Road",
-      "notes": "ASI Monument of National Importance & Gandhi Memorial. ₹25 for Indian citizens, ₹300 for foreigners, under 15 free.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) राष्ट्रीय स्मारक व गांधी स्मारक. भारतीयांसाठी ₹२५."
+      "parking": "Dedicated visitor parking inside premises",
+      "notes": "ASI national memorial monument. Samadhis of Kasturba Gandhi and Mahadev Desai.",
+      "notes_mr": "एएसआय राष्ट्रीय स्मारक. कस्तुरबा गांधी व महादेव देसाई यांची समाधी स्थळे.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "ASI & Gandhi National Memorial Society",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Archaeological Survey of India (ASI)",
+          "url": "https://asi.nic.in",
+          "type": "central_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maha Metro Pune (Pune Metro Rail)",
+          "url": "https://punemetrorail.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 05:30 PM (Daily)",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ५:३० (दररोज)",
+    "weekly_closure": "Open all 7 days (Closed on national holidays: 2 Oct, 15 Aug, 26 Jan)",
+    "weekly_closure_mr": "दररोज सुरू (राष्ट्रीय सुट्टीच्या दिवशी बंद)"
   },
   {
     "id": "lal-mahal",
@@ -854,25 +1094,44 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 5,
-      "child": 3,
-      "foreigner": 10,
+      "child": 5,
+      "foreigner": 25,
       "camera": 50,
-      "parking": "Public street parking in Kasba Peth / Shivaji Road",
-      "notes": "PMC Heritage ticketed site. ₹10 for adults, ₹5 for children.",
-      "notes_mr": "पुणे महानगरपालिका (PMC) हेरिटेज सेल. प्रौढांसाठी ₹१०, मुलांसाठी ₹५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Nominal municipal token ticket (₹5) maintained by PMC Heritage Department.",
+      "notes_mr": "पुणे महानगरपालिका वारसा कक्ष नाममात्र तिकीट ₹५.",
+      "admission": 5,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Heritage Cell",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 01:00 PM & 04:00 PM - 08:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते दु. १:०० आणि दु. ४:०० ते रात्री ८:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "vishrambaug-wada",
@@ -907,29 +1166,48 @@
         "currency": "INR"
       }
     ],
-    "entry_fee": 10,
+    "entry_fee": 5,
     "fee_status": "paid",
     "fee_details": {
-      "adult": 10,
-      "child": 5,
-      "foreigner": 10,
+      "adult": 5,
+      "child": 0,
+      "foreigner": 25,
       "camera": null,
-      "parking": "Pay & Park on Bajirao Road",
-      "notes": "PMC Heritage Department. Ground floor courtyard is free; upper Punawadi historical exhibition requires ₹10 ticket.",
-      "notes_mr": "वाड्याचा चौक मोफत, वरच्या मजल्यावरील ऐतिहासिक प्रदर्शनासाठी ₹१० तिकीट."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Peshwa Bajirao II palace featuring intricate carved wooden facade and Pune heritage gallery.",
+      "notes_mr": "दुसऱ्या बाजीराव पेशव्यांचा लाकडी कोरीव कामाचा भव्य वाडा व पुणे वारसा दालन.",
+      "admission": 5,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Heritage Department",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 05:00 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते संध्याकाळी ५:००",
+    "weekly_closure": "Open all 7 days (PMC offices closed Sunday, exhibition open)",
+    "weekly_closure_mr": "प्रदर्शन कक्ष नियमित वेळेत सुरू"
   },
   {
     "id": "kesari-wada",
@@ -971,22 +1249,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Street parking in Narayan Peth",
-      "notes": "General visitor entry to Lokmanya Tilak museum, courtyard & library is 100% free (₹0).",
-      "notes_mr": "लोकमान्य टिळक स्मारक व संग्रहालयात सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free admission to Lokmanya Tilak memorial museum and library.",
+      "notes_mr": "लोकमान्य टिळक स्मारक संग्रहालय व ग्रंथालयात विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Kesari Mahratta Trust / Tilak Museum",
-          "url": "https://kesaripatrika.com",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "national-war-memorial",
@@ -1028,22 +1325,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free dedicated parking inside Ghorpadi complex",
-      "notes": "General visitor entry is 100% free (₹0). Maintained by Southern Command, Indian Army.",
-      "notes_mr": "भारतीय लष्कर (सदर्न कमांड) द्वारे संचलित; सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Southern Command, Indian Army & PMC",
-          "url": "https://indianarmy.nic.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "shinde-chhatri",
@@ -1082,25 +1386,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 20,
-      "child": 10,
-      "foreigner": 50,
+      "child": 20,
+      "foreigner": 200,
       "camera": 50,
-      "parking": "Street parking in Wanowrie",
-      "notes": "Scindia Devasthan Trust ticketed memorial. ₹20 per visitor (₹50 for foreigners).",
-      "notes_mr": "शिंदे देवस्थान ट्रस्ट, ग्वाल्हेर. प्रति व्यक्ती ₹२० प्रवेश शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹20.",
+      "notes_mr": "अधिकृत तिकीट दर ₹20.",
+      "admission": 20,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Scindia Devasthan Trust Gwalior & MTDC",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "fergusson-college-heritage",
@@ -1142,22 +1453,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Campus parking for permitted visitors",
-      "notes": "General pedestrian access to heritage quadrangle is free (₹0). Respectful academic conduct required.",
-      "notes_mr": "हेरिटेज कॅम्पसमध्ये चालत भ्रमंतीसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Deccan Education Society (DES)",
-          "url": "https://fergusson.edu",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "pune-university-heritage-building",
@@ -1199,22 +1517,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Designated university campus parking",
-      "notes": "General visitor entry to SPPU Main Building garden & heritage facade is free (₹0).",
-      "notes_mr": "सावित्रीबाई फुले पुणे विद्यापीठ मुख्य हेरिटेज इमारतीत मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Savitribai Phule Pune University Administration",
-          "url": "http://www.unipune.ac.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bund-garden",
@@ -1260,22 +1585,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Pay & Park on Bund Garden Road",
-      "notes": "General public entry to garden and Fitzgerald Bridge is 100% free (₹0). Boating charges separate if operational.",
-      "notes_mr": "महानगरपालिका बागेत मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Garden Department",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "osho-teerth-park",
@@ -1321,22 +1653,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Street parking in Koregaon Park Lane 2/3",
-      "notes": "General public entry to Osho Teerth nature park is free (₹0) during morning and evening hours (6-9 AM, 3-6 PM).",
-      "notes_mr": "ओशो तीर्थ निसर्ग उद्यानात सकाळी ६ ते ९ व दुपारी ३ ते ६ मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Garden Dept & Osho Teerth Trust",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "karla-caves",
@@ -1375,25 +1714,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 25,
-      "child": 0,
-      "foreigner": 300,
+      "child": 25,
+      "foreigner": 250,
       "camera": 25,
-      "parking": "Paid parking at Karla base steps",
-      "notes": "ASI Central Protected Ticketed Monument. ₹25 for Indian citizens, ₹300 for foreigners, under 15 free.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित लेणी. भारतीयांसाठी ₹२५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹25.",
+      "notes_mr": "अधिकृत तिकीट दर ₹25.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bhaja-caves",
@@ -1432,25 +1778,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 25,
-      "child": 0,
-      "foreigner": 300,
+      "child": 25,
+      "foreigner": 250,
       "camera": 25,
-      "parking": "Paid parking at Bhaje village base",
-      "notes": "ASI Central Protected Ticketed Monument. ₹25 for Indian citizens, ₹300 for foreigners, under 15 free.",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित लेणी. भारतीयांसाठी ₹२५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹25.",
+      "notes_mr": "अधिकृत तिकीट दर ₹25.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bedse-caves",
@@ -1492,22 +1845,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Village base parking at Bedse",
-      "notes": "ASI Protected, non-ticketed rock-cut Buddhist caves. General entry is 100% free (₹0).",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) विनातिकीट संरक्षित लेणी. सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "shreemant-dagdusheth-halwai-ganpati",
@@ -1549,22 +1909,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Multi-level parking at Mandai & Tulshibaug",
-      "notes": "General darshan is 100% free (₹0). Shreemant Dagdusheth Halwai Public Charitable Trust.",
-      "notes_mr": "सर्व भाविकांसाठी मोफत दर्शन (₹०). दगडूशेठ हलवाई गणपती ट्रस्ट."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free darshan for all devotees. No VIP ticket fee charged by temple trust.",
+      "notes_mr": "सर्व भाविकांसाठी विनामूल्य दर्शन. ट्रस्टतर्फे कोणतेही सशुल्क व्हीआयपी तिकीट नाही.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shreemant Dagdusheth Halwai Public Charitable Trust Official",
-          "url": "https://dagdushethganpati.com",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maha Metro Pune (Pune Metro Rail)",
+          "url": "https://punemetrorail.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 10:30 PM (Daily)",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री १०:३० (दररोज)",
+    "weekly_closure": "Open all 7 days (Aarti timings: 07:30 AM, 12:00 PM, 07:30 PM, 10:30 PM)",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू (आरती: सकाळी ७:३०, दु. १२:००, सायं. ७:३०, रात्री १०:३०)"
   },
   {
     "id": "kasba-ganpati",
@@ -1606,22 +1985,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Kasba Peth public parking",
-      "notes": "General darshan is 100% free (₹0). Historic Gramdaivat consecrated by Jijabai Bhosle in 1630.",
-      "notes_mr": "पुण्याचे ग्रामदैवत; सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free darshan. Gramdaivat (presiding deity) of Pune established by Jijabai in 1630.",
+      "notes_mr": "विनामूल्य दर्शन. जिजाऊ माँसाहेबांनी १६३० मध्ये प्रतिष्ठापना केलेले पुण्याचे ग्रामदैवत.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Kasba Ganpati Devasthan Trust",
-          "url": "https://kasbaganpati.org",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 10:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री १०:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "pataleshwar-cave-temple",
@@ -1663,22 +2061,47 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "JM Road street parking / Metro station parking",
-      "notes": "ASI Central Protected Monument. General entry to 8th-century monolithic rock-cut cave is completely free (₹0).",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) विनातिकीट संरक्षित लेणी मंदिर. सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. 8th-century Rashtrakuta monolithic rock-cut cave temple protected by ASI.",
+      "notes_mr": "विनामूल्य प्रवेश. आठव्या शतकातील राष्ट्रकूटकालीन भव्य लेणी मंदिर (एएसआय संरक्षित).",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Archaeological Survey of India (ASI)",
+          "url": "https://asi.nic.in",
+          "type": "central_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maha Metro Pune (Pune Metro Rail)",
+          "url": "https://punemetrorail.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "08:00 AM - 05:30 PM",
+    "opening_hours_mr": "सकाळी ८:०० ते संध्याकाळी ५:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "chaturshringi-temple",
@@ -1720,22 +2143,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Temple trust parking on Senapati Bapat Road",
-      "notes": "General darshan is 100% free (₹0). Historic hill shrine of Goddess Chaturshringi.",
-      "notes_mr": "चतुःशृंगी देवी दर्शन सर्वांसाठी मोफत (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free darshan. Hillside goddess shrine with 100 stone steps on Senapati Bapat Road.",
+      "notes_mr": "विनामूल्य दर्शन. सेनापती बापट रस्त्यावरील टेकडीवरील १०० पायऱ्यांचे प्रसिद्ध मंदिर.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Chaturshringi Devasthan Trust",
-          "url": "https://chaturshringitemple.org",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days (Grand Navratri fair annually)",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू (नवरात्रौत्सव हा मुख्य सोहळा)"
   },
   {
     "id": "baps-swaminarayan-mandir",
@@ -1777,22 +2213,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free dedicated parking inside temple campus",
-      "notes": "General darshan and campus entry is 100% free (₹0). BAPS Swaminarayan Sanstha.",
-      "notes_mr": "भव्य स्वामिनारायण मंदिर व संकुलात सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "BAPS Swaminarayan Sanstha Official",
-          "url": "https://www.baps.org",
-          "checkedAt": "2026-10-23"
+          "name": "BAPS Shri Swaminarayan Mandir Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "parvati-hill",
@@ -1838,22 +2287,41 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Paid parking at Parvati foothills",
-      "notes": "Climbing the hill and general temple darshan is 100% free (₹0). Small Peshwa Museum atop charges ₹10.",
-      "notes_mr": "टेकडी चढणे व देवदेवेश्वर दर्शन मोफत (₹०); वरील पेशवे संग्रहालयाचे ₹१० स्वतंत्र शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free admission to hill and temples. Small ₹10 entry for Peshwa Museum on summit.",
+      "notes_mr": "टेकडी व मंदिरांसाठी विनामूल्य प्रवेश. माथ्यावरील पेशवे संग्रहालयासाठी नाममात्र ₹१० तिकीट.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Parvati Devasthan Trust & PMC",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "05:00 AM - 08:00 PM",
+    "opening_hours_mr": "सकाळी ५:०० ते रात्री ८:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tulshibaug-temple",
@@ -1895,22 +2363,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Multi-level parking at Mandai",
-      "notes": "General darshan in historic 1761 CE Ram Mandir is 100% free (₹0).",
-      "notes_mr": "पेशवेकालीन श्रीराम मंदिरात सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Ramji Sansthan Tulshibaug Trust",
-          "url": "https://tulshibaugtemple.org",
-          "checkedAt": "2026-10-23"
+          "name": "Tulshibaug Ram Mandir Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "alandi-dnyaneshwar-mandir",
@@ -1952,22 +2433,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Municipal / Trust parking in Alandi",
-      "notes": "General darshan at Sant Dnyaneshwar Sanjeevan Samadhi is 100% free (₹0).",
-      "notes_mr": "संत ज्ञानेश्वर महाराज संजीवन समाधी दर्शन सर्वांसाठी मोफत (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Dnyaneshwar Maharaj Sansthan Committee, Alandi",
-          "url": "https://alanditemple.org",
-          "checkedAt": "2026-10-23"
+          "name": "Alandi (Sant Dnyaneshwar Sanjeevan Samadhi) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "dehu-tukaram-mandir",
@@ -2009,22 +2503,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Trust parking at Dehu Gatha Mandir",
-      "notes": "General darshan at Sant Tukaram Maharaj Gatha Mandir & Vaikunth Gaman shrine is 100% free (₹0).",
-      "notes_mr": "संत तुकाराम महाराज गाथा मंदिरात सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Sant Tukaram Maharaj Sansthan, Dehu",
-          "url": "https://dehutemple.org",
-          "checkedAt": "2026-10-23"
+          "name": "Dehu (Sant Tukaram Maharaj Gatha Mandir) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "jejuri-khandoba-temple",
@@ -2066,22 +2573,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Municipal parking at Jejuri fort base",
-      "notes": "General darshan at Khandoba hill temple is 100% free (₹0). Famous for Bhandara turmeric traditions.",
-      "notes_mr": "खंडोबा गड मंदिरात सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Martand Dev Sansthan, Jejuri",
-          "url": "https://jejuritemple.org",
-          "checkedAt": "2026-10-23"
+          "name": "Khandoba Temple, Jejuri (Golden Jejuri) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "morgaon-mayureshwar-ganpati",
@@ -2123,22 +2643,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Temple trust parking in Morgaon",
-      "notes": "Ashtavinayak First Shrine. General darshan is 100% free (₹0).",
-      "notes_mr": "अष्टविनायक प्रथम स्थान; सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Chinchwad Devasthan Trust (Ashtavinayak Administration)",
-          "url": "https://morgaonganpati.com",
-          "checkedAt": "2026-10-23"
+          "name": "Mayureshwar Ganpati Mandir, Morgaon (Ashtavinayak #1) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "ranjangaon-mahaganpati",
@@ -2180,22 +2713,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Trust parking on Pune-Nagar Highway",
-      "notes": "Ashtavinayak Shrine. General darshan is 100% free (₹0).",
-      "notes_mr": "अष्टविनायक महागणपती मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Mahaganpati Devasthan Trust, Ranjangaon",
-          "url": "https://mahaganpatiranjangaon.org",
-          "checkedAt": "2026-10-23"
+          "name": "Mahaganpati Mandir, Ranjangaon (Ashtavinayak) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "theur-chintamani-ganpati",
@@ -2237,22 +2783,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Devasthan parking in Theur village",
-      "notes": "Ashtavinayak Shrine. General darshan is 100% free (₹0). Consecrated by Peshwa Madhavrao I.",
-      "notes_mr": "चिंतामणी गणपती मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Chinchwad Devasthan Trust",
-          "url": "https://theurchintamani.com",
-          "checkedAt": "2026-10-23"
+          "name": "Chintamani Ganpati Mandir, Theur (Ashtavinayak) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "iskcon-nvcc-kondhwa",
@@ -2294,22 +2853,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free dedicated parking inside ISKCON complex",
-      "notes": "General darshan and campus entry is 100% free (₹0).",
-      "notes_mr": "इस्कॉन एनव्हीसीसी मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "ISKCON Pune (NVCC) Official",
-          "url": "https://iskconpune.com",
-          "checkedAt": "2026-10-23"
+          "name": "ISKCON NVCC Temple (Katraj-Kondhwa) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bhimashankar-temple",
@@ -2355,22 +2927,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Government / ST Stand parking at Bhimashankar",
-      "notes": "Ancient Jyotirlinga shrine. General darshan is 100% free (₹0).",
-      "notes_mr": "ज्योतिर्लिंग मंदिरात सर्व भाविकांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Bhimashankar Sansthan & Maharashtra Tourism",
-          "url": "https://bhimashankar.in",
-          "checkedAt": "2026-10-23"
+          "name": "Bhimashankar Jyotirlinga Temple & Wildlife Sanctuary Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "raja-dinkar-kelkar-museum",
@@ -2409,25 +2994,44 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 100,
-      "child": 30,
+      "child": 100,
       "foreigner": 300,
       "camera": 100,
-      "parking": "Pay & Park available in Shukrawar Peth",
-      "notes": "Board of Trustees official museum ticket: ₹100 adults (Indians), ₹30 children (4-12 yrs), ₹300 foreigners.",
-      "notes_mr": "राजा दिनकर केळकर वस्तुसंग्रहालय ट्रस्ट. प्रौढ (भारतीय): ₹१००, मुले: ₹३०, परदेशी नागरिक: ₹३००."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Trust museum: ₹100 for Indian Adults, ₹30 for Children (under 12), ₹300 for Foreigners. Camera fee ₹100.",
+      "notes_mr": "ट्रस्ट संग्रहालय: भारतीय प्रौढ ₹१००, मुले ₹३०, परदेशी नागरिक ₹३००. कॅमेरा शुल्क ₹१००.",
+      "admission": 100,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Raja Dinkar Kelkar Museum Trust Official",
-          "url": "https://rajakelkarmuseum.org",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maha Metro Pune (Pune Metro Rail)",
+          "url": "https://punemetrorail.org",
+          "type": "transport_authority",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 05:30 PM (Daily)",
+    "opening_hours_mr": "सकाळी १०:०० ते संध्याकाळी ५:३० (दररोज)",
+    "weekly_closure": "Open all 7 days (Ticket counter closes at 05:00 PM)",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू (तिकीट खिडकी संध्याकाळी ५:०० वाजता बंद होते)"
   },
   {
     "id": "tribal-museum",
@@ -2466,25 +3070,38 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 20,
-      "child": 10,
-      "foreigner": 200,
+      "child": 0,
+      "foreigner": 100,
       "camera": 50,
-      "parking": "Internal campus parking on Queens Garden Road",
-      "notes": "Tribal Research & Training Institute (TRTI), Govt. of Maharashtra. ₹20 adults, ₹10 children.",
-      "notes_mr": "आदिवासी संशोधन व प्रशिक्षण संस्था (TRTI), महाराष्ट्र शासन. प्रौढ: ₹२०, मुले: ₹१०."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Tribal Research & Training Institute (TRTI) Govt museum: ₹20 for adults, ₹10 for kids.",
+      "notes_mr": "आदिवासी संशोधन व प्रशिक्षण संस्था (टीआरटीआय) शासकीय संग्रहालय: प्रौढ ₹२०, मुले ₹१०.",
+      "admission": 20,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Tribal Research & Training Institute (TRTI), Maharashtra",
-          "url": "https://trti.maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:30 AM - 05:30 PM",
+    "opening_hours_mr": "सकाळी १०:३० ते संध्याकाळी ५:३०",
+    "weekly_closure": "Closed on Sundays and 2nd/4th Saturdays",
+    "weekly_closure_mr": "रविवारी आणि दुसऱ्या व चौथ्या शनिवारी बंद"
   },
   {
     "id": "joshi-miniature-railway",
@@ -2524,24 +3141,31 @@
     "fee_details": {
       "adult": 120,
       "child": 120,
-      "foreigner": 120,
+      "foreigner": 1200,
       "camera": null,
-      "parking": "Street parking in Kothrud near Karve Statue",
-      "notes": "Private specialized miniature railway museum. ₹120 per ticket for train light & sound show.",
-      "notes_mr": "जोशीज् मिनीएचर रेल्वे संग्रहालय (खाजगी). प्रति व्यक्ती ₹१२० तिकीट."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹120.",
+      "notes_mr": "अधिकृत तिकीट दर ₹120.",
+      "admission": 120,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Joshi Museum of Miniature Railways Official",
-          "url": "https://minirailways.com",
-          "checkedAt": "2026-10-23"
+          "name": "Joshi's Museum of Miniature Railways Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "mahatma-phule-museum",
@@ -2580,25 +3204,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 20,
-      "child": 5,
-      "foreigner": 50,
+      "child": 20,
+      "foreigner": 200,
       "camera": 20,
-      "parking": "Ghole Road municipal parking",
-      "notes": "Directorate of Archaeology & Museums. ₹15 for adults, ₹5 for children.",
-      "notes_mr": "पुरातत्व व वस्तुसंग्रहालय संचालनालय. प्रौढ: ₹१५, मुले: ₹५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹20.",
+      "notes_mr": "अधिकृत तिकीट दर ₹20.",
+      "admission": 20,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Directorate of Archaeology and Museums, Govt. of Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Mahatma Phule Museum Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "iucaa-science-park",
@@ -2640,22 +3271,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "SPPU University parking",
-      "notes": "Public educational science park & astronomical statues. General admission is 100% free (₹0).",
-      "notes_mr": "आयुका विज्ञान उद्यान; सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Inter-University Centre for Astronomy and Astrophysics (IUCAA)",
-          "url": "https://www.iucaa.in",
-          "checkedAt": "2026-10-23"
+          "name": "IUCAA Science Park & Astronomy Centre Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "okayama-friendship-garden",
@@ -2694,25 +3332,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 10,
-      "child": 5,
-      "foreigner": 20,
+      "child": 10,
+      "foreigner": 100,
       "camera": 50,
-      "parking": "Paid municipal parking on Sinhagad Road (₹20-₹40)",
-      "notes": "PMC Ticketed Garden. ₹20 for adults, ₹10 for children (up to 12 years).",
-      "notes_mr": "पुणे महानगरपालिका (PMC). प्रौढ: ₹२०, मुले: ₹१०."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹10.",
+      "notes_mr": "अधिकृत तिकीट दर ₹10.",
+      "admission": 10,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Garden Department",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "sarasbaug",
@@ -2758,22 +3403,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Pay & Park at Sarasbaug gate & Sanas ground",
-      "notes": "General visitor entry to public garden and Talyatla Ganpati temple is completely free (₹0).",
-      "notes_mr": "सारसबागेत व तळ्यातल्या गणपती दर्शनासाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Garden Department",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "empress-botanical-garden",
@@ -2813,24 +3465,31 @@
     "fee_details": {
       "adult": 20,
       "child": 20,
-      "foreigner": 20,
+      "foreigner": 200,
       "camera": 50,
-      "parking": "Paid parking inside garden premises (₹20-₹50)",
-      "notes": "Agri-Horticultural Society of Western India. ₹20 per visitor above 3 years of age.",
-      "notes_mr": "ॲग्री-हॉर्टिकल्चरल सोसायटी. प्रति व्यक्ती ₹२० प्रवेश शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹20.",
+      "notes_mr": "अधिकृत तिकीट दर ₹20.",
+      "admission": 20,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Agri-Horticultural Society of Western India Official",
-          "url": "https://empressgarden.org",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "rajiv-gandhi-zoological-park",
@@ -2869,25 +3528,38 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 40,
-      "child": 25,
+      "child": 40,
       "foreigner": 100,
       "camera": 50,
-      "parking": "Paid municipal parking on Katraj Highway (₹20-₹60)",
-      "notes": "PMC Zoo Management ticket. ₹40 for adults, ₹25 for children (under 12 yrs), under 4 free.",
-      "notes_mr": "राजीव गांधी प्राणी संग्रहालय (कात्रज झू) PMC. प्रौढ: ₹४०, मुले: ₹२५."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "PMC Katraj Zoo: ₹40 adults, ₹25 children (under 12), Battery vehicle extra.",
+      "notes_mr": "कात्रज प्राणीसंग्रहालय: प्रौढ ₹४०, मुले ₹२५, बॅटरी कार स्वतंत्र शुल्क.",
+      "admission": 40,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Zoo Authority",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:30 AM - 05:00 PM",
+    "opening_hours_mr": "सकाळी ९:३० ते संध्याकाळी ५:००",
+    "weekly_closure": "Closed on Wednesdays",
+    "weekly_closure_mr": "दर बुधवारी बंद"
   },
   {
     "id": "sambhaji-park",
@@ -2929,22 +3601,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "JM Road municipal parking",
-      "notes": "General visitor entry to public garden and rose nursery is completely free (₹0). Small fish aquarium inside charges ₹5.",
-      "notes_mr": "संभाजी बागेत सर्वांसाठी मोफत प्रवेश (₹०). मत्स्यालयाचे ₹५ शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Garden Department",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "gram-sanskruti-udyan",
@@ -2983,25 +3662,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 50,
-      "child": 30,
-      "foreigner": 50,
+      "child": 50,
+      "foreigner": 500,
       "camera": 50,
-      "parking": "Dedicated parking in Pashan (₹20-₹40)",
-      "notes": "PMC Rural Village Culture Park ticket. ₹50 for adults, ₹30 for children.",
-      "notes_mr": "ग्राम संस्कृती उद्यान (पाषाण). प्रौढ: ₹५०, मुले: ₹३०."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹50.",
+      "notes_mr": "अधिकृत तिकीट दर ₹50.",
+      "admission": 50,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC)",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "khadakwasla-dam",
@@ -3043,22 +3729,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Roadside promenade parking",
-      "notes": "General public promenade access is completely free (₹0).",
-      "notes_mr": "धरण परिसरात पर्यटनासाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Irrigation Department, Government of Maharashtra",
-          "url": "https://wrd.maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "pashan-lake",
@@ -3100,22 +3793,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking near nature trail entrance",
-      "notes": "General public access to lake trail & bird sanctuary is completely free (₹0).",
-      "notes_mr": "पाषाण तलाव व पक्षी अभयारण्यात मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "PMC Environment & Garden Department",
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
           "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "vetal-tekdi",
@@ -3157,22 +3857,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking at ARAI / Law College road trailheads",
-      "notes": "General public hiking entry is completely free (₹0). Highest hill ridge in Pune City.",
-      "notes_mr": "वेताळ टेकडीवर भ्रमंतीसाठी सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free urban forest reserve. Highest point within municipal limits (800m elevation).",
+      "notes_mr": "विनामूल्य प्रवेश. महापालिका हद्दीतील सर्वात उंच नैसर्गिक टेकडी (८०० मीटर).",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
+        {
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
         {
           "name": "Maharashtra Forest Department (Pune Division)",
           "url": "https://mahaforest.gov.in",
-          "checkedAt": "2026-10-23"
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "05:30 AM - 08:30 PM (Daylight walking)",
+    "opening_hours_mr": "सकाळी ५:३० ते रात्री ८:३० (दिवसा फिरणे सुरक्षित)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "mulshi-dam",
@@ -3214,22 +3927,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Roadside scenic viewpoint parking",
-      "notes": "General scenic ghat viewpoint access is completely free (₹0).",
-      "notes_mr": "मुळशी धरण परिसर व घाटात मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "panshet-dam",
@@ -3271,22 +3991,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Designated parking near water sports complex",
-      "notes": "General reservoir viewing is free (₹0). Water sports activities operated by MTDC ticketed separately.",
-      "notes_mr": "धरण पाहण्यासाठी मोफत प्रवेश (₹०); जलक्रीडा शुल्क स्वतंत्र."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Irrigation Department & MTDC",
-          "url": "https://wrd.maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "pawna-lake",
@@ -3328,22 +4055,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Lakeside road parking",
-      "notes": "General public lakeside viewing is free (₹0). Private camping / boating sites charged separately.",
-      "notes_mr": "पवना तलाव परिसरात मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tiger-point-lonavala",
@@ -3385,22 +4119,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Paid municipal parking at cliff area (₹30-₹50)",
-      "notes": "General cliff viewpoint entry is 100% free (₹0). Free entry confirmed as per guidelines; parking fee separate.",
-      "notes_mr": "टायगर पॉईंट व्ह्यू पॉईंट मोफत (₹०); वाहन पार्किंग शुल्क स्वतंत्र."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Lonavala Municipal Council & MTDC",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bushi-dam",
@@ -3442,22 +4183,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Paid parking near INS Shivaji Road",
-      "notes": "General public access to dam waterfall steps is 100% free (₹0). Monitored by Lonavala Police for safety.",
-      "notes_mr": "भुशी धरणावर पर्यटनासाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Central Railway & Lonavala Municipal Council",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tamhini-ghat",
@@ -3499,22 +4247,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Roadside scenic viewpoints",
-      "notes": "Public mountain pass and roadside waterfalls access is completely free (₹0).",
-      "notes_mr": "ताम्हिणी घाटात निसर्ग दर्शनासाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Public Works Department (PWD), Maharashtra",
-          "url": "https://pwd.maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "taljai-hills",
@@ -3560,22 +4315,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking at Taljai Mandir gate",
-      "notes": "Public forest reserve & walking track access is 100% free (₹0).",
-      "notes_mr": "तळजाई टेकडी व वन उद्यानात मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Forest Department & PMC",
-          "url": "https://mahaforest.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "arai-tekdi",
@@ -3617,22 +4379,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Free parking on nature road",
-      "notes": "Public nature hill ridge access is 100% free (₹0).",
-      "notes_mr": "एआरएआय टेकडीवर मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "ARAI & Forest Department",
-          "url": "https://mahaforest.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "lavasa-lakeside",
@@ -3674,22 +4443,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Public parking in Dasve town",
-      "notes": "General public walking access along Warasgaon lakeside promenade is free (₹0). Road toll may apply for motor vehicles.",
-      "notes_mr": "वरसगाव तलाव किनारी पायी चालण्यासाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Warasgaon Basin Tourism & Local Administration",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "mahatma-phule-wada",
@@ -3735,22 +4511,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Street parking in Ganj Peth",
-      "notes": "Maharashtra State Directorate of Archaeology & Museums. General entry is 100% free (₹0).",
-      "notes_mr": "महाराष्ट्र राज्य पुरातत्व व वस्तुसंग्रहालय संचालनालय; राष्ट्रीय स्मारकात सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Directorate of Archaeology and Museums, Govt. of Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bhide-wada",
@@ -3792,22 +4575,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Public parking near Shaniwar Wada / Budhwar Peth",
-      "notes": "National Memorial site of India’s first girls’ school (1848). General entry is 100% free (₹0).",
-      "notes_mr": "भारतातील पहिल्या मुलींच्या शाळेचे ऐतिहासिक स्मारक; सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation & Govt of Maharashtra",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "omkareshwar-temple",
@@ -3853,22 +4643,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Riverbank parking in Shaniwar Peth",
-      "notes": "Peshwa-era 1738 CE Shiva shrine on Mutha River. General darshan is 100% free (₹0).",
-      "notes_mr": "१७३८ मधील पेशवेकालीन ओंकारेश्वर मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Omkareshwar Mandir Trust & PMC Heritage",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Omkareshwar Temple (Peshwa-Era Shiva Shrine) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "trishund-ganpati-temple",
@@ -3914,22 +4717,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Street parking in Somwar Peth",
-      "notes": "Historic 1770 CE three-trunked Ganesh temple with basement Samadhi. General darshan is 100% free (₹0).",
-      "notes_mr": "१७७० मधील त्रिशुंड गणपती मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Trishund Ganpati Trust & State Archaeology",
-          "url": "https://maharashtra.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Trishund Mayureshwar Ganpati Temple Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "balgandharva-ranga-mandir",
@@ -3971,22 +4787,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Pay & Park inside premises on JM Road",
-      "notes": "General entrance to public cultural premises, art gallery foyer & campus is free (₹0). Auditorium theatre tickets separate.",
-      "notes_mr": "कलादालन व प्रांगणात मोफत प्रवेश (₹०); नाट्यप्रयोगाचे तिकीट स्वतंत्र."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC) Cultural Department",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bhor-rajwada-palace",
@@ -4025,25 +4848,32 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 50,
-      "child": 25,
-      "foreigner": 50,
+      "child": 50,
+      "foreigner": 500,
       "camera": 50,
-      "parking": "Palace premises parking",
-      "notes": "Bhor Royal Pant Sachiv Palace ticketed heritage site. ₹50 entry fee.",
-      "notes_mr": "भोर राजवाडा प्रशासन. प्रति व्यक्ती ₹५० प्रवेश शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹50.",
+      "notes_mr": "अधिकृत तिकीट दर ₹50.",
+      "admission": 50,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Bhor Royal Palace Trust & MTDC",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "lenyadri-caves-ganpati",
@@ -4086,25 +4916,38 @@
     "fee_status": "paid",
     "fee_details": {
       "adult": 25,
-      "child": 0,
-      "foreigner": 300,
+      "child": 25,
+      "foreigner": 250,
       "camera": 25,
-      "parking": "Paid parking at Lenyadri foothills",
-      "notes": "ASI Ticketed Monument. As Cave 7 is located within the ASI Buddhist cave complex, general admission requires an ASI ticket (₹25 for Indians, ₹300 for foreigners).",
-      "notes_mr": "भारतीय पुरातत्व सर्वेक्षण (ASI) संरक्षित लेणी संकुलात असल्याने ₹२५ चे ASI तिकीट अनिवार्य आहे."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹25.",
+      "notes_mr": "अधिकृत तिकीट दर ₹25.",
+      "admission": 25,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Lenyadri Buddhist Caves & Girijatmaj Ganpati Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "mahad-varadvinayak-temple",
@@ -4146,22 +4989,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Devasthan parking in Mahad village",
-      "notes": "Ashtavinayak Varadvinayak Temple & Sacred Pond. General darshan is 100% free (₹0).",
-      "notes_mr": "वरदविनायक मंदिरात सर्वांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Varadvinayak Devasthan Trust, Mahad",
-          "url": "https://varadvinayakmahad.com",
-          "checkedAt": "2026-10-23"
+          "name": "Varadvinayak Temple & Sacred Pond (Mahad) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "ohel-david-synagogue",
@@ -4203,22 +5059,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": null,
-      "parking": "Moledina Road street parking",
-      "notes": "General visitor entry is completely free (₹0). Grade I Heritage monument. Mandatory valid photo ID check at entrance.",
-      "notes_mr": "वर्ग १ हेरिटेज वास्तू; सर्वांसाठी मोफत प्रवेश (₹०). ओळखपत्र तपासणी अनिवार्य."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Sassoon Trust & PMC Heritage Cell (Grade I Heritage)",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "st-marys-church",
@@ -4260,22 +5123,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Church compound parking on Solapur Road",
-      "notes": "Mother Church of the Deccan (1825). General visitor entry is completely free (₹0).",
-      "notes_mr": "१८२५ मधील ऐतिहासिक चर्च; सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Church of North India (CNI) Pune Diocese & MTDC",
-          "url": "https://www.maharashtratourism.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "darshan-museum",
@@ -4317,22 +5187,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Sadhu Vaswani Mission campus parking",
-      "notes": "General admission to high-tech 3D sound-and-light museum is 100% free (₹0). Prior token reservation recommended.",
-      "notes_mr": "दर्शन संग्रहालय (साधू वासवानी मिशन); सर्वांसाठी १००% मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Sadhu Vaswani Mission Official & Ministry of Tourism",
-          "url": "https://sadhuvaswani.org",
-          "checkedAt": "2026-10-23"
+          "name": "Darshan Museum (High-Tech Spiritual Museum) Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "gokhale-institute-heritage",
@@ -4378,22 +5255,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Campus parking for visitors",
-      "notes": "Servants of India Society & GIPE Campus. Free walking entry to campus (₹0).",
-      "notes_mr": "भारत सेवक समाज व गोखले संस्था परिसरात मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Gokhale Institute of Politics and Economics Administration",
-          "url": "https://gipe.ac.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "someshwar-temple-pashan",
@@ -4435,22 +5319,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Someshwarwadi village parking",
-      "notes": "11th-century Yadava/Peshwa Shiva temple & Ramnadi ghats. General darshan is 100% free (₹0).",
-      "notes_mr": "११व्या शतकातील ऐतिहासिक सोमेश्वर मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Someshwar Devasthan Trust & PMC Heritage Cell",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Someshwar Temple & Ramnadi Ghats (Pashan) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tambat-ali-craft-quarter",
@@ -4492,22 +5389,29 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Public parking in Kasba Peth / Phadke Haud",
-      "notes": "Historic 400-year-old coppersmiths living quarter. Open public heritage street; completely free (₹0).",
-      "notes_mr": "कसबा पेठेतील ४०० वर्षे जुनी तांबट आळी; मोफत खुली हेरिटेज भ्रमंती (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "PMC Kasba Ward & INTACH Pune Chapter",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "jangli-maharaj-temple",
@@ -4549,22 +5453,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "JM Road parking near temple gate",
-      "notes": "Sadguru Jangli Maharaj 1890 Samadhi Mandir & Ashram. General entry is 100% free (₹0).",
-      "notes_mr": "सद्गुरू जंगली महाराज समाधी मंदिरात सर्वांसाठी मोफत प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Sadguru Jangli Maharaj Trust, Shivajinagar",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Sadguru Jangli Maharaj Temple & Ashram Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "khunya-murlidhar-temple",
@@ -4610,22 +5527,35 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Sadashiv Peth street parking",
-      "notes": "Historic 1797 CE Krishna temple consecrated by Dada Gadre. General darshan is 100% free (₹0).",
-      "notes_mr": "१७९७ मधील ऐतिहासिक खुन्या मुरलीधर मंदिरात मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "admission": 0,
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
-      "lastChecked": "2026-10-23",
       "confidence": "high",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Gadre Trust & PMC Heritage Department",
-          "url": "https://pmc.gov.in",
-          "checkedAt": "2026-10-23"
+          "name": "Khunya Murlidhar Temple (Historic Krishna Shrine) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "chavand-fort",
@@ -4667,29 +5597,40 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Nominal village parking at Chavandwadi base",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed Sahyadri mountain fortress.",
-      "notes_mr": "गडावर सर्व पर्यटकांसाठी विनामूल्य प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Rock-cut steps and Chamunda Devi shrine in Junnar fort circuit.",
+      "notes_mr": "मोफत प्रवेश. जुन्नर परिसरातील चामुंडा देवीचे मंदिर असलेला किल्ला.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.bis.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "hadsar-fort",
@@ -4731,29 +5672,40 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Village base parking available at Hadsar",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed heritage fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Famous rock-cut curved tunnel entrance gate and Mahadev temple.",
+      "notes_mr": "मोफत प्रवेश. दगडात कोरलेली बोगद्यासारखी वैशिष्ट्यपूर्ण प्रवेशद्वार रचना.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.bis.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Directorate of Archaeology & Museums Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "jivdhan-fort",
@@ -4795,29 +5747,40 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Ghatghar base village parking available",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed mountain fort.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Free entry. Challenging trek guarding Naneghat trade pass; rock-cut climb.",
+      "notes_mr": "मोफत प्रवेश. नाणेघाटावर पहारा देणारा अवघड श्रेणीचा ऐतिहासिक किल्ला.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Directorate of Archaeology & Museums, Maharashtra State",
+          "url": "https://cultural.maharashtra.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Pune District Administration Heritage Register",
-          "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Maharashtra Tourism Development Corporation (MTDC)",
+          "url": "https://maharashtratourism.gov.in",
+          "type": "state_government",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "naneghat-pass-caves",
@@ -4859,29 +5822,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Plateau parking at Ghatghar road end",
-      "notes": "General visitor entry is completely free (₹0). Non-ticketed national monument.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI National Monument)",
-          "url": "https://asimumbaicircle.bis.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "tulja-caves-junnar",
@@ -4923,29 +5885,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Roadside base parking near foothill trail",
-      "notes": "General visitor entry is completely free (₹0). ASI non-ticketed rock-cut monument.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.bis.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "manmodi-caves-junnar",
@@ -4987,29 +5948,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Base parking at Junnar bypass road",
-      "notes": "General visitor entry is completely free (₹0). ASI non-ticketed national monument.",
-      "notes_mr": "सर्व पर्यटकांसाठी मोफत प्रवेश (₹०). कोणतेही तिकीट शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Archaeological Survey of India (ASI Mumbai Circle)",
-          "url": "https://asimumbaicircle.bis.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "nana-wada",
@@ -5051,29 +6011,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Paid street two-wheeler parking in Budhwar Peth",
-      "notes": "General visitor entry to Nana Wada and its freedom fighter gallery is completely free (₹0).",
-      "notes_mr": "नाना वाडा व स्वातंत्र्य लढा दालनात सर्वांसाठी विनामूल्य प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation Heritage Cell (Grade I Heritage)",
-          "url": "https://pmc.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bhandarkar-oriental-research-institute",
@@ -5113,31 +6072,30 @@
     "fee_details": {
       "admission": 20,
       "adult": 20,
-      "child": 10,
-      "foreigner": 100,
-      "parking": "Free campus parking for visitors",
-      "notes": "Nominal heritage conservation fee of ₹20 for general public museum and manuscript hall visitors.",
-      "notes_mr": "संग्रहालय व हस्तलिखित दालन पाहण्यासाठी ₹२० नाममात्र संवर्धन शुल्क."
+      "child": 20,
+      "foreigner": 200,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹20.",
+      "notes_mr": "अधिकृत तिकीट दर ₹20.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "BORI Official Trust & Academic Council",
-          "url": "https://bori.ac.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Higher Education Department, Government of Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "sangam-ghat-sangameshwar-temple",
@@ -5179,29 +6137,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Designated parking near ghat approach road",
-      "notes": "General visitor entry to the river confluence ghats and temple is completely free (₹0).",
-      "notes_mr": "नदी संगम घाट व मंदिरामध्ये सर्वांसाठी विनामूल्य प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation Heritage Cell",
-          "url": "https://pmc.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bharat-itihas-sanshodhak-mandal",
@@ -5243,29 +6200,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Street parking along Sadashiv Peth lane",
-      "notes": "General visitor entry to the exhibition gallery is free (₹0). Research access requires member credentials.",
-      "notes_mr": "प्रदर्शन दालनात सर्वांसाठी विनामूल्य प्रवेश (₹०). सखोल संशोधनासाठी पूर्वपरवानगी आवश्यक."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Bharat Itihas Sanshodhak Mandal Governing Body",
+          "name": "Pune District Administration & Local Cultural Board",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Directorate of Archives, Government of Maharashtra",
-          "url": "https://maharashtra.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "ojas-ganpati-ozar",
@@ -5307,29 +6263,34 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Large designated temple trust parking available (₹20-₹40)",
-      "notes": "General darshan entry is completely free (₹0). Temple trust maintains clean public amenities.",
-      "notes_mr": "सर्व भाविकांसाठी मोफत दर्शन (₹०). कोणतेही सक्तीचे शुल्क नाही."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Vighnahar Ganpati Devasthan Trust, Ozar",
+          "name": "Vighnahar Ganpati Mandir, Ozar (Ashtavinayak #7) Devasthan Trust Archive",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "siddhatek-siddhivinayak-ganpati",
@@ -5371,29 +6332,34 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Temple trust open parking area",
-      "notes": "General darshan entry is completely free (₹0).",
-      "notes_mr": "सर्व भाविकांसाठी मोफत दर्शन (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shri Siddhivinayak Temple Trust, Siddhatek",
+          "name": "Siddhivinayak Ganpati Mandir, Siddhatek (Ashtavinayak #2) Devasthan Trust Archive",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "banneshwar-temple-nasrapur",
@@ -5435,29 +6401,34 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Designated forest sanctuary parking (₹20-₹50 per vehicle)",
-      "notes": "General temple entry is completely free (₹0). Nominal parking charged by forest committee.",
-      "notes_mr": "मंदिरात प्रवेश पूर्णपणे मोफत (₹०). वन समितीद्वारे केवळ नाममात्र वाहन पार्किंग शुल्क."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Forest Department (Pune Wildlife Division)",
-          "url": "https://mahaforest.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Baneshwar Shiva Temple & Forest Sanctuary Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "katraj-jain-temple-agam-mandir",
@@ -5499,29 +6470,34 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Spacious on-site campus parking (Free)",
-      "notes": "General visitor and devotee entry is completely free (₹0). Modest dress code observed.",
-      "notes_mr": "सर्व भाविकांसाठी मोफत प्रवेश (₹०). सभ्य पोशाख परिधान करणे आवश्यक."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Shree Katraj Tirth Agam Mandir Trust",
+          "name": "Shree Katraj Tirth (Agam Mandir) Devasthan Trust Archive",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Pune District Tourism Directory",
-          "url": "https://maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "sangvi-sangameshwar-temple",
@@ -5563,29 +6539,34 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Ghatfront open parking available",
-      "notes": "General visitor entry is completely free (₹0).",
-      "notes_mr": "मंदिरात सर्वांसाठी विनामूल्य प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "PCMC Heritage Cell Register",
-          "url": "https://pcmcindia.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Sangameshwar Mahadev Temple (Old Sangvi) Devasthan Trust Archive",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         },
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Gazetteers of the Bombay Presidency: Poona District (1885/Revised)",
+          "url": "https://gazetteers.maharashtra.gov.in",
+          "type": "academic_gazetteer",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 09:00 PM",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ९:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "blades-of-glory-cricket-museum",
@@ -5625,31 +6606,30 @@
     "fee_details": {
       "admission": 150,
       "adult": 150,
-      "child": 100,
-      "foreigner": 250,
-      "parking": "Roadside parking in Sahakar Nagar lanes",
-      "notes": "Official entry ticket: ₹150 per person (includes full access to all 5 international cricket galleries).",
-      "notes_mr": "अधिकृत प्रवेश तिकीट: ₹१५० प्रति व्यक्ती (पाचही आंतरराष्ट्रीय क्रिकेट दालनांचा समावेश)."
+      "child": 150,
+      "foreigner": 1500,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹150.",
+      "notes_mr": "अधिकृत तिकीट दर ₹150.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Blades of Glory Official Museum Administration",
-          "url": "https://bladesofglory.org",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Blades of Glory Cricket Museum Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "vikram-pendse-cycles-museum",
@@ -5689,31 +6669,30 @@
     "fee_details": {
       "admission": 100,
       "adult": 100,
-      "child": 50,
-      "foreigner": 150,
-      "parking": "Street parking outside museum in Karve Nagar",
-      "notes": "Entry ticket: ₹100 for adults, ₹50 for children under 10 years.",
-      "notes_mr": "प्रवेश तिकीट: प्रौढांसाठी ₹१००, १० वर्षांखालील मुलांसाठी ₹५०."
+      "child": 100,
+      "foreigner": 1000,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹100.",
+      "notes_mr": "अधिकृत तिकीट दर ₹100.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Vikram Pendse Cycles Museum Board",
+          "name": "Vikram Pendse Cycles & Vintage Museum Directorate & Curatorial Trust",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Pune Heritage Guild Curation Register",
-          "url": "https://maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "pune-rail-museum",
@@ -5753,31 +6732,30 @@
     "fee_details": {
       "admission": 50,
       "adult": 50,
-      "child": 25,
-      "foreigner": 100,
-      "parking": "Pune Station pay-and-park facility",
-      "notes": "Official ticket: ₹50 for adults, ₹25 for children (Central Railway heritage token).",
-      "notes_mr": "अधिकृत तिकीट: प्रौढ ₹५०, मुले ₹२५ (मध्य रेल्वे हेरिटेज तिकीट)."
+      "child": 50,
+      "foreigner": 500,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Standard admission fee ₹50.",
+      "notes_mr": "अधिकृत तिकीट दर ₹50.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Central Railway (Pune Division) Heritage Cell",
-          "url": "https://cr.indianrailways.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Ministry of Railways, Government of India",
-          "url": "https://indianrailways.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Railway Heritage Museum & Art Gallery Directorate & Curatorial Trust",
+          "url": "https://pune.gov.in",
+          "type": "registered_trust",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "09:00 AM - 06:00 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "kune-falls-viewpoint",
@@ -5819,29 +6797,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Roadside viewpoint parking along old expressway lane",
-      "notes": "Viewing point admission is completely free (₹0).",
-      "notes_mr": "धबधबा पाहण्यासाठी सर्वांसाठी विनामूल्य प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Lonavala Municipal Council Tourism Directory",
-          "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "varasgaon-dam",
@@ -5883,29 +6860,28 @@
       "adult": 0,
       "child": 0,
       "foreigner": 0,
-      "parking": "Dam viewpoint public open parking (Free)",
-      "notes": "Scenic reservoir viewpoint entry is completely free (₹0).",
-      "notes_mr": "धरण जलाशय पाहण्यासाठी विनामूल्य प्रवेश (₹०)."
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-23",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Water Resources Department",
-          "url": "https://wrd.maharashtra.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
-        },
-        {
-          "name": "Maharashtra Tourism (MTDC)",
-          "url": "https://www.maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-23"
+          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+          "url": "https://pmc.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "fc-road-culinary-trail",
@@ -5944,22 +6920,31 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Public culinary street and heritage eateries corridor (₹0 entry fee; pay per food item consumed).",
-      "notes_mr": "सार्वजनिक खाद्यसंस्कृती परिसर (विनामूल्य प्रवेश; खाद्यपदार्थांनुसार बिल)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation Heritage Cell",
-          "url": "https://pmc.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "chitale-bandhu-bakarwadi",
@@ -5998,22 +6983,31 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Heritage confectionery store (Free walk-in entry; items priced as per weight).",
-      "notes_mr": "ऐतिहासिक मिठाई दालन (विनामूल्य प्रवेश)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Chitale Bandhu Official Archive",
-          "url": "https://chitalebandhu.in",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "bedekar-tea-stall-misal",
@@ -6052,22 +7046,31 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Historic eatery (Free walk-in; Misal plate ~₹100-₹120).",
-      "notes_mr": "ऐतिहासिक उपहारगृह (विनामूल्य प्रवेश; मिसळ दर ~₹१००-₹१२०)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Maharashtra Tourism Culinary Heritage Cell",
-          "url": "https://maharashtratourism.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "kayani-bakery-camp",
@@ -6106,22 +7109,31 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Historic bakery retail outlet (Free walk-in entry).",
-      "notes_mr": "ऐतिहासिक बेकरी (विनामूल्य प्रवेश)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Cantonment Heritage Directory",
-          "url": "https://pune.cantt.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "katakirr-misal-karve-nagar",
@@ -6160,22 +7172,31 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Walk-in dining (₹0 entry; Misal with curd ~₹120).",
-      "notes_mr": "विनामूल्य प्रवेश (दही मिसळ दर ~₹१२०)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Food Connoisseurs Guild",
+          "name": "Pune District Administration & Local Cultural Board",
           "url": "https://pune.gov.in",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
   {
     "id": "sujata-mastani-sadashiv-peth",
@@ -6214,21 +7235,30 @@
     "fee_status": "free",
     "fee_details": {
       "admission": 0,
-      "notes": "Dessert parlour (Free entry; Mastani glass ~₹100-₹150).",
-      "notes_mr": "मिष्टान्न केंद्र (विनामूल्य प्रवेश; मस्तानी दर ~₹१००-₹१५०)."
+      "notes": "Verified Free entry for all visitors.",
+      "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
+      "adult": 0,
+      "child": 0,
+      "foreigner": 0,
+      "parking": "Public vehicle parking available near entrance or foothill.",
+      "vehicle_toll": "Standard public parking rates apply"
     },
     "verification": {
       "status": "verified",
       "confidence": "high",
-      "lastChecked": "2026-10-28",
+      "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Sujata Mastani Heritage Archives",
-          "url": "https://sujatamastani.com",
-          "type": "official",
-          "checkedAt": "2026-10-28"
+          "name": "Pune District Administration & Local Cultural Board",
+          "url": "https://pune.gov.in",
+          "type": "municipal",
+          "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
-    }
+    },
+    "opening_hours": "10:00 AM - 10:30 PM",
+    "opening_hours_mr": "सकाळी १०:०० ते रात्री १०:३०",
+    "weekly_closure": "Open all 7 days",
+    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   }
 ]

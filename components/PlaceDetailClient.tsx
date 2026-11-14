@@ -1359,11 +1359,25 @@ export default function PlaceDetailClient({
                       {isMr ? 'अधिकृत संस्था व संदर्भ (Confirming Authorities):' : 'Confirming Authorities & Sources:'}
                     </strong>
                   </div>
-                  <div style={{ color: 'var(--muted)', fontSize: 12 }}>
-                    {isMr ? 'माहिती व दर पडताळणी तारीख:' : 'Archive & Fee Checked:'}{' '}
-                    <strong style={{ color: 'var(--ink)' }}>
-                      {place.verification?.lastChecked || '28 October 2026'}
-                    </strong>
+                  <div style={{ color: 'var(--muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <span>
+                      {isMr ? 'माहिती व दर पडताळणी तारीख:' : 'Archive & Fee Checked:'}{' '}
+                      <strong style={{ color: 'var(--ink)' }}>
+                        {place.verification?.lastChecked || '28 October 2026'}
+                      </strong>
+                    </span>
+                    <Link
+                      href="/about#feedback"
+                      style={{
+                        color: '#0284c7',
+                        textDecoration: 'underline',
+                        fontSize: 11.5,
+                        fontWeight: 600,
+                      }}
+                      title={isMr ? 'बदललेले दर किंवा वेळ कळवा' : 'Report updated fee or hours to editorial team'}
+                    >
+                      {isMr ? 'दुरुस्ती कळवा ↗' : 'Report change ↗'}
+                    </Link>
                   </div>
                 </div>
 
@@ -1507,6 +1521,33 @@ export default function PlaceDetailClient({
                   </p>
                 )}
               </div>
+
+              {/* Operating Hours / Timings */}
+              {(place.opening_hours || place.opening_hours_mr) && (
+                <div>
+                  <span
+                    style={{
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      color: 'var(--muted)',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      letterSpacing: '0.04em',
+                      marginBottom: 4,
+                    }}
+                  >
+                    {isMr ? 'दैनिक वेळ (Verified Hours)' : 'Operating Hours'}
+                  </span>
+                  <p style={{ fontSize: '14.5px', fontWeight: 700, margin: 0, color: 'var(--ink)' }}>
+                    🕒 {isMr ? (place.opening_hours_mr || place.opening_hours) : place.opening_hours}
+                  </p>
+                  {(place.weekly_closure || place.weekly_closure_mr) && (
+                    <p style={{ fontSize: '11.5px', color: 'var(--muted)', marginTop: 3, marginBottom: 0 }}>
+                      📅 {isMr ? (place.weekly_closure_mr || place.weekly_closure) : place.weekly_closure}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/* Best Time to Visit */}
               {bestTime && (
