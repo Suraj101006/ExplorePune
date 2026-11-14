@@ -563,13 +563,40 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 70px;
+  gap: 16px;
+  min-height: 80px;
   flex-wrap: nowrap;
   max-width: 1440px !important;
   width: 100%;
-  padding: 0 20px !important;
+  padding: 6px 20px !important;
   box-sizing: border-box;
+}
+
+/* Two-Floor Header Architecture (Right Layer for Remaining Buttons) */
+.header-two-floor-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Floor 1 (Top Layer): Quick Action Utilities, Wishlist, Language, Theme, Auth */
+.header-floor-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Floor 2 (Bottom Layer): Complete Navigation Links */
+.header-floor-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .brand {
@@ -1053,6 +1080,18 @@ html.dark .theme-toggle-kbd,
 
 /* Breakpoint: Desktop to Mobile Collapse (<= 1200px) */
 @media (max-width: 1200px) {
+  .header-two-floor-right {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+  }
+  .header-floor-bottom {
+    display: none !important;
+  }
+  .header-floor-top {
+    width: auto !important;
+  }
   .desktop-nav {
     display: none !important;
   }

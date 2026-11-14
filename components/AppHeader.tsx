@@ -52,7 +52,7 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="site-header">
+    <header className="site-header site-header-two-floor">
       <div className="wrap site-header-inner">
         {/* Brand Identity */}
         <Link href="/" className="brand" aria-label="Explore Pune Home">
@@ -73,61 +73,68 @@ export default function AppHeader() {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="desktop-nav" aria-label="Main Navigation">
-          {navLinks.map((item) => {
-            const active = isLinkActive(item.href);
-            const { Icon } = item;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={active ? 'active-nav-link' : ''}
+        {/* Right Side: Two-Floor Navigation & Controls Layer */}
+        <div className="header-two-floor-right">
+          {/* Floor 1 (Upper Layer): Utility Controls, Helplines & Account Buttons */}
+          <div className="header-floor-top">
+            <div className="header-utilities">
+              {/* Emergency Tourist Helpline Modal */}
+              <div className="nav-util-item hide-on-mobile">
+                <EmergencyHelplineModal />
+              </div>
+
+              {/* Saved Places Wishlist Drawer */}
+              <div className="nav-util-item">
+                <SavedPlacesDrawer />
+              </div>
+
+              {/* Bilingual Language Switcher */}
+              <div className="nav-util-item">
+                <LanguageToggle />
+              </div>
+
+              {/* Dark / Light Theme Toggle Key & Button */}
+              <div className="nav-util-item">
+                <ThemeToggle />
+              </div>
+
+              {/* User Sign-In / Account & Logout */}
+              <div className="nav-util-item">
+                <AuthNav />
+              </div>
+
+              {/* Mobile Hamburger Toggle Button */}
+              <button
+                type="button"
+                className="mobile-menu-btn"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle Navigation Menu"
+                aria-expanded={mobileMenuOpen}
               >
-                <Icon size={14} strokeWidth={2.2} className="desktop-nav-icon" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Global Utilities & Action Controls */}
-        <div className="header-utilities">
-          {/* Emergency Tourist Helpline Modal */}
-          <div className="nav-util-item hide-on-mobile">
-            <EmergencyHelplineModal />
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </div>
 
-          {/* User Sign-In / Account & Logout */}
-          <div className="nav-util-item">
-            <AuthNav />
+          {/* Floor 2 (Lower Layer): Primary Desktop Navigation Links */}
+          <div className="header-floor-bottom">
+            <nav className="desktop-nav" aria-label="Main Navigation">
+              {navLinks.map((item) => {
+                const active = isLinkActive(item.href);
+                const { Icon } = item;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={active ? 'active-nav-link' : ''}
+                  >
+                    <Icon size={14} strokeWidth={2.2} className="desktop-nav-icon" />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
-
-          {/* Saved Places Wishlist Drawer */}
-          <div className="nav-util-item">
-            <SavedPlacesDrawer />
-          </div>
-
-          {/* Bilingual Language Switcher */}
-          <div className="nav-util-item">
-            <LanguageToggle />
-          </div>
-
-          {/* Dark / Light Theme Toggle Key & Button */}
-          <div className="nav-util-item">
-            <ThemeToggle />
-          </div>
-
-          {/* Mobile Hamburger Toggle Button */}
-          <button
-            type="button"
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle Navigation Menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
         </div>
       </div>
 
