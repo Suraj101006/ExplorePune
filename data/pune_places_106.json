@@ -1389,7 +1389,7 @@
       "child": 20,
       "foreigner": 200,
       "camera": 50,
-      "parking": "Public vehicle parking available near entrance or foothill.",
+      "parking": "Dedicated visitor parking bays along Wanowrie road outside the main arched entrance.",
       "notes": "Standard admission fee ₹20.",
       "notes_mr": "अधिकृत तिकीट दर ₹20.",
       "admission": 20,
@@ -1401,15 +1401,15 @@
       "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune District Administration & Local Cultural Board",
+          "name": "Scindia Devasthan Trust & Pune District Cultural Board",
           "url": "https://pune.gov.in",
           "type": "municipal",
           "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
     },
-    "opening_hours": "09:00 AM - 06:00 PM",
-    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+    "opening_hours": "06:00 AM - 08:30 PM (Daily; Aarti at 07:00 AM & 07:00 PM)",
+    "opening_hours_mr": "सकाळी ६:०० ते रात्री ८:३० (दररोज; आरती सकाळी ७:०० व संध्याकाळी ७:००)",
     "weekly_closure": "Open all 7 days",
     "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },
@@ -3207,7 +3207,7 @@
       "child": 20,
       "foreigner": 200,
       "camera": 20,
-      "parking": "Public vehicle parking available near entrance or foothill.",
+      "parking": "Municipal on-street parking bays available along Ghole Road.",
       "notes": "Standard admission fee ₹20.",
       "notes_mr": "अधिकृत तिकीट दर ₹20.",
       "admission": 20,
@@ -3219,17 +3219,17 @@
       "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Mahatma Phule Museum Directorate & Curatorial Trust",
-          "url": "https://pune.gov.in",
-          "type": "registered_trust",
+          "name": "Directorate of Archaeology and Museums, Maharashtra",
+          "url": "https://mahamuseums.maharashtra.gov.in",
+          "type": "state",
           "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
     },
-    "opening_hours": "09:00 AM - 06:00 PM",
-    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ६:००",
-    "weekly_closure": "Open all 7 days",
-    "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
+    "opening_hours": "09:00 AM - 05:30 PM",
+    "opening_hours_mr": "सकाळी ९:०० ते संध्याकाळी ५:३०",
+    "weekly_closure": "Wednesdays & Public Holidays",
+    "weekly_closure_mr": "बुधवार आणि शासकीय सुट्ट्या"
   },
   {
     "id": "iucaa-science-park",
@@ -4247,7 +4247,7 @@
       "child": 0,
       "foreigner": 0,
       "camera": 0,
-      "parking": "Public vehicle parking available near entrance or foothill.",
+      "parking": "Designated roadside gravel bays near viewpoints; parking on blind hair-pin turns is strictly forbidden.",
       "notes": "Verified Free entry for all visitors.",
       "notes_mr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश.",
       "admission": 0,
@@ -4259,15 +4259,21 @@
       "lastChecked": "2026-11-15",
       "sources": [
         {
-          "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
-          "url": "https://pmc.gov.in",
-          "type": "municipal",
+          "name": "Maharashtra State Forest Department (Pune Forest Division)",
+          "url": "https://mahaforest.gov.in",
+          "type": "state",
+          "checkedAt": "2026-11-15T00:00:00Z"
+        },
+        {
+          "name": "Public Works Department (PWD Maharashtra) - Highway NH 753F",
+          "url": "https://mahapwd.gov.in",
+          "type": "state",
           "checkedAt": "2026-11-15T00:00:00Z"
         }
       ]
     },
-    "opening_hours": "06:00 AM - 06:30 PM (Daylight hours)",
-    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+    "opening_hours": "06:00 AM - 06:00 PM (Daylight transit recommended; night driving restricted in heavy monsoon)",
+    "opening_hours_mr": "सकाळी ६:०० ते संध्याकाळी ६:०० (दिवसा प्रवास सुरक्षित; मुसळधार पावसात रात्री प्रवास टाळावा)",
     "weekly_closure": "Open all 7 days",
     "weekly_closure_mr": "आठवड्याचे सर्व दिवस सुरू"
   },

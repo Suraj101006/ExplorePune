@@ -117,6 +117,7 @@ function getRelatedPlaces(place: any, pool: any[], count = 4) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const canonicalSlug = SLUG_ALIASES[slug] || slug;
   const place = await getPlaceData(slug);
 
   if (place) {
@@ -130,17 +131,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const description =
       `Visiting ${place.name} in Pune? Check verified opening hours, ticket entry fee (${feeStr}), history, and public transit directions. ${place.description?.slice(0, 90) || ''}`.trim();
     const imageUrl = place.image_url || '/images/pune-map-hero.jpg';
+    const canonicalPath = `/places/${canonicalSlug}`;
 
     return {
       title,
       description,
       alternates: {
-        canonical: `/places/${slug}`,
+        canonical: canonicalPath,
       },
       openGraph: {
         title: `${title} | Explore Pune`,
         description,
-        url: `/places/${slug}`,
+        url: canonicalPath,
         siteName: 'Explore Pune',
         type: 'article',
         images: [
@@ -181,6 +183,9 @@ export default async function PlaceDetailPage({
     notFound();
   }
 
+  const canonicalSlug = SLUG_ALIASES[slug] || place.slug || place.id || target;
+  const canonicalUrl = `https://explorepune-guide.vercel.app/places/${encodeURIComponent(canonicalSlug)}`;
+
   const categorySlug = place.category_slug || place.category || 'heritage';
   const categoryName =
     categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1);
@@ -211,7 +216,7 @@ export default async function PlaceDetailPage({
         '@type': 'ListItem',
         position: 4,
         name: place.name,
-        item: `https://explorepune-guide.vercel.app/places/${encodeURIComponent(slug)}`,
+        item: canonicalUrl,
       },
     ],
   };
@@ -272,8 +277,8 @@ export default async function PlaceDetailPage({
     alternateName: place.name_mr || undefined,
     description: place.description || undefined,
     image: place.image_url ? `https://explorepune-guide.vercel.app${place.image_url}` : undefined,
-    url: `https://explorepune-guide.vercel.app/places/${slug}`,
-    mainEntityOfPage: `https://explorepune-guide.vercel.app/places/${slug}`,
+    url: canonicalUrl,
+    mainEntityOfPage: canonicalUrl,
     hasMap:
       place.latitude && place.longitude
         ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`
@@ -303,7 +308,7 @@ export default async function PlaceDetailPage({
       price: place.fee_status === 'free' || place.entry_fee === 0 ? '0' : String(place.entry_fee || '0'),
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
-      url: `https://explorepune-guide.vercel.app/places/${slug}`,
+      url: canonicalUrl,
     },
     openingHoursSpecification:
       place.place_hours && place.place_hours.length > 0

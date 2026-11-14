@@ -14,93 +14,100 @@ function withTimeout<T>(promise: Promise<T>, ms = 1500): Promise<T> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
-  const now = new Date();
+  // Stable audit and release timestamp to eliminate Search Console dynamic lastmod churn
+  const auditReleaseDate = new Date('2026-11-15T00:00:00.000Z');
 
   // Core public indexable routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/destinations`,
+      lastModified: auditReleaseDate,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/planner`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/experience`,
+      lastModified: auditReleaseDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/play-metro-transit.html`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'weekly',
       priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/destinations`,
-      lastModified: now,
-      changeFrequency: 'daily',
-      priority: 0.95,
     },
     ...['forts', 'heritage', 'temples', 'museums', 'nature', 'parks', 'food', 'free'].map(
       (cat) => ({
         url: `${baseUrl}/destinations/${cat}`,
-        lastModified: now,
+        lastModified: auditReleaseDate,
         changeFrequency: 'weekly' as const,
         priority: 0.9,
       })
     ),
     {
       url: `${baseUrl}/community`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'daily',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blogs`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'daily',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/help/website-guide`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/data`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/milestones`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/cookies`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'yearly',
       priority: 0.4,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: now,
+      lastModified: auditReleaseDate,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
@@ -130,13 +137,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  const destinationRoutes: MetadataRoute.Sitemap = Array.from(placeSlugs).map((slug) => ({
-    url: `${baseUrl}/places/${encodeURIComponent(slug)}`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: 0.85,
-    images: [`${baseUrl}/images/places/${encodeURIComponent(slug)}.jpg`],
-  }));
+  const destinationRoutes: MetadataRoute.Sitemap = Array.from(placeSlugs).map((slug) => {
+    const place = ALL_STRUCTURED_PLACES.find((p) => (p.slug || p.id) === slug);
+    const placeDate = place?.verification?.lastChecked
+      ? new Date(place.verification.lastChecked)
+      : auditReleaseDate;
+
+    return {
+      url: `${baseUrl}/places/${encodeURIComponent(slug)}`,
+      lastModified: placeDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+      images: [`${baseUrl}/images/places/${encodeURIComponent(slug)}.jpg`],
+    };
+  });
 
   // Published blog stories
   const blogRoutes: MetadataRoute.Sitemap = [];
@@ -150,7 +164,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (data.slug && !data.is_draft) {
         blogRoutes.push({
           url: `${baseUrl}/blogs/${encodeURIComponent(data.slug)}`,
-          lastModified: data.published_at ? new Date(data.published_at) : now,
+          lastModified: data.published_at ? new Date(data.published_at) : auditReleaseDate,
           changeFrequency: 'monthly',
           priority: 0.75,
         });

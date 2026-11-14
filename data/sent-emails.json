@@ -1,5 +1,16 @@
 [
   {
+    "id": "mail_1794690076175_f11d5",
+    "timestamp": "2026-11-14T21:01:16.175Z",
+    "type": "auth_verification_code",
+    "to": "api-explorer@punetour.in",
+    "subject": "🔐 Explore Pune Sign-In Verification Code: 559597",
+    "preview": "Hello Tanmay! 👋\n\nYour 6-digit verification code to sign in to Explore Pune is:\n\n👉 559597\n\nThis verification code will expire in 10 minutes.\nFor your security, never share this code with anyone.\n\nWarm regards,\nSuraj Dhok, Sahil Jadhav & Ishan Kakade\nExplore Pune Team\nhttps://explorepune-guide.vercel.app",
+    "metadata": {
+      "code": "559597"
+    }
+  },
+  {
     "id": "mail_1792691813986_9f3ks",
     "timestamp": "2026-10-22T17:56:53.986Z",
     "type": "itinerary_pdf_dispatch",

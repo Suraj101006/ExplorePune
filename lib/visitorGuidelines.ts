@@ -1451,6 +1451,300 @@ export function getPlaceVisitorGuidelines(place: {
     }
   }
 
+  // ==========================================
+  // SPECIFIC LANDMARK OVERRIDES (High Accuracy)
+  // ==========================================
+
+  // A. MAHATMA PHULE MUSEUM (Ghole Road, Shivajinagar)
+  if (slug === 'mahatma-phule-museum') {
+    return {
+      summaryEn: `Established in 1890 on Ghole Road in Shivajinagar (originally the Lord Ray Museum), Mahatma Phule Museum showcases rare 19th-century industrial, geological, agricultural, archaeological, and antique weaponry exhibits.`,
+      summaryMr: `घोले रस्ता, शिवाजीनगर येथे १८९० मध्ये स्थापन झालेले महात्मा फुले वस्तुसंग्रहालय (पूर्वीचे लॉर्ड रे संग्रहालय) हे १९व्या शतकातील औद्योगिक, कृषी, भूगर्भीय, पुरातत्व आणि ऐतिहासिक शस्त्रास्त्रांच्या दुर्मीळ दालनांसाठी प्रसिद्ध आहे.`,
+      difficultyOrTypeEn: 'Victorian Industrial & Natural History Museum',
+      difficultyOrTypeMr: 'ऐतिहासिक उद्योग व वस्तुसंग्रहालय दर्शन',
+      sections: [
+        {
+          titleEn: 'How to Reach & Commute',
+          titleMr: 'कसे पोहोचावे आणि प्रवास पर्याय',
+          icon: '🧭',
+          items: [
+            {
+              labelEn: 'By Pune Metro',
+              labelMr: 'पुणे मेट्रोने',
+              descEn: 'Aqua Line: alight at Chhatrapati Sambhaji Udyan Metro Station (approx 450m walk via Balgandharva bridge) or PMC Metro Station (approx 800m walk).',
+              descMr: 'अक्वा मार्गिका: छत्रपती संभाजी उद्यान स्थानकावर उतरा (बालगंधर्व पुलावरून सुमारे ४५० मी. पायी अंतर) किंवा मनपा स्थानकावरून ८०० मी.',
+              tag: 'Fastest Transit',
+            },
+            {
+              labelEn: 'By PMPML Bus',
+              labelMr: 'पीएमपीएमएल बसने',
+              descEn: 'Direct PMPML buses (Routes 9, 11, 100, 174) halt at Balgandharva / Deccan Gymkhana stops along JM Road / Jangli Maharaj corridor (300m walk to Ghole Road).',
+              descMr: 'पीएमपीएमएल बस क्र. ९, ११, १००, १७४ बालगंधर्व किंवा डेक्कन जिमखाना थांब्यावर थांबतात. तिथून घोले रस्त्याकडे ३०० मीटर चालावे.',
+            },
+            {
+              labelEn: 'Parking Facilities',
+              labelMr: 'पार्किंग सोय',
+              descEn: 'Municipal on-street parking bays are available along Ghole Road for two-wheelers and four-wheelers.',
+              descMr: 'घोले रस्त्यावर दुचाकी व चारचाकी वाहनांसाठी महानगरपालिकेचे रस्त्यावरील पार्किंग उपलब्ध आहे.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Visiting Hours, Tickets & Entry',
+          titleMr: 'भेट देण्याची वेळ, तिकीट व प्रवेश',
+          icon: '🎟️',
+          items: [
+            {
+              labelEn: 'Visiting Hours',
+              labelMr: 'संग्रहालय वेळ',
+              descEn: 'Open daily from 09:00 AM to 05:30 PM. Closed on Wednesdays and designated public holidays.',
+              descMr: 'दररोज सकाळी ९:०० ते संध्याकाळी ५:३० पर्यंत सुरू. बुधवारी आणि अधिकृत सरकारी सुट्टीच्या दिवशी बंद असते.',
+            },
+            {
+              labelEn: 'Entry Pricing',
+              labelMr: 'प्रवेश शुल्क',
+              descEn: 'Indian adults: ₹20 per person. Children (under 12): ₹10. Foreign tourists: ₹200. Tickets can be purchased at the entrance reception counter.',
+              descMr: 'भारतीय नागरिक: ₹२० प्रति व्यक्ती. मुले (१२ वर्षांखालील): ₹१०. परदेशी नागरिक: ₹२००. प्रवेशद्वारावरील काऊंटरवर तिकीट उपलब्ध असते.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Visitor Guidelines & Museum Etiquette',
+          titleMr: 'नियम आणि संग्रहालय आचारसंहिता',
+          icon: '📋',
+          items: [
+            {
+              labelEn: 'Exhibits & Armory Safety',
+              labelMr: 'वस्तू व शस्त्रास्त्र दालन सुरक्षा',
+              descEn: 'Do not touch the antique glass display cabinets, stuffed natural history mounts, or historical weapons. Flash photography is prohibited inside galleries.',
+              descMr: 'काचेच्या पेट्यांमधील दुर्मीळ वस्तू, प्राणी दालन व जुन्या शस्त्रांना हात लावू नये. दालनांमध्ये फ्लॅश फोटोग्राफी करण्यास सक्त मनाई आहे.',
+            },
+            {
+              labelEn: 'Cloakroom & Bags',
+              labelMr: 'बॅग व सामान ठेवण्याची सोय',
+              descEn: 'Large backpacks, food packages, and water flasks must be deposited at the reception counter token rack before entering galleries.',
+              descMr: 'मोठ्या बॅगा, खाऊचे डबे आणि पाण्याच्या बाटल्या स्वागत कक्षातील टोकन काउंटरवर जमा कराव्यात.',
+            },
+          ],
+        },
+      ],
+      proTipsEn: [
+        'Weekday mornings (10:00 AM - 12:00 PM) are peaceful and ideal for student researchers and history enthusiasts.',
+        'Explore the rare collection of 19th-century brass handicrafts, agricultural machinery prototypes, and minerals.',
+        'Combine your visit with nearby Balgandharva Ranga Mandir and the bustling culinary joints along JM Road and FC Road.',
+      ],
+      proTipsMr: [
+        'आठवड्याच्या सुरुवातीच्या दिवसांत सकाळी १० ते १२ या वेळेत शांतपणे दालने पाहता येतात.',
+        '१९व्या शतकातील धातूकाम, कृषी अवजारे आणि भूगर्भशास्त्रातील दुर्मीळ खनिजांचे दालन आवर्जून पाहावे.',
+        'जवळच असलेले बालगंधर्व रंगमंदिर आणि जंगली महाराज रस्त्यावरील खाद्यसंस्कृतीचा आनंद एकाच फेरीत घेता येतो.',
+      ],
+      nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
+        'Cafe Goodluck (Deccan Gymkhana, 600m) — iconic Bun Maska and Irani Chai since 1935',
+        'Vaishali & Roopali (FC Road, 700m) — legendary SPDP, Mysore Masala Dosa, and South Indian coffee',
+        'Wadeshwar (JM Road, 400m) — hot Ghee Podi Idli and Sabudana Vada',
+      ],
+      nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
+        'कॅफे गडलक (डेक्कन, १९३५ ची स्थापना) — प्रसिद्ध बन मस्का व कडक इराणी चहा',
+        'वैशाली व रूपाली (एफसी रस्ता) — म्हैसूर मसाला डोसा, एसपीडीपी आणि फिल्टर कॉफी',
+        'वादेश्वर (जंगली महाराज रस्ता) — साजूक तुपातील पोडी इडली व साबुदाणा वडा',
+      ],
+    };
+  }
+
+  // B. SHINDE CHHATRI (Wanowrie, Pune)
+  if (slug === 'shinde-chhatri') {
+    return {
+      summaryEn: `Located in Wanowrie, Shinde Chhatri is a majestic 18th-century memorial dedicated to Mahadji Shinde, the great commander-in-chief of the Maratha Army. It is celebrated for its Rajasthani yellow sandstone architecture, multi-hued Italian stained-glass windows, and an active Shiva temple.`,
+      summaryMr: `वानवडी येथील शिंदे छत्री हे मराठा साम्राज्याचे पराक्रमी सेनापती महादजी शिंदे यांचे १८व्या शतकातील भव्य स्मृतिस्थळ आहे. राजस्थानी पिवळ्या वाळूच्या दगडातील अप्रतिम कोरीवकाम, बहुगुणी इटालियन रंगीत काचा आणि जागृत शिवमंदिर हे याचे मुख्य आकर्षण आहे.`,
+      difficultyOrTypeEn: 'Anglo-Rajasthani Heritage Memorial & Sacred Shiva Temple',
+      difficultyOrTypeMr: 'अँग्लो-राजस्थानी ऐतिहासिक स्मारक व शिवमंदिर',
+      sections: [
+        {
+          titleEn: 'How to Reach & Commute',
+          titleMr: 'कसे पोहोचावे आणि प्रवास पर्याय',
+          icon: '🧭',
+          items: [
+            {
+              labelEn: 'By Pune Metro & Auto',
+              labelMr: 'पुणे मेट्रो व रिक्षाने',
+              descEn: 'Take Purple Line to Swargate Metro Station (approx 4.8 km), then take an auto-rickshaw or cab towards Wanowrie Bazaar / Shinde Chhatri (10-15 minutes).',
+              descMr: 'जांभळी मार्गिका: स्वारगेट स्थानकावर उतरा (सुमारे ४.८ किमी), तिथून वानवडी बाजार / शिंदे छत्रीसाठी रिक्षा किंवा टॅक्सीने १०-१५ मिनिटांत पोहोचता येते.',
+              tag: 'Convenient Route',
+            },
+            {
+              labelEn: 'By PMPML Bus',
+              labelMr: 'पीएमपीएमएल बसने',
+              descEn: 'PMPML bus routes (177, 187, 204) from Pune Station and Swargate halt directly at Wanowrie Bazaar / Shinde Chhatri stop (200m walk).',
+              descMr: 'पुणे स्टेशन व स्वारगेटवरून पीएमपीएमएल बस क्र. १७७, १८७, २०४ थेट वानवडी बाजार किंवा शिंदे छत्री थांब्यावर सोडतात (२०० मी. चालणे).',
+            },
+            {
+              labelEn: 'Parking Facilities',
+              labelMr: 'पार्किंग सोय',
+              descEn: 'Dedicated vehicle parking bays are demarcated along Wanowrie road outside the main arched entrance gate for two-wheelers and cars.',
+              descMr: 'मुख्य कमानीच्या प्रवेशद्वाराबाहेर वानवडी रस्त्यावर दुचाकी व चारचाकी वाहनांसाठी वाहनतळ उपलब्ध आहे.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Visiting Hours, Aarti & Entry',
+          titleMr: 'वेळ, आरती आणि प्रवेश शुल्क',
+          icon: '🎟️',
+          items: [
+            {
+              labelEn: 'Visiting Hours',
+              labelMr: 'भेट देण्याची वेळ',
+              descEn: 'Open daily from 06:00 AM to 08:30 PM. Morning Shiva temple aarti occurs at 07:00 AM and evening aarti at 07:00 PM.',
+              descMr: 'दररोज सकाळी ६:०० ते रात्री ८:३० पर्यंत खुले. सकाळी ७:०० वाजता आणि संध्याकाळी ७:०० वाजता शिवमंदिरात नित्य आरती होते.',
+            },
+            {
+              labelEn: 'Entry Ticket Pricing',
+              labelMr: 'प्रवेश शुल्क',
+              descEn: 'Indian citizens: ₹20 per person. Foreign visitors: ₹100. Managed by the Scindia Devasthan Trust for monument conservation.',
+              descMr: 'भारतीय नागरिक: ₹२० प्रति व्यक्ती. परदेशी नागरिक: ₹१००. सिंधिया देवस्थान ट्रस्टद्वारे स्मारकाच्या संवर्धनासाठी नाममात्र शुल्क आकारले जाते.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Visitor Guidelines & Sanctum Decorum',
+          titleMr: 'नियम आणि दर्शन आचारसंहिता',
+          icon: '📋',
+          items: [
+            {
+              labelEn: 'Footwear & Sanctum Protocol',
+              labelMr: 'पादत्राणे व मंदिर नियम',
+              descEn: 'Footwear must be deposited outside before ascending the stone plinth into the memorial hall and Shiva temple sanctum.',
+              descMr: 'स्मारक सभागृह आणि शिवमंदिर गाभाऱ्यात प्रवेश करण्यापूर्वी पायथ्याशी पादत्राणे काढावीत.',
+            },
+            {
+              labelEn: 'Architectural Photography',
+              labelMr: 'छायाचित्रण नियम',
+              descEn: 'Mobile phone photography of the carved stone pillars, ceilings, and stained-glass artwork is permitted. Commercial film shoots and drone flights require trust permission.',
+              descMr: 'मोबाईलने सुंदर कोरीव स्तंभ व रंगीत काचांचे फोटो काढण्यास परवानगी आहे. व्यावसायिक चित्रीकरणासाठी ट्रस्टची पूर्वपरवानगी लागते.',
+            },
+          ],
+        },
+      ],
+      proTipsEn: [
+        'Visit between 08:00 AM and 10:30 AM on sunny mornings: sunlight streaming through the vibrant European stained glass paints breathtaking jewel patterns across the stone floor.',
+        'Observe the subtle blend of Rajasthani chhatri spires with British-influenced Victorian stained glass and stucco work.',
+        'Respect the serene quietude of the inner sanctum where devotees offer silent prayers.',
+      ],
+      proTipsMr: [
+        'सकाळी ८:०० ते १०:३० या वेळेत भेट द्या — पिवळ्या उन्हात खिडक्यांच्या रंगीत काचांमधून फरशीवर पडणारे प्रकाशचित्र विलोभनीय दिसते.',
+        'राजस्थानी छत्री शिखर आणि ब्रिटीश काळातील रंगीत काचांच्या कलाकुसरीचा सुंदर संगम बारकाईने न्याहाळावा.',
+        'शिवमंदिर परिसरातील पावित्र्य व शांतता राखावी.',
+      ],
+      nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
+        'Pune Cantonment / Camp bakeries and cafes (2 km) — legendary Shrewsbury biscuits and chicken patties at Kayani & Marz-O-Rin',
+        'Wanowrie & Salunke Vihar road restaurants — authentic North Indian tandoor, South Indian tiffin, and street snacks',
+        'Local tea stalls outside Wanowrie gate serving ginger cutting chai',
+      ],
+      nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
+        'पुणे कॅम्प भागातील प्रसिद्ध बेकऱ्या (२ किमी) — कयानी बेकरीची बाकरवडी व श्यूसबरी बिस्किटे',
+        'वानवडी व साळुंखे विहार रस्ता — उत्कृष्ट शाकाहारी-मांसाहारी उपहारगृहे व कॅफेज',
+        'परिसरातील फक्कड आल्याचा कटिंग चहा',
+      ],
+    };
+  }
+
+  // C. TAMHINI GHAT (Western Ghats, Mulshi)
+  if (slug === 'tamhini-ghat') {
+    return {
+      summaryEn: `Carving through the crest of the Western Ghats between Mulshi and Kolad along NH 753F, Tamhini Ghat is Maharashtra's premier monsoon mountain pass. Overseen by the State Forest Department and PWD, it features cascading roadside waterfalls, misty canyons, and rich Sahyadri biodiversity.`,
+      summaryMr: `मुळशी ते कोलाड दरम्यान सह्याद्रीच्या डोंगररांगांमधून जाणारा ताम्हिणी घाट (राष्ट्रीय महामार्ग ७५३एफ) हा महाराष्ट्रातील विलोभनीय पावसाळी घाटमार्ग आहे. वनविभाग व सार्वजनिक बांधकाम विभागाच्या अखत्यारीतील हा परिसर फेसाळणारे धबधबे, दाट धुके आणि जैवविविधतेसाठी ओळखला जातो.`,
+      difficultyOrTypeEn: 'Scenic Mountain Pass & Monsoon Waterfall Trail',
+      difficultyOrTypeMr: 'निसर्गरम्य डोंगरी घाट व पावसाळी धबधबे',
+      sections: [
+        {
+          titleEn: 'How to Reach & Commute',
+          titleMr: 'कसे पोहोचावे आणि प्रवास पर्याय',
+          icon: '🧭',
+          items: [
+            {
+              labelEn: 'By Private Car / Motorbike',
+              labelMr: 'खाजगी कार किंवा दुचाकीने',
+              descEn: 'From Pune city, drive via Chandani Chowk ➔ Paud ➔ Mulshi Dam ➔ Tamhini Ghat (approx 65-70 km, 2 to 2.5 hours). Highway NH 753F is asphalt-paved with winding curves.',
+              descMr: 'पुण्यातून चांदणी चौक ➔ पौड ➔ मुळशी धरण मार्गे ताम्हिणी घाटात जाता येते (६५-७० किमी, २ ते २.५ तास). राष्ट्रीय महामार्ग ७५३एफ हा चांगल्या दर्जाचा डांबरी रस्ता आहे.',
+              tag: 'Recommended Way',
+            },
+            {
+              labelEn: 'By MSRTC State Transport Bus',
+              labelMr: 'एसटी बसने',
+              descEn: 'State transport (ST) buses from Swargate and Pune Station heading towards Mangaon, Mahad, or Kolad travel through Tamhini Ghat with scenic roadside stops.',
+              descMr: 'स्वारगेट व पुणे स्टेशनवरून माणगाव, महाड किंवा कोलाडकडे जाणाऱ्या एसटी बसेस ताम्हिणी घाटातून जातात.',
+            },
+            {
+              labelEn: 'Roadside Parking Bays',
+              labelMr: 'पार्किंग सूचना',
+              descEn: 'Pull over only into designated gravel viewpoints and roadside bays. Never park on blind hair-pin curves or block emergency ambulance movement on the single-lane ghat sections.',
+              descMr: 'धबधब्यांजवळ दिलेल्या रुंद जागेतच गाडी पार्क करा. नागमोडी वळणांवर किंवा रस्त्यात गाडी थांबवून वाहतुकीस अडथळा करू नका.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Travel Hours & Seasonal Entry',
+          titleMr: 'प्रवासाची वेळ आणि प्रवेश',
+          icon: '🎟️',
+          items: [
+            {
+              labelEn: 'Daylight Transit Recommended',
+              labelMr: 'दिवसाच्या प्रवासाची वेळ',
+              descEn: 'Drive between 06:00 AM and 06:00 PM. Night driving is strongly discouraged during heavy rains due to nil visibility, thick fog, falling rocks, and zero street illumination.',
+              descMr: 'सकाळी ६:०० ते संध्याकाळी ६:०० या वेळेतच प्रवास करावा. रात्रीच्या वेळी दाट धुके, दरडी कोसळण्याचा धोका आणि अंधारामुळे प्रवास टाळावा.',
+            },
+            {
+              labelEn: 'Entry & Toll Charges',
+              labelMr: 'प्रवेश व टोल शुल्क',
+              descEn: 'Free highway passage. Nominal Forest Department eco-cess (₹20-₹50) may apply at designated sanctuary nature trails and waterfall viewpoints.',
+              descMr: 'महामार्गावर कोणताही टोल नाही, पूर्णपणे विनामूल्य रस्ता. वनविभागाच्या संरक्षित निसर्ग मार्गावर नाममात्र पर्यावरण शुल्क लागू शकते.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Monsoon Safety Guidelines & Forest Law',
+          titleMr: 'पावसाळी सुरक्षितता नियम व वन कायदे',
+          icon: '⚠️',
+          items: [
+            {
+              labelEn: 'Waterfall Current & Deep Plunge Pools',
+              labelMr: 'धबधब्यातील पाण्याचा प्रवाह व धोका',
+              descEn: 'Do not attempt to swim in deep rock pools under heavy waterfalls. Flash torrents and hidden slippery basalt potholes pose severe drowning hazards.',
+              descMr: 'धबधब्यांच्या खोल डोहात उतरू नका. पाण्याच्या जोरदार प्रवाहामुळे आणि निसरड्या कातळांमुळे अपघाताचा गंभीर धोका असतो.',
+              tag: 'Critical Safety',
+            },
+            {
+              labelEn: 'Strict Alcohol Ban & Speed Limits',
+              labelMr: 'मद्यपान बंदी व वेग मर्यादा',
+              descEn: 'Consuming alcohol in public, loud music on car stereos, and plastic littering are strictly banned with round-the-clock police checkpoints. Maintain speeds below 30 km/h in fog.',
+              descMr: 'घाटात उघड्यावर मद्यपान करणे, हुल्लडबाजी आणि प्लास्टिक कचरा टाकण्यास सक्त बंदी असून पोलिसांची तपासणी सुरू असते. धुक्यात वेग ३० किमी/तास पेक्षा कमी ठेवावा.',
+              tag: 'Strict Law',
+            },
+          ],
+        },
+      ],
+      proTipsEn: [
+        'Fill your vehicle fuel tank fully at Paud or Pirangut, as fuel stations and mobile phone signals are nonexistent inside the deep ghat pass.',
+        'Carry sturdy waterproof rainwear, ziplock bags for electronic gadgets, and a change of warm dry clothes.',
+        'Savor piping hot sweet corn (bhutta) and ginger tea from authorized rural self-help group stalls overlooking the valley.',
+      ],
+      proTipsMr: [
+        'पौड किंवा पिरंगूट येथेच वाहनामध्ये पूर्ण इंधन भरा, कारण घाटात पेट्रोल पंप आणि मोबाईल नेटवर्क नसते.',
+        'रेनकोट, मोबाईल सुरक्षित ठेवण्यासाठी वॉटरप्रूफ पाऊच आणि कोरड्या कपड्यांचा जादा संच सोबत ठेवा.',
+        'घाटातील स्थानिक महिला बचत गटांच्या स्टॉलवर गरमागरम भाजलेले कणीस आणि वाफाळलेल्या आल्याच्या चहाचा आनंद घ्या.',
+      ],
+      nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
+        'Hot roasted corn cobs (bhutta) seasoned with lemon, rock salt, and red chili along waterfall viewpoints',
+        'Mulshi dam dhabas — authentic Maharashtrian Pitla Bhakri with fiery Thecha and fresh onions',
+        'Local freshwater fish fry and Indrayani rice thali at Paud road eateries',
+      ],
+      nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
+        'धबधब्यांच्या कडेला मिळणारे लिंबू-मीठ लावलेले गरमागरम भाजलेले कणीस',
+        'मुळशी परिसरातील धाब्यांवर मिळणारे अस्सल पिठलं-भाकरी, झणझणीत ठेचा व कांदा',
+        'पौड रस्त्यावरील इंद्रायणी भात आणि ताज्या पाण्याचे मासे/घरगुती जेवण',
+      ],
+    };
+  }
+
   // 1. FORTS & SAHYADRI TREKS
   if (cat === 'forts' || slug.includes('fort') || slug.includes('gad')) {
     return {
@@ -1665,11 +1959,113 @@ export function getPlaceVisitorGuidelines(place: {
 
   // 3. HERITAGE WADAS, PALACES & MONUMENTS (Shaniwar Wada, Lal Mahal, Aga Khan, etc.)
   if (cat === 'heritage' || cat === 'museums' || slug.includes('wada') || slug.includes('palace') || slug.includes('mahal')) {
+    if (slug === 'shaniwar-wada') {
+      return {
+        summaryEn: `Stepping into ${place.name} takes you deep into the Maratha Empire and Peshwa history. Marvel at 18th-century stone fortification, teakwood pillars, the towering Dilli Darwaza, and fountain foundations.`,
+        summaryMr: `${place.name_mr || place.name} ही वास्तू मराठा साम्राज्य आणि पेशवेकालीन इतिहासाची साक्ष देते. येथील लाकडी कोरीव काम, दिल्ली दरवाजा, दगडी बुरुज आणि प्रांगण पर्यटकांना मंत्रमुग्ध करतात.`,
+        difficultyOrTypeEn: 'Historic Peshwa Fortification & Heritage Exploration',
+        difficultyOrTypeMr: 'ऐतिहासिक पेशवेकालीन वास्तुकला व वारसा दर्शन',
+        sections: [
+          {
+            titleEn: 'How to Reach & Commute',
+            titleMr: 'कसे पोहोचावे आणि प्रवास पर्याय',
+            icon: '🧭',
+            items: [
+              {
+                labelEn: 'By Pune Metro',
+                labelMr: 'पुणे मेट्रोने',
+                descEn: 'Purple Line: alight at Budhwar Peth / Phadke Haud Station (300m walk). Aqua Line: alight at Civil Court or PMC Station (~600m walk).',
+                descMr: 'जांभळी मार्गिका: बुधवार पेठ स्थानकावरून फक्त ३०० मीटर चालत जावे. अक्वा मार्गिका: मनपा किंवा सिव्हिल कोर्ट स्थानकावरून चालत ५-८ मिनिटे.',
+                tag: 'Fastest Route',
+              },
+              {
+                labelEn: 'By PMPML Bus',
+                labelMr: 'पीएमपीएमएल बसने',
+                descEn: 'Direct buses from Swargate (Bus 2, 24), Pune Station (Bus 3), Deccan (Bus 9, 11), and Kothrud (Bus 36) halt right at Shaniwar Wada / Appa Balwant Chowk.',
+                descMr: 'स्वारगेट (बस २, २४), पुणे स्टेशन (बस ३), डेक्कन (बस ९, ११) आणि कोथरूड (बस ३६) वरून थेट बसेस शनिवार वाड्यासमोर थांबतात.',
+              },
+              {
+                labelEn: 'Parking Facilities',
+                labelMr: 'पार्किंग सुविधा',
+                descEn: 'PMC multi-level paid parking is located right opposite the main gate on Shaniwar Peth road for both 2-wheelers and 4-wheelers.',
+                descMr: 'मुख्य दरवाजासमोर मनपाचे अधिकृत पे-अँड-पार्क वाहनतळ उपलब्ध आहे.',
+              },
+            ],
+          },
+          {
+            titleEn: 'Visiting Hours, Tickets & Sound Show',
+            titleMr: 'वेळ, तिकीट दर आणि ध्वनी-प्रकाश शो',
+            icon: '🎟️',
+            items: [
+              {
+                labelEn: 'Visiting Hours',
+                labelMr: 'भेट देण्याची वेळ',
+                descEn: 'Open daily from 09:30 AM to 05:30 PM. Gardens remain open till 06:00 PM.',
+                descMr: 'दररोज सकाळी ९:३० ते संध्याकाळी ५:३० पर्यंत सुरू असते. बगीचा संध्याकाळी ६:०० पर्यंत खुला असतो.',
+              },
+              {
+                labelEn: 'Entry Ticket Pricing',
+                labelMr: 'प्रवेश शुल्क',
+                descEn: isFree ? 'Entry is free.' : `Indian citizens: ₹${basePrice} per person. Foreign visitors: ₹300. Children below 15 years enter free (with valid school ID). Digital ASI QR ticketing available at gate.`,
+                descMr: isFree ? 'प्रवेश विनामूल्य आहे.' : `भारतीय नागरिक: ₹${basePrice} प्रति व्यक्ती. परदेशी पर्यटक: ₹३००. १५ वर्षांखालील मुलांना मोफत प्रवेश. गेटवर क्यूआर कोडने तिकीट घेता येते.`,
+              },
+              {
+                labelEn: 'Light & Sound Show (Evening)',
+                labelMr: 'संध्याकाळचा ध्वनी आणि प्रकाश शो',
+                descEn: 'Narrates the saga of the Maratha Peshwas. Shows run in Marathi at 07:15 PM and English at 08:15 PM (subject to seasonal weather and ticket counter).',
+                descMr: 'पेशवेकालीन इतिहासावर आधारित भव्य शो: मराठी शो संध्याकाळी ७:१५ वाजता आणि इंग्रजी शो रात्री ८:१५ वाजता सुरू होतो.',
+              },
+            ],
+          },
+          {
+            titleEn: 'Visitor Guidelines & Facilities',
+            titleMr: 'पर्यटक नियम आणि सुविधा',
+            icon: '📋',
+            items: [
+              {
+                labelEn: 'Photography & Videography',
+                labelMr: 'छायाचित्रण नियम',
+                descEn: 'Mobile phone photography is permitted free of charge. Commercial tripod and drone videography require prior written ASI approval.',
+                descMr: 'मोबाईलने फोटो काढण्यास विनामूल्य परवानगी आहे. ट्रायपॉड, व्यावसायिक चित्रीकरण व ड्रोनसाठी पुरातत्व विभागाची पूर्वपरवानगी आवश्यक आहे.',
+              },
+              {
+                labelEn: 'Accessibility & Restrooms',
+                labelMr: 'पिण्याचे पाणी व प्रसाधनगृह',
+                descEn: 'RO drinking water fountains and clean restrooms are situated inside the complex. The ground courtyard is wheelchair-accessible; bastions require stair climbing.',
+                descMr: 'परिसरात पिण्याचे पाणी व प्रसाधनगृहाची सोय आहे. मुख्य प्रांगण व्हीलचेअर-सुलभ आहे, मात्र बुरुजांवर जाण्यासाठी पायऱ्या आहेत.',
+              },
+            ],
+          },
+        ],
+        proTipsEn: [
+          'Visit between 09:30 AM and 11:30 AM or after 04:00 PM to avoid midday afternoon heat.',
+          'Read the detailed historical plaques situated next to the Dilli Darwaza and Hazari Karanje fountain.',
+          'Combine this walk with Lal Mahal (200m away) and Kasba Ganpati for a full 3-hour Old Pune heritage trail.',
+        ],
+        proTipsMr: [
+          'सकाळी ९:३० ते ११:३० किंवा दुपारी ४:०० नंतर भेट दिल्यास उन्हाचा त्रास होत नाही आणि मनसोक्त फिरता येते.',
+          'दिल्ली दरवाजा, बुरुज आणि हजारी कारंज्याशेजारील माहिती फलक जरूर वाचावेत.',
+          'शनिवार वाड्यासोबतच २०० मीटर अंतरावरील लाल महाल आणि कसबा गणपतीला एकाच फेरीत भेट द्या.',
+        ],
+        nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
+          'Iconic Puneri Misal at Katakirrr, Bedekar or Vaidya Upahar Gruha',
+          'Chitale Bandhu Bakarwadi & sweet Mango Barfi on Bajirao Road',
+          'Refreshing Mastani (mango ice cream milkshake) at Sujata Mastani Sadashiv Peth',
+        ],
+        nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
+          'काटाकिर्रर किंवा बेडेकर चहाची झणझणीत अस्सल पुणेरी मिसळ',
+          'बाजीराव रस्त्यावरील चितळे बंधूंची प्रसिद्ध बाकरवडी व आंबा बर्फी',
+          'सदाशिव पेठेतील सुजाता मस्तानीचे प्रसिद्ध मँगो मस्तानी आईस्क्रीम',
+        ],
+      };
+    }
+
+    // Generic Heritage & Museums
     return {
-      summaryEn: `Stepping into ${place.name} takes you deep into the Maratha Empire and India's freedom movement. Marvel at 18th-century stone fortification, teakwood pillars, and sprawling manicured gardens.`,
-      summaryMr: `${place.name_mr || place.name} ही वास्तू मराठा साम्राज्य आणि स्वातंत्र्य चळवळीच्या गौरवशाली इतिहासाची साक्ष देते. येथील लाकडी कोरीव काम, दगडी बुरुज आणि प्रांगण पर्यटकांना मंत्रमुग्ध करतात.`,
-      difficultyOrTypeEn: 'Heritage Architecture & Historical Exploration',
-      difficultyOrTypeMr: 'ऐतिहासिक वास्तुकला व वारसा दर्शन',
+      summaryEn: `Visiting ${place.name} offers a captivating journey through Pune's rich architectural heritage and cultural milestones. Experience authentic historic construction, curated exhibits, and period aesthetics.`,
+      summaryMr: `${place.name_mr || place.name} ही वास्तू पुण्याच्या समृद्ध ऐतिहासिक व सांस्कृतिक वारशाची साक्ष देते. येथील वास्तुकला, दुर्मीळ संग्रह आणि ऐतिहासिक वातावरण पर्यटकांना आकर्षित करते.`,
+      difficultyOrTypeEn: 'Heritage Architecture & Cultural Exploration',
+      difficultyOrTypeMr: 'ऐतिहासिक वास्तुकला व सांस्कृतिक वारसा दर्शन',
       sections: [
         {
           titleEn: 'How to Reach & Commute',
@@ -1679,95 +2075,193 @@ export function getPlaceVisitorGuidelines(place: {
             {
               labelEn: 'By Pune Metro',
               labelMr: 'पुणे मेट्रोने',
-              descEn: 'Purple Line: alight at Budhwar Peth / Phadke Haud Station (300m walk). Aqua Line: alight at Civil Court or PMC Station (~600m walk).',
-              descMr: 'जांभळी मार्गिका: बुधवार पेठ स्थानकावरून फक्त ३०० मीटर चालत जावे. अक्वा मार्गिका: मनपा किंवा सिव्हिल कोर्ट स्थानकावरून चालत ५-८ मिनिटे.',
-              tag: 'Fastest Route',
+              descEn: 'Accessible via Pune Metro stations connecting to the destination locality, followed by a short auto-rickshaw or pedestrian walk.',
+              descMr: 'पुणे मेट्रोच्या जवळच्या स्थानकावरून रिक्षाने किंवा पायी सहज पोहोचता येते.',
+              tag: 'Convenient Route',
             },
             {
               labelEn: 'By PMPML Bus',
               labelMr: 'पीएमपीएमएल बसने',
-              descEn: 'Direct buses from Swargate (Bus 2, 24), Pune Station (Bus 3), Deccan (Bus 9, 11), and Kothrud (Bus 36) halt right at Shaniwar Wada / Appa Balwant Chowk.',
-              descMr: 'स्वारगेट (बस २, २४), पुणे स्टेशन (बस ३), डेक्कन (बस ९, ११) आणि कोथरूड (बस ३६) वरून थेट बसेस शनिवार वाड्यासमोर थांबतात.',
+              descEn: 'Regular PMPML city bus connectivity is available from major hubs (Swargate, Pune Station, Deccan) serving this area.',
+              descMr: 'स्वारगेट, पुणे स्टेशन व डेक्कन या प्रमुख थांब्यांवरून नियमित पीएमपीएमएल बस सेवा उपलब्ध आहे.',
             },
             {
               labelEn: 'Parking Facilities',
               labelMr: 'पार्किंग सुविधा',
-              descEn: 'PMC multi-level paid parking is located right opposite the main gate on Shaniwar Peth road for both 2-wheelers and 4-wheelers.',
-              descMr: 'मुख्य दरवाजासमोर मनपाचे अधिकृत पे-अँड-पार्क वाहनतळ उपलब्ध आहे.',
+              descEn: 'Designated parking bays or on-street pay-and-park facilities are available in the surrounding vicinity for vehicles.',
+              descMr: 'परिसरात दुचाकी व चारचाकी वाहनांसाठी वाहनतळ किंवा रस्त्यावरील अधिकृत पार्किंग उपलब्ध आहे.',
             },
           ],
         },
         {
-          titleEn: 'Visiting Hours, Tickets & Sound Show',
-          titleMr: 'वेळ, तिकीट दर आणि ध्वनी-प्रकाश शो',
+          titleEn: 'Visiting Hours, Tickets & Entry',
+          titleMr: 'वेळ, प्रवेश आणि तिकीट नियम',
           icon: '🎟️',
           items: [
             {
               labelEn: 'Visiting Hours',
               labelMr: 'भेट देण्याची वेळ',
-              descEn: 'Open daily from 09:30 AM to 05:30 PM. Gardens remain open till 06:00 PM.',
-              descMr: 'दररोज सकाळी ९:३० ते संध्याकाळी ५:३० पर्यंत सुरू असते. बगीचा संध्याकाळी ६:०० पर्यंत खुला असतो.',
+              descEn: 'Typically open during daytime hours (09:30 AM to 05:30 PM). Verify weekly closure days before planning your visit.',
+              descMr: 'सामान्यतः सकाळी ९:३० ते संध्याकाळी ५:३० या वेळेत खुले असते. भेट देण्यापूर्वी आठवड्याची सुट्टी तपासावी.',
             },
             {
-              labelEn: 'Entry Ticket Pricing',
+              labelEn: 'Entry Pricing',
               labelMr: 'प्रवेश शुल्क',
-              descEn: isFree ? 'Entry is free.' : `Indian citizens: ₹${basePrice} per person. Foreign visitors: ₹300. Children below 15 years enter free (with valid school ID). Digital ASI QR ticketing available at gate.`,
-              descMr: isFree ? 'प्रवेश विनामूल्य आहे.' : `भारतीय नागरिक: ₹${basePrice} प्रति व्यक्ती. परदेशी पर्यटक: ₹३००. १५ वर्षांखालील मुलांना मोफत प्रवेश. गेटवर क्यूआर कोडने तिकीट घेता येते.`,
-            },
-            {
-              labelEn: 'Light & Sound Show (Evening)',
-              labelMr: 'संध्याकाळचा ध्वनी आणि प्रकाश शो',
-              descEn: 'Narrates the saga of the Maratha Peshwas. Shows run in Marathi at 07:15 PM and English at 08:15 PM (subject to seasonal weather and ticket counter).',
-              descMr: 'पेशवेकालीन इतिहासावर आधारित भव्य शो: मराठी शो संध्याकाळी ७:१५ वाजता आणि इंग्रजी शो रात्री ८:१५ वाजता सुरू होतो.',
+              descEn: isFree ? 'Admission is completely free for all visitors.' : `Entry ticket: approx ₹${basePrice} per person. Ticket counter available at entrance.`,
+              descMr: isFree ? 'सर्व पर्यटकांसाठी प्रवेश विनामूल्य आहे.' : `प्रवेश शुल्क: अंदाजे ₹${basePrice} प्रति व्यक्ती. प्रवेशद्वारावर तिकीट उपलब्ध असते.`,
             },
           ],
         },
         {
-          titleEn: 'Visitor Guidelines & Facilities',
-          titleMr: 'पर्यटक नियम आणि सुविधा',
+          titleEn: 'Visitor Guidelines & Heritage Etiquette',
+          titleMr: 'पर्यटक नियम आणि वारसा आचारसंहिता',
           icon: '📋',
           items: [
             {
-              labelEn: 'Photography & Videography',
-              labelMr: 'छायाचित्रण नियम',
-              descEn: 'Mobile phone photography is permitted free of charge. Commercial tripod and drone videography require prior written ASI approval.',
-              descMr: 'मोबाईलने फोटो काढण्यास विनामूल्य परवानगी आहे. ट्रायपॉड, व्यावसायिक चित्रीकरण व ड्रोनसाठी पुरातत्व विभागाची पूर्वपरवानगी आवश्यक आहे.',
+              labelEn: 'Monument Care & Preservation',
+              labelMr: 'वारसा संवर्धन व नियम',
+              descEn: 'Help preserve heritage fabric: do not touch delicate displays, avoid leaning on vintage walls, and do not litter.',
+              descMr: 'ऐतिहासिक वास्तूचे संवर्धन करा: कोरीव कामाला हात लावू नका आणि परिसरात स्वच्छता राखा.',
             },
             {
-              labelEn: 'Accessibility & Restrooms',
-              labelMr: 'पिण्याचे पाणी व प्रसाधनगृह',
-              descEn: 'RO drinking water fountains and clean restrooms are situated inside the palace complex. The ground courtyard is wheelchair-accessible; bastions require stair climbing.',
-              descMr: 'परिसरात पिण्याचे पाणी व प्रसाधनगृहाची सोय आहे. मुख्य प्रांगण व्हीलचेअर-सुलभ आहे, मात्र बुरुजांवर जाण्यासाठी पायऱ्या आहेत.',
+              labelEn: 'Photography Decorum',
+              labelMr: 'छायाचित्रण नियम',
+              descEn: 'Standard personal mobile photography is generally permitted. Flash photography or commercial tripods may require prior permission.',
+              descMr: 'वैयक्तिक वापरासाठी मोबाईलने फोटो काढता येतात. व्यावसायिक चित्रीकरणासाठी पूर्वपरवानगी लागते.',
             },
           ],
         },
       ],
       proTipsEn: [
-        'Visit between 09:30 AM and 11:30 AM or after 04:00 PM to avoid midday afternoon heat.',
-        'Read the detailed historical plaques situated next to the Dilli Darwaza and Hazari Karanje fountain.',
-        'Combine this walk with Lal Mahal (200m away) and Kasba Ganpati for a full 3-hour Old Pune heritage trail.',
+        'Visit during morning hours for cooler temperatures and gentle natural photography light.',
+        'Wear comfortable walking shoes suitable for exploring historic corridors and stone courtyards.',
+        'Respect museum curatorial guidelines and maintain peaceful decorum inside exhibition halls.',
       ],
       proTipsMr: [
-        'सकाळी ९:३० ते ११:३० किंवा दुपारी ४:०० नंतर भेट दिल्यास उन्हाचा त्रास होत नाही आणि मनसोक्त फिरता येते.',
-        'दिल्ली दरवाजा, बुरुज आणि हजारी कारंज्याशेजारील माहिती फलक जरूर वाचावेत.',
-        'शनिवार वाड्यासोबतच २०० मीटर अंतरावरील लाल महाल आणि कसबा गणपतीला एकाच फेरीत भेट द्या.',
+        'सकाळच्या वेळेत भेट दिल्यास ऊन लागत नाही आणि शांतपणे परिसर पाहता येतो.',
+        'परिसरात फिरण्यासाठी आरामदायक पादत्राणे वापरावीत.',
+        'प्रदर्शनी दालनांमध्ये शांतता राखावी.',
       ],
       nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
-        'Iconic Puneri Misal at Katakirrr, Bedekar or Vaidya Upahar Gruha',
-        'Chitale Bandhu Bakarwadi & sweet Mango Barfi on Bajirao Road',
-        'Refreshing Mastani (mango ice cream milkshake) at Sujata Mastani Sadashiv Peth',
+        'Iconic Puneri Misal at renowned local eateries',
+        'Chitale Bandhu Bakarwadi and traditional sweets',
+        'Refreshing Puneri Mastani ice cream shake',
       ],
       nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
-        'काटाकिर्रर किंवा बेडेकर चहाची झणझणीत अस्सल पुणेरी मिसळ',
-        'बाजीराव रस्त्यावरील चितळे बंधूंची प्रसिद्ध बाकरवडी व आंबा बर्फी',
-        'सदाशिव पेठेतील सुजाता मस्तानीचे प्रसिद्ध मँगो मस्तानी आईस्क्रीम',
+        'पुण्यातील प्रसिद्ध ठिकाणांची अस्सल झणझणीत मिसळ',
+        'चितळे बंधूंची कुरकुरीत बाकरवडी व आंबा बर्फी',
+        'थंडगार व प्रसिद्ध पुणेरी मस्तानी',
       ],
     };
   }
 
-  // 4. PARKS, LAKES & NATURE VIEWPOINTS
+  // 4. PARKS, LAKES, GHATS & NATURE VIEWPOINTS
+  const isWildNature =
+    cat === 'nature' ||
+    slug.includes('ghat') ||
+    slug.includes('waterfall') ||
+    slug.includes('lake') ||
+    slug.includes('dam') ||
+    slug.includes('valley') ||
+    slug.includes('point');
+
+  if (isWildNature) {
+    return {
+      summaryEn: `Cradled in the Sahyadri mountains and Western Ghats, visiting ${place.name} offers breathtaking scenic vistas, fresh mountain air, and rich natural biodiversity.`,
+      summaryMr: `${place.name_mr || place.name} हे सह्याद्रीच्या कुशीत वसलेले निसर्गरम्य ठिकाण असून डोंगररांगा, आल्हाददायक हवा आणि मनमोहक निसर्गसौंदर्याचा अनुभव देते.`,
+      difficultyOrTypeEn: 'Scenic Sahyadri Nature Viewpoint & Eco-Spot',
+      difficultyOrTypeMr: 'निसर्गरम्य डोंगरी परिसर व निसर्ग दर्शन',
+      sections: [
+        {
+          titleEn: 'How to Reach & Commute',
+          titleMr: 'कसे पोहोचावे आणि प्रवास पर्याय',
+          icon: '🧭',
+          items: [
+            {
+              labelEn: 'By Road (Car / Motorbike / Bus)',
+              labelMr: 'रस्त्याने (कार / दुचाकी / बस)',
+              descEn: 'Accessible via scenic state highways and connecting district roads. Private cars, bikes, or MSRTC ST buses connect to the surrounding base stops.',
+              descMr: 'निसर्गरम्य राज्य महामार्गाने कार, बाईक किंवा एसटी बसने पोहोचता येते.',
+            },
+            {
+              labelEn: 'Roadside Parking & Viewpoints',
+              labelMr: 'पार्किंग व सुरक्षितता',
+              descEn: 'Park only in designated roadside pull-offs or village parking grounds. Never block narrow turns or emergency lanes.',
+              descMr: 'रस्त्याच्या कडेला दिलेल्या रुंद जागेतच सुरक्षितपणे गाडी पार्क करावी. वळणांवर अडथळा करू नये.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Visiting Hours, Entry & Best Season',
+          titleMr: 'वेळ, प्रवेश आणि सर्वोत्तम ऋतू',
+          icon: '🎟️',
+          items: [
+            {
+              labelEn: 'Daylight Visiting Hours',
+              labelMr: 'भेट देण्याची वेळ',
+              descEn: 'Best visited during daylight hours (06:30 AM to 06:00 PM). Avoid late night visits during heavy fog or unlit ghat stretches.',
+              descMr: 'दिवसाच्या उजेडात (सकाळी ६:३० ते संध्याकाळी ६:००) भेट देणे सुरक्षित असते. दाट धुक्यात रात्रीचा प्रवास टाळावा.',
+            },
+            {
+              labelEn: 'Entry Pricing',
+              labelMr: 'प्रवेश शुल्क',
+              descEn: isFree ? 'Open scenic access; no mandatory gate fee.' : `Nominal eco-conservation or parking fee: approx ₹${basePrice}.`,
+              descMr: isFree ? 'निसर्गरम्य परिसर सर्वांसाठी खुला व मोफत.' : `नाममात्र पर्यावरण किंवा पार्किंग शुल्क: अंदाजे ₹${basePrice}.`,
+            },
+            {
+              labelEn: 'Best Season',
+              labelMr: 'उत्तम भेट काळ',
+              descEn: 'Monsoon (July to September) for lush green hills and waterfalls, or Winter (October to February) for crisp cool weather.',
+              descMr: 'पावसाळ्यात (जुलै ते सप्टेंबर) हिरवेगार डोंगर आणि हिवाळ्यात (ऑक्टोबर ते फेब्रुवारी) आल्हाददायक गारवा अनुभवता येतो.',
+            },
+          ],
+        },
+        {
+          titleEn: 'Nature Safety & Forest Guidelines',
+          titleMr: 'निसर्ग सुरक्षितता व पर्यावरण नियम',
+          icon: '⚠️',
+          items: [
+            {
+              labelEn: 'Water & Cliff Safety',
+              labelMr: 'पाणी व कड्यांची सुरक्षितता',
+              descEn: 'Do not venture into deep waterfalls, slippery rock streams, or unguarded cliffs. Slippery moss poses serious slip risks.',
+              descMr: 'धबधब्यांच्या खोल डोहात उतरू नका व निसरड्या कातळांवरून चालताना अत्यंत काळजी घ्या.',
+              tag: 'Important Safety',
+            },
+            {
+              labelEn: 'Eco-Conservation & Cleanliness',
+              labelMr: 'पर्यावरण संवर्धन व स्वच्छता',
+              descEn: 'Strictly zero plastic littering. Consuming alcohol in public forest areas is illegal and punishable under Forest & Police acts.',
+              descMr: 'प्लास्टिक कचरा टाकू नका. संरक्षित वनक्षेत्रात मद्यपानास सक्त बंदी आहे.',
+              tag: 'Strict Law',
+            },
+          ],
+        },
+      ],
+      proTipsEn: [
+        'Carry adequate drinking water, sturdy grip footwear, and waterproof protection for mobile phones during rains.',
+        'Leave before dusk as mobile phone connectivity and streetlights can be limited in rural mountain zones.',
+      ],
+      proTipsMr: [
+        'पिण्याचे पाणी, ग्रीप असणारे शूज आणि पावसाळ्यात फोनसाठी वॉटरप्रूफ पाऊच सोबत ठेवा.',
+        'संध्याकाळ होण्यापूर्वी परतीच्या प्रवासाला लागा.',
+      ],
+      nearbyCulinaryEn: culinaryEn.length > 0 ? culinaryEn : [
+        'Hot roasted corn cobs (bhutta) with lemon and spice',
+        'Local village dhabas serving piping hot Pitla Bhakri and Thecha',
+        'Fresh ginger tea and tender coconut water',
+      ],
+      nearbyCulinaryMr: culinaryMr.length > 0 ? culinaryMr : [
+        'गरमागरम भाजलेले लिंबू-मीठ लावलेले कणीस',
+        'स्थानिक ढाब्यांवरील गरमागरम पिठलं-भाकरी आणि ठेचा',
+        'वाफाळलेला आल्याचा चहा व ताजे शहाळे',
+      ],
+    };
+  }
+
+  // Urban Landscaped Parks & Gardens
   return {
-    summaryEn: `Surrounded by lush greenery and serene environments, visiting ${place.name} is an ideal escape to relax, breathe fresh Sahyadri air, and enjoy morning walks or evening sunsets.`,
+    summaryEn: `Surrounded by manicured greenery and serene landscapes, visiting ${place.name} is an ideal urban escape to relax, breathe fresh Sahyadri air, and enjoy morning walks or evening sunsets.`,
     summaryMr: `${place.name_mr || place.name} हे पुण्यातील निसर्गरम्य आणि शांत ठिकाण असून सकाळचा फेरफटका, मनःशांती आणि निसर्गाचा आनंद घेण्यासाठी अतिशय उत्तम आहे.`,
     difficultyOrTypeEn: 'Scenic Nature Walk & Leisure Garden',
     difficultyOrTypeMr: 'निसर्गरम्य पर्यटन व शांत उद्यान',

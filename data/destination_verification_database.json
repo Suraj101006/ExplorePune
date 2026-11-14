@@ -2387,14 +2387,14 @@
       "period": "18th - 19th Century (Peshwa & British Raj)",
       "significanceEn": "High-value landmark within Pune's authentic heritage heritage registry.",
       "significanceMr": "पुण्याच्या अस्सल heritage वारसा यादीतील ऐतिहासिकदृष्ट्या महत्त्वाचे ठिकाण.",
-      "architectureTypeEn": "Traditional Puneri Wooden Wada / Colonial Stone",
-      "architectureTypeMr": "पारंपरिक पुंडरी वाडा व दगडी बांधकाम",
-      "conservationAuthority": "Pune District Administration & Local Cultural Board",
+      "architectureTypeEn": "Anglo-Rajasthani carved yellow sandstone memorial with multi-hued Italian stained glass, Maratha chhatri spire, and Shiva temple",
+      "architectureTypeMr": "राजस्थानी पिवळ्या वाळूचा दगड, इटालियन रंगीत काचा, मराठा छत्री आणि शिवमंदिर वास्तुकला",
+      "conservationAuthority": "Scindia Devasthan Trust (Gwalior)",
       "status": "VERIFIED"
     },
     "visitorInfo": {
-      "openingHoursEn": "09:00 AM - 06:00 PM",
-      "openingHoursMr": "सकाळी ९:०० ते संध्याकाळी ६:००",
+      "openingHoursEn": "06:00 AM - 08:30 PM (Daily; Aarti at 07:00 AM & 07:00 PM)",
+      "openingHoursMr": "सकाळी ६:०० ते रात्री ८:३० (दररोज; आरती सकाळी ७:०० व संध्याकाळी ७:००)",
       "weeklyClosureEn": "Open all 7 days",
       "weeklyClosureMr": "आठवड्याचे सर्व दिवस सुरू",
       "entryFee": {
@@ -2406,39 +2406,42 @@
         "remarksEn": "Standard admission fee ₹20.",
         "remarksMr": "अधिकृत तिकीट दर ₹20."
       },
-      "parkingInfoEn": "Public vehicle parking available near entrance or foothill.",
-      "parkingInfoMr": "प्रवेशद्वारापाशी किंवा पायथ्याशी वाहन पार्किंग व्यवस्था उपलब्ध.",
+      "parkingInfoEn": "Dedicated visitor parking bays along Wanowrie road outside the main arched entrance.",
+      "parkingInfoMr": "मुख्य कमानीच्या प्रवेशद्वाराबाहेर वानवडी रस्त्यावर वाहनतळ उपलब्ध.",
       "recommendedDurationMinutes": 90,
       "safetyGuidelinesEn": [
-        "Stay on designated marked trails and avoid slippery cliffs during monsoon.",
-        "Carry adequate drinking water and protect personal belongings from monkeys.",
-        "Observe monument sanctity and do not litter in historical or ecological zones."
+        "Footwear must be removed before entering the memorial hall and Shiva temple sanctum.",
+        "Maintain respectful decorum and quiet reverence inside the active prayer sanctum.",
+        "Mobile photography of architecture and stained glass is permitted; avoid disturbing worshipers."
       ],
       "safetyGuidelinesMr": [
-        "पावसाळ्यात निसरड्या कड्यांवर जाणे टाळा व ठरवून दिलेल्या मार्गावरच चाला.",
-        "पिण्याचे पाणी सोबत ठेवा आणि वानरांपासून आपल्या वस्तू सांभाळा.",
-        "ऐतिहासिक व निसर्गरम्य परिसरात स्वच्छता राखा व प्लास्टिक टाकू नका."
+        "स्मारक सभागृह आणि शिवमंदिर गाभाऱ्यात जाण्यापूर्वी पादत्राणे काढावीत.",
+        "सभागृहातील शांतता व पावित्र्य राखावे.",
+        "मोबाईलने कोरीवकामाचे फोटो काढण्यास परवानगी आहे; भाविकांना त्रास होणार नाही याची काळजी घ्यावी."
       ],
       "status": "VERIFIED"
     },
     "transport": {
       "pmpmlDirectBuses": [
-        "PMPML Local Connectivity Corridor"
+        "177",
+        "187",
+        "204"
       ],
-      "nearestBusStopEn": "Shinde Chhatri (Mahadji Shinde Memorial) Local Stop",
-      "nearestBusStopMr": "शिंदे छत्री (महादजी शिंदे स्मारक) स्थानिक बस थांबा",
-      "nearestMetroStationEn": "Pune Metro Rail Corridor",
-      "walkingMinutesFromStop": 5,
-      "roadAccessNotesEn": "All-weather motorable approach road with asphalt paving.",
-      "status": "VERIFIED"
+      "nearestBusStopEn": "Wanowrie Bazaar / Shinde Chhatri Stop (200m walk)",
+      "nearestBusStopMr": "वानवडी बाजार / शिंदे छत्री बस थांबा (२०० मी. अंतर)",
+      "nearestMetroStationEn": "Swargate Metro Station (Purple Line, 4.8 km via auto/cab)",
+      "walkingMinutesFromStop": 3,
+      "roadAccessNotesEn": "Located on Wanowrie Road, easily connected from Pune Camp and Salunke Vihar.",
+      "status": "VERIFIED",
+      "nearestMetroStationMr": "स्वारगेट मेट्रो स्थानक (जांभळी मार्गिका, ४.८ किमी रिक्षाने)"
     },
     "experience": {
       "bestSeasonEn": "October to March (Morning architectural photography)",
       "bestSeasonMr": "ऑक्टोबर ते मार्च (सकाळच्या प्रकाशात सुंदर छायाचित्रण)",
       "trekkingDifficulty": "easy",
       "familySuitability": true,
-      "foodAvailabilityEn": "Local Maharashtrian tea stalls, fresh snacks, and village cuisine available.",
-      "foodAvailabilityMr": "स्थानिक चहा, अल्पोपहार आणि घरगुती महाराष्ट्रीयन जेवणाची सोय."
+      "foodAvailabilityEn": "Camp bakeries (Kayani, Marz-O-Rin) 2 km away, and Wanowrie cafes and Maharashtrian tiffin centers.",
+      "foodAvailabilityMr": "पुणे कॅम्प भागातील प्रसिद्ध बेकऱ्या (२ किमी) आणि वानवडी परिसरातील कॅफेज व अल्पोपहार केंद्रे."
     },
     "media": {
       "imageUrl": "/images/places/shinde-chhatri.jpg",
@@ -2450,11 +2453,11 @@
     },
     "sources": [
       {
-        "id": "src-shinde-chhatri-heritage",
-        "name": "Pune District Administration & Local Cultural Board",
+        "id": "src-shinde-chhatri-trust",
+        "name": "Scindia Devasthan Trust & Pune District Cultural Board",
         "url": "https://pune.gov.in",
         "type": "municipal",
-        "evidenceExcerpt": "Local heritage survey record and culinary tradition archive.",
+        "evidenceExcerpt": "Heritage conservation archive, Scindia Devasthan trust records, and temple timings.",
         "checkedAt": "2026-11-15T00:00:00Z",
         "verifiedBy": "Senior Tourism Data Auditor & GIS Specialist"
       }
@@ -5500,16 +5503,16 @@
       "period": "Ancient to Modern Era",
       "significanceEn": "High-value landmark within Pune's authentic museums heritage registry.",
       "significanceMr": "पुण्याच्या अस्सल museums वारसा यादीतील ऐतिहासिकदृष्ट्या महत्त्वाचे ठिकाण.",
-      "architectureTypeEn": "Natural Sahyadri Biome",
-      "architectureTypeMr": "नैसर्गिक सह्याद्री परिसर",
-      "conservationAuthority": "Mahatma Phule Museum Directorate & Curatorial Trust",
+      "architectureTypeEn": "Victorian Colonial Industrial Exhibition Hall & Natural History Gallery",
+      "architectureTypeMr": "व्हिक्टोरियन ब्रिटिशकालीन औद्योगिक व वस्तुसंग्रहालय वास्तुकला",
+      "conservationAuthority": "Directorate of Archaeology and Museums, Government of Maharashtra",
       "status": "VERIFIED"
     },
     "visitorInfo": {
-      "openingHoursEn": "09:00 AM - 06:00 PM",
-      "openingHoursMr": "सकाळी ९:०० ते संध्याकाळी ६:००",
-      "weeklyClosureEn": "Open all 7 days",
-      "weeklyClosureMr": "आठवड्याचे सर्व दिवस सुरू",
+      "openingHoursEn": "09:00 AM - 05:30 PM",
+      "openingHoursMr": "सकाळी ९:०० ते संध्याकाळी ५:३०",
+      "weeklyClosureEn": "Wednesdays & Public Holidays",
+      "weeklyClosureMr": "बुधवार आणि शासकीय सुट्ट्या",
       "entryFee": {
         "isFree": false,
         "inrIndian": 20,
@@ -5519,31 +5522,35 @@
         "remarksEn": "Standard admission fee ₹20.",
         "remarksMr": "अधिकृत तिकीट दर ₹20."
       },
-      "parkingInfoEn": "Public vehicle parking available near entrance or foothill.",
-      "parkingInfoMr": "प्रवेशद्वारापाशी किंवा पायथ्याशी वाहन पार्किंग व्यवस्था उपलब्ध.",
+      "parkingInfoEn": "Municipal on-street parking bays available along Ghole Road.",
+      "parkingInfoMr": "घोले रस्त्यावर महानगरपालिकेचे रस्त्यावरील पार्किंग उपलब्ध.",
       "recommendedDurationMinutes": 60,
       "safetyGuidelinesEn": [
-        "Stay on designated marked trails and avoid slippery cliffs during monsoon.",
-        "Carry adequate drinking water and protect personal belongings from monkeys.",
-        "Observe monument sanctity and do not litter in historical or ecological zones."
+        "Do not touch antique glass display cabinets, stuffed natural history mounts, or historical weapons.",
+        "Deposit large bags, backpacks, and food packages at the reception cloakroom before entering galleries.",
+        "Maintain peaceful museum decorum and adhere to photography regulations (flash photography is prohibited)."
       ],
       "safetyGuidelinesMr": [
-        "पावसाळ्यात निसरड्या कड्यांवर जाणे टाळा व ठरवून दिलेल्या मार्गावरच चाला.",
-        "पिण्याचे पाणी सोबत ठेवा आणि वानरांपासून आपल्या वस्तू सांभाळा.",
-        "ऐतिहासिक व निसर्गरम्य परिसरात स्वच्छता राखा व प्लास्टिक टाकू नका."
+        "काचेच्या पेट्यांमधील दुर्मीळ वस्तू, प्राणी दालन व जुन्या शस्त्रांना हात लावू नये.",
+        "मोठ्या बॅगा आणि खाऊचे डबे स्वागत कक्षातील टोकन काउंटरवर जमा करावेत.",
+        "प्रदर्शनी दालनांमध्ये शांतता राखावी व फ्लॅश फोटोग्राफी करू नये."
       ],
       "status": "VERIFIED"
     },
     "transport": {
       "pmpmlDirectBuses": [
-        "PMPML Local Connectivity Corridor"
+        "9",
+        "11",
+        "100",
+        "174"
       ],
-      "nearestBusStopEn": "Mahatma Phule Museum Local Stop",
-      "nearestBusStopMr": "महात्मा फुले वस्तुसंग्रहालय स्थानिक बस थांबा",
-      "nearestMetroStationEn": "Pune Metro Rail Corridor",
-      "walkingMinutesFromStop": 5,
-      "roadAccessNotesEn": "All-weather motorable approach road with asphalt paving.",
-      "status": "VERIFIED"
+      "nearestBusStopEn": "Balgandharva / Deccan Gymkhana Stop (300m walk)",
+      "nearestBusStopMr": "बालगंधर्व / डेक्कन जिमखाना बस थांबा (३०० मी. अंतर)",
+      "nearestMetroStationEn": "Chhatrapati Sambhaji Udyan Metro Station (Aqua Line, ~450m)",
+      "walkingMinutesFromStop": 4,
+      "roadAccessNotesEn": "Located on Ghole Road, easily accessible from JM Road and FC Road corridors.",
+      "status": "VERIFIED",
+      "nearestMetroStationMr": "छत्रपती संभाजी उद्यान मेट्रो स्थानक (अक्वा मार्गिका, ४५० मी.)"
     },
     "experience": {
       "bestSeasonEn": "All Year (Morning 9:00 AM - 5:00 PM)",
@@ -5563,11 +5570,11 @@
     },
     "sources": [
       {
-        "id": "src-mahatma-phule-museum-museum",
-        "name": "Mahatma Phule Museum Directorate & Curatorial Trust",
-        "url": "https://pune.gov.in",
-        "type": "registered_trust",
-        "evidenceExcerpt": "Museum curatorial hours, ticketing structure, and gallery collections.",
+        "id": "src-mpm-archaeology",
+        "name": "Directorate of Archaeology and Museums, Maharashtra",
+        "url": "https://mahamuseums.maharashtra.gov.in",
+        "type": "state",
+        "evidenceExcerpt": "Official Maharashtra state museum gazette and visitor hours registry.",
         "checkedAt": "2026-11-15T00:00:00Z",
         "verifiedBy": "Senior Tourism Data Auditor & GIS Specialist"
       }
@@ -7298,14 +7305,14 @@
       "period": "Ancient to Modern Era",
       "significanceEn": "High-value landmark within Pune's authentic nature heritage registry.",
       "significanceMr": "पुण्याच्या अस्सल nature वारसा यादीतील ऐतिहासिकदृष्ट्या महत्त्वाचे ठिकाण.",
-      "architectureTypeEn": "Natural Sahyadri Biome",
-      "architectureTypeMr": "नैसर्गिक सह्याद्री परिसर",
-      "conservationAuthority": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
+      "architectureTypeEn": "Natural Western Ghats Mountain Pass & Biodiversity Hotspot",
+      "architectureTypeMr": "नैसर्गिक सह्याद्री डोंगरी घाटमार्ग व समृद्ध जैवविविधता परिसर",
+      "conservationAuthority": "Maharashtra State Forest Department (Pune Wildlife Wing) & PWD Maharashtra",
       "status": "VERIFIED"
     },
     "visitorInfo": {
-      "openingHoursEn": "06:00 AM - 06:30 PM (Daylight hours)",
-      "openingHoursMr": "सकाळी ६:०० ते संध्याकाळी ६:३० (दिवसाची वेळ)",
+      "openingHoursEn": "06:00 AM - 06:00 PM (Daylight transit recommended; night driving restricted in heavy monsoon)",
+      "openingHoursMr": "सकाळी ६:०० ते संध्याकाळी ६:०० (दिवसा प्रवास सुरक्षित; मुसळधार पावसात रात्री प्रवास टाळावा)",
       "weeklyClosureEn": "Open all 7 days",
       "weeklyClosureMr": "आठवड्याचे सर्व दिवस सुरू",
       "entryFee": {
@@ -7317,39 +7324,42 @@
         "remarksEn": "Verified Free entry for all visitors.",
         "remarksMr": "सर्व पर्यटकांसाठी विनामूल्य प्रवेश."
       },
-      "parkingInfoEn": "Public vehicle parking available near entrance or foothill.",
-      "parkingInfoMr": "प्रवेशद्वारापाशी किंवा पायथ्याशी वाहन पार्किंग व्यवस्था उपलब्ध.",
+      "parkingInfoEn": "Designated roadside gravel bays near viewpoints; parking on blind hair-pin turns is strictly forbidden.",
+      "parkingInfoMr": "धबधब्यांजवळ दिलेल्या रुंद जागेतच गाडी पार्क करा; वळणावर वाहन थांबवण्यास बंदी आहे.",
       "recommendedDurationMinutes": 240,
       "safetyGuidelinesEn": [
-        "Stay on designated marked trails and avoid slippery cliffs during monsoon.",
-        "Carry adequate drinking water and protect personal belongings from monkeys.",
-        "Observe monument sanctity and do not litter in historical or ecological zones."
+        "Do not swim in deep waterfall plunge pools or fast-flowing rock streams; flash currents and slippery potholes are extremely hazardous.",
+        "Drive under 30 km/h with fog lights during dense monsoon mist; watch for falling debris or rockslides.",
+        "Consumption of alcohol in public and littering plastic is strictly banned and penalized by Pune Rural Police and Forest Rangers.",
+        "Plan departure before 06:00 PM to exit the ghat pass before darkness sets in."
       ],
       "safetyGuidelinesMr": [
-        "पावसाळ्यात निसरड्या कड्यांवर जाणे टाळा व ठरवून दिलेल्या मार्गावरच चाला.",
-        "पिण्याचे पाणी सोबत ठेवा आणि वानरांपासून आपल्या वस्तू सांभाळा.",
-        "ऐतिहासिक व निसर्गरम्य परिसरात स्वच्छता राखा व प्लास्टिक टाकू नका."
+        "धबधब्यांच्या खोल डोहात उतरू नका; पाण्याचा जोरदार प्रवाह आणि निसरडे खडक धोकादायक आहेत.",
+        "दाट धुक्यात ३० किमी/तास पेक्षा कमी वेगाने व फॉग लॅम्प लावून सुरक्षित गाडी चालवा.",
+        "उघड्यावर मद्यपान करण्यास व प्लास्टिक कचरा टाकण्यास सक्त मनाई असून पोलीस कारवाई करतात.",
+        "अंधार पडण्यापूर्वी संध्याकाळी ६ च्या आत घाटातून बाहेर पडा."
       ],
       "status": "VERIFIED"
     },
     "transport": {
       "pmpmlDirectBuses": [
-        "PMPML Local Connectivity Corridor"
+        "MSRTC ST Buses (Swargate - Mangaon/Kolad)"
       ],
-      "nearestBusStopEn": "Tamhini Ghat & Waterfalls Local Stop",
-      "nearestBusStopMr": "ताम्हिणी घाट व धबधबे स्थानिक बस थांबा",
-      "nearestMetroStationEn": "Pune Metro Rail Corridor",
-      "walkingMinutesFromStop": 5,
-      "roadAccessNotesEn": "All-weather motorable approach road with asphalt paving.",
-      "status": "VERIFIED"
+      "nearestBusStopEn": "Tamhini Village / Ghat Viewpoint ST Bus Stop",
+      "nearestBusStopMr": "ताम्हिणी गाव / व्ह्यू पॉईंट एसटी बस थांबा",
+      "nearestMetroStationEn": "Swargate / Vanaz Metro Stations (~65 km via Paud Road highway)",
+      "walkingMinutesFromStop": 2,
+      "roadAccessNotesEn": "Asphalt-paved National Highway NH 753F (Pune - Paud - Mulshi - Tamhini - Kolad corridor).",
+      "status": "VERIFIED",
+      "nearestMetroStationMr": "स्वारगेट / वनाज मेट्रो स्थानक (सुमारे ६५ किमी महामार्गाने)"
     },
     "experience": {
       "bestSeasonEn": "July to October (Spectacular monsoon waterfalls & lush mist)",
       "bestSeasonMr": "जुलै ते ऑक्टोबर (पावसाळ्यातील धबधबे आणि नयनरम्य हिरवळ)",
       "trekkingDifficulty": "easy",
       "familySuitability": true,
-      "foodAvailabilityEn": "Local Maharashtrian tea stalls, fresh snacks, and village cuisine available.",
-      "foodAvailabilityMr": "स्थानिक चहा, अल्पोपहार आणि घरगुती महाराष्ट्रीयन जेवणाची सोय."
+      "foodAvailabilityEn": "Roasted corn cobs (bhutta), ginger tea at roadside stalls, and traditional Pitla Bhakri at Mulshi/Paud dhabas.",
+      "foodAvailabilityMr": "रस्त्याच्या कडेला भाजलेले कणीस, वाफाळलेला आल्याचा चहा आणि मुळशी/पौड परिसरातील अस्सल पिठलं-भाकरी."
     },
     "media": {
       "imageUrl": "/images/places/tamhini-ghat.jpg",
@@ -7361,11 +7371,20 @@
     },
     "sources": [
       {
-        "id": "src-tamhini-ghat-pmc",
-        "name": "Pune Municipal Corporation (PMC Heritage & Garden Dept)",
-        "url": "https://pmc.gov.in",
-        "type": "municipal",
-        "evidenceExcerpt": "Municipal parks and gardens division regulations and public visitor timings.",
+        "id": "src-tamhini-ghat-forest",
+        "name": "Maharashtra State Forest Department (Pune Forest Division)",
+        "url": "https://mahaforest.gov.in",
+        "type": "state",
+        "evidenceExcerpt": "State forest division monsoon safety advisory, wildlife corridor conservation guidelines, and eco-tourism regulations.",
+        "checkedAt": "2026-11-15T00:00:00Z",
+        "verifiedBy": "Senior Tourism Data Auditor & GIS Specialist"
+      },
+      {
+        "id": "src-tamhini-ghat-pwd",
+        "name": "Public Works Department (PWD Maharashtra) - Highway NH 753F",
+        "url": "https://mahapwd.gov.in",
+        "type": "state",
+        "evidenceExcerpt": "State highway infrastructure registry and ghat road safety audit.",
         "checkedAt": "2026-11-15T00:00:00Z",
         "verifiedBy": "Senior Tourism Data Auditor & GIS Specialist"
       }

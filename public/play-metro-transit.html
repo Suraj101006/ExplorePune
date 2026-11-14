@@ -4,6 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Explore Pune — Metro & PMPML Transit Showcase Film</title>
+  <meta name="description" content="Watch the official Pune Metro and PMPML public transit cinematic showcase film by Explore Pune, featuring Line 1 & Line 2 corridor connections, Civil Court interchange, and smart city mobility.">
+  <link rel="canonical" href="https://explorepune-guide.vercel.app/play-metro-transit.html">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:site_name" content="Explore Pune">
+  <meta property="og:type" content="video.movie">
+  <meta property="og:url" content="https://explorepune-guide.vercel.app/play-metro-transit.html">
+  <meta property="og:title" content="Explore Pune — Metro & PMPML Transit Showcase Film">
+  <meta property="og:description" content="Cinematic showcase of Pune's dual-line Metro system (Purple & Aqua), PMPML feeder bus network, and multimodal urban transit navigation.">
+  <meta property="og:image" content="https://explorepune-guide.vercel.app/videos/explore-pune-metro-transit-poster.jpg">
+  <meta property="og:video" content="https://explorepune-guide.vercel.app/videos/explore-pune-metro-transit-en.mp4">
+  <meta property="og:video:type" content="video/mp4">
+  <meta property="og:video:width" content="1920">
+  <meta property="og:video:height" content="1080">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="player">
+  <meta name="twitter:title" content="Explore Pune — Metro & PMPML Transit Showcase Film">
+  <meta name="twitter:description" content="Cinematic showcase of Pune's dual-line Metro system, PMPML bus integration, and multimodal transit.">
+  <meta name="twitter:image" content="https://explorepune-guide.vercel.app/videos/explore-pune-metro-transit-poster.jpg">
+  <meta name="twitter:player" content="https://explorepune-guide.vercel.app/play-metro-transit.html">
+  <meta name="twitter:player:width" content="1280">
+  <meta name="twitter:player:height" content="720">
+
+  <!-- Schema.org VideoObject Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Explore Pune — Metro & PMPML Public Transit Cinematic Showcase",
+    "description": "Comprehensive cinematic documentary and transit guide illustrating the Pune Metro (Purple & Aqua Lines), PMPML feeder buses, and multimodal urban mobility in Pune, Maharashtra.",
+    "thumbnailUrl": [
+      "https://explorepune-guide.vercel.app/videos/explore-pune-metro-transit-poster.jpg"
+    ],
+    "uploadDate": "2026-10-24T00:00:00+05:30",
+    "duration": "PT1M52S",
+    "contentUrl": "https://explorepune-guide.vercel.app/videos/explore-pune-metro-transit-en.mp4",
+    "embedUrl": "https://explorepune-guide.vercel.app/play-metro-transit.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Explore Pune",
+      "url": "https://explorepune-guide.vercel.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://explorepune-guide.vercel.app/icon.png"
+      }
+    }
+  }
+  </script>
+
   <style>
     :root {
       --bg: #090d16;
@@ -29,6 +80,47 @@
       flex-direction: column;
       align-items: center;
       padding: 24px 16px;
+    }
+    .top-nav {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary-aqua);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    .nav-back-link:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover {
+      color: var(--text-main);
     }
     .header {
       max-width: 1200px;
@@ -190,9 +282,49 @@
     .btn-download:hover {
       background: #334155;
     }
+    .footer-links {
+      max-width: 1200px;
+      width: 100%;
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .footer-nav a {
+      color: var(--primary-aqua);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+
+  <nav class="top-nav" aria-label="Main Navigation">
+    <a href="/" class="nav-back-link">
+      <span>←</span> Back to Explore Pune Guide
+    </a>
+    <div class="nav-links">
+      <a href="/destinations" class="nav-link">Destinations</a>
+      <a href="/planner" class="nav-link">Trip Planner</a>
+      <a href="/experience" class="nav-link">3D Experience</a>
+    </div>
+  </nav>
 
   <div class="header">
     <div class="brand-title">
@@ -280,6 +412,18 @@
       </div>
     </div>
   </div>
+
+  <footer class="footer-links">
+    <p>© 2026 Explore Pune. All verified public transport data sourced from Maha Metro & PMPML.</p>
+    <div class="footer-nav">
+      <a href="/">Home</a>
+      <a href="/destinations">Destinations</a>
+      <a href="/planner">Multi-Modal Planner</a>
+      <a href="/experience">Beyond the Ordinary (3D)</a>
+      <a href="/about">About Pune Guide</a>
+      <a href="/help/website-guide">Website Guide</a>
+    </div>
+  </footer>
 
   <script>
     const player = document.getElementById('video-player');
