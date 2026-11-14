@@ -9,6 +9,7 @@ const ChatWidget = dynamic(() => import('@/components/ChatWidget'), { ssr: false
 const DirectionsModal = dynamic(() => import('@/components/DirectionsModal'), { ssr: false });
 const IntroVideoOverlay = dynamic(() => import('@/components/IntroVideoOverlay'), { ssr: false });
 const CookieConsentBanner = dynamic(() => import('@/components/CookieConsentBanner'), { ssr: false });
+const GpsDiagnosticsPanel = dynamic(() => import('@/components/GpsDiagnosticsPanel'), { ssr: false });
 
 export default function ClientInteractiveOverlays() {
   const [loadDeferred, setLoadDeferred] = useState(false);
@@ -31,6 +32,7 @@ export default function ClientInteractiveOverlays() {
         <>
           <ChatWidget />
           <DirectionsModal />
+          <GpsDiagnosticsPanel />
         </>
       )}
       <ThemeShortcutToast />

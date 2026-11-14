@@ -4,6 +4,8 @@
  * travel mode preferences, external navigation URL generation, and global directions modal state.
  */
 
+import { LocationAccuracyService } from './services/LocationAccuracyService';
+
 export type TravelMode = 'driving' | 'transit' | 'walking' | 'bicycling';
 
 export interface NavDestination {

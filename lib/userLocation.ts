@@ -6,6 +6,8 @@
 
 import { calculateDistanceKm } from './publicTransit';
 export { calculateDistanceKm } from './publicTransit';
+import { LocationAccuracyService, AccuracyEvaluation } from './services/LocationAccuracyService';
+import { LocationPermissionService } from './services/LocationPermissionService';
 
 export interface UserSavedLocation {
   id: string;
@@ -19,14 +21,25 @@ export interface UserSavedLocation {
   isGps?: boolean;
   isLiveTracking?: boolean;
   accuracyRadiusMeters?: number;
+  accuracyMeters?: number;
+  accuracyTier?: AccuracyEvaluation;
+  source?: 'gps' | 'network' | 'ip' | 'manual' | 'default';
   speedKmh?: number | null;
   heading?: number | null;
   altitudeMeters?: number | null;
+  isOutsidePune?: boolean;
+  distanceFromPuneKm?: number;
   addressDetails?: {
     suburb?: string;
     road?: string;
+    neighborhood?: string;
+    locality?: string;
     city?: string;
+    district?: string;
+    state?: string;
+    country?: string;
     postcode?: string;
+    postalCode?: string;
     formattedAddress?: string;
     googleMapsUrl?: string;
     googleMapsEmbedUrl?: string;
@@ -320,9 +333,10 @@ export interface GpsDetectionResult {
   isOutsidePune?: boolean;
   distanceFromPuneKm?: number;
   accuracyMeters?: number;
+  accuracyTier?: AccuracyEvaluation;
   speedKmh?: number | null;
   heading?: number | null;
-  source?: 'gps' | 'ip' | 'default';
+  source?: 'gps' | 'network' | 'ip' | 'manual' | 'default';
   city?: string;
   country?: string;
 }
@@ -460,6 +474,9 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
   const isOutside = distFromCenter > 45;
   const localityShortEn = locality.nameEn.split('/')[0].trim();
   const localityShortMr = locality.nameMr.split('/')[0].trim();
+  const roundedAccuracy = Math.round(accuracy);
+  const evalAccuracy = LocationAccuracyService.evaluate(roundedAccuracy);
+  const source: 'gps' | 'network' = roundedAccuracy <= 30 ? 'gps' : 'network';
 
   const nameEn = isOutside
     ? `Live GPS (~${Math.round(distFromCenter)} km from Pune)`
@@ -475,6 +492,11 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
   const parsedAltitude =
     altitude != null && !isNaN(altitude) ? Math.round(altitude) : null;
 
+  const city = isOutside ? 'Maharashtra' : 'Pune';
+  const formattedAddress = isOutside
+    ? `${latitude.toFixed(4)}° N, ${longitude.toFixed(4)}° E (~${Math.round(distFromCenter)} km from Pune)`
+    : `${localityShortEn}, Pune, Maharashtra, India`;
+
   const savedLoc: UserSavedLocation = {
     id: 'live-gps',
     nameEn,
@@ -486,14 +508,21 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
     timestamp: Date.now(),
     isGps: true,
     isLiveTracking: true,
-    accuracyRadiusMeters: Math.round(accuracy),
+    accuracyRadiusMeters: roundedAccuracy,
+    accuracyMeters: roundedAccuracy,
+    accuracyTier: evalAccuracy,
+    source,
+    isOutsidePune: isOutside,
+    distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
     speedKmh,
     heading: parsedHeading,
     altitudeMeters: parsedAltitude,
     addressDetails: {
-      suburb: localityShortEn,
-      city: 'Pune',
-      formattedAddress: `${localityShortEn}, Pune, Maharashtra, India`,
+      suburb: isOutside ? undefined : localityShortEn,
+      city,
+      state: 'Maharashtra',
+      country: 'India',
+      formattedAddress,
       googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(6)},${longitude.toFixed(6)}`,
       googleMapsEmbedUrl: `https://www.google.com/maps?q=${latitude.toFixed(6)},${longitude.toFixed(6)}&z=15&output=embed`,
     },
@@ -674,7 +703,10 @@ async function fetchSilentIpLocation(): Promise<GpsDetectionResult> {
     ...DEFAULT_PUNE_STATIC_LOCATION,
     timestamp: Date.now(),
   };
-  setStoredUserLocation(fallbackLoc);
+  // Only persist fallback to localStorage if user has no stored location at all
+  if (!getStoredUserLocation()) {
+    setStoredUserLocation(fallbackLoc);
+  }
 
   return {
     success: true,
@@ -693,8 +725,8 @@ async function fetchSilentIpLocation(): Promise<GpsDetectionResult> {
  * 
  * 1. PRIMARY LAYER (Hardware GPS):
  *    - Validates HTTPS / secure context.
- *    - Queries HTML5 Geolocation API with high accuracy, 6000ms timeout, and maximumAge: 0.
- *    - Returns coordinates with hardware accuracy radius.
+ *    - Queries HTML5 Geolocation API with high accuracy, 20000ms timeout, and maximumAge: 0.
+ *    - Returns coordinates with hardware accuracy radius and evaluated tier.
  * 
  * 2. SECONDARY FALLBACK LAYER (Silent IP Geolocation):
  *    - Instantly catches GPS denial, timeouts, hardware lack, or insecure context.
@@ -717,10 +749,11 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
         resolve({
           success: true,
           location: savedLoc,
-          source: 'gps',
+          source: (savedLoc.source || 'gps') as any,
           isOutsidePune: distFromCenter > 45,
           distanceFromPuneKm: Math.round(distFromCenter * 10) / 10,
           accuracyMeters: savedLoc.accuracyRadiusMeters,
+          accuracyTier: savedLoc.accuracyTier,
           speedKmh: savedLoc.speedKmh,
           heading: savedLoc.heading,
         });
@@ -731,7 +764,7 @@ export function detectBrowserGps(): Promise<GpsDetectionResult> {
       },
       {
         enableHighAccuracy: true,
-        timeout: 6000,
+        timeout: 20000,
         maximumAge: 0,
       }
     );
@@ -789,7 +822,7 @@ export function startGpsWatcher(
       {
         enableHighAccuracy: true,
         maximumAge: 3000,
-        timeout: 15000,
+        timeout: 20000,
       }
     );
 

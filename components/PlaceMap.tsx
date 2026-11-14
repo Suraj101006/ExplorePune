@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { detectBrowserGps } from '@/lib/userLocation';
 import { calculateDistanceKm } from '@/lib/publicTransit';
 import { openDirectionsModal } from '@/lib/navigationService';
+import LocationAccuracyIndicator from './LocationAccuracyIndicator';
 
 interface PlaceMapProps {
   latitude: number;
@@ -262,9 +263,15 @@ export default function PlaceMap({ latitude, longitude, name }: PlaceMapProps) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <span>🎯</span>
           {gpsDistance ? (
-            <span style={{ color: '#065f46', fontWeight: 600 }}>
-              You are <strong>{gpsDistance.km} km</strong> away from {name} (GPS ±{gpsDistance.accuracy}m)
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+              <span style={{ color: '#065f46', fontWeight: 600 }}>
+                You are <strong>{gpsDistance.km} km</strong> away from {name}
+              </span>
+              <LocationAccuracyIndicator
+                accuracyMeters={gpsDistance.accuracy}
+                compact
+              />
+            </div>
           ) : (
             <span style={{ color: '#475569' }}>
               Want to see how far you are right now?

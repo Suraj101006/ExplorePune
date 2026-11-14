@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import ModalPortal from '@/components/ModalPortal';
+import LocationAccuracyIndicator from '@/components/LocationAccuracyIndicator';
 import { useLanguage } from '@/lib/LanguageContext';
 import {
   getStoredUserLocation,
@@ -301,21 +302,13 @@ export default function LocationPickerModal({
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                <span
-                  style={{
-                    fontSize: 10.5,
-                    background: currentLoc.isGps ? '#059669' : '#2563eb',
-                    color: '#fff',
-                    padding: '2px 8px',
-                    borderRadius: 999,
-                    fontWeight: 700,
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  {currentLoc.isGps
-                    ? (isMr ? '🎯 GPS अचूक' : `🎯 GPS (±${currentLoc.accuracyRadiusMeters || 15}m)`)
-                    : (isMr ? '🗺️ गुगल मॅप्स' : '🗺️ Google Maps')}
-                </span>
+                <LocationAccuracyIndicator
+                  accuracyMeters={currentLoc.accuracyRadiusMeters || currentLoc.accuracyMeters}
+                  evaluation={currentLoc.accuracyTier}
+                  source={currentLoc.source || (currentLoc.isGps ? 'gps' : 'manual')}
+                  isMr={isMr}
+                  compact
+                />
                 <a
                   href={
                     currentLoc.addressDetails?.googleMapsUrl ||
