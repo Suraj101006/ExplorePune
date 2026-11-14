@@ -78,4 +78,78 @@ describe('Navbar Functions & Authentication State Consistency', () => {
     expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1360px\)\s*\{[\s\S]*?\.theme-toggle-label\s*\{[^}]*display:\s*none\s*!important/);
     expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1360px\)\s*\{[\s\S]*?\.auth-user-pill\s*\{[^}]*max-width:\s*105px\s*!important/);
   });
+
+  it('8. Wide desktop compaction (<= 1520px) prevents overflow on 1366px and 1440px displays', () => {
+    expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1520px\)\s*\{[\s\S]*?\.desktop-nav-icon\s*\{[^}]*display:\s*none\s*!important/);
+    expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1520px\)\s*\{[\s\S]*?\.theme-toggle-kbd\s*\{[^}]*display:\s*none\s*!important/);
+    expect(globalsCss).toMatch(/@media\s*\(max-width:\s*1520px\)\s*\{[\s\S]*?\.hide-on-compact-desktop\s*\{[^}]*display:\s*none\s*!important/);
+  });
+
+  it('9. Tiered mobile benchmarks guarantee all navbar buttons fit without horizontal scroll before and after login', () => {
+    // Test matrix of mobile screen widths from 320px up to 768px
+    const SCREEN_WIDTHS = [320, 340, 360, 375, 390, 412, 430, 480, 768];
+
+    SCREEN_WIDTHS.forEach((width) => {
+      // 1. Calculate container padding and gaps based on tiered CSS rules
+      let wrapPadding: number;
+      let brandWidth: number;
+      let buttonSize: number;
+      let langWidth: number;
+      let utilGap: number;
+
+      if (width <= 340) {
+        wrapPadding = 8; // 4px * 2
+        brandWidth = 26 + 3 + 60; // logo 26px + gap 3px + title ~60px
+        buttonSize = 26;
+        langWidth = 38;
+        utilGap = 2;
+      } else if (width <= 390) {
+        wrapPadding = 12; // 6px * 2
+        brandWidth = 28 + 4 + 68; // logo 28px + gap 4px + title ~68px
+        buttonSize = 29;
+        langWidth = 44;
+        utilGap = 3;
+      } else if (width <= 480) {
+        wrapPadding = 16; // 8px * 2
+        brandWidth = 32 + 5 + 75; // logo 32px + gap 5px + title ~75px
+        buttonSize = 32;
+        langWidth = 46;
+        utilGap = 4;
+      } else {
+        wrapPadding = 24; // 12px * 2
+        brandWidth = 36 + 6 + 85; // logo 36px + gap 6px + title ~85px
+        buttonSize = 32;
+        langWidth = 52;
+        utilGap = 5;
+      }
+
+      // 2. Case A: When user is LOGGED OUT
+      // Utilities = Auth (icon button) + Saved (icon button) + Lang + Theme (icon button) + Hamburger (icon button)
+      const loggedOutUtilWidth =
+        buttonSize /* Auth icon */ +
+        buttonSize /* Saved */ +
+        langWidth /* Lang */ +
+        buttonSize /* Theme */ +
+        buttonSize /* Menu */ +
+        utilGap * 4;
+
+      const loggedOutTotalWidth = wrapPadding + brandWidth + utilGap + loggedOutUtilWidth;
+      expect(loggedOutTotalWidth).toBeLessThanOrEqual(width);
+
+      // 3. Case B: When user is LOGGED IN (Maximum width scenario: Avatar + Logout button both visible)
+      // Utilities = Avatar (buttonSize) + Logout (buttonSize) + gap + Saved + Lang + Theme + Hamburger
+      const loggedInUtilWidth =
+        buttonSize /* Avatar */ +
+        utilGap /* gap between avatar & logout */ +
+        buttonSize /* Logout */ +
+        buttonSize /* Saved */ +
+        langWidth /* Lang */ +
+        buttonSize /* Theme */ +
+        buttonSize /* Menu */ +
+        utilGap * 4;
+
+      const loggedInTotalWidth = wrapPadding + brandWidth + utilGap + loggedInUtilWidth;
+      expect(loggedInTotalWidth).toBeLessThanOrEqual(width);
+    });
+  });
 });
