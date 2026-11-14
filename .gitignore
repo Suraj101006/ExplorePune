@@ -55,6 +55,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# script test screenshots & outputs
+scripts/*.png
+
 # raw extracted datasets
 data/pmpml-extracted/
 scratch-*.js
