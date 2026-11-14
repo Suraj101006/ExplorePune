@@ -651,9 +651,14 @@ export default function PlaceDetailClient({
         const prox = getProximityToPlace(result.location.lat, result.location.lng, place.latitude, place.longitude);
         setProximity(prox);
 
+        const isCoarse = acc > 150;
         setOriginNotice(
           isMr
-            ? `✓ थेट GPS जोडले गेले (अचूकता: ±${acc}m) • वेळोवेळी रिअल-टाइम ट्रॅकिंग सक्रिय!`
+            ? isCoarse
+              ? `⚠️ अंदाजे नेटवर्क स्थान (अचूकता: ±${acc > 1000 ? Math.round(acc / 1000) + ' किमी' : acc + ' मी'}) • अचूक अंतरासाठी वरून तुमचा परिसर निवडा.`
+              : `✓ थेट GPS जोडले गेले (अचूकता: ±${acc}m) • वेळोवेळी रिअल-टाइम ट्रॅकिंग सक्रिय!`
+            : isCoarse
+            ? `⚠️ Approximate network position (Accuracy: ±${acc > 1000 ? Math.round(acc / 1000) + 'km' : acc + 'm'}) • For exact routing, choose your locality above.`
             : `✓ Live GPS connected (Accuracy: ±${acc}m) • Real-time tracking active!`
         );
         const computed = getPublicTransitRoute(result.location.lat, result.location.lng, place, name);

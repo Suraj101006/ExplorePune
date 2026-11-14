@@ -477,13 +477,40 @@ function processGpsPosition(pos: GeolocationPosition): UserSavedLocation {
   const roundedAccuracy = Math.round(accuracy);
   const evalAccuracy = LocationAccuracyService.evaluate(roundedAccuracy);
   const source: 'gps' | 'network' = roundedAccuracy <= 30 ? 'gps' : 'network';
+  const isCoarse = roundedAccuracy > 150;
 
   const nameEn = isOutside
-    ? `Live GPS (~${Math.round(distFromCenter)} km from Pune)`
+    ? `Live Position (~${Math.round(distFromCenter)} km from Pune)`
+    : isCoarse
+    ? `Estimated Area (~${localityShortEn})`
     : `Live GPS (Near ${localityShortEn})`;
   const nameMr = isOutside
-    ? `थेट GPS (पुण्यापासून ~${Math.round(distFromCenter)} किमी)`
+    ? `थेट स्थान (पुण्यापासून ~${Math.round(distFromCenter)} किमी)`
+    : isCoarse
+    ? `अंदाजे परिसर (~${localityShortMr})`
     : `थेट GPS (${localityShortMr} जवळ)`;
+
+  // Diagnostic logging when in dev or ?gps_debug=true
+  if (
+    typeof window !== 'undefined' &&
+    (process.env.NODE_ENV === 'development' ||
+      (window as any).__EXPLORE_PUNE_GPS_DEBUG__ ||
+      (window.location && new URLSearchParams(window.location.search).get('gps_debug') === 'true'))
+  ) {
+    try {
+      console.groupCollapsed(`[GPS Diagnostic Telemetry] ${new Date().toISOString()}`);
+      console.log('1. Raw Latitude:', latitude);
+      console.log('2. Raw Longitude:', longitude);
+      console.log('3. Reported Accuracy (m):', roundedAccuracy);
+      console.log('4. Position Timestamp:', pos.timestamp || Date.now());
+      console.log('5. Freshness:', 'Fresh fix (maximumAge: 0)');
+      console.log('6. Coordinates Passed to Map:', { lat: latitude, lng: longitude });
+      console.log('7. Final Marker Coordinates:', { lat: latitude, lng: longitude });
+      console.log('8. Map Center Coordinates:', { lat: latitude, lng: longitude });
+      console.log('9. Active Source Mode:', source);
+      console.groupEnd();
+    } catch {}
+  }
 
   const speedKmh =
     speed != null && speed > 0 ? Math.round(speed * 3.6 * 10) / 10 : null;

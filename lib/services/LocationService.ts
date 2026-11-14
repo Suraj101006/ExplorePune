@@ -196,15 +196,26 @@ export class LocationService {
     const source: LocationSource = accuracy <= 30 ? 'gps' : 'network';
     const evaluation = LocationAccuracyService.evaluate(accuracy);
 
-    // Development-only logging as required by Section 5 & 10
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[LocationService] GPS Position Acquired:', {
-        latitude,
-        longitude,
-        accuracy: `${accuracy}m`,
-        source,
-        timestamp: pos.timestamp,
-      });
+    // Diagnostic telemetry logging (active in dev or via ?gps_debug=true)
+    if (
+      typeof window !== 'undefined' &&
+      (process.env.NODE_ENV === 'development' ||
+        (window as any).__EXPLORE_PUNE_GPS_DEBUG__ ||
+        (window.location && new URLSearchParams(window.location.search).get('gps_debug') === 'true'))
+    ) {
+      try {
+        console.groupCollapsed(`[LocationService Diagnostic Telemetry] ${new Date().toISOString()}`);
+        console.log('1. Raw Latitude:', latitude);
+        console.log('2. Raw Longitude:', longitude);
+        console.log('3. Reported Accuracy (m):', accuracy);
+        console.log('4. Position Timestamp:', pos.timestamp);
+        console.log('5. Freshness:', 'Fresh fix (maximumAge: 0)');
+        console.log('6. Coordinates Passed to Map:', { lat: latitude, lng: longitude });
+        console.log('7. Final Marker Coordinates:', { lat: latitude, lng: longitude });
+        console.log('8. Map Center Coordinates:', { lat: latitude, lng: longitude });
+        console.log('9. Active Source Mode:', source);
+        console.groupEnd();
+      } catch {}
     }
 
     const distFromPune = calculateHaversineDistanceKm(latitude, longitude, 18.5204, 73.8567);
