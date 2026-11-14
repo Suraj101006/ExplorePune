@@ -3677,6 +3677,20 @@ html.intro-dismissed .intro-overlay {
   }
 }
 
+@keyframes slideshow-progress-fill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.slideshow-progress-bar-active {
+  animation: slideshow-progress-fill 4.5s linear forwards;
+  will-change: width;
+}
+
 .kenburns-active-zoom-in {
   animation: kenburns-zoom-in 5.5s var(--ease-smooth) forwards;
   will-change: transform;

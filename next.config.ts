@@ -52,11 +52,11 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' https://*.firebaseapp.com https://*.googleapis.com https://apis.google.com https://www.googletagmanager.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
-      "img-src 'self' data: blob: https: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.openstreetmap.org https://commons.wikimedia.org https://upload.wikimedia.org https://maps.gstatic.com https://*.googleapis.com https://*.google.com",
+      "img-src 'self' data: blob: https: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.openstreetmap.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org https://*.wikimedia.org https://maps.gstatic.com https://*.googleapis.com https://*.google.com",
       "media-src 'self' data: blob: https:",
       "worker-src 'self' blob:",
       "child-src 'self' blob: https://*.firebaseapp.com https://*.openstreetmap.org https://www.openstreetmap.org https://openstreetmap.org",
-      "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.openstreetmap.org https://nominatim.openstreetmap.org https://www.openstreetmap.org https://openstreetmap.org https://commons.wikimedia.org https://upload.wikimedia.org https://api.open-meteo.com https://www.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net",
+      "connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.openstreetmap.org https://nominatim.openstreetmap.org https://www.openstreetmap.org https://openstreetmap.org https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org https://*.wikimedia.org https://api.open-meteo.com https://www.google-analytics.com https://*.analytics.google.com https://stats.g.doubleclick.net",
       "frame-src 'self' https://*.firebaseapp.com https://*.google.com https://maps.google.com https://*.openstreetmap.org https://www.openstreetmap.org https://openstreetmap.org https://www.googletagmanager.com https://*.googletagmanager.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",
@@ -89,6 +89,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "thumb.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "**.wikimedia.org",
       },
       {
         protocol: "https",

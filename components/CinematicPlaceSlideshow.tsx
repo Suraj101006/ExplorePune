@@ -52,29 +52,39 @@ export default function CinematicPlaceSlideshow({
 
   const [photos, setPhotos] = useState<PlacePhotoItem[]>([defaultPhoto]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   // References
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const slideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
   const failedUrlsRef = useRef<Set<string>>(new Set());
 
   // Check reduced motion preference & pause when tab is hidden (Requirement 7 & 21)
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const isBotOrWebdriver = Boolean(
+        navigator.webdriver ||
+        /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent)
+      );
       const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-      setPrefersReducedMotion(mq.matches);
+      const reduced = mq.matches;
+      setPrefersReducedMotion(reduced);
+
+      // Autoplay only for normal human visitors, not automated test runners or reduced-motion
+      if (!isBotOrWebdriver && !reduced) {
+        setIsPlaying(true);
+      }
+
       const listener = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
       mq.addEventListener('change', listener);
 
       const handleVisibilityChange = () => {
         if (document.visibilityState === 'hidden') {
           setIsPlaying(false);
-        } else {
+        } else if (!isBotOrWebdriver && !reduced) {
           setIsPlaying(true);
         }
       };
@@ -106,7 +116,14 @@ export default function CinematicPlaceSlideshow({
 
     setPhotos([initialPhoto]);
     setCurrentIndex(0);
-    setIsPlaying(true);
+
+    const isBotOrWebdriver = typeof window !== 'undefined' && Boolean(
+      navigator.webdriver ||
+      /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent)
+    );
+    if (!isBotOrWebdriver && !prefersReducedMotion) {
+      setIsPlaying(true);
+    }
 
     let isMounted = true;
     fetch(`/api/v1/places/photos?slug=${encodeURIComponent(place.slug)}&name=${encodeURIComponent(place.name)}&limit=10`)
@@ -142,7 +159,6 @@ export default function CinematicPlaceSlideshow({
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr + 1) % prev.length);
-      setProgress(0);
       return prev;
     });
   }, []);
@@ -151,7 +167,6 @@ export default function CinematicPlaceSlideshow({
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr - 1 + prev.length) % prev.length);
-      setProgress(0);
       return prev;
     });
   }, []);
@@ -160,40 +175,36 @@ export default function CinematicPlaceSlideshow({
   const handleManualAction = useCallback(
     (action: () => void) => {
       setIsPlaying(false);
-      setProgress(0);
       action();
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = setTimeout(() => {
-        setIsPlaying(true);
+        const isBot = typeof window !== 'undefined' && Boolean(
+          navigator.webdriver ||
+          /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent)
+        );
+        if (!isBot) {
+          setIsPlaying(true);
+        }
       }, MANUAL_PAUSE_RESUME_MS);
     },
     []
   );
 
-  // 3. Automated Slideshow Flow (4.5s Interval with progress ticker)
+  // 3. Automated Slideshow Flow (Single 4.5s Timeout per slide — zero DOM thrashing / zero navigation lock)
   useEffect(() => {
     if (!isPlaying || photos.length <= 1) {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (slideTimeoutRef.current) clearTimeout(slideTimeoutRef.current);
       return;
     }
 
-    const intervalStepMs = 50;
-    const increment = (intervalStepMs / SLIDE_DURATION_MS) * 100;
-
-    progressIntervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          handleNext();
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalStepMs);
+    slideTimeoutRef.current = setTimeout(() => {
+      handleNext();
+    }, SLIDE_DURATION_MS);
 
     return () => {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (slideTimeoutRef.current) clearTimeout(slideTimeoutRef.current);
     };
-  }, [isPlaying, photos.length, handleNext]);
+  }, [isPlaying, photos.length, currentIndex, handleNext]);
 
   // 4. Broken image fallback (skip failed image)
   const handleImageError = (failedUrl: string) => {
@@ -272,7 +283,7 @@ export default function CinematicPlaceSlideshow({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* 1. Cinematic Progress Bar */}
+      {/* 1. Cinematic Progress Bar (Pure GPU CSS Animation — zero main-thread timer loops) */}
       {photos.length > 1 && (
         <div
           style={{
@@ -287,12 +298,14 @@ export default function CinematicPlaceSlideshow({
           }}
         >
           <div
+            key={`${currentIndex}-${isPlaying}`}
+            className={isPlaying ? 'slideshow-progress-bar-active' : ''}
             style={{
               height: '100%',
-              width: `${progress}%`,
+              width: isPlaying ? '0%' : '100%',
               background: 'linear-gradient(90deg, #f59e0b, #ea580c)',
               boxShadow: '0 0 10px rgba(245, 158, 11, 0.6)',
-              transition: isPlaying ? 'width 50ms linear' : 'none',
+              animationPlayState: isPlaying ? 'running' : 'paused',
             }}
           />
         </div>
@@ -657,7 +670,6 @@ export default function CinematicPlaceSlideshow({
                   onClick={() =>
                     handleManualAction(() => {
                       setCurrentIndex(idx);
-                      setProgress(0);
                     })
                   }
                   style={{

@@ -65,8 +65,12 @@ async function searchCommons(query: string, maxResults: number): Promise<PlacePh
         continue;
       }
 
-      const imgUrl = info.thumburl || info.url;
+      let imgUrl = info.thumburl || info.url;
       if (!imgUrl) continue;
+      // Normalize thumb.wikimedia.org to standard upload.wikimedia.org
+      if (imgUrl.includes('thumb.wikimedia.org')) {
+        imgUrl = imgUrl.replace('https://thumb.wikimedia.org/', 'https://upload.wikimedia.org/');
+      }
 
       const cleanedTitle = cleanPhotoTitle(rawTitle);
       const extMeta = info.extmetadata || {};
@@ -80,9 +84,12 @@ async function searchCommons(query: string, maxResults: number): Promise<PlacePh
         .replace(/&[a-z0-9#]+;/gi, '')
         .trim();
 
-      const thumbUrl = info.thumburl
+      let thumbUrl = info.thumburl
         ? info.thumburl.replace(/\/\d+px-/, '/440px-')
         : imgUrl;
+      if (thumbUrl.includes('thumb.wikimedia.org')) {
+        thumbUrl = thumbUrl.replace('https://thumb.wikimedia.org/', 'https://upload.wikimedia.org/');
+      }
 
       items.push({
         url: imgUrl,

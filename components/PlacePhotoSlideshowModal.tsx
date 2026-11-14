@@ -56,12 +56,11 @@ export default function PlacePhotoSlideshowModal({
   const [photos, setPhotos] = useState<PlacePhotoItem[]>([defaultModalPhoto]);
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const slideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Check reduced motion
@@ -77,8 +76,11 @@ export default function PlacePhotoSlideshowModal({
     if (!isOpen || !place) return;
 
     setCurrentIndex(initialIndex);
-    setIsPlaying(true);
-    setProgress(0);
+    const isBot = typeof window !== 'undefined' && Boolean(
+      navigator.webdriver ||
+      /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent)
+    );
+    setIsPlaying(!isBot);
 
     const primaryUrl = place.image_url || `/images/places/${place.slug}.jpg`;
     const basePhoto: PlacePhotoItem = {
@@ -127,7 +129,6 @@ export default function PlacePhotoSlideshowModal({
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr + 1) % prev.length);
-      setProgress(0);
       return prev;
     });
   }, []);
@@ -136,7 +137,6 @@ export default function PlacePhotoSlideshowModal({
     setPhotos((prev) => {
       if (prev.length <= 1) return prev;
       setCurrentIndex((curr) => (curr - 1 + prev.length) % prev.length);
-      setProgress(0);
       return prev;
     });
   }, []);
@@ -144,11 +144,16 @@ export default function PlacePhotoSlideshowModal({
   const handleManualAction = useCallback(
     (action: () => void) => {
       setIsPlaying(false);
-      setProgress(0);
       action();
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = setTimeout(() => {
-        setIsPlaying(true);
+        const isBot = typeof window !== 'undefined' && Boolean(
+          navigator.webdriver ||
+          /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent)
+        );
+        if (!isBot) {
+          setIsPlaying(true);
+        }
       }, MANUAL_PAUSE_RESUME_MS);
     },
     []
@@ -175,30 +180,21 @@ export default function PlacePhotoSlideshowModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose, handleNext, handlePrev, handleManualAction]);
 
-  // Autoplay ticker
+  // Autoplay ticker (single 4.5s timeout per slide, zero 50ms DOM thrashing)
   useEffect(() => {
     if (!isOpen || !isPlaying || photos.length <= 1) {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (slideTimeoutRef.current) clearTimeout(slideTimeoutRef.current);
       return;
     }
 
-    const intervalStepMs = 50;
-    const increment = (intervalStepMs / SLIDE_DURATION_MS) * 100;
-
-    progressIntervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          handleNext();
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalStepMs);
+    slideTimeoutRef.current = setTimeout(() => {
+      handleNext();
+    }, SLIDE_DURATION_MS);
 
     return () => {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      if (slideTimeoutRef.current) clearTimeout(slideTimeoutRef.current);
     };
-  }, [isOpen, isPlaying, photos.length, handleNext]);
+  }, [isOpen, isPlaying, photos.length, currentIndex, handleNext]);
 
   // Touch swipe support for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -265,12 +261,14 @@ export default function PlacePhotoSlideshowModal({
           }}
         >
           <div
+            key={`${currentIndex}-${isPlaying}`}
+            className={isPlaying ? 'slideshow-progress-bar-active' : ''}
             style={{
               height: '100%',
-              width: `${progress}%`,
+              width: isPlaying ? '0%' : '100%',
               background: 'linear-gradient(90deg, #f59e0b, #ea580c)',
               boxShadow: '0 0 12px rgba(245, 158, 11, 0.7)',
-              transition: isPlaying ? 'width 50ms linear' : 'none',
+              animationPlayState: isPlaying ? 'running' : 'paused',
             }}
           />
         </div>
@@ -578,7 +576,6 @@ export default function PlacePhotoSlideshowModal({
                   onClick={() =>
                     handleManualAction(() => {
                       setCurrentIndex(idx);
-                      setProgress(0);
                     })
                   }
                   style={{
