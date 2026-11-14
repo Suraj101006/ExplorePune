@@ -30,7 +30,6 @@ Developed by Suraj Dhok & Sahil Jadhav.
 - Chat Evaluation: `npm run eval:chat`
 
 ## Architecture & Progress
-- Progress Tracker: See `CLAUDE_PROGRESS.md`
 - Implementation Plan: See `docs/implementation-plan.md`
 - Audit Findings: See `docs/audit.md`
 
