@@ -57,17 +57,17 @@ export default function AppHeader() {
         {/* Brand Identity */}
         <Link href="/" className="brand" aria-label="Explore Pune Home">
           <BrandLogo
-            size={46}
+            size={52}
             withBadge
             priority
             alt="Explore Pune Logo"
             className="brand-logo-img"
           />
-          <div className="brand-text-col" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-            <span className="brand-title" style={{ fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+          <div className="brand-text-col" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', lineHeight: 1.15 }}>
+            <span className="brand-title" style={{ fontWeight: 850, letterSpacing: '-0.025em', color: 'var(--ink)' }}>
               Explore<span style={{ color: 'var(--primary)' }}> Pune</span>
             </span>
-            <span className="brand-subtitle" style={{ fontWeight: 700, letterSpacing: '0.06em', color: 'var(--clay)', textTransform: 'uppercase' }}>
+            <span className="brand-subtitle" style={{ fontWeight: 700, letterSpacing: '0.07em', color: 'var(--clay)', textTransform: 'uppercase' }}>
               {isMr ? 'पुण्यनगरी • सह्याद्री' : 'Heritage & Trails'}
             </span>
           </div>
@@ -77,6 +77,13 @@ export default function AppHeader() {
         <div className="header-two-floor-right">
           {/* Floor 1 (Upper Layer): Utility Controls, Helplines & Account Buttons */}
           <div className="header-floor-top">
+            <div className="header-floor-top-left hide-on-mobile hide-on-compact-desktop">
+              <span className="header-top-tagline">
+                <span className="header-tagline-dot" />
+                <span>{isMr ? 'पुणे पर्यटन • १०६+ ऐतिहासिक स्थळे व सह्याद्री ट्रेक्स' : 'Official Guide • 106+ Historic Forts, Wadas & Trails'}</span>
+              </span>
+            </div>
+
             <div className="header-utilities">
               {/* Emergency Tourist Helpline Modal */}
               <div className="nav-util-item hide-on-mobile">
