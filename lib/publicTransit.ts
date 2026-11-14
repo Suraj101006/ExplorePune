@@ -33,6 +33,9 @@ export interface TransitRouteInfo {
     distanceKm: number;
     walkingMinutes: number;
     lineColor: string;
+    isDirectWalk?: boolean;
+    transferNoteEn?: string;
+    transferNoteMr?: string;
   };
   nearestBus?: {
     stopNameEn: string;
@@ -594,17 +597,20 @@ const PLACE_TRANSIT_RULES: Record<string, PlaceTransitRule> = {
   // FORTS & SAHYADRI
   'sinhagad-fort': {
     slug: 'sinhagad-fort',
-    directBuses: ['Bus 50 (Swargate ↔ Sinhagad Paytha/Donje)', 'Bus 51 (PMC ↔ Khanapur)'],
-    nearestStopEn: 'Donje Phata / Sinhagad Paytha (Foothills)',
+    directBuses: [
+      'Bus 50 (Direct: Swargate ↔ Sinhagad Paytha/Donje Base)',
+      'Bus 51 (Connecting: PMC ↔ Dhayari/Khanapur - transfer required at Khanapur)',
+    ],
+    nearestStopEn: 'Donje Phata / Sinhagad Paytha (Base Foothills)',
     nearestStopMr: 'डोणजे फाटा / सिंहगड पायथा',
-    busOriginEn: 'Swargate Bus Terminal & PMC Bhavan',
-    busOriginMr: 'स्वारगेट बस स्थानक व मनपा भवन',
-    busFrequencyEn: 'Every 30 minutes from 06:30 AM',
-    busFrequencyMr: 'दर ३० मिनिटांनी (सकाळी ६:३० पासून)',
+    busOriginEn: 'Swargate Bus Terminal (Platform 3)',
+    busOriginMr: 'स्वारगेट बस स्थानक (फलाट ३)',
+    busFrequencyEn: 'Every 30 minutes from 06:30 AM (Last return bus from base: 07:45 PM)',
+    busFrequencyMr: 'दर ३० मिनिटांनी सकाळी ६:३० पासून (पायथ्यावरून शेवटची परतीची बस: रात्री ७:४५)',
     busFareInr: 25,
     metroAdvised: true,
-    specialTransitEn: 'Take Metro Line 1 to Swargate Station, then take PMPML Bus 50 directly to Sinhagad foothills (Donje). From paytha, shared Jeeps (₹70) go to top or hike via Kalyan Darwaza.',
-    specialTransitMr: 'मेट्रो लाईन १ ने स्वारगेट स्थानकावर या, तिथून थेट पीएमपीएमएल बस क्र. ५० पकडून सिंहगड पायथ्याशी (डोणजे) पोहोचा. पायथ्यावरून गडावर जाण्यासाठी शेअर जीप (₹७०) किंवा पायी ट्रेक उपलब्ध आहे.',
+    specialTransitEn: 'Recommended Route: Take Metro Line 1 (Purple) to Swargate Station. Walk 2 minutes inside the underground multimodal concourse into Swargate PMPML Terminal and board Bus 50 (Swargate ↔ Sinhagad Paytha / Donje). Note: Bus 50 is the only direct route to Donje base village; Buses 51 & 52 terminate earlier along Sinhagad Road at Khanapur/Khadakwasla. From Donje Paytha, shared Jeeps (₹70/person) drive up to the top or hikers ascend the scenic Tanaji / Kalyan Darwaza trail (~2.5 hours).',
+    specialTransitMr: 'शिफारस केलेला मार्ग: मेट्रो मार्गिका १ (जांभळी) ने स्वारगेट स्थानकावर या. भूमिगत मार्गाने २ मिनिटे चालून थेट स्वारगेट पीएमपीएमएल बस स्थानकावर या आणि बस क्र. ५० (स्वारगेट ↔ सिंहगड पायथा/डोणजे) पकडा. टीप: बस ५० थेट डोणजे पायथ्यापर्यंत जाते; बस ५१ व ५२ आधीच (खानापूर/खडकवासला) संपतात. पायथ्यावरून गडावर जाण्यासाठी अधिकृत शेअर जीप (₹७०/व्यक्ती) किंवा तानाजी/कल्याण दरवाजा पायी ट्रेक (अडीच तास) उपलब्ध आहे.',
   },
   'rajgad-fort': {
     slug: 'rajgad-fort',
@@ -1384,6 +1390,34 @@ export function getPublicTransitRoute(
       stepsEn.push(`Alight at ${nearestMetroToDest.station.nameEn}. Take a quick connecting PMPML feeder bus or auto (${nearestMetroToDest.distanceKm} km, ~${nearestMetroToDest.walkingMinutes} mins walk, ₹10).`);
       stepsMr.push(`${nearestMetroToDest.station.nameMr} येथे उतरा. तिथून फीडर बस किंवा रिक्षाने ${nearestMetroToDest.distanceKm} किमी अंतर पार करा (अंदाजे ₹१०).`);
     }
+  } else if (directRule) {
+    // Specific curated landmark rule available (e.g. Sinhagad Fort, Rajgad, Torna, Lonavala)
+    transitType = directRule.specialTransitEn?.includes('train')
+      ? 'train_plus_local'
+      : directRule.metroAdvised
+      ? 'metro_plus_bus'
+      : 'intercity_bus';
+    estimatedCost = directRule.busFareInr;
+
+    if (directRule.metroAdvised && nearestMetroFromUser.distanceKm <= 3.5) {
+      const hubStation = directRule.busOriginEn.includes('Swargate') ? 'Swargate Metro Station' : 'Shivajinagar Metro Station';
+      const hubStationMr = directRule.busOriginMr.includes('स्वारगेट') ? 'स्वारगेट मेट्रो स्थानकावर' : 'शिवाजीनगर मेट्रो स्थानकावर';
+      stepsEn.push(`Take Pune Metro from ${nearestMetroFromUser.station.nameEn} to ${hubStation} (₹15 - ₹20).`);
+      stepsMr.push(`${nearestMetroFromUser.station.nameMr} वरून मेट्रो पकडून ${hubStationMr} या (₹१५ - ₹२०).`);
+    }
+
+    stepsEn.push(`Board ${directRule.directBuses ? directRule.directBuses.join(' or ') : 'direct transit'} from ${directRule.busOriginEn} (Fare: ₹${directRule.busFareInr}).`);
+    stepsMr.push(`${directRule.busOriginMr} वरून ${directRule.directBuses ? directRule.directBuses.join(' किंवा ') : 'थेट बस'} पकडा (तिकीट: ₹${directRule.busFareInr}).`);
+
+    stepsEn.push(`Alight at ${directRule.nearestStopEn} (${directRule.busFrequencyEn}).`);
+    stepsMr.push(`${directRule.nearestStopMr} येथे उतरा (${directRule.busFrequencyMr}).`);
+
+    if (directRule.specialTransitEn) {
+      stepsEn.push(`Transit Guidance: ${directRule.specialTransitEn}`);
+      if (directRule.specialTransitMr) {
+        stepsMr.push(`प्रवास मार्गदर्शक सूचना: ${directRule.specialTransitMr}`);
+      }
+    }
   } else if (gtfsCorridor && gtfsCorridor.hasDirectBus) {
     // Authentic PMPML GTFS Corridor Connection
     transitType = 'bus_only';
@@ -1397,23 +1431,6 @@ export function getPublicTransitRoute(
 
     stepsEn.push(`Alight at official PMPML Stop: "${gtfsCorridor.arrivalStop}". Walk ${gtfsCorridor.walkFromStopMeters}m (~${gtfsCorridor.walkMinutes} mins) directly into ${place.name} (Fare: ₹${busFare}).`);
     stepsMr.push(`अधिकृत पीएमपीएमएल थांबा: "${gtfsCorridor.arrivalStop}" येथे उतरा. तिथून ${gtfsCorridor.walkFromStopMeters} मी. (~${gtfsCorridor.walkMinutes} मिनिटे) चालून ${place.name_mr || place.name} मध्ये पोहोचा (तिकीट: ₹${busFare}).`);
-  } else if (directRule) {
-    // Specific rule available
-    transitType = directRule.specialTransitEn?.includes('train') ? 'train_plus_local' : 'intercity_bus';
-    estimatedCost = directRule.busFareInr;
-
-    if (directRule.metroAdvised && nearestMetroFromUser.distanceKm <= 2.5) {
-      const hubStation = directRule.busOriginEn.includes('Swargate') ? 'Swargate Metro Station' : 'Shivajinagar Metro Station';
-      const hubStationMr = directRule.busOriginMr.includes('स्वारगेट') ? 'स्वारगेट मेट्रो स्थानकावर' : 'शिवाजीनगर मेट्रो स्थानकावर';
-      stepsEn.push(`Take Pune Metro from ${nearestMetroFromUser.station.nameEn} to ${hubStation} (₹15 - ₹20).`);
-      stepsMr.push(`${nearestMetroFromUser.station.nameMr} वरून मेट्रो पकडून ${hubStationMr} या (₹१५ - ₹२०).`);
-    }
-
-    stepsEn.push(`Board ${directRule.directBuses ? directRule.directBuses.join(' or ') : 'direct transit'} from ${directRule.busOriginEn} (Fare: ₹${directRule.busFareInr}).`);
-    stepsMr.push(`${directRule.busOriginMr} वरून ${directRule.directBuses ? directRule.directBuses.join(' किंवा ') : 'थेट बस'} पकडा (तिकीट: ₹${directRule.busFareInr}).`);
-
-    stepsEn.push(`Alight at ${directRule.nearestStopEn} (${directRule.busFrequencyEn}).`);
-    stepsMr.push(`${directRule.nearestStopMr} येथे उतरा (${directRule.busFrequencyMr}).`);
   } else {
     // Generic Bus Connection
     transitType = 'bus_only';
@@ -1475,15 +1492,31 @@ export function getPublicTransitRoute(
       : directRule
       ? directRule.directBuses?.[0] || `${directRule.busOriginMr} वरून थेट बस`
       : `पीएमपीएमएल बस सेवा (${originLabelMr} पासून ~${totalCrowKm.toFixed(1)} किमी)`,
-    nearestMetro: {
-      stationNameEn: nearestMetroToDest.station.nameEn,
-      stationNameMr: nearestMetroToDest.station.nameMr,
-      lineNameEn: nearestMetroToDest.station.lineNameEn,
-      lineNameMr: nearestMetroToDest.station.lineNameMr,
-      distanceKm: nearestMetroToDest.distanceKm,
-      walkingMinutes: nearestMetroToDest.walkingMinutes,
-      lineColor: nearestMetroToDest.lineColor,
-    },
+    nearestMetro: isMetroViable
+      ? {
+          stationNameEn: nearestMetroToDest.station.nameEn,
+          stationNameMr: nearestMetroToDest.station.nameMr,
+          lineNameEn: nearestMetroToDest.station.lineNameEn,
+          lineNameMr: nearestMetroToDest.station.lineNameMr,
+          distanceKm: nearestMetroToDest.distanceKm,
+          walkingMinutes: nearestMetroToDest.walkingMinutes,
+          lineColor: nearestMetroToDest.lineColor,
+          isDirectWalk: true,
+        }
+      : directRule?.metroAdvised
+      ? {
+          stationNameEn: directRule.busOriginEn.includes('Swargate') ? 'Swargate Metro Station (Line 1)' : 'Shivajinagar Metro Station',
+          stationNameMr: directRule.busOriginMr.includes('स्वारगेट') ? 'स्वारगेट मेट्रो स्थानक (मार्गिका १)' : 'शिवाजीनगर मेट्रो स्थानक',
+          lineNameEn: 'Purple Line 1 (Multimodal Transit Hub)',
+          lineNameMr: 'जांभळी मार्गिका १ (मध्यवर्ती बस व मेट्रो जंक्शन)',
+          distanceKm: 0.1,
+          walkingMinutes: 2,
+          lineColor: '#7c3aed',
+          isDirectWalk: false,
+          transferNoteEn: `Take Metro Line 1 to ${directRule.busOriginEn.includes('Swargate') ? 'Swargate' : 'Shivajinagar'}, then board ${directRule.directBuses?.[0] || 'connecting PMPML bus'}.`,
+          transferNoteMr: `मेट्रोने ${directRule.busOriginMr.includes('स्वारगेट') ? 'स्वारगेट' : 'शिवाजीनगर'} स्थानकावर या, आणि तिथून ${directRule.directBuses?.[0] || 'बस'} पकडा.`,
+        }
+      : undefined,
     nearestBus: nearestBusInfo,
     stepByStepEn: stepsEn,
     stepByStepMr: stepsMr,

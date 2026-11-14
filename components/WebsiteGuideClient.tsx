@@ -887,7 +887,7 @@ export default function WebsiteGuideClient() {
                         {isMr ? '१०६ अस्सल ठिकाणे' : '106 Master Places'}
                       </strong>
                       <p style={{ fontSize: 12.5, color: 'var(--muted)', margin: '4px 0 0' }}>
-                        {isMr ? 'शून्य अनधिकृत नोंदी; एएसआय व महापालिकेचे अधिकृत संदर्भ.' : '0 placeholder places; 100% verified archival & field data.'}
+                        {isMr ? 'शून्य अनधिकृत नोंदी; त्रिस्तरीय पडताळणी व अधिकृत संदर्भ.' : '0 placeholder entries; Multi-tier verified archival provenance & physical coordinates.'}
                       </p>
                     </div>
 
@@ -998,8 +998,8 @@ export default function WebsiteGuideClient() {
 
                   <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--ink)', margin: 0 }}>
                     {isMr
-                      ? 'एक्सप्लोर पुणे हे कोणत्याही व्यावसायिक हेतूशिवाय, स्थानिक इतिहास अभ्यासक व तंत्रज्ञानप्रेमींनी पुणेकरांसाठी आणि जगभरातील पर्यटकांसाठी तयार केलेले अधिकृत डिजिटल पर्यटन मार्गदर्शक आहे. या पोर्टलचा मुख्य उद्देश म्हणजे पर्यटकांना दिशाभूल करणाऱ्या जाहिराती किंवा चुकीच्या माहितीपासून वाचवून अधिकृत, प्रमाणित आणि उपयुक्त माहिती देणे.'
-                      : 'Explore Pune is an authoritative, community-first digital field guide engineered to preserve, celebrate, and navigate the cultural capital of Maharashtra. Unlike generic review portals filled with outdated hours or spam, Explore Pune delivers 100% field-audited data directly cross-referenced against the Archaeological Survey of India (ASI), Maharashtra Tourism (MTDC), and municipal authorities.'}
+                      ? 'एक्सप्लोर पुणे हे कोणत्याही व्यावसायिक हेतूशिवाय, स्थानिक इतिहास अभ्यासक व तंत्रज्ञानप्रेमींनी पुणेकरांसाठी आणि जगभरातील पर्यटकांसाठी तयार केलेले अधिकृत डिजिटल पर्यटन मार्गदर्शक आहे. या पोर्टलचा मुख्य उद्देश म्हणजे पर्यटकांना दिशाभूल करणाऱ्या जाहिराती किंवा चुकीच्या माहितीपासून वाचवून त्रिस्तरीय पडताळणी केलेले अधिकृत, प्रमाणित आणि उपयुक्त संदर्भ देणे.'
+                      : 'Explore Pune is an authoritative, community-first digital field guide engineered to preserve, celebrate, and navigate the cultural capital of Maharashtra. Unlike generic review portals filled with outdated hours or spam, Explore Pune delivers multi-tier verified archival provenance and physical field data directly cross-referenced against the Archaeological Survey of India (ASI), Maharashtra Tourism (MTDC), and Poona District Gazetteers, with regular seasonal fee and timing audits.'}
                   </p>
 
                   <div style={{ background: 'var(--surface)', padding: 20, borderRadius: 14, border: '1.5px solid var(--line)' }}>
@@ -1789,7 +1789,7 @@ export default function WebsiteGuideClient() {
                         {isMr ? 'काही प्रश्न किंवा सूचना आहेत?' : 'Have feedback or spot a changed ticket fee?'}
                       </strong>
                       <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                        {isMr ? 'आमच्या स्वयंसेवक पथकाला थेट माहिती कळवा.' : 'Send feedback to our editorial team to keep Explore Pune 100% accurate.'}
+                        {isMr ? 'आमच्या संपादकीय पथकाला थेट माहिती कळवा जेणेकरून माहिती नेहमी अद्ययावत राहील.' : 'Send corrections to our editorial team to keep Explore Pune continuously verified and up-to-date.'}
                       </div>
                     </div>
                     <Link href="/about" className="btn" style={{ background: '#047857', color: '#fff', fontSize: 13, padding: '8px 16px', borderRadius: 999 }}>

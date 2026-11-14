@@ -12,18 +12,45 @@ const PlaceMap = dynamic(() => import('@/components/PlaceMapWrapper'), {
   ssr: false,
   loading: () => (
     <div
+      role="region"
+      aria-label="Loading interactive landmark map"
       style={{
         height: 380,
-        background: 'var(--line-light)',
+        background: 'linear-gradient(135deg, rgba(2, 132, 199, 0.05) 0%, rgba(241, 245, 249, 0.9) 100%)',
+        border: '1px solid var(--line)',
         borderRadius: 'var(--radius-md)',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 12,
         color: 'var(--muted)',
         fontSize: 14,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <span>🗺️ Loading Interactive Map…</span>
+      <div
+        style={{
+          width: 54,
+          height: 54,
+          borderRadius: '50%',
+          background: 'rgba(2, 132, 199, 0.12)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 26,
+        }}
+        aria-hidden="true"
+      >
+        🗺️
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 14, marginBottom: 2 }}>
+          Interactive Map &amp; GPS Coordinates
+        </strong>
+        <span style={{ fontSize: 12, color: 'var(--muted)' }}>Loading high-precision OpenStreetMap layer…</span>
+      </div>
     </div>
   ),
 });
@@ -32,18 +59,45 @@ const TransitRouteMap = dynamic(() => import('@/components/TransitRouteMap'), {
   ssr: false,
   loading: () => (
     <div
+      role="region"
+      aria-label="Loading public transit route map"
       style={{
         height: 320,
-        background: 'var(--line-light)',
+        background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(241, 245, 249, 0.9) 100%)',
+        border: '1px solid var(--line)',
         borderRadius: 'var(--radius-md)',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 12,
         color: 'var(--muted)',
         fontSize: 14,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <span>🚍 Loading Transit Route…</span>
+      <div
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: '50%',
+          background: 'rgba(124, 58, 237, 0.12)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 24,
+        }}
+        aria-hidden="true"
+      >
+        🚍
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        <strong style={{ display: 'block', color: 'var(--ink)', fontSize: 14, marginBottom: 2 }}>
+          Public Transit Geometry
+        </strong>
+        <span style={{ fontSize: 12, color: 'var(--muted)' }}>Calculating PMPML &amp; Metro corridor…</span>
+      </div>
     </div>
   ),
 });
@@ -2177,14 +2231,31 @@ export default function PlaceDetailClient({
                       ? activeTransit.nearestMetro.stationNameMr
                       : activeTransit.nearestMetro.stationNameEn}
                   </div>
-                  <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 10 }}>
-                    {isMr
-                      ? activeTransit.nearestMetro.lineNameMr
-                      : activeTransit.nearestMetro.lineNameEn}{' '}
-                    • ~{activeTransit.nearestMetro.distanceKm} km (
-                    ~{activeTransit.nearestMetro.walkingMinutes}{' '}
-                    {isMr ? 'मि. चालत' : 'min walk'})
-                  </div>
+                  {activeTransit.nearestMetro.transferNoteEn ? (
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: '#0369a1',
+                        background: 'rgba(3, 105, 161, 0.08)',
+                        border: '1px solid rgba(3, 105, 161, 0.2)',
+                        borderRadius: 6,
+                        padding: '6px 10px',
+                        marginBottom: 10,
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      💡 {isMr ? activeTransit.nearestMetro.transferNoteMr : activeTransit.nearestMetro.transferNoteEn}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 10 }}>
+                      {isMr
+                        ? activeTransit.nearestMetro.lineNameMr
+                        : activeTransit.nearestMetro.lineNameEn}{' '}
+                      • ~{activeTransit.nearestMetro.distanceKm} km (
+                      ~{activeTransit.nearestMetro.walkingMinutes}{' '}
+                      {isMr ? 'मि. चालत' : 'min walk'})
+                    </div>
+                  )}
                   <a
                     href="https://wa.me/919420101990?text=Hi"
                     target="_blank"
