@@ -154,6 +154,7 @@ export default function JourneySidebar({
     <aside
       role="navigation"
       aria-label="My Journey Navigation"
+      className="journey-sidebar"
       style={{
         width: '100%',
         maxWidth: 260,

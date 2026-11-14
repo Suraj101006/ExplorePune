@@ -327,6 +327,7 @@ export default function ReelStudioView({
 
       {/* Main Studio Two-Column Workspace */}
       <div
+        className="reel-studio-workspace"
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(300px, 360px) 1fr',

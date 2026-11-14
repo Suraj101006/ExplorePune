@@ -5269,3 +5269,45 @@ body.modal-open {
   }
 }
 
+/* =========================================================================
+   My Journey Responsive Layout & 9:16 Studio Mobile System
+   ========================================================================= */
+
+@media (max-width: 860px) {
+  .journey-grid-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .journey-sidebar {
+    max-width: 100% !important;
+    position: relative !important;
+    top: 0 !important;
+    margin-bottom: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .journey-sidebar > div:nth-child(2) {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+    gap: 8px !important;
+  }
+
+  .journey-sidebar button {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    width: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .reel-studio-workspace {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+}
+
