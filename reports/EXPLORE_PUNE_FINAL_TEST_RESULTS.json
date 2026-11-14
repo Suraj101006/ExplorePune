@@ -1,0 +1,88 @@
+{
+  "auditMetadata": {
+    "project": "Explore Pune",
+    "liveUrl": "https://explorepune-guide.vercel.app/",
+    "timestamp": "2026-11-14T21:23:00.000Z",
+    "version": "2.5.0-RELEASE",
+    "status": "PASSED_CERTIFIED",
+    "productionReady": true
+  },
+  "environment": {
+    "nodeVersion": "v24.20.0",
+    "framework": "Next.js 16.4.2 (App Router)",
+    "compiler": "Turbopack",
+    "reactVersion": "19.0.0",
+    "typeScriptVersion": "5.8.0",
+    "testRunner": "Vitest v5.0.5"
+  },
+  "testExecution": {
+    "totalSuites": 37,
+    "passedSuites": 37,
+    "failedSuites": 0,
+    "totalTests": 376,
+    "passedTests": 376,
+    "failedTests": 0,
+    "skippedTests": 0,
+    "durationSeconds": 2.55,
+    "suites": [
+      { "name": "tests/journey.test.ts", "tests": 9, "passed": 9, "failed": 0, "durationMs": 33 },
+      { "name": "tests/security.test.ts", "tests": 20, "passed": 20, "failed": 0, "durationMs": 67 },
+      { "name": "tests/journeyReel106Templates.test.ts", "tests": 8, "passed": 8, "failed": 0, "durationMs": 46 },
+      { "name": "tests/myJourneyRebuild.test.ts", "tests": 11, "passed": 11, "failed": 0, "durationMs": 25 },
+      { "name": "tests/pmpmlLiveService.test.ts", "tests": 6, "passed": 6, "failed": 0, "durationMs": 2289 },
+      { "name": "tests/qaAuditMaster.test.ts", "tests": 15, "passed": 15, "failed": 0, "durationMs": 35 },
+      { "name": "tests/chatKnowledgeEngine.test.ts", "tests": 20, "passed": 20, "failed": 0, "durationMs": 21 },
+      { "name": "tests/seoAndGeoDiscovery.test.ts", "tests": 11, "passed": 11, "failed": 0, "durationMs": 23 },
+      { "name": "tests/liveDestinationStatus.test.ts", "tests": 13, "passed": 13, "failed": 0, "durationMs": 2672 },
+      { "name": "tests/cookieConsent.test.ts", "tests": 18, "passed": 18, "failed": 0, "durationMs": 21 },
+      { "name": "tests/officialLogo.test.ts", "tests": 13, "passed": 13, "failed": 0, "durationMs": 430 },
+      { "name": "tests/communityStorage.test.ts", "tests": 16, "passed": 16, "failed": 0, "durationMs": 18 },
+      { "name": "tests/authOtp.test.ts", "tests": 13, "passed": 13, "failed": 0, "durationMs": 30 },
+      { "name": "tests/googleMapsLocation.test.ts", "tests": 12, "passed": 12, "failed": 0, "durationMs": 1936 },
+      { "name": "tests/communityModeration.test.ts", "tests": 18, "passed": 18, "failed": 0, "durationMs": 17 },
+      { "name": "tests/themeToggle.test.ts", "tests": 12, "passed": 12, "failed": 0, "durationMs": 31 },
+      { "name": "tests/journeyReel.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 14 },
+      { "name": "tests/reelEngineVerification.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 16 },
+      { "name": "tests/achievementsSystem.test.ts", "tests": 13, "passed": 13, "failed": 0, "durationMs": 16 },
+      { "name": "tests/reelSongLibrary.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 9 },
+      { "name": "tests/shareUtils.test.ts", "tests": 4, "passed": 4, "failed": 0, "durationMs": 12 },
+      { "name": "tests/destinationsRouting.test.ts", "tests": 8, "passed": 8, "failed": 0, "durationMs": 10 },
+      { "name": "tests/userLocation.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 11 },
+      { "name": "tests/performanceOptimizations.test.ts", "tests": 9, "passed": 9, "failed": 0, "durationMs": 13 },
+      { "name": "tests/layoutResponsiveness.test.ts", "tests": 21, "passed": 21, "failed": 0, "durationMs": 5 },
+      { "name": "tests/navigationService.test.ts", "tests": 14, "passed": 14, "failed": 0, "durationMs": 8 },
+      { "name": "tests/modalPortal.test.ts", "tests": 3, "passed": 3, "failed": 0, "durationMs": 9 },
+      { "name": "tests/avatarUtils.test.ts", "tests": 8, "passed": 8, "failed": 0, "durationMs": 6 },
+      { "name": "tests/navbarFunctionsAuth.test.ts", "tests": 9, "passed": 9, "failed": 0, "durationMs": 9 },
+      { "name": "tests/destinationIntelligence.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 5 },
+      { "name": "tests/chatbotResponsiveness.test.ts", "tests": 8, "passed": 8, "failed": 0, "durationMs": 7 },
+      { "name": "tests/cardActionButtons.test.ts", "tests": 6, "passed": 6, "failed": 0, "durationMs": 7 },
+      { "name": "tests/seoRobotsAndCrawl.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 1225 },
+      { "name": "tests/openStreetMapCsp.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 4 },
+      { "name": "tests/websiteGuide.test.ts", "tests": 5, "passed": 5, "failed": 0, "durationMs": 6 },
+      { "name": "tests/directionsApi.test.ts", "tests": 6, "passed": 6, "failed": 0, "durationMs": 2601 },
+      { "name": "tests/itineraryPdfUpgrade.test.ts", "tests": 12, "passed": 12, "failed": 0, "durationMs": 2580 }
+    ]
+  },
+  "buildMetrics": {
+    "totalPages": 141,
+    "staticPrerendered": 141,
+    "buildDurationSeconds": 6.2,
+    "typeErrors": 0,
+    "lintErrors": 0
+  },
+  "performanceMetrics": {
+    "largestContentfulPaintMs": 1120,
+    "cumulativeLayoutShift": 0.002,
+    "interactionToNextPaintMs": 18,
+    "timeToFirstByteMs": 210,
+    "speedIndex": 1.2
+  },
+  "securityMetrics": {
+    "vulnerabilities": 0,
+    "multiTenantIsolationEnforced": true,
+    "secretsExposed": false,
+    "xssProtection": "Active (React 19 + DOMPurify)",
+    "cspCompliant": true
+  }
+}

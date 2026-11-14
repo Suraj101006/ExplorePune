@@ -5,7 +5,7 @@ import path from 'node:path';
 describe('Layout Responsiveness & Viewport Constraint Benchmarks', () => {
   const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
 
-  const VIEWPORT_WIDTHS = [1440, 1024, 768, 390, 360];
+  const VIEWPORT_WIDTHS = [1920, 1440, 1366, 1024, 768, 430, 390, 375, 360, 320];
 
   VIEWPORT_WIDTHS.forEach((viewportWidth) => {
     it(`verifies responsive column sizing and card width at ${viewportWidth}px`, () => {
