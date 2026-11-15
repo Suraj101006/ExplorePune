@@ -1,13 +1,22 @@
 import { describe, it, expect } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  ALL_106_PLACES,
+  EXPERIENCE_CATEGORIES,
+  ITINERARY_TEMPLATES,
+  EXPERIENCE_STORIES_DATA,
+  FORTS_ADVENTURE_DATA,
+  TASTE_OF_PUNE_DATA,
+  SEASONS_DATA,
+  HIDDEN_GEMS_DATA,
+} from '@/lib/experienceData';
 
-describe('Experience Page & Cinematic Visual System (/experience)', () => {
+describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)', () => {
   const rootDir = path.resolve(__dirname, '..');
   const pagePath = path.join(rootDir, 'app/experience/page.tsx');
   const cssPath = path.join(rootDir, 'app/experience/experience.css');
   const canvasPath = path.join(rootDir, 'components/experience/ExperienceCanvas.tsx');
-  const audioPath = path.join(rootDir, 'components/experience/ExperienceAudio.tsx');
   const appHeaderPath = path.join(rootDir, 'components/AppHeader.tsx');
 
   it('1. Experience page route exists and dynamically imports Three.js WebGL canvas without SSR', () => {
@@ -17,19 +26,29 @@ describe('Experience Page & Cinematic Visual System (/experience)', () => {
     expect(content).toContain("import('@/components/experience/ExperienceCanvas')");
     expect(content).toContain('ssr: false');
     expect(content).toContain('<ExperienceCanvas');
-    expect(content).toContain('<ExperienceControls');
+    expect(content).toContain('application/ld+json');
+    expect(content).toContain('TouristDestination');
   });
 
-  it('2. Experience page renders all seven mandatory cinematic scenes in sequence', () => {
+  it('2. Experience page renders all 15 discovery and exploration sections in sequence', () => {
     const content = fs.readFileSync(pagePath, 'utf8');
 
-    expect(content).toContain('<ScenePortal');
-    expect(content).toContain('<SceneInfiniteUniverse');
-    expect(content).toContain('<SceneKineticTypography');
-    expect(content).toContain('<SceneVisualGallery');
-    expect(content).toContain('<SceneInteractive3D');
-    expect(content).toContain('<SceneMotionLab');
-    expect(content).toContain('<SceneGrandFinale');
+    expect(content).toContain('<ExperienceHero');
+    expect(content).toContain('<ExperienceNavSticky');
+    expect(content).toContain('<ExperienceCategories');
+    expect(content).toContain('<ExperienceMap');
+    expect(content).toContain('<HeritageStorySection');
+    expect(content).toContain('<AdventureFortsSection');
+    expect(content).toContain('<TasteOfPuneSection');
+    expect(content).toContain('<CultureTraditionsSection');
+    expect(content).toContain('<NatureEscapesSection');
+    expect(content).toContain('<HiddenGemsSection');
+    expect(content).toContain('<SeasonalExperienceSection');
+    expect(content).toContain('<PersonalizedFinder');
+    expect(content).toContain('<ItineraryBuilderSection');
+    expect(content).toContain('<ExperienceStoriesSection');
+    expect(content).toContain('<CommunityProgressSection');
+    expect(content).toContain('<ExperienceFooterCta');
   });
 
   it('3. Three.js ExperienceCanvas configures 3D particle systems, lighting, and memory cleanup', () => {
@@ -38,22 +57,11 @@ describe('Experience Page & Cinematic Visual System (/experience)', () => {
 
     expect(content).toContain('new THREE.WebGLRenderer');
     expect(content).toContain('new THREE.Points');
-    expect(content).toContain('new THREE.IcosahedronGeometry');
-    expect(content).toContain('new THREE.TorusGeometry');
     expect(content).toContain('dispose()');
     expect(content).toContain('cancelAnimationFrame');
   });
 
-  it('4. ExperienceAudio enforces sound OFF by default with explicit user gesture activation', () => {
-    expect(fs.existsSync(audioPath)).toBe(true);
-    const content = fs.readFileSync(audioPath, 'utf8');
-
-    expect(content).toContain('const [isPlaying, setIsPlaying] = useState(false)');
-    expect(content).toContain('AudioContext');
-    expect(content).toContain('Sound Off');
-  });
-
-  it('5. AppHeader navbar integrates the Experience route across desktop and mobile', () => {
+  it('4. AppHeader navbar integrates the Experience route across desktop and mobile', () => {
     const content = fs.readFileSync(appHeaderPath, 'utf8');
 
     expect(content).toContain("href: '/experience'");
@@ -61,13 +69,48 @@ describe('Experience Page & Cinematic Visual System (/experience)', () => {
     expect(content).toContain('Sparkles');
   });
 
-  it('6. experience.css includes scoped architecture, responsive breakpoints, and reduced-motion compliance', () => {
+  it('5. experience.css includes scoped architecture, responsive breakpoints, and reduced-motion compliance', () => {
     expect(fs.existsSync(cssPath)).toBe(true);
     const content = fs.readFileSync(cssPath, 'utf8');
 
     expect(content).toContain('.experience-root');
     expect(content).toContain('.exp-canvas-container');
+    expect(content).toContain('@media (max-width: 1024px)');
     expect(content).toContain('@media (max-width: 768px)');
     expect(content).toContain('@media (prefers-reduced-motion: reduce)');
+  });
+
+  it('6. Experience Data Catalog verifies all 106 destinations, 16 categories, and 8 itinerary templates', () => {
+    expect(ALL_106_PLACES.length).toBe(106);
+    expect(EXPERIENCE_CATEGORIES.length).toBe(16);
+    expect(ITINERARY_TEMPLATES.length).toBe(8);
+    expect(EXPERIENCE_STORIES_DATA.length).toBe(6);
+    expect(FORTS_ADVENTURE_DATA.length).toBe(7);
+    expect(TASTE_OF_PUNE_DATA.length).toBe(6);
+    expect(SEASONS_DATA.length).toBe(4);
+    expect(HIDDEN_GEMS_DATA.length).toBe(6);
+
+    // Verify all 16 categories resolve places
+    EXPERIENCE_CATEGORIES.forEach((cat) => {
+      const matching = ALL_106_PLACES.filter(cat.slugFilter);
+      expect(matching.length).toBeGreaterThan(0);
+    });
+
+    // Verify all 8 templates have valid destination slugs
+    ITINERARY_TEMPLATES.forEach((tmpl) => {
+      expect(tmpl.stops.length).toBeGreaterThanOrEqual(3);
+      tmpl.stops.forEach((slug) => {
+        const found = ALL_106_PLACES.some((p) => p.slug === slug);
+        expect(found).toBe(true);
+      });
+    });
+
+    // Verify coordinates fall within Maharashtra / Pune regional bounds
+    ALL_106_PLACES.forEach((place) => {
+      expect(place.latitude).toBeGreaterThan(18.0);
+      expect(place.latitude).toBeLessThan(19.5);
+      expect(place.longitude).toBeGreaterThan(73.0);
+      expect(place.longitude).toBeLessThan(75.0);
+    });
   });
 });
