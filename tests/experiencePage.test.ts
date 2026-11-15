@@ -52,6 +52,7 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
     expect(content).toContain('<CommunityProgressSection');
     expect(content).toContain('<ExperienceFooterCta');
     expect(content).toContain('<ExperienceCursor');
+    expect(content).toContain('<ExperienceCinematicIntro');
   });
 
   it('3. Three.js ExperienceCanvas configures 3D particle systems, lighting, and memory cleanup', () => {
@@ -170,5 +171,30 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
     expect(content).toContain("scrollTo('world3d')");
     expect(content).toContain("scrollTo('categories')");
     expect(content).toContain("scrollTo('map')");
+  });
+
+  it('11. ExperienceCinematicIntro orchestrates 10-second telemetry, kinetic typography, and shutter wipe', () => {
+    const introPath = path.join(rootDir, 'components/experience/ExperienceCinematicIntro.tsx');
+    expect(fs.existsSync(introPath)).toBe(true);
+    const content = fs.readFileSync(introPath, 'utf8');
+
+    expect(content).toContain('COORDINATES: 18.5204° N, 73.8567° E');
+    expect(content).toContain('exp-split-char');
+    expect(content).toContain('Where basalt meets the clouds');
+    expect(content).toContain('exp-dial-indicator');
+    expect(content).toContain('exp-shutter-blade');
+    expect(content).toContain('prefers-reduced-motion');
+  });
+
+  it('12. ExperienceAudio synthesizes harmonic drone via Web Audio API with gain control and cleanup', () => {
+    const audioPath = path.join(rootDir, 'components/experience/ExperienceAudio.tsx');
+    expect(fs.existsSync(audioPath)).toBe(true);
+    const content = fs.readFileSync(audioPath, 'utf8');
+
+    expect(content).toContain('window.AudioContext');
+    expect(content).toContain('createOscillator');
+    expect(content).toContain('createGain');
+    expect(content).toContain('createBiquadFilter');
+    expect(content).toContain('setTargetAtTime');
   });
 });

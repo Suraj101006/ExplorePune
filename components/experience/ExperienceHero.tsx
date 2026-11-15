@@ -1,20 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Sparkles, MapPin, Compass, ArrowDown, Volume2, VolumeX, ShieldCheck } from 'lucide-react';
+import { Sparkles, MapPin, Compass, ArrowDown, ShieldCheck } from 'lucide-react';
+import ExperienceAudio from '@/components/experience/ExperienceAudio';
 
 interface ExperienceHeroProps {
   isMr: boolean;
 }
 
 export default function ExperienceHero({ isMr }: ExperienceHeroProps) {
-  const [isMuted, setIsMuted] = useState(true);
-
-  const toggleSound = () => {
-    setIsMuted(!isMuted);
-  };
-
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -30,7 +25,7 @@ export default function ExperienceHero({ isMr }: ExperienceHeroProps) {
           className="exp-hero-video"
           autoPlay
           loop
-          muted={isMuted}
+          muted
           playsInline
           poster="/videos/explore-pune-metro-transit-poster.jpg"
         >
@@ -47,15 +42,7 @@ export default function ExperienceHero({ isMr }: ExperienceHeroProps) {
           <span>{isMr ? 'पुणे अनुभव • Discover More. Experience Pune.' : 'Experience Pune • Beyond the Ordinary'}</span>
         </div>
 
-        <button
-          type="button"
-          onClick={toggleSound}
-          className="exp-audio-btn"
-          aria-label={isMuted ? 'Unmute cinematic ambient sound' : 'Mute cinematic ambient sound'}
-        >
-          {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-          <span>{isMuted ? 'Sound Off' : 'Sound On'}</span>
-        </button>
+        <ExperienceAudio />
       </div>
 
       {/* Main Content */}

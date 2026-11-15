@@ -4192,6 +4192,444 @@
   }
 }
 
+/* ==========================================================================
+   CINEMATIC INTRO OVERTURE (FIRST 10 SECONDS EXPERIENCE)
+   ========================================================================== */
+
+.exp-intro-curtain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #05070a;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  user-select: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.85s;
+}
+
+.exp-intro-exit {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.exp-intro-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.exp-intro-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(4, 6, 10, 0.95) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.exp-intro-scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+.exp-intro-hud {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+}
+
+.exp-intro-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exp-telemetry-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 12px #10b981;
+  animation: expPulseDot 1.5s infinite;
+}
+
+@keyframes expPulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.exp-telemetry-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  max-width: 600px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exp-intro-skip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.exp-intro-skip-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.exp-intro-stage {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+  flex: 1;
+}
+
+/* Phase 1: Kinetic Typography */
+.exp-intro-typography {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-intro-typography.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.exp-intro-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #f59e0b;
+  text-transform: uppercase;
+}
+
+.exp-intro-kicker-bar {
+  width: 24px;
+  height: 1px;
+  background: #f59e0b;
+}
+
+.exp-intro-title {
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 16px 0 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.exp-split-word {
+  display: inline-flex;
+}
+
+.exp-split-char {
+  display: inline-block;
+  animation: expCharReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes expCharReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) rotateX(-45deg);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+    filter: blur(0);
+  }
+}
+
+.exp-split-gold {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.exp-intro-quote {
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-style: italic;
+  color: #cbd5e1;
+  max-width: 660px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Phase 2: Calibration & Dial Gauge */
+.exp-intro-calibration {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-top: 24px;
+}
+
+.exp-intro-calibration.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.exp-intro-dial-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.exp-intro-dial-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.exp-dial-track {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.exp-dial-indicator {
+  stroke: #f59e0b;
+  transition: stroke-dashoffset 0.08s linear;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+}
+
+.exp-dial-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.exp-dial-percent {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 24px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.exp-dial-label {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.exp-intro-preview-pills {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.exp-preview-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #cbd5e1;
+}
+
+.exp-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+/* Phase 3: Invitation Actions */
+.exp-intro-actions {
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-top: 28px;
+}
+
+.exp-intro-actions.is-ready {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.exp-ready-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #fbbf24;
+  margin-bottom: 20px;
+}
+
+.exp-intro-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.exp-intro-enter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.exp-intro-enter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(245, 158, 11, 0.7);
+}
+
+.exp-intro-silent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.exp-intro-silent-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.exp-intro-autocount {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 14px;
+}
+
+/* Shutter Blades Curtain Wipe */
+.exp-shutter-blade {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #05070a;
+  z-index: 100;
+  pointer-events: none;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.exp-shutter-top {
+  top: 0;
+  transform: translateY(-101%);
+}
+
+.exp-shutter-bottom {
+  bottom: 0;
+  transform: translateY(101%);
+}
+
+.exp-intro-exit .exp-shutter-top {
+  transform: translateY(0);
+}
+
+.exp-intro-exit .exp-shutter-bottom {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .exp-intro-hud {
+    padding: 16px 20px;
+  }
+  .exp-telemetry-mono {
+    display: none;
+  }
+  .exp-intro-stage {
+    padding: 0 16px;
+  }
+  .exp-intro-title {
+    font-size: 2.2rem;
+  }
+  .exp-intro-quote {
+    font-size: 0.95rem;
+  }
+  .exp-intro-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .exp-intro-btn-group button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

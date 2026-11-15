@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Film } from 'lucide-react';
 
 interface ExperienceNavStickyProps {
   isMr: boolean;
+  onReplayIntro?: () => void;
 }
 
-export default function ExperienceNavSticky({ isMr }: ExperienceNavStickyProps) {
+export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceNavStickyProps) {
   const [activeSection, setActiveSection] = useState('hero');
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -63,6 +65,19 @@ export default function ExperienceNavSticky({ isMr }: ExperienceNavStickyProps) 
     <nav className="exp-nav-sticky" aria-label="Experience Pune sections navigation">
       <div className="exp-nav-track">
         <div className="exp-nav-items-scroll">
+          {onReplayIntro && (
+            <button
+              type="button"
+              onClick={onReplayIntro}
+              className="exp-nav-item exp-nav-replay-intro"
+              title={isMr ? 'सिनेमॅटिक प्रस्तावना पुन्हा पाहा' : 'Replay 10s Cinematic Overture'}
+              aria-label="Replay Cinematic Overture"
+            >
+              <Film size={12} style={{ marginRight: 4, display: 'inline' }} />
+              <span>{isMr ? 'प्रस्तावना' : 'Overture'}</span>
+            </button>
+          )}
+
           {sections.map((s) => (
             <button
               key={s.id}

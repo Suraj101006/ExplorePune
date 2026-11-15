@@ -26,6 +26,7 @@ const ExperienceWorld3D = dynamic(
 
 // Custom Interactive Trailing Cursor
 import ExperienceCursor from '@/components/experience/ExperienceCursor';
+import ExperienceCinematicIntro from '@/components/experience/ExperienceCinematicIntro';
 
 // 15 Comprehensive Experience Sections & Next-Gen Storytelling
 import ExperienceHero from '@/components/experience/ExperienceHero';
@@ -49,6 +50,31 @@ import ExperienceFooterCta from '@/components/experience/ExperienceFooterCta';
 
 export default function ExperiencePage() {
   const { isMr } = useLanguage();
+  const [showIntro, setShowIntro] = React.useState<boolean>(true);
+  const [isClient, setIsClient] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+    try {
+      const dismissed = sessionStorage.getItem('ep_experience_intro_dismissed');
+      if (dismissed === 'true') {
+        setShowIntro(false);
+      }
+    } catch (e) {
+      // Graceful fallback in sandboxed iframe/storage environments
+    }
+  }, []);
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    try {
+      sessionStorage.setItem('ep_experience_intro_dismissed', 'true');
+    } catch (e) {}
+  };
+
+  const handleReplayIntro = () => {
+    setShowIntro(true);
+  };
 
   // Structured Data (JSON-LD) for SEO, GEO & AI Search Discovery
   const jsonLdData = {
@@ -99,6 +125,14 @@ export default function ExperiencePage() {
 
   return (
     <main className="experience-root">
+      {/* Extraordinary 10-Second Cinematic Opening Overture (Code of Sagar & Studio Macaco style) */}
+      {showIntro && isClient && (
+        <ExperienceCinematicIntro
+          onComplete={handleIntroComplete}
+          isMr={isMr}
+        />
+      )}
+
       {/* JSON-LD Schema Script */}
       <script
         type="application/ld+json"
@@ -116,7 +150,7 @@ export default function ExperiencePage() {
       <div className="exp-grid-overlay" aria-hidden="true" />
 
       {/* Sticky Quick-Navigation Bar */}
-      <ExperienceNavSticky isMr={isMr} />
+      <ExperienceNavSticky isMr={isMr} onReplayIntro={handleReplayIntro} />
 
       {/* Interconnected Experience Sections */}
       <div className="exp-content-wrapper">
