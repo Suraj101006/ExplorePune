@@ -30,16 +30,18 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
     expect(content).toContain('TouristDestination');
   });
 
-  it('2. Experience page renders all 15 discovery and exploration sections in sequence', () => {
+  it('2. Experience page renders all discovery and next-gen storytelling sections in sequence', () => {
     const content = fs.readFileSync(pagePath, 'utf8');
 
     expect(content).toContain('<ExperienceHero');
-    expect(content).toContain('<ExperienceNavSticky');
+    expect(content).toContain('<ExperienceWorld3D');
+    expect(content).toContain('<ExperiencePinnedJourney');
     expect(content).toContain('<ExperienceCategories');
     expect(content).toContain('<ExperienceMap');
     expect(content).toContain('<HeritageStorySection');
     expect(content).toContain('<AdventureFortsSection');
     expect(content).toContain('<TasteOfPuneSection');
+    expect(content).toContain('<ExperienceCuriosityCabinet');
     expect(content).toContain('<CultureTraditionsSection');
     expect(content).toContain('<NatureEscapesSection');
     expect(content).toContain('<HiddenGemsSection');
@@ -49,6 +51,7 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
     expect(content).toContain('<ExperienceStoriesSection');
     expect(content).toContain('<CommunityProgressSection');
     expect(content).toContain('<ExperienceFooterCta');
+    expect(content).toContain('<ExperienceCursor');
   });
 
   it('3. Three.js ExperienceCanvas configures 3D particle systems, lighting, and memory cleanup', () => {
@@ -112,5 +115,60 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
       expect(place.longitude).toBeGreaterThan(73.0);
       expect(place.longitude).toBeLessThan(75.0);
     });
+  });
+
+  it('7. ExperienceWorld3D configures Three.js terrain, landmark beacons, raycaster, and cleanup', () => {
+    const world3dPath = path.join(rootDir, 'components/experience/ExperienceWorld3D.tsx');
+    expect(fs.existsSync(world3dPath)).toBe(true);
+    const content = fs.readFileSync(world3dPath, 'utf8');
+
+    expect(content).toContain('new THREE.WebGLRenderer');
+    expect(content).toContain('new THREE.PlaneGeometry');
+    expect(content).toContain('new THREE.Raycaster');
+    expect(content).toContain('shaniwar-wada');
+    expect(content).toContain('sinhagad-fort');
+    expect(content).toContain('aga-khan-palace');
+    expect(content).toContain('pataleshwar-cave-temple');
+    expect(content).toContain('dispose()');
+  });
+
+  it('8. ExperiencePinnedJourney implements epoch storytelling across 4 historical eras', () => {
+    const journeyPath = path.join(rootDir, 'components/experience/ExperiencePinnedJourney.tsx');
+    expect(fs.existsSync(journeyPath)).toBe(true);
+    const content = fs.readFileSync(journeyPath, 'utf8');
+
+    expect(content).toContain('8th Century CE');
+    expect(content).toContain('17th Century CE');
+    expect(content).toContain('18th Century CE');
+    expect(content).toContain('19th & 20th Century CE');
+    expect(content).toContain('The Basalt Monoliths');
+    expect(content).toContain('The Swarajya Bastions');
+    expect(content).toContain('The Imperial Peshwa Court');
+    expect(content).toContain('The Crucible of Freedom & Reform');
+  });
+
+  it('9. ExperienceCuriosityCabinet features tactile heritage relics and curiosity radar', () => {
+    const cabinetPath = path.join(rootDir, 'components/experience/ExperienceCuriosityCabinet.tsx');
+    expect(fs.existsSync(cabinetPath)).toBe(true);
+    const content = fs.readFileSync(cabinetPath, 'utf8');
+
+    expect(content).toContain('tambat-copper-bamb');
+    expect(content).toContain('peshwa-rajmudra');
+    expect(content).toContain('tanaji-maratha-dhal');
+    expect(content).toContain('gandhi-charkha');
+    expect(content).toContain('vintage-paratrooper-bicycle');
+    expect(content).toContain('HERITAGE_RELICS');
+    expect(content).toContain('CURIOSITY_TRIVIA');
+  });
+
+  it('10. ExperienceHero renders reference-inspired subtitle and quick action controls', () => {
+    const heroPath = path.join(rootDir, 'components/experience/ExperienceHero.tsx');
+    expect(fs.existsSync(heroPath)).toBe(true);
+    const content = fs.readFileSync(heroPath, 'utf8');
+
+    expect(content).toContain('Discover the city beyond its streets.');
+    expect(content).toContain("scrollTo('world3d')");
+    expect(content).toContain("scrollTo('categories')");
+    expect(content).toContain("scrollTo('map')");
   });
 });

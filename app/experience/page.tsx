@@ -15,14 +15,28 @@ const ExperienceCanvas = dynamic(
   }
 );
 
-// 15 Experience Sections
+// Dynamic 3D World Component
+const ExperienceWorld3D = dynamic(
+  () => import('@/components/experience/ExperienceWorld3D'),
+  {
+    ssr: false,
+    loading: () => <div className="exp-section exp-world3d-section" style={{ minHeight: 600 }} />,
+  }
+);
+
+// Custom Interactive Trailing Cursor
+import ExperienceCursor from '@/components/experience/ExperienceCursor';
+
+// 15 Comprehensive Experience Sections & Next-Gen Storytelling
 import ExperienceHero from '@/components/experience/ExperienceHero';
 import ExperienceNavSticky from '@/components/experience/ExperienceNavSticky';
+import ExperiencePinnedJourney from '@/components/experience/ExperiencePinnedJourney';
 import ExperienceCategories from '@/components/experience/ExperienceCategories';
 import ExperienceMap from '@/components/experience/ExperienceMap';
 import HeritageStorySection from '@/components/experience/HeritageStorySection';
 import AdventureFortsSection from '@/components/experience/AdventureFortsSection';
 import TasteOfPuneSection from '@/components/experience/TasteOfPuneSection';
+import ExperienceCuriosityCabinet from '@/components/experience/ExperienceCuriosityCabinet';
 import CultureTraditionsSection from '@/components/experience/CultureTraditionsSection';
 import NatureEscapesSection from '@/components/experience/NatureEscapesSection';
 import HiddenGemsSection from '@/components/experience/HiddenGemsSection';
@@ -46,7 +60,7 @@ export default function ExperiencePage() {
         name: 'Experience Pune — Immersive Tourism Discovery Platform',
         alternateName: 'पुणे अनुभव',
         description:
-          'Comprehensive immersive tourism discovery platform exploring 106 verified destinations, Maratha forts, Peshwa heritage wadas, authentic culinary institutions, and seasonal itineraries across Pune, Maharashtra.',
+          'Next-generation immersive tourism discovery platform exploring 106 verified destinations, 3D interactive terrain, Maratha forts, Peshwa heritage wadas, authentic culinary institutions, and seasonal itineraries across Pune, Maharashtra.',
         url: 'https://explorepune-guide.vercel.app/experience',
         geo: {
           '@type': 'GeoCoordinates',
@@ -60,6 +74,7 @@ export default function ExperiencePage() {
           'Culinary Tourism',
           'Spiritual Pilgrimage',
           'Cultural Tourism',
+          '3D Virtual Tourism',
         ],
       },
       {
@@ -93,6 +108,9 @@ export default function ExperiencePage() {
       {/* Subtle Three.js Fixed Background WebGL Starfield/Particles Canvas */}
       <ExperienceCanvas currentScene={1} />
 
+      {/* Interactive Trailing Cursor (Desktop) */}
+      <ExperienceCursor />
+
       {/* Atmospheric Overlays */}
       <div className="exp-vignette" aria-hidden="true" />
       <div className="exp-grid-overlay" aria-hidden="true" />
@@ -100,10 +118,16 @@ export default function ExperiencePage() {
       {/* Sticky Quick-Navigation Bar */}
       <ExperienceNavSticky isMr={isMr} />
 
-      {/* 15 Interconnected Experience Sections */}
+      {/* Interconnected Experience Sections */}
       <div className="exp-content-wrapper">
         {/* Section 01: Cinematic Hero */}
         <ExperienceHero isMr={isMr} />
+
+        {/* Signature 3D Experience: Explore Pune as a Digital World */}
+        <ExperienceWorld3D isMr={isMr} />
+
+        {/* Advanced Scroll-Based Epoch Storytelling (Code of Sagar style) */}
+        <ExperiencePinnedJourney isMr={isMr} />
 
         {/* Section 02: 16 Discovery Categories */}
         <ExperienceCategories isMr={isMr} />
@@ -119,6 +143,9 @@ export default function ExperiencePage() {
 
         {/* Section 06: Taste of Pune (Culinary Magazine) */}
         <TasteOfPuneSection isMr={isMr} />
+
+        {/* Playful Interactive Discovery: Cabinet of Curiosities (Studio Macaco style) */}
+        <ExperienceCuriosityCabinet isMr={isMr} />
 
         {/* Section 07: Culture & Living Local Traditions */}
         <CultureTraditionsSection isMr={isMr} />

@@ -12,11 +12,14 @@ export default function ExperienceNavSticky({ isMr }: ExperienceNavStickyProps) 
 
   const sections = [
     { id: 'hero', label: isMr ? 'मुख्य' : 'Intro' },
+    { id: 'world3d', label: isMr ? '३डी जग' : '3D World' },
+    { id: 'pinned-journey', label: isMr ? '४ युगे' : 'Epochs' },
     { id: 'categories', label: isMr ? '१६ श्रेणी' : 'Categories' },
     { id: 'map', label: isMr ? 'नकाशा' : 'Map' },
     { id: 'heritage', label: isMr ? 'वारसा' : 'Heritage' },
     { id: 'forts', label: isMr ? 'किल्ले' : 'Forts' },
     { id: 'food', label: isMr ? 'खाद्य' : 'Culinary' },
+    { id: 'curiosities', label: isMr ? 'कौतुक' : 'Curiosities' },
     { id: 'culture', label: isMr ? 'संस्कृती' : 'Culture' },
     { id: 'nature', label: isMr ? 'निसर्ग' : 'Nature' },
     { id: 'gems', label: isMr ? 'अनोखे' : 'Hidden Gems' },

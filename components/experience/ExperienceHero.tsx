@@ -82,37 +82,37 @@ export default function ExperienceHero({ isMr }: ExperienceHeroProps) {
 
         <p className="exp-hero-subheading">
           {isMr
-            ? 'नेहमीच्या पलीकडे जाऊन पुण्याच्या कथा, ऐतिहासिक वारसा, चवदार खाद्यसंस्कृती आणि अप्रतिम निसर्गाचा प्रत्यक्ष अनुभव घ्या.'
-            : 'Beyond the ordinary. Discover the stories, flavours, heritage and hidden wonders of Pune.'}
+            ? 'रस्त्यांच्या पलीकडे जाऊन पुणे शोधा — ऐतिहासिक वारसा, सह्याद्रीचे गडकोट आणि जिवंत संस्कृतीचा प्रत्यक्ष अनुभव.'
+            : 'Discover the city beyond its streets. An extraordinary digital journey through centuries of Maratha valor, Peshwa majesty, and living culture.'}
         </p>
 
         {/* Quick CTAs */}
         <div className="exp-hero-actions">
           <button
             type="button"
-            onClick={() => scrollTo('categories')}
+            onClick={() => scrollTo('world3d')}
             className="exp-btn-primary"
           >
+            <Sparkles size={18} />
+            <span>{isMr ? '३डी डिजिटल पुणे' : 'Explore 3D Digital World'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollTo('categories')}
+            className="exp-btn-secondary"
+          >
             <Compass size={18} />
-            <span>{isMr ? '१६ अनुभव एक्सप्लोर करा' : 'Explore Experiences'}</span>
+            <span>{isMr ? '१६ अनुभव श्रेणी' : '16 Experiences'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => scrollTo('map')}
-            className="exp-btn-secondary"
+            className="exp-btn-ghost"
           >
             <MapPin size={18} />
             <span>{isMr ? 'नकाशावर पाहा' : 'Interactive Map'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => scrollTo('finder')}
-            className="exp-btn-ghost"
-          >
-            <Sparkles size={18} />
-            <span>{isMr ? 'माझ्या आवडीनुसार शोधा' : 'Personalized Finder'}</span>
           </button>
         </div>
 

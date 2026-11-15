@@ -3324,6 +3324,802 @@
 /* ==========================================================================
    RESPONSIVENESS & ACCESSIBILITY
    ========================================================================== */
+/* ==========================================================================
+   NEXT-GEN IMMERSIVE ADDITIONS (VAST • CODE OF SAGAR • STUDIO MACACO)
+   ========================================================================== */
+
+/* Custom Trailing Magnetic Cursor */
+.exp-custom-cursor {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--exp-gold);
+  background: rgba(245, 158, 11, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease-out, background 0.2s ease, width 0.2s ease, height 0.2s ease;
+  backdrop-filter: blur(2px);
+}
+
+.exp-custom-cursor.active {
+  transform: scale(1.8);
+  background: rgba(245, 158, 11, 0.3);
+  border-color: #ffffff;
+}
+
+/* SIGNATURE 3D EXPERIENCE: DIGITAL WORLD VIEWPORT */
+.exp-world3d-section {
+  position: relative;
+  padding: 80px 0;
+}
+
+.exp-3d-stage-card {
+  position: relative;
+  background: #090e18;
+  border: 1px solid var(--exp-card-border);
+  border-radius: 24px;
+  overflow: hidden;
+  height: 640px;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.7);
+}
+
+.exp-3d-topbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.exp-3d-presets {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+  flex-wrap: wrap;
+}
+
+.exp-preset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exp-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--exp-gold);
+}
+
+.exp-preset-btn.active {
+  background: var(--exp-gold);
+  color: #0f172a;
+  border-color: var(--exp-gold);
+}
+
+.exp-preset-btn .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.exp-3d-controls-right {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.exp-3d-viewport {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: grab;
+}
+
+.exp-3d-hint-pill {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--exp-text-secondary);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  z-index: 5;
+}
+
+.exp-3d-hover-tooltip {
+  position: absolute;
+  top: 70px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid var(--exp-gold);
+  padding: 14px 18px;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  z-index: 15;
+  max-width: 280px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.exp-3d-hover-tooltip .year {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--exp-gold);
+  text-transform: uppercase;
+}
+
+.exp-3d-hover-tooltip .title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 2px 0 4px 0;
+}
+
+.exp-3d-hover-tooltip .sub {
+  font-size: 0.78rem;
+  color: var(--exp-text-secondary);
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+}
+
+.exp-3d-hover-tooltip .action {
+  font-size: 0.75rem;
+  font-weight: 750;
+  color: var(--exp-gold);
+}
+
+.exp-3d-dossier-card {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 18px;
+  display: flex;
+  overflow: hidden;
+  z-index: 20;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(16px);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.exp-dossier-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: background 0.2s ease;
+}
+
+.exp-dossier-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.exp-dossier-media {
+  width: 220px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.exp-dossier-media .img {
+  object-fit: cover;
+}
+
+.exp-dossier-media .badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  color: var(--exp-gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.exp-dossier-body {
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.exp-dossier-body .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 750;
+  color: var(--exp-forest);
+  text-transform: uppercase;
+}
+
+.exp-dossier-body .name {
+  font-size: 1.25rem;
+  font-weight: 850;
+  color: #ffffff;
+  margin: 2px 0 4px 0;
+}
+
+.exp-dossier-body .tagline {
+  font-size: 0.8rem;
+  color: var(--exp-gold);
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.exp-dossier-body .desc {
+  font-size: 0.82rem;
+  color: var(--exp-text-secondary);
+  line-height: 1.45;
+  margin: 0 0 12px 0;
+}
+
+.exp-dossier-body .meta-row {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--exp-text-muted);
+  margin-bottom: 14px;
+}
+
+.exp-dossier-body .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exp-dossier-body .actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.exp-btn-primary.mini,
+.exp-btn-secondary.mini {
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  border-radius: 8px;
+}
+
+/* PINNED EPOCH STORYTELLING (CODE OF SAGAR STYLE) */
+.exp-pinned-journey-section {
+  position: relative;
+  min-height: 160vh;
+}
+
+.exp-pinned-sticky-stage {
+  position: sticky;
+  top: 60px;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px 0;
+}
+
+.exp-pinned-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.exp-pinned-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.exp-pinned-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--exp-text-primary);
+}
+
+.exp-pinned-indicators {
+  display: flex;
+  gap: 8px;
+}
+
+.exp-indicator-dot {
+  width: 28px;
+  height: 6px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exp-pinned-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.exp-pinned-epoch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--exp-gold);
+  margin-bottom: 12px;
+}
+
+.exp-pinned-epoch-badge .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--exp-gold);
+}
+
+.exp-pinned-title {
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.1;
+  margin: 0 0 10px 0;
+}
+
+.exp-pinned-subkicker {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--exp-gold);
+  margin: 0 0 16px 0;
+}
+
+.exp-pinned-desc {
+  font-size: 0.95rem;
+  color: var(--exp-text-secondary);
+  line-height: 1.7;
+  margin: 0 0 24px 0;
+}
+
+.exp-pinned-landmark-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.exp-pinned-image-frame {
+  position: relative;
+  height: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+}
+
+.exp-pinned-img {
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-pinned-mask-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(15, 23, 42, 0.9) 100%);
+}
+
+.exp-pinned-floating-year {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--exp-gold);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+
+.exp-pinned-scroll-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--exp-text-muted);
+}
+
+.exp-pinned-scroll-hint .line {
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* PLAYFUL DISCOVERY: CABINET OF CURIOSITIES (STUDIO MACACO STYLE) */
+.exp-curiosities-section {
+  position: relative;
+  padding: 100px 0;
+}
+
+.exp-relics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.exp-relic-card {
+  background: var(--exp-card);
+  border: 1px solid var(--exp-card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-relic-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--exp-gold);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px -2px var(--exp-gold-glow);
+}
+
+.exp-relic-media {
+  position: relative;
+  width: 100%;
+  height: 160px;
+}
+
+.exp-relic-img {
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.exp-relic-card:hover .exp-relic-img {
+  transform: scale(1.08);
+}
+
+.exp-relic-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.95) 100%);
+}
+
+.exp-relic-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(15, 23, 42, 0.85);
+  color: var(--exp-gold);
+  font-size: 0.68rem;
+  font-weight: 750;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.exp-relic-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.exp-relic-cat {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--exp-forest);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.exp-relic-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+.exp-relic-desc {
+  font-size: 0.78rem;
+  color: var(--exp-text-secondary);
+  line-height: 1.45;
+  margin: 0 0 12px 0;
+  flex-grow: 1;
+}
+
+.exp-relic-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 750;
+  color: var(--exp-gold);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 10px;
+}
+
+.exp-trivia-card {
+  background: var(--exp-card);
+  border: 1px solid var(--exp-card-border);
+  border-radius: 18px;
+  padding: 32px;
+}
+
+.exp-trivia-header {
+  margin-bottom: 20px;
+}
+
+.exp-trivia-kicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--exp-gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.exp-trivia-title {
+  font-size: 1.35rem;
+  font-weight: 850;
+  color: #ffffff;
+  margin: 0;
+}
+
+.exp-trivia-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exp-trivia-question-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exp-trivia-question-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--exp-gold);
+}
+
+.exp-trivia-question-btn .arrow {
+  font-size: 1.2rem;
+  color: var(--exp-gold);
+}
+
+.exp-trivia-answer-box {
+  padding: 14px 18px;
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: 8px;
+  margin-top: 6px;
+  font-size: 0.88rem;
+  color: #fde68a;
+  line-height: 1.6;
+}
+
+.exp-modal-card.relic-inspector {
+  max-width: 680px;
+}
+
+.exp-relic-modal-hero {
+  position: relative;
+  width: 100%;
+  height: 240px;
+}
+
+.exp-relic-modal-hero .img {
+  object-fit: cover;
+}
+
+.exp-relic-modal-hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.95) 100%);
+}
+
+.exp-relic-modal-hero .hero-text {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  right: 24px;
+}
+
+.exp-relic-modal-hero .category {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--exp-forest);
+  text-transform: uppercase;
+}
+
+.exp-relic-modal-hero .title {
+  font-size: 1.4rem;
+  font-weight: 850;
+  color: #ffffff;
+  margin: 2px 0 0 0;
+}
+
+.exp-relic-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.exp-relic-details-grid .detail-item .lbl {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--exp-text-muted);
+}
+
+.exp-relic-details-grid .detail-item .val {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.section-sub {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.exp-relic-full-desc {
+  font-size: 0.88rem;
+  color: var(--exp-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.exp-relic-funfact {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 24px;
+}
+
+.exp-relic-funfact .title {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--exp-gold);
+  text-transform: uppercase;
+}
+
+.exp-relic-funfact .text {
+  font-size: 0.82rem;
+  color: #fef08a;
+  margin: 2px 0 0 0;
+  line-height: 1.45;
+}
+
+.exp-relic-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1024px) {
+  .exp-relics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .exp-pinned-grid {
+    grid-template-columns: 1fr;
+  }
+  .exp-pinned-image-frame {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .exp-relics-grid {
+    grid-template-columns: 1fr;
+  }
+  .exp-3d-stage-card {
+    height: 520px;
+  }
+  .exp-3d-dossier-card {
+    flex-direction: column;
+  }
+  .exp-dossier-media {
+    width: 100%;
+    height: 140px;
+  }
+  .exp-relic-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .exp-custom-cursor {
+    display: none !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .exp-category-grid {
     grid-template-columns: repeat(2, 1fr);
