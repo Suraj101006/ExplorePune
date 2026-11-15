@@ -1,51 +1,129 @@
 /**
- * Explore Pune - Experience Platform Types & Chapter API
- * Concept: "Pune Through Time"
+ * Explore Pune - Experience v2 Type Definitions
  */
 
-export type ChapterId =
-  | 'preloader'   // Chapter 0: Devanagari numeral counter + "पुणे" ink-draw
-  | 'arrival'     // Chapter 1: Parallax Sinhagad, live weather/time sky
-  | 'epochs'      // Chapter 2: Pinned morph: Pataleshwar -> Sinhagad -> Shaniwar Wada -> Reform
-  | 'pathways'    // Chapter 3: Draggable rail of 16 pathways with hover distortion
-  | 'map'         // Chapter 4: Living Map low-poly flight + 106 place pins + Today's Peth
-  | 'playground'  // Chapter 5: 5 tactile mini-games (Misal, Tambat, Tanaji, Relic, Ganeshotsav)
-  | 'seasons'     // Chapter 6: Scroll-scrubbed 4-season atmosphere
-  | 'plan'        // Chapter 7: Low-motion trip builder, finder, & passport
-  | 'outro';      // Chapter 8: Final cinematic curtain, credits, & return
+export interface ExperiencePlace {
+  id: string;
+  slug: string;
+  name: string;
+  name_mr?: string;
+  category_slug: string;
+  category: string;
+  image_url: string;
+  description: string;
+  description_mr?: string;
+  address: string;
+  address_mr?: string;
+  best_time?: string;
+  best_time_mr?: string;
+  latitude: number;
+  longitude: number;
+  popularity_score?: number;
+  recommended_duration_minutes?: number;
+  entry_fee?: number;
+  fee_status?: string;
+  fee_details?: {
+    admission?: number;
+    adult?: number;
+    child?: number;
+    foreigner?: number;
+    vehicle_toll?: string;
+    parking?: string;
+    camera?: number;
+    notes?: string;
+    notes_mr?: string;
+  };
+  opening_hours?: string;
+  opening_hours_mr?: string;
+  weekly_closure?: string;
+  weekly_closure_mr?: string;
+  location?: {
+    nearby_metro?: string;
+    nearest_bus_stop?: string;
+  };
+  zoneId?: ZoneId;
+}
 
-export interface ChapterRegistration {
-  id: ChapterId;
+export type ZoneId =
+  | 'historic-peths'
+  | 'deccan-kothrud'
+  | 'camp-cantonment'
+  | 'kp-nagar-rd'
+  | 'sahyadri-forts';
+
+export interface ZoneDefinition {
+  id: ZoneId;
+  nameEn: string;
+  nameMr: string;
+  taglineEn: string;
+  taglineMr: string;
+  center: [number, number]; // [lng, lat]
+  zoom: number;
+  accentColor: string; // e.g. blue #3880FF, green #00B77F
+  descriptionEn: string;
+  descriptionMr: string;
+  approxPolygonCoordinates: [number, number][][]; // GeoJSON Polygon coordinates
+}
+
+export interface CategorySummary {
+  slug: string;
+  nameEn: string;
+  nameMr: string;
+  color: string;
+  iconName: string;
+  count: number;
+  descriptionEn: string;
+  descriptionMr: string;
+  coverImage: string;
+}
+
+export interface FeatureShowcase {
+  id: string;
   titleEn: string;
   titleMr: string;
-  order: number;
-  enter?: (direction: 'forward' | 'backward') => void;
-  exit?: (direction: 'forward' | 'backward') => void;
-  scrub?: (progress: number) => void;
+  subtitleEn: string;
+  subtitleMr: string;
+  descriptionEn: string;
+  descriptionMr: string;
+  route: string;
+  actionTextEn: string;
+  actionTextMr: string;
+  badgeEn: string;
+  badgeMr: string;
+  iconName: string;
+  imageUrl: string;
+  statNumber: string;
+  statLabelEn: string;
+  statLabelMr: string;
 }
 
-export interface ExperienceState {
-  scrollProgress: number;          // 0 to 1 across full page
-  activeChapter: ChapterId;
-  isAudioEnabled: boolean;         // Audio OFF by default (Hard Rule #3)
-  isLiteMode: boolean;             // Calm/Lite mode (?lite=1, no WebGL/audio, CSS only)
-  prefersReducedMotion: boolean;   // System accessibility preference
-  isLoaded: boolean;               // Preloader completed
-  chapters: ChapterRegistration[];
+export interface MarqueeItem {
+  id: string;
+  textEn: string;
+  textMr: string;
+  type: 'hours' | 'transit' | 'tickets' | 'verified';
+  badge: string;
 }
 
-export interface ExperienceContextValue extends ExperienceState {
-  toggleAudio: () => void;
-  setAudioEnabled: (enabled: boolean) => void;
-  toggleLiteMode: () => void;
-  setLiteMode: (enabled: boolean) => void;
-  setIsLoaded: (loaded: boolean) => void;
-  registerChapter: (chapter: ChapterRegistration) => void;
-  unregisterChapter: (id: ChapterId) => void;
-  scrubChapter: (id: ChapterId, progress: number) => void;
-  scrollToChapter: (id: ChapterId) => void;
-  theme: 'light' | 'dark';
-  isDark: boolean;
-  lang: 'en' | 'mr';
-  isMr: boolean;
+export interface StoryItem {
+  id: string;
+  titleEn: string;
+  titleMr: string;
+  authorNoteEn: string;
+  authorNoteMr: string;
+  readingMinutes: number;
+  coverImage: string;
+  excerptEn: string;
+  excerptMr: string;
+  featuredSlugs: string[];
+  route: string;
+}
+
+export interface FaqItem {
+  id: string;
+  questionEn: string;
+  questionMr: string;
+  answerEn: string;
+  answerMr: string;
+  category: string;
 }

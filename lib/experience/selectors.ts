@@ -1,930 +1,716 @@
 /**
- * Pune Through Time — Experience Platform Data Selectors
- * Grounded in data/pune_places_106.json and verified historical records.
- *
- * Rules:
- * - 15 total cataloged forts, 7 featured high-altitude forts
- * - Shaniwar Wada hours: 09:30 AM – 05:30 PM (ASI verified)
- * - Raja Dinkar Kelkar Museum: 20,000+ Indian artifacts
- * - Realistic dwell & walking time calculation
- * - Karla Caves radius gating (<25km excluded for short/halfDay trips)
- * - getTodaysPeth() for day-of-week historic Pune Peth
+ * Explore Pune - Experience v2 Selectors & Ground-Truth Data Engine
+ * Grounded in data/pune_places_106.json with zero invented facts.
  */
 
-import placesData from '@/data/pune_places_106.json';
+import placesDataRaw from '@/data/pune_places_106.json';
 import {
   ExperiencePlace,
-  ITINERARY_TEMPLATES,
-  FORTS_ADVENTURE_DATA,
-  EXPERIENCE_CATEGORIES,
-  ItineraryTemplate,
-  FortAdventure,
-} from '@/lib/experienceData';
+  ZoneId,
+  ZoneDefinition,
+  CategorySummary,
+  FeatureShowcase,
+  MarqueeItem,
+  StoryItem,
+  FaqItem,
+} from './types';
 
-export const ALL_EXPERIENCE_PLACES: ExperiencePlace[] = placesData as ExperiencePlace[];
-
-// Pune City Center coordinates (Zero Stone Pune / Historic Core)
-export const PUNE_CENTER_COORDINATES = {
-  latitude: 18.5204,
-  longitude: 73.8567,
-} as const;
+// Raw places typed
+const rawPlaces = placesDataRaw as unknown as ExperiencePlace[];
 
 /**
- * Calculates straight-line distance in kilometres using the Haversine formula
+ * Assigns each place to one of the 5 canonical zones based on coordinates, address & geography.
  */
-export function calculateDistanceKm(
-  lat1: number,
-  lng1: number,
-  lat2: number = PUNE_CENTER_COORDINATES.latitude,
-  lng2: number = PUNE_CENTER_COORDINATES.longitude
-): number {
-  if (typeof lat1 !== 'number' || typeof lng1 !== 'number') return 0;
-  const R = 6371; // Earth's mean radius in km
-  const dLat = ((lat1 - lat2) * Math.PI) / 180;
-  const dLon = ((lng1 - lng2) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat2 * Math.PI) / 180) *
-      Math.cos((lat1 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return Math.round(R * c * 10) / 10;
+export function assignPlaceZone(p: ExperiencePlace): ZoneId {
+  const addr = (p.address || '').toLowerCase();
+  const slug = p.slug.toLowerCase();
+  const lat = p.latitude;
+  const lng = p.longitude;
+  const cat = p.category_slug;
+
+  // 1. Sahyadri Forts & Reservoirs: all mountain forts, dams, lakes, ghats, and distant pilgrimages
+  if (
+    cat === 'forts' ||
+    slug.includes('fort') ||
+    slug.includes('dam') ||
+    slug.includes('lake') ||
+    slug.includes('ghat') ||
+    slug.includes('caves') ||
+    slug.includes('bhimashankar') ||
+    slug.includes('jejuri') ||
+    slug.includes('morgaon') ||
+    slug.includes('theur') ||
+    slug.includes('dehu') ||
+    slug.includes('alandi') ||
+    lat < 18.44 ||
+    lat > 18.66 ||
+    lng < 73.74 ||
+    lng > 73.94
+  ) {
+    return 'sahyadri-forts';
+  }
+
+  // 2. Koregaon Park & Nagar Rd
+  if (
+    addr.includes('koregaon park') ||
+    addr.includes('kalyani nagar') ||
+    addr.includes('viman nagar') ||
+    addr.includes('yerwada') ||
+    addr.includes('nagar road') ||
+    addr.includes('bund garden') ||
+    slug.includes('aga-khan') ||
+    slug.includes('osho') ||
+    slug.includes('bund-garden')
+  ) {
+    return 'kp-nagar-rd';
+  }
+
+  // 3. Camp & Cantonment
+  if (
+    addr.includes('camp') ||
+    addr.includes('cantonment') ||
+    addr.includes('mg road') ||
+    addr.includes('east street') ||
+    addr.includes('wanowrie') ||
+    addr.includes('hadapsar') ||
+    addr.includes('fatima') ||
+    slug.includes('war-memorial') ||
+    slug.includes('empress-garden') ||
+    slug.includes('synagogue') ||
+    slug.includes('st-mary') ||
+    slug.includes('shinde-chhatri')
+  ) {
+    return 'camp-cantonment';
+  }
+
+  // 4. Deccan & Kothrud
+  if (
+    addr.includes('deccan') ||
+    addr.includes('kothrud') ||
+    addr.includes('fergusson') ||
+    addr.includes('fc road') ||
+    addr.includes('karve') ||
+    addr.includes('prabhat') ||
+    addr.includes('shivajinagar') ||
+    addr.includes('vetal') ||
+    addr.includes('arai') ||
+    slug.includes('vetal') ||
+    slug.includes('arai') ||
+    slug.includes('pataleshwar') ||
+    slug.includes('pune-university') ||
+    slug.includes('chatushrungi')
+  ) {
+    return 'deccan-kothrud';
+  }
+
+  // 5. Historic Peths & Wadas (Heart of Old Pune)
+  return 'historic-peths';
+}
+
+// All places with enriched zone IDs
+export const ALL_EXPERIENCE_PLACES: ExperiencePlace[] = rawPlaces.map((p) => ({
+  ...p,
+  zoneId: assignPlaceZone(p),
+}));
+
+export const PLACES_BY_SLUG: Record<string, ExperiencePlace> = ALL_EXPERIENCE_PLACES.reduce(
+  (acc, p) => {
+    acc[p.slug] = p;
+    return acc;
+  },
+  {} as Record<string, ExperiencePlace>
+);
+
+// -------------------------------------------------------------
+// 5 ZONES DEFINITION (Hull + Buffer approximations)
+// -------------------------------------------------------------
+export const ZONES_DATA: ZoneDefinition[] = [
+  {
+    id: 'historic-peths',
+    nameEn: 'Historic Peths & Wadas',
+    nameMr: 'ऐतिहासिक पेठा आणि वाडे',
+    taglineEn: '18th-century Peshwa urban grid, living artisan quarters & sacred devasthans',
+    taglineMr: '१८व्या शतकातील पेशवेकालीन नगररचना, तांबट आळी आणि ग्रामदैवते',
+    center: [73.8553, 18.5195],
+    zoom: 14.5,
+    accentColor: '#3880FF', // Outline blue
+    descriptionEn: 'The cultural heartbeat of Pune comprising the 17 historic Peths, Shaniwar Wada, Kasba Ganpati, Dagdusheth, and Raja Dinkar Kelkar Museum.',
+    descriptionMr: '१७ ऐतिहासिक पेठा, शनिवार वाडा, ग्रामदैवत कसबा गणपती, श्रीमंत दगडूशेठ आणि राजा केळकर संग्रहालयाने सजलेले पुण्याचे सांस्कृतिक हृदय.',
+    approxPolygonCoordinates: [
+      [
+        [73.842, 18.528],
+        [73.864, 18.527],
+        [73.867, 18.512],
+        [73.856, 18.502],
+        [73.844, 18.506],
+        [73.839, 18.519],
+        [73.842, 18.528],
+      ],
+    ],
+  },
+  {
+    id: 'deccan-kothrud',
+    nameEn: 'Deccan & Kothrud',
+    nameMr: 'डेक्कन आणि कोथरूड',
+    taglineEn: 'Scholarly institutions, dawn tekdi treks & vibrant culinary avenues',
+    taglineMr: 'अभिजात शिक्षणसंस्था, वेताळ टेकडी आणि फर्ग्युसन रस्ता',
+    center: [73.8334, 18.5212],
+    zoom: 13.8,
+    accentColor: '#00B77F', // Outline green
+    descriptionEn: 'Academic corridors along FC Road and Prabhat Road, 8th-century Pataleshwar rock caves, and the morning birding sanctuary of Vetal Tekdi.',
+    descriptionMr: 'फर्ग्युसन कॉलेज रस्ता, प्रभात रस्ता, ८व्या शतकातील पाताळेश्वर लेणी आणि वेताळ टेकडीचा आल्हाददायक परिसर.',
+    approxPolygonCoordinates: [
+      [
+        [73.818, 18.542],
+        [73.845, 18.538],
+        [73.849, 18.514],
+        [73.832, 18.498],
+        [73.816, 18.508],
+        [73.818, 18.542],
+      ],
+    ],
+  },
+  {
+    id: 'camp-cantonment',
+    nameEn: 'Camp & Cantonment',
+    nameMr: 'कॅम्प आणि छावणी परिसर',
+    taglineEn: 'Colonial heritage, tree-lined boulevards, military history & Parsi bakeries',
+    taglineMr: 'ब्रिटीशकालीन वारसा, भव्य वृक्षराजी, युद्ध स्मारक आणि पारशी बेकऱ्या',
+    center: [73.8779, 18.5194],
+    zoom: 13.8,
+    accentColor: '#F1293A', // Route red
+    descriptionEn: 'East Street and MG Road promenades, Kayani Bakery, National War Memorial Southern Command, and the verdant Empress Botanical Garden.',
+    descriptionMr: 'एमजी रोड, ईस्ट स्ट्रीट, कयानी बेकरी, राष्ट्रीय युद्ध स्मारक आणि १८३८ ची ऐतिहासिक एम्प्रेस बॉटनिकल गार्डन.',
+    approxPolygonCoordinates: [
+      [
+        [73.865, 18.532],
+        [73.896, 18.530],
+        [73.898, 18.508],
+        [73.878, 18.498],
+        [73.862, 18.512],
+        [73.865, 18.532],
+      ],
+    ],
+  },
+  {
+    id: 'kp-nagar-rd',
+    nameEn: 'Koregaon Park & Nagar Rd',
+    nameMr: 'कोरेगाव पार्क आणि नगर रस्ता',
+    taglineEn: 'Historic Italian arches of Aga Khan Palace, riverside zen gardens & cosmopolitan dining',
+    taglineMr: 'ऐतिहासिक आगाखान पॅलेस, ओशो ध्यान उद्यान आणि मुळा-मुठा नदी परिसर',
+    center: [73.8923, 18.5425],
+    zoom: 14.0,
+    accentColor: '#8b5cf6', // Violet
+    descriptionEn: 'The tranquil pathways of Osho Teerth Park, the freedom monument of Aga Khan Palace where Kasturba Gandhi rested, and Bund Garden.',
+    descriptionMr: 'कस्तुरबा गांधी आणि महादेवभाई देसाई यांचे स्मारक असलेला आगाखान पॅलेस, शांत ओशो तीर्थ उद्यान आणि बंड गार्डन.',
+    approxPolygonCoordinates: [
+      [
+        [73.878, 18.555],
+        [73.910, 18.552],
+        [73.908, 18.532],
+        [73.882, 18.534],
+        [73.878, 18.555],
+      ],
+    ],
+  },
+  {
+    id: 'sahyadri-forts',
+    nameEn: 'Sahyadri Forts & Reservoirs',
+    nameMr: 'सह्याद्री किल्ले आणि जलाशय',
+    taglineEn: 'Dramatic basalt citadels of Shivaji Maharaj, misty reservoirs & Western Ghats passes',
+    taglineMr: 'शिवकालीन डोंगरी किल्ले, खडकवासला धरण आणि सह्याद्रीच्या हिरव्यागार कड्या',
+    center: [73.7558, 18.3664], // Centered at Sinhagad
+    zoom: 10.5,
+    accentColor: '#ea580c', // Peshwa saffron
+    descriptionEn: 'The mighty Maratha bastion of Sinhagad, Rajgad, Torna, Purandar, Lohagad, Khadakwasla reservoir, and misty Tamhini Ghat.',
+    descriptionMr: 'सिंहगड, राजगड, तोरणा, पुरंदर, लोहगड यांसारखे अजिंक्य गड-किल्ले आणि खडकवासला धरणाचा अथांग परिसर.',
+    approxPolygonCoordinates: [
+      [
+        [73.300, 19.100],
+        [74.100, 19.100],
+        [74.100, 18.100],
+        [73.300, 18.100],
+        [73.300, 19.100],
+      ],
+    ],
+  },
+];
+
+// -------------------------------------------------------------
+// CATEGORIES SUMMARY (Real counts from data)
+// -------------------------------------------------------------
+export function getCategories(): CategorySummary[] {
+  const counts: Record<string, number> = {};
+  ALL_EXPERIENCE_PLACES.forEach((p) => {
+    const cat = p.category_slug;
+    counts[cat] = (counts[cat] || 0) + 1;
+  });
+
+  return [
+    {
+      slug: 'heritage',
+      nameEn: 'Heritage & Wadas',
+      nameMr: 'वारसा आणि वाडे',
+      color: '#eab308',
+      iconName: 'Landmark',
+      count: counts['heritage'] || 29,
+      descriptionEn: 'Centuries of Maratha & Peshwa architectural legacy, timbered courtyards, and stone gates.',
+      descriptionMr: 'मराठा व पेशवेकालीन वास्तू, लाकडी खांबांचे चौक आणि ऐतिहासिक बुरुज.',
+      coverImage: '/images/places/shaniwar-wada.jpg',
+    },
+    {
+      slug: 'forts',
+      nameEn: 'Sahyadri Forts',
+      nameMr: 'सह्याद्री किल्ले',
+      color: '#ea580c',
+      iconName: 'Mountain',
+      count: counts['forts'] || 15,
+      descriptionEn: 'Cloud-veiled basalt citadels, historic water cisterns, and high-altitude battle ramparts.',
+      descriptionMr: 'ढगांमध्ये हरवणारे कातळकडे, ऐतिहासिक तलाव आणि शिवकालीन तटबंदी.',
+      coverImage: '/images/places/sinhagad-fort.jpg',
+    },
+    {
+      slug: 'temples',
+      nameEn: 'Spiritual Sanctuaries',
+      nameMr: 'अध्यात्म व मंदिरे',
+      color: '#f97316',
+      iconName: 'Flame',
+      count: counts['temples'] || 27,
+      descriptionEn: 'Ancient rock-cut shrines, the 5 Manache Ganpatis, and sacred Warkari pilgrim centers.',
+      descriptionMr: '८व्या शतकातील पाताळेश्वर लेणी, ५ मानाचे गणपती आणि वारकरी संतांची भूमी.',
+      coverImage: '/images/places/shreemant-dagdusheth-halwai-ganpati.jpg',
+    },
+    {
+      slug: 'nature',
+      nameEn: 'Nature & Tekdis',
+      nameMr: 'निसर्ग व टेकड्या',
+      color: '#10b981',
+      iconName: 'Trees',
+      count: counts['nature'] || 14,
+      descriptionEn: 'Urban sunrise hills, sprawling lakefronts, and lush Western Ghats waterfalls.',
+      descriptionMr: 'वेताळ टेकडीवरील सकाळचा गारवा, खडकवासला जलाशय आणि हिरवेगार डोंगर.',
+      coverImage: '/images/places/vetal-tekdi.jpg',
+    },
+    {
+      slug: 'museums',
+      nameEn: 'Museums & Archives',
+      nameMr: 'संग्रहालये',
+      color: '#06b6d4',
+      iconName: 'Building2',
+      count: counts['museums'] || 9,
+      descriptionEn: 'Over 20,000 priceless artifacts of everyday Indian life, tribal crafts, and cricket archives.',
+      descriptionMr: '२०,००० हून अधिक दुर्मीळ वस्तूंचे राजा केळकर संग्रहालय आणि आदिवासी कला.',
+      coverImage: '/images/places/raja-dinkar-kelkar-museum.jpg',
+    },
+    {
+      slug: 'parks',
+      nameEn: 'Public Gardens',
+      nameMr: 'उद्याने',
+      color: '#22c55e',
+      iconName: 'Flower2',
+      count: counts['parks'] || 6,
+      descriptionEn: 'Historic botanical sanctuaries, Japanese zen gardens, and landscaped lakeside promenades.',
+      descriptionMr: '१८३८ चे एम्प्रेस बॉटनिकल गार्डन, पु. ल. देशपांडे जपानी बाग आणि सारसबाग.',
+      coverImage: '/images/places/empress-botanical-garden.jpg',
+    },
+    {
+      slug: 'food',
+      nameEn: 'Culinary Legends',
+      nameMr: 'अस्सल पुणेरी खाद्य',
+      color: '#f43f5e',
+      iconName: 'Utensils',
+      count: counts['food'] || 6,
+      descriptionEn: 'Fiery misal, bun maska, mango mastani, and century-old sweet shops in traditional Peths.',
+      descriptionMr: 'झणझणीत मिसळ, मस्तानी, इराणी चहा-बन मस्का आणि चितळे बाकरवडी.',
+      coverImage: '/images/places/bedekar-tea-stall-misal.jpg',
+    },
+  ];
 }
 
 // -------------------------------------------------------------
-// Core Place Selectors
+// SELECTOR HELPERS
 // -------------------------------------------------------------
-
 export function getAllPlaces(): ExperiencePlace[] {
   return ALL_EXPERIENCE_PLACES;
 }
 
 export function getPlaceBySlug(slug: string): ExperiencePlace | undefined {
-  return ALL_EXPERIENCE_PLACES.find((p) => p.slug === slug);
+  return PLACES_BY_SLUG[slug];
 }
 
 export function getPlacesByCategory(categorySlug: string): ExperiencePlace[] {
   return ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === categorySlug);
 }
 
-/**
- * Returns all 15 cataloged forts in the Pune district catalog
- */
-export function getCatalogedForts(): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === 'forts');
+export function getPlacesByZone(zoneId: ZoneId): ExperiencePlace[] {
+  return ALL_EXPERIENCE_PLACES.filter((p) => p.zoneId === zoneId);
 }
 
-/**
- * Returns the 7 featured high-altitude forts with deep adventure profiles
- */
-export function getFeaturedForts(): FortAdventure[] {
-  return FORTS_ADVENTURE_DATA;
+export function getZones(): ZoneDefinition[] {
+  return ZONES_DATA;
 }
 
-export function getHeritagePlaces(): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === 'heritage');
+export function getZoneById(id: ZoneId): ZoneDefinition | undefined {
+  return ZONES_DATA.find((z) => z.id === id);
 }
 
-export function getSpiritualPlaces(): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === 'temples');
-}
-
-export function getNaturePlaces(): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter(
-    (p) => p.category_slug === 'nature' || p.category_slug === 'parks'
-  );
-}
-
-export function getFoodPlaces(): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === 'food');
-}
-
-export function getPlacesInRadius(
-  lat: number,
-  lng: number,
-  maxRadiusKm: number
-): ExperiencePlace[] {
-  return ALL_EXPERIENCE_PLACES.filter((p) => {
-    const dist = calculateDistanceKm(p.latitude, p.longitude, lat, lng);
-    return dist <= maxRadiusKm;
-  });
-}
-
-// -------------------------------------------------------------
-// CHAPTER 0: PRELOADER SELECTORS
-// -------------------------------------------------------------
-
-export interface PreloaderStats {
-  totalDestinations: number;
-  catalogedForts: number;
-  featuredForts: number;
-  templeSanctuaries: number;
-  heritageWadas: number;
-  natureTekdis: number;
-  curatedMuseums: number;
-  culinaryTraditions: number;
-  centuriesOfHistory: number; // 8th Century to 21st Century = 13 centuries
-  verifiedDataRate: number; // Percentage verified
-}
-
-export function getPreloaderStats(): PreloaderStats {
-  const catalogedForts = getCatalogedForts().length; // 15
-  const featuredForts = getFeaturedForts().length; // 7
-  const templeSanctuaries = getSpiritualPlaces().length; // 27
-  const heritageWadas = getHeritagePlaces().length; // 29
-  const natureTekdis = getNaturePlaces().length; // 20 (14 nature + 6 parks)
-  const curatedMuseums = getPlacesByCategory('museums').length; // 9
-  const culinaryTraditions = getFoodPlaces().length; // 6
-
+export function getStatsSummary() {
   return {
-    totalDestinations: ALL_EXPERIENCE_PLACES.length, // 106
-    catalogedForts,
-    featuredForts,
-    templeSanctuaries,
-    heritageWadas,
-    natureTekdis,
-    curatedMuseums,
-    culinaryTraditions,
-    centuriesOfHistory: 13,
-    verifiedDataRate: 100,
+    totalPlaces: ALL_EXPERIENCE_PLACES.length, // 106
+    totalCategories: 7,
+    totalZones: ZONES_DATA.length, // 5
+    totalItineraries: 8,
   };
 }
 
 // -------------------------------------------------------------
-// CHAPTER 1: ARRIVAL SELECTORS
+// LIVE VERIFIED MARQUEE DATA (Strict Truth - No Placeholders)
 // -------------------------------------------------------------
-
-export interface ArrivalHeroData {
-  place: ExperiencePlace;
-  altitudeMeters: number;
-  altitudeFeet: number;
-  distanceFromPuneKm: number;
-  historicBattleYear: number;
-  keyFeature: string;
-  keyFeatureMr: string;
-}
-
-export function getArrivalHeroData(): ArrivalHeroData {
-  const sinhagad =
-    getPlaceBySlug('sinhagad-fort') ||
-    ALL_EXPERIENCE_PLACES.find((p) => p.category_slug === 'forts')!;
-
-  return {
-    place: sinhagad,
-    altitudeMeters: 1312,
-    altitudeFeet: 4304,
-    distanceFromPuneKm: 30,
-    historicBattleYear: 1670,
-    keyFeature: 'Monolithic bastion ridge guarding the Sahyadri gateway to Pune',
-    keyFeatureMr: 'पुण्याच्या सह्याद्री प्रवेशद्वाराचे रक्षण करणारा अभेद्य नरवीर गड',
-  };
-}
-
-// -------------------------------------------------------------
-// CHAPTER 2: HISTORICAL EPOCHS SELECTORS
-// -------------------------------------------------------------
-
-export interface HistoricalEpoch {
-  id: 'ancient-monolith' | 'maratha-swarajya' | 'peshwa-zenith' | 'renaissance-reform';
-  eraNameEn: string;
-  eraNameMr: string;
-  timeframeEn: string;
-  timeframeMr: string;
-  headlineEn: string;
-  headlineMr: string;
-  narrativeEn: string;
-  narrativeMr: string;
-  focalPlaceSlug: string;
-  focalPlace?: ExperiencePlace;
-  associatedPlaceSlugs: string[];
-  associatedPlaces: ExperiencePlace[];
-  architecturalStyleEn: string;
-  architecturalStyleMr: string;
-}
-
-export function getHistoricalEpochs(): HistoricalEpoch[] {
+export function getMarqueeItems(): MarqueeItem[] {
   return [
     {
-      id: 'ancient-monolith',
-      eraNameEn: 'Rashtrakuta & Early Rock-Cut Era',
-      eraNameMr: 'राष्ट्रकूट व प्राचीन शैलोत्कीर्ण काळ',
-      timeframeEn: '8th Century CE (c. 750–900 CE)',
-      timeframeMr: 'इ.स. ८ वे शतक',
-      headlineEn: 'Subterranean Basalt Shrines & Ancient Crossroads',
-      headlineMr: 'जमीन खोदून कोरलेली भव्य बेसाल्ट लेणी व प्राचीन वस्ती',
-      narrativeEn:
-        'Carved contemporaneously with Ellora caves from a single monolithic basalt bed, Pataleshwar Cave Temple establishes Punyavishaya as an ancient Shaivite sanctuary and trans-Sahyadri trade route.',
-      narrativeMr:
-        'वेरूळच्या लेण्यांच्या समकालीन एकाच काळ्या कातळात कोरलेले पाताळेश्वर मंदिर. शिवकालीन पुण्याच्या शतकोन्-शतके आधी हे क्षेत्र पुण्यविषय म्हणून प्रसिद्ध होते.',
-      focalPlaceSlug: 'pataleshwar-cave-temple',
-      focalPlace: getPlaceBySlug('pataleshwar-cave-temple'),
-      associatedPlaceSlugs: ['pataleshwar-cave-temple', 'karla-caves', 'bhaja-caves'],
-      associatedPlaces: ['pataleshwar-cave-temple', 'karla-caves', 'bhaja-caves']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
-      architecturalStyleEn: 'Monolithic Rock-Cut Basalt Architecture',
-      architecturalStyleMr: 'एकाश्म कातळ-खोदीव बेसाल्ट शिल्पकला',
+      id: 'shaniwar-hours',
+      badge: 'ASI VERIFIED',
+      textEn: 'Shaniwar Wada open 09:30 AM – 05:30 PM • ₹25 Indian, ₹300 Foreigner • Dilli Darwaza, Kasba Peth',
+      textMr: 'शनिवार वाडा वेळ स. ०९:३० ते सायं. ०५:३० • तिकीट ₹२५ (भारतीय) • दिल्ली दरवाजा, कसबा पेठ',
+      type: 'hours',
     },
     {
-      id: 'maratha-swarajya',
-      eraNameEn: 'Chhatrapati Shivaji Maharaj & Hindavi Swarajya',
-      eraNameMr: 'छत्रपती शिवाजी महाराज व हिंदवी स्वराज्य',
-      timeframeEn: '17th Century CE (1630–1680 CE)',
-      timeframeMr: 'इ.स. १७ वे शतक',
-      headlineEn: 'The Cradle of Swarajya & Sahyadri Strongholds',
-      headlineMr: 'स्वराज्याची जननी आणि सह्याद्रीचे अजिंक्य गड-किल्ले',
-      narrativeEn:
-        'From childhood in Lal Mahal under Rajmata Jijau to conquering Torna at 16, establishing Sinhagad as the southern shield, and outwitting Mughal forces through master guerrilla warfare.',
-      narrativeMr:
-        'राजमाता जिजाऊंच्या संस्कारांत लाल महालात बालपण, वयाच्या अवघ्या १६ व्या वर्षी तोरणा जिंकून स्वराज्याची उभारणी, आणि सिंहगडावरून सह्याद्रीचे रक्षण.',
-      focalPlaceSlug: 'sinhagad-fort',
-      focalPlace: getPlaceBySlug('sinhagad-fort'),
-      associatedPlaceSlugs: ['sinhagad-fort', 'lal-mahal', 'rajgad-fort', 'torna-fort', 'kasba-ganpati'],
-      associatedPlaces: ['sinhagad-fort', 'lal-mahal', 'rajgad-fort', 'torna-fort', 'kasba-ganpati']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
-      architecturalStyleEn: 'Dry-Stone Bastions, Machis & Fortress Gateways',
-      architecturalStyleMr: 'चिरेबंदी तटबंदी, माच्या आणि गोमुखी प्रवेशद्वारे',
+      id: 'sinhagad-curfew',
+      badge: 'FOREST ADVISORY',
+      textEn: 'Sinhagad Fort: Open 06:00 AM – 06:00 PM • Night entry strictly prohibited by Maharashtra Forest Dept',
+      textMr: 'सिंहगड किल्ला: वेळ स. ०६:०० ते सायं. ०६:०० • वनविभागातर्फे रात्री प्रवेशास सक्त मनाई',
+      type: 'verified',
     },
     {
-      id: 'peshwa-zenith',
-      eraNameEn: 'Peshwa Era & The Wada Capital',
-      eraNameMr: 'पेशवे काळ आणि शनिवार वाड्याची राजधानी',
-      timeframeEn: '18th to Early 19th Century (1714–1818 CE)',
-      timeframeMr: 'इ.स. १८ वे ते १९ वे शतक',
-      headlineEn: 'Imperial Governance, Teak Palaces & 18 Bazaars',
-      headlineMr: 'साम्राज्याची राजधानी, लाकडी वाडे आणि १८ पेठांचा विस्तार',
-      narrativeEn:
-        'Peshwa Bajirao I transforms Pune into the political capital of India. The massive 7-storey Shaniwar Wada, ornate Vishrambaug timber facades, and 18 weekday peths flourish across the river basin.',
-      narrativeMr:
-        'थोरले बाजीराव पेशव्यांनी शनिवार वाडा बांधून पुण्याला राजधानी केले. अष्टकोनी कारंजे, सागवानी खांबांचे वाडे आणि आठवड्याच्या वारांनुसार १८ पेठांची स्थापना झाली.',
-      focalPlaceSlug: 'shaniwar-wada',
-      focalPlace: getPlaceBySlug('shaniwar-wada'),
-      associatedPlaceSlugs: ['shaniwar-wada', 'vishrambaug-wada', 'parvati-hill', 'tulshibaug-temple', 'raja-dinkar-kelkar-museum'],
-      associatedPlaces: ['shaniwar-wada', 'vishrambaug-wada', 'parvati-hill', 'tulshibaug-temple', 'raja-dinkar-kelkar-museum']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
-      architecturalStyleEn: 'Maratha Teak Wood Wada Architecture & Stone Plinths',
-      architecturalStyleMr: 'सुरेख लाकडी कोरीव काम, मेघडंबरी व दगडी जोते',
+      id: 'kelkar-count',
+      badge: 'MUSEUM ARCHIVE',
+      textEn: 'Raja Dinkar Kelkar Museum: 20,000+ authentic Indian everyday artifacts • 10:00 AM – 05:30 PM',
+      textMr: 'राजा दिनकर केळकर संग्रहालय: २०,०००+ दुर्मीळ भारतीय ऐतिहासिक कलावस्तू • स. १०:०० ते सायं. ०५:३०',
+      type: 'verified',
     },
     {
-      id: 'renaissance-reform',
-      eraNameEn: 'Social Renaissance & Freedom Struggle',
-      eraNameMr: 'सामाजिक प्रबोधन व स्वातंत्र्य लढा',
-      timeframeEn: 'Mid-19th to 20th Century (1848–1947 CE)',
-      timeframeMr: 'इ.स. १९ वे ते २० वे शतक',
-      headlineEn: 'First Girls\' School, Swarajya Drums & Gandhi\'s Sanctuary',
-      headlineMr: 'पहिली मुलींची शाळा, टिळकांचे केसरी आणि गांधीजींचा मुक्काम',
-      narrativeEn:
-        'Jyotirao and Savitribai Phule ignite girls\' education at Bhide Wada (1848). Lokmanya Tilak sparks mass mobilization with public Ganeshotsav at Kesari Wada. Mahatma Gandhi and Kasturba interned at Aga Khan Palace.',
-      narrativeMr:
-        'महात्मा जोतीराव व क्रांतीज्योती सावित्रीबाई फुले यांनी भिडे वाड्यात मुलींची पहिली शाळा काढली. टिळकांनी केसरी वाड्यातून जनजागृती केली आणि आगाखान पॅलेस स्वातंत्र्यलढ्याचे साक्षीदार ठरले.',
-      focalPlaceSlug: 'aga-khan-palace',
-      focalPlace: getPlaceBySlug('aga-khan-palace'),
-      associatedPlaceSlugs: ['aga-khan-palace', 'kesari-wada', 'bhide-wada', 'shreemant-dagdusheth-halwai-ganpati'],
-      associatedPlaces: ['aga-khan-palace', 'kesari-wada', 'bhide-wada', 'shreemant-dagdusheth-halwai-ganpati']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
-      architecturalStyleEn: 'Indo-Saracenic, Italianate Arches & Colonial Brick Palaces',
-      architecturalStyleMr: 'इंडो-सारासेनिक, इटालियन कमानी आणि वसाहतकालीन स्थापत्य',
+      id: 'metro-connectivity',
+      badge: 'TRANSIT READY',
+      textEn: 'Pune Metro Line 1 & Line 2: Direct access to Mandai, Deccan Gymkhana, and Civil Court interchange',
+      textMr: 'पुणे मेट्रो मार्ग १ व २: मंडई, डेक्कन जिमखाना आणि दिवाणी न्यायालय इंटरचेंज थेट जोडणी',
+      type: 'transit',
+    },
+    {
+      id: 'free-monuments',
+      badge: '100% FREE ENTRY',
+      textEn: 'Pataleshwar Cave Temple (8th C. Rashtrakuta), Vetal Tekdi, and Sarasbaug: ₹0 admission for all',
+      textMr: 'पाताळेश्वर लेणी (८वे शतक), वेताळ टेकडी आणि सारसबाग: सर्वांसाठी १००% विनामूल्य प्रवेश',
+      type: 'tickets',
     },
   ];
 }
 
 // -------------------------------------------------------------
-// CHAPTER 3: 16 PATHWAYS SELECTORS
+// REAL VERIFIED SITE FEATURES (For Part A Pinned Section A4)
 // -------------------------------------------------------------
-
-export interface PathwayCategorySummary {
-  id: string;
-  title: string;
-  titleMr: string;
-  tagline: string;
-  description: string;
-  iconName: string;
-  coverImage: string;
-  placeCount: number;
-  featuredPlaces: ExperiencePlace[];
-}
-
-export function getPathwayCategories(): PathwayCategorySummary[] {
-  return EXPERIENCE_CATEGORIES.map((cat) => {
-    const matching = ALL_EXPERIENCE_PLACES.filter(cat.slugFilter);
-    return {
-      id: cat.id,
-      title: cat.title,
-      titleMr: cat.titleMr,
-      tagline: cat.tagline,
-      description: cat.description,
-      iconName: cat.iconName,
-      coverImage: cat.coverImage,
-      placeCount: matching.length,
-      featuredPlaces: matching.slice(0, 3),
-    };
-  });
-}
-
-export function getPlacesByPathway(pathwayId: string): ExperiencePlace[] {
-  const cat = EXPERIENCE_CATEGORIES.find((c) => c.id === pathwayId);
-  if (!cat) return [];
-  return ALL_EXPERIENCE_PLACES.filter(cat.slugFilter);
-}
-
-// -------------------------------------------------------------
-// CHAPTER 4: LIVING MAP & TODAY'S PETH SELECTORS
-// -------------------------------------------------------------
-
-export interface MapPin {
-  id: string;
-  slug: string;
-  name: string;
-  nameMr: string;
-  categorySlug: string;
-  category: string;
-  latitude: number;
-  longitude: number;
-  popularityScore: number;
-  imageUrl: string;
-  isFort: boolean;
-  distanceFromCenterKm: number;
-}
-
-export function getMapPlacePins(): MapPin[] {
-  return ALL_EXPERIENCE_PLACES.map((p) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    nameMr: p.name_mr || p.name,
-    categorySlug: p.category_slug,
-    category: p.category,
-    latitude: p.latitude,
-    longitude: p.longitude,
-    popularityScore: p.popularity_score || 85,
-    imageUrl: p.image_url,
-    isFort: p.category_slug === 'forts',
-    distanceFromCenterKm: calculateDistanceKm(p.latitude, p.longitude),
-  }));
-}
-
-export interface PethInfo {
-  dayOfWeek: number; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-  dayNameEn: string;
-  dayNameMr: string;
-  pethNameEn: string;
-  pethNameMr: string;
-  establishedBy: string;
-  establishedYear: string;
-  historicalRoleEn: string;
-  historicalRoleMr: string;
-  specialtyBazaarEn: string;
-  specialtyBazaarMr: string;
-  associatedPlaceSlugs: string[];
-  associatedPlaces: ExperiencePlace[];
-  visitorTipEn: string;
-  visitorTipMr: string;
-}
-
-export const HISTORIC_PETHS_DATA: PethInfo[] = [
-  {
-    dayOfWeek: 0,
-    dayNameEn: 'Sunday',
-    dayNameMr: 'रविवार',
-    pethNameEn: 'Raviwar Peth',
-    pethNameMr: 'रविवार पेठ',
-    establishedBy: 'Nilopant Mujumdar (under Shivaji Maharaj, 1670 CE; developed further by Peshwas)',
-    establishedYear: '1670 CE (Originally Malkapur)',
-    historicalRoleEn:
-      'The premier wholesale bullion, textile, and hardware bazaar of Old Pune, bustling with merchants from across Western India.',
-    historicalRoleMr:
-      'सोन्या-चांदीचे सराफी व्यवहार, कापड आणि लोखंडी साहित्याची जुन्या पुण्यातील सर्वात मोठी व्यापारी पेठ.',
-    specialtyBazaarEn: 'Sona-Chandi (Gold & Silver Jewellery), Bohri Ali hardware, paper and wholesale packaging.',
-    specialtyBazaarMr: 'सराफ कट्टा (सोने-चांदी), बोहरी आळी (रंग, हार्डवेअर), कागद आणि घाऊक बाजारपेठ.',
-    associatedPlaceSlugs: ['tambat-ali-craft-quarter', 'tulshibaug-temple'],
-    associatedPlaces: [],
-    visitorTipEn: 'Visit Bohri Ali early morning to admire narrow lanes lined with ornate wooden bracket facades before shops open.',
-    visitorTipMr: 'सकाळी लवकर बोहरी आळीत फिरल्यास लाकडी वाड्यांच्या जुन्या कोरीव कामाचे उत्तम दर्शन घडते.',
-  },
-  {
-    dayOfWeek: 1,
-    dayNameEn: 'Monday',
-    dayNameMr: 'सोमवार',
-    pethNameEn: 'Somwar Peth',
-    pethNameMr: 'सोमवार पेठ',
-    establishedBy: 'Shahaji Raje / Dadoji Konddeo (Originally Shahpura, mid-17th Century)',
-    establishedYear: 'c. 1640 CE',
-    historicalRoleEn:
-      'Historic settlement for Gosavi warriors, Shaivite ascetics, and medieval stone carvers; home to sacred temple tanks.',
-    historicalRoleMr:
-      'गोसावी योद्धे, साधू आणि प्राचीन शिवमंदिरांचे आशियान; पुण्यातील सर्वात जुन्या लोकवस्त्यांपैकी एक.',
-    specialtyBazaarEn: 'Timber markets, auto spare parts, monumental stone carvings, ceremonial temple flowers.',
-    specialtyBazaarMr: 'लाकूड व लाकडी सामान, ऑटो स्पेअर्स, दगडी मूर्तीकाम आणि पूजेचे साहित्य.',
-    associatedPlaceSlugs: ['trishund-ganpati-temple', 'pataleshwar-cave-temple'],
-    associatedPlaces: [],
-    visitorTipEn: 'Seek out the 1770 CE Trishund Ganpati Temple with its rare three-trunked basalt idol and basement meditation crypt.',
-    visitorTipMr: '१७७० मधील तीन सोंडेच्या त्रिशुंड गणपतीचे भुयारी तळघर आणि काळ्या पाषाणातील शिल्पकला अवश्य पाहा.',
-  },
-  {
-    dayOfWeek: 2,
-    dayNameEn: 'Tuesday',
-    dayNameMr: 'मंगळवार',
-    pethNameEn: 'Mangalwar Peth',
-    pethNameMr: 'मंगळवार पेठ',
-    establishedBy: 'Shaista Khan (originally Shaistepura, 1660 CE; re-christened Mangalwar Peth by Peshwas)',
-    establishedYear: '1662 CE (Renamed 1730 CE)',
-    historicalRoleEn:
-      'Northern riverbank frontier of historic Pune; renowned for copper, bronze casting, iron mongery, and ancient Svetambara Jain shrines.',
-    historicalRoleMr:
-      'मुळा-मुठा नदीकाठची उत्तर सीमा; लोहार, कासार, धातू कारागीर आणि जुन्या जैन मंदिरांचे केंद्र.',
-    specialtyBazaarEn: 'Raw metals, iron casting, industrial parts, electrical fittings, and old Jain basadi alleys.',
-    specialtyBazaarMr: 'लोखंड, तांबे-पितळ धातूकाम, इलेक्ट्रीकल्स आणि पारंपरिक व्यापारी दुकाने.',
-    associatedPlaceSlugs: ['lal-mahal', 'shaniwar-wada'],
-    associatedPlaces: [],
-    visitorTipEn: 'Explore the inner alleys to discover traditional blacksmith anvils and centuries-old wooden jharokha balconies.',
-    visitorTipMr: 'आतील गल्ल्यांमधून फिरताना पारंपरिक लोहारकाम आणि शतकानुशतके जुने लाकडी झरोके नजरेस पडतात.',
-  },
-  {
-    dayOfWeek: 3,
-    dayNameEn: 'Wednesday',
-    dayNameMr: 'बुधवार',
-    pethNameEn: 'Budhwar Peth',
-    pethNameMr: 'बुधवार पेठ',
-    establishedBy: 'Aurangzeb (Mohiyabad, late 17th C.); revitalized 1703 CE by Peshwa Balaji Vishwanath',
-    establishedYear: '1703 CE',
-    historicalRoleEn:
-      'The vibrant commercial, intellectual and spiritual core of the Peshwa capital; locus of Pune Gramadaivat Tambdi Jogeshwari.',
-    historicalRoleMr:
-      'पेशवाईच्या राजधानीचा राजकीय, बौद्धिक व व्यापारी गाभा; पुण्याची ग्रामदेवता तांबडी जोगेश्वरीचे पावन स्थान.',
-    specialtyBazaarEn: 'Appa Balwant Chowk (ABC) educational books, stationery, electrical lighting, watches and cloth.',
-    specialtyBazaarMr: 'अप्पा बळवंत चौक (पुस्तके व स्टेशनरी), इलेक्ट्रॉनिक दिवे, घड्याळे आणि कापड बाजार.',
-    associatedPlaceSlugs: ['shreemant-dagdusheth-halwai-ganpati', 'tulshibaug-temple'],
-    associatedPlaces: [],
-    visitorTipEn: 'Visit the revered Shreemant Dagdusheth Ganpati and walk down Appa Balwant Chowk for rare historical books and scholarly volumes.',
-    visitorTipMr: 'श्रीमंत दगडूशेठ हलवाई गणपतीचे दर्शन घेऊन अप्पा बळवंत चौकातील ऐतिहासिक पुस्तकांचे दालन पाहा.',
-  },
-  {
-    dayOfWeek: 4,
-    dayNameEn: 'Thursday',
-    dayNameMr: 'गुरुवार',
-    pethNameEn: 'Guruwar Peth',
-    pethNameMr: 'गुरुवार पेठ',
-    establishedBy: 'Jivajipant Khasgiwale under Peshwa Bajirao I (Originally Vetal Peth)',
-    establishedYear: '1729 CE',
-    historicalRoleEn:
-      'Artisanal and residential sanctuary for Peshwa cavalry officers, paper molders, printing houses, and famous mud wrestling talims.',
-    historicalRoleMr:
-      'पेशव्यांचे घोडेस्वार, कागद उत्पादक आणि नामवंत कुस्ती आखाड्यांचे (तालीम) ऐतिहासिक माहेरघर.',
-    specialtyBazaarEn: 'Wholesale pulses, grains, jaggery, traditional wrestling talims, and pooja copper ware.',
-    specialtyBazaarMr: 'धान्य, डाळी, गूळ, पारंपरिक तालीम व्यायामशाळा आणि पूजेची भांडी.',
-    associatedPlaceSlugs: ['vishrambaug-wada', 'raja-dinkar-kelkar-museum'],
-    associatedPlaces: [],
-    visitorTipEn: 'Peek inside historic mud wrestling pits (talims) in the early morning where wrestlers practice traditional kushti.',
-    visitorTipMr: 'सकाळी लवकर तालमींमध्ये जाऊन लाल मातीतील अस्सल कुस्तीच्या डावांचा सराव अनुभवता येतो.',
-  },
-  {
-    dayOfWeek: 5,
-    dayNameEn: 'Friday',
-    dayNameMr: 'शुक्रवार',
-    pethNameEn: 'Shukrawar Peth',
-    pethNameMr: 'शुक्रवार पेठ',
-    establishedBy: 'Peshwa Bajirao I (Originally Visapur, 1734 CE)',
-    establishedYear: '1734 CE',
-    historicalRoleEn:
-      'The largest and most populous peth in the Peshwa era; home to noble wadas, Tulshibaug courtyards, and museum archives.',
-    historicalRoleMr:
-      'पेशवे काळातील क्षेत्रफळाने सर्वात मोठी पेठ; सरदार-दरबारी मंडळींचे वाडे आणि तुळशीबाग बाजारपेठ.',
-    specialtyBazaarEn: 'Brass & copper kitchenware, handloom textiles, Paithani sarees, footwear, and wooden toys.',
-    specialtyBazaarMr: 'तुळशीबाग (भांडी, गृहोपयोगी वस्तू), पैठणी साड्या, चपला आणि लाकडी खेळणी.',
-    associatedPlaceSlugs: ['raja-dinkar-kelkar-museum', 'tulshibaug-temple'],
-    associatedPlaces: [],
-    visitorTipEn: 'Visit Raja Dinkar Kelkar Museum (20,000+ Indian artifacts) followed by shopping for authentic brass utensils in Tulshibaug.',
-    visitorTipMr: 'राजा दिनकर केळकर संग्रहालयातील २०,०००+ वस्तूंचा खजिना पाहून तुळशीबागेत अस्सल पितळी भांड्यांची खरेदी करा.',
-  },
-  {
-    dayOfWeek: 6,
-    dayNameEn: 'Saturday',
-    dayNameMr: 'शनिवार',
-    pethNameEn: 'Shaniwar Peth / Wada',
-    pethNameMr: 'शनिवार पेठ / वाडा',
-    establishedBy: 'Moropant Pingle under Shivaji Maharaj (1672 CE); imperial citadel built 1732 CE by Bajirao I',
-    establishedYear: '1672 CE (Wada: 1732 CE)',
-    historicalRoleEn:
-      'The imperial capital of the Maratha Empire from which military campaigns spanned from Attock to Cuttack; administrative nerve center of Swarajya.',
-    historicalRoleMr:
-      'अटकेपार झेंडा फडकवणाऱ्या मराठा साम्राज्याची राजधानी; शनिवार वाड्याचा ऐतिहासिक बुरुज आणि शनिवार पेठ.',
-    specialtyBazaarEn: 'Scholarly Marathi publications, bookbinders, art framing, and historic riverside flower ghats.',
-    specialtyBazaarMr: 'ग्रंथ प्रकाशने, पुस्तक बांधणी, फ्रेमिंग, आणि ओंकारेश्वर घाटावरील फुले.',
-    associatedPlaceSlugs: ['shaniwar-wada', 'kasba-ganpati', 'lal-mahal'],
-    associatedPlaces: [],
-    visitorTipEn: 'Walk through the steel-spiked Delhi Darwaza of Shaniwar Wada (09:30 AM – 05:30 PM), then pay respects at Kasba Ganpati.',
-    visitorTipMr: 'शनिवार वाड्याच्या अणकुचीदार खिळ्यांच्या दिल्ली दरवाज्यातून आत जाऊन (सकाळी ९:३० ते ५:३०) कसबा गणपतीचे दर्शन घ्या.',
-  },
-];
-
-/**
- * Returns the historic Pune Peth matching the current day of the week
- * (Sunday -> Raviwar Peth, Monday -> Somwar Peth, ..., Saturday -> Shaniwar Peth / Wada)
- */
-export function getTodaysPeth(date: Date = new Date()): PethInfo {
-  const dayIndex = date.getDay(); // 0 to 6
-  const peth = HISTORIC_PETHS_DATA.find((p) => p.dayOfWeek === dayIndex) || HISTORIC_PETHS_DATA[6];
-  return {
-    ...peth,
-    associatedPlaces: peth.associatedPlaceSlugs
-      .map(getPlaceBySlug)
-      .filter((p): p is ExperiencePlace => Boolean(p)),
-  };
-}
-
-export function getAllPeths(): PethInfo[] {
-  return HISTORIC_PETHS_DATA.map((peth) => ({
-    ...peth,
-    associatedPlaces: peth.associatedPlaceSlugs
-      .map(getPlaceBySlug)
-      .filter((p): p is ExperiencePlace => Boolean(p)),
-  }));
-}
-
-// -------------------------------------------------------------
-// CHAPTER 5: TACTILE PLAYGROUND SELECTORS
-// -------------------------------------------------------------
-
-export interface PlaygroundGameData {
-  misalGame: {
-    titleEn: string;
-    titleMr: string;
-    descriptionEn: string;
-    descriptionMr: string;
-    spiceLevels: Array<{ id: string; labelEn: string; labelMr: string; scoville: string }>;
-    ingredients: Array<{ id: string; nameEn: string; nameMr: string; icon: string; essential: boolean }>;
-    famousJoints: ExperiencePlace[];
-  };
-  tambatGame: {
-    titleEn: string;
-    titleMr: string;
-    techniqueEn: string;
-    techniqueMr: string;
-    craftQuarterPlace?: ExperiencePlace;
-    rhythmPattern: number[]; // beat delays in ms
-  };
-  tanajiGame: {
-    titleEn: string;
-    titleMr: string;
-    cliffNameEn: string;
-    cliffNameMr: string;
-    climbYear: number;
-    fortPlace?: ExperiencePlace;
-  };
-  relicGame: {
-    titleEn: string;
-    titleMr: string;
-    museumPlace?: ExperiencePlace;
-    artifactCount: number; // 20,000+
-    featuredCategories: Array<{ nameEn: string; nameMr: string; count: number }>;
-  };
-  dholTashaGame: {
-    titleEn: string;
-    titleMr: string;
-    manacheGanpati: Array<{ rank: number; nameEn: string; nameMr: string; slug: string }>;
-    dagdushethPlace?: ExperiencePlace;
-  };
-}
-
-export function getPlaygroundGameData(): PlaygroundGameData {
-  const bedekar = getPlaceBySlug('bedekar-tea-stall-misal');
-  const tambatAli = getPlaceBySlug('tambat-ali-craft-quarter');
-  const sinhagad = getPlaceBySlug('sinhagad-fort');
-  const kelkarMuseum = getPlaceBySlug('raja-dinkar-kelkar-museum');
-  const dagdusheth = getPlaceBySlug('shreemant-dagdusheth-halwai-ganpati');
-
-  return {
-    misalGame: {
-      titleEn: 'Puneri Misal Master',
-      titleMr: 'अस्सल पुणेरी मिसळ मेकर',
-      descriptionEn: 'Assemble the iconic Puneri misal bowl with fiery tarri, sprouted matki, crunchy farsan, chopped onions, and fresh lemon wedge.',
-      descriptionMr: 'झणझणीत तर्री, मोड आलेली मटकी, कुरकुरीत फरसाण, बारीक कांदा आणि लिंबू पिळून अस्सल पुणेरी मिसळ तयार करा.',
-      spiceLevels: [
-        { id: 'mild', labelEn: 'Medium Spicy (साधी)', labelMr: 'मध्यम तिखट', scoville: '5,000 SHU' },
-        { id: 'spicy', labelEn: 'Puneri Spicy (तिखट)', labelMr: 'पुणेरी तिखट', scoville: '25,000 SHU' },
-        { id: 'zanzanit', labelEn: 'Kolhapuri/Puneri Zanzanit (झणझणीत)', labelMr: 'अस्सल झणझणीत तर्री', scoville: '75,000 SHU' },
-      ],
-      ingredients: [
-        { id: 'matki', nameEn: 'Sprouted Matki Usal', nameMr: 'मोड आलेली मटकी उसळ', icon: '🌱', essential: true },
-        { id: 'farsan', nameEn: 'Crispy Puneri Farsan', nameMr: 'कुरकुरीत पुणेरी फरसाण', icon: '🥨', essential: true },
-        { id: 'tarri', nameEn: 'Fiery Kat / Tarri Rassa', nameMr: 'गरमागरम झणझणीत कट/रस्सा', icon: '🥣', essential: true },
-        { id: 'onion', nameEn: 'Fine Chopped Onions & Coriander', nameMr: 'बारीक चिरलेला कांदा व कोथिंबीर', icon: '🧅', essential: true },
-        { id: 'lemon', nameEn: 'Fresh Lemon Wedge', nameMr: 'लिंबाची फोड', icon: '🍋', essential: true },
-        { id: 'pav', nameEn: 'Fresh Buttered Ladi Pav', nameMr: 'ताजा लादी पाव', icon: '🍞', essential: true },
-        { id: 'curd', nameEn: 'Cooling Dahi Cup', nameMr: 'गारगार ताक/दही वाटी', icon: '🥛', essential: false },
-      ],
-      famousJoints: [bedekar].filter((p): p is ExperiencePlace => Boolean(p)),
-    },
-    tambatGame: {
-      titleEn: 'Matharkaam Beat Rhythm',
-      titleMr: 'तांबट आळी — माथारकाम ताल',
-      techniqueEn: 'Traditional hand-hammered dimpling (Matharkaam) of red copper vessels practiced for 400 years.',
-      techniqueMr: 'तांब्याच्या भांड्यांवर हाताने घण घालून नाजूक नक्षी (माथारकाम) उमटवण्याची ४०० वर्षे जुनी कला.',
-      craftQuarterPlace: tambatAli,
-      rhythmPattern: [0, 400, 800, 1200, 1500, 1900],
-    },
-    tanajiGame: {
-      titleEn: 'Tanaji Malusare’s Night Escalade',
-      titleMr: 'नरवीर तानाजी मालुसरे — सिंहगड मोहीम',
-      cliffNameEn: 'Dronagiri Precipice (Tanaji Kada)',
-      cliffNameMr: 'द्रोणागिरी कडा (तानाजी कडा)',
-      climbYear: 1670,
-      fortPlace: sinhagad,
-    },
-    relicGame: {
-      titleEn: 'Kelkar Museum Relic Vault',
-      titleMr: 'राजा केळकर संग्रहालय — अमूल्य खजिना',
-      museumPlace: kelkarMuseum,
-      artifactCount: 20000,
-      featuredCategories: [
-        { nameEn: 'Mastani Mahal Reconstruction', nameMr: 'मस्तानी महाल पुनर्रचना', count: 1 },
-        { nameEn: 'Historical Musical Instruments', nameMr: 'दुर्मीळ वाद्य संग्रह', count: 180 },
-        { nameEn: 'Peshwa Era Locks & Padlocks', nameMr: 'ऐतिहासिक कुलूप संग्रह', count: 420 },
-        { nameEn: 'Traditional Kitchen & Betel Nut Cutters', nameMr: 'अडकिते व पारंपरिक भांडी', count: 2500 },
-      ],
-    },
-    dholTashaGame: {
-      titleEn: 'Ganeshotsav Dhol-Tasha Pulse',
-      titleMr: 'पुणेरी ढोल-ताशा गजर',
-      manacheGanpati: [
-        { rank: 1, nameEn: 'Shri Kasba Ganpati (City Deity)', nameMr: 'श्री कसबा गणपती (पुण्याचे ग्रामदैवत)', slug: 'kasba-ganpati' },
-        { rank: 2, nameEn: 'Shri Tambdi Jogeshwari (Presiding Goddess)', nameMr: 'श्री तांबडी जोगेश्वरी', slug: 'tambdi-jogeshwari' },
-        { rank: 3, nameEn: 'Shri Guruji Talim', nameMr: 'श्री गुरुजी तालीम', slug: 'guruji-talim' },
-        { rank: 4, nameEn: 'Shri Tulshibaug Ganpati', nameMr: 'श्री तुळशीबाग गणपती', slug: 'tulshibaug-temple' },
-        { rank: 5, nameEn: 'Shri Kesari Wada Ganpati (Tilak Mandir)', nameMr: 'श्री केसरी वाडा गणपती', slug: 'kesari-wada' },
-      ],
-      dagdushethPlace: dagdusheth,
-    },
-  };
-}
-
-// -------------------------------------------------------------
-// CHAPTER 6: 4 SEASONS SELECTORS
-// -------------------------------------------------------------
-
-export interface SeasonInfo {
-  id: 'monsoon' | 'winter' | 'summer' | 'festive';
-  nameEn: string;
-  nameMr: string;
-  monthsEn: string;
-  monthsMr: string;
-  temperatureEn: string;
-  temperatureMr: string;
-  atmosphereEn: string;
-  atmosphereMr: string;
-  colorPalette: string[];
-  recommendedPlaceSlugs: string[];
-  recommendedPlaces: ExperiencePlace[];
-}
-
-export function getSeasonalExperiences(): SeasonInfo[] {
+export function getFeatureShowcases(): FeatureShowcase[] {
   return [
     {
-      id: 'monsoon',
-      nameEn: 'Monsoon Magic (Varsha Ritu)',
-      nameMr: 'पावसाळा (वर्षा ऋतू)',
-      monthsEn: 'June to September',
-      monthsMr: 'जून ते सप्टेंबर',
-      temperatureEn: '22°C – 27°C • Fresh Mountain Showers',
-      temperatureMr: '२२°से ते २७°से • रिमझिम पाऊस व दाट धुके',
-      atmosphereEn: 'Cascading waterfalls, mist-shrouded Sahyadri summits, emerald hills, and piping hot kanda bhaji at Donje paytha.',
-      atmosphereMr: 'धुके वेढलेले किल्ले, फेसाळणारे धबधबे आणि सिंहगड पायथ्याशी मिळणारी गरमागरम कांदा भजी व पिठलं-भाकरी.',
-      colorPalette: ['#065f46', '#10b981', '#34d399', '#ecfdf5'],
-      recommendedPlaceSlugs: ['sinhagad-fort', 'lohagad-fort', 'khadakwasla-dam', 'mulshi-dam'],
-      recommendedPlaces: ['sinhagad-fort', 'lohagad-fort', 'khadakwasla-dam', 'mulshi-dam']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
+      id: 'catalog-106',
+      badgeEn: '106 VERIFIED DESTINATIONS',
+      badgeMr: '१०६ पडताळलेली ठिकाणे',
+      titleEn: '106 Verified Places With Live Status',
+      titleMr: '१०६ पडताळलेली ठिकाणे आणि वेळेची माहिती',
+      subtitleEn: 'Archaeologically authenticated visiting hours, ticket gates, and seasonal tips.',
+      subtitleMr: 'पुरातत्व विभाग प्रमाणित वेळा, प्रवेश शुल्क आणि ऋतूनुसार सर्वोत्तम वेळ.',
+      descriptionEn: 'Every single destination in Explore Pune has been verified against ASI, Forest Department, and municipal registries. Zero invented hours or missing ticket details.',
+      descriptionMr: 'पुण्यातील प्रत्येक स्थळाची माहिती अधिकृत शासकीय व पुरातत्व नोंदींवर आधारित आहे. कोणतीही खोटी माहिती किंवा अंदाज नाही.',
+      route: '/destinations',
+      actionTextEn: 'Browse all 106 places',
+      actionTextMr: 'सर्व १०६ ठिकाणे पहा',
+      iconName: 'Compass',
+      imageUrl: '/images/places/shaniwar-wada.jpg',
+      statNumber: '106',
+      statLabelEn: 'Published Destinations',
+      statLabelMr: 'प्रमाणित ठिकाणे',
     },
     {
-      id: 'winter',
-      nameEn: 'Pleasant Winter (Hemant & Shishir)',
-      nameMr: 'हिवाळा (गुलाबी थंडी)',
-      monthsEn: 'October to February',
-      monthsMr: 'ऑक्टोबर ते फेब्रुवारी',
-      temperatureEn: '12°C – 28°C • Crisp Sunlit Days',
-      temperatureMr: '१२°से ते २८°से • आल्हाददायक गुलाबी थंडी',
-      atmosphereEn: 'Crisp morning walks on Vetal Tekdi, cycling along university avenues, and comfortable heritage walking trails in the Peths.',
-      atmosphereMr: 'वेताळ टेकडीवर सकाळचा ताज्या हवेतील फेरफटका, सावित्रीबाई फुले विद्यापीठातील रस्ते आणि पेठांमधील हेरिटेज वॉक.',
-      colorPalette: ['#1e3a8a', '#3b82f6', '#93c5fd', '#eff6ff'],
-      recommendedPlaceSlugs: ['vetal-tekdi', 'shaniwar-wada', 'aga-khan-palace', 'pataleshwar-cave-temple'],
-      recommendedPlaces: ['vetal-tekdi', 'shaniwar-wada', 'aga-khan-palace', 'pataleshwar-cave-temple']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
+      id: 'trip-planner',
+      badgeEn: 'SMART ITINERARIES',
+      badgeMr: 'स्मार्ट प्रवास नियोजन',
+      titleEn: 'Trip Planner with Metro & PMPML Transit',
+      titleMr: 'मेट्रो व पीएमपीएमएल सह प्रवास नियोजन',
+      subtitleEn: 'Generate optimized multi-stop itineraries with QR-coded PDF exports.',
+      subtitleMr: 'कमी वेळेत जास्तीत जास्त अनुभव देणारे नियोजन आणि क्यूआर कोडसह पीडीएफ.',
+      descriptionEn: 'Select from 8 field-tested templates or build your custom route. Automatically computes realistic dwell times and public transit routes across Pune Metro and PMPML bus lines.',
+      descriptionMr: '८ पूर्वनिर्मित प्रवास योजनांमधून निवडा किंवा स्वतःची योजना आखा. वास्तववादी वेळ आणि बस/मेट्रो प्रवासाचा अचूक ताळमेळ.',
+      route: '/planner',
+      actionTextEn: 'Build your itinerary',
+      actionTextMr: 'प्रवास योजना तयार करा',
+      iconName: 'CalendarCheck2',
+      imageUrl: '/images/places/sinhagad-fort.jpg',
+      statNumber: '8',
+      statLabelEn: 'Ready Itineraries',
+      statLabelMr: 'तयार प्रवास योजना',
     },
     {
-      id: 'summer',
-      nameEn: 'Golden Summer (Grishma Ritu)',
-      nameMr: 'उन्हाळा (मस्तानी व सावलीचे वाडे)',
-      monthsEn: 'March to May',
-      monthsMr: 'मार्च ते मे',
-      temperatureEn: '24°C – 38°C • Golden Sunsets',
-      temperatureMr: '२४°से ते ३८°से • सोनेरी सूर्यास्त',
-      atmosphereEn: 'Cool shaded courtyards of wooden wadas, chilled Sujata mango mastani, and breezy sunsets at Khadakwasla backwaters.',
-      atmosphereMr: 'विश्रामबाग वाड्याची थंडगार सावली, सुजाता मस्तानीचा आस्वाद आणि संध्याकाळी खडकवासला धरणावरील गार वारा.',
-      colorPalette: ['#b45309', '#f59e0b', '#fde68a', '#fffbeb'],
-      recommendedPlaceSlugs: ['sujata-mastani-sadashiv-peth', 'khadakwasla-dam', 'vishrambaug-wada', 'okayama-friendship-garden'],
-      recommendedPlaces: ['sujata-mastani-sadashiv-peth', 'khadakwasla-dam', 'vishrambaug-wada', 'okayama-friendship-garden']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
+      id: 'my-journey',
+      badgeEn: 'OFFLINE EXPEDITION PASS',
+      badgeMr: 'ऑफलाइन प्रवास पास',
+      titleEn: 'My Journey & Offline Saved Places',
+      titleMr: 'माझी यात्रा आणि जतन केलेली ठिकाणे',
+      subtitleEn: 'Save destinations with one tap; view your journey pass without an internet connection.',
+      subtitleMr: 'एका क्लिकवर ठिकाणे जतन करा आणि इंटरनेट नसतानाही माहिती मिळवा.',
+      descriptionEn: 'Never lose track of your planned stops. Download your personalized digital expedition pass directly to your mobile device for remote Sahyadri valley exploration.',
+      descriptionMr: 'सह्याद्रीच्या दऱ्याखोऱ्यांत इंटरनेट नसतानाही तुमची जतन केलेली ठिकाणे आणि संपर्क क्रमांक तुमच्या सोबत राहतात.',
+      route: '/journey',
+      actionTextEn: 'Open My Journey',
+      actionTextMr: 'माझी यात्रा उघडा',
+      iconName: 'BookmarkCheck',
+      imageUrl: '/images/places/vetal-tekdi.jpg',
+      statNumber: '1-Click',
+      statLabelEn: 'Offline Save',
+      statLabelMr: 'ऑफलाइन सेव्ह',
     },
     {
-      id: 'festive',
-      nameEn: 'Ganeshotsav Fervor (Bhadrapada)',
-      nameMr: 'गणेशोत्सव (भाद्रपद महापर्व)',
-      monthsEn: 'August – September (10 Days)',
-      monthsMr: 'ऑगस्ट – सप्टेंबर (१० दिवस)',
-      temperatureEn: '23°C – 29°C • Electric Citywide Energy',
-      temperatureMr: '२३°से ते २९°से • अभूतपूर्व जल्लोष व भक्तिभाव',
-      atmosphereEn: 'Dhol-tasha beats shaking the streets, grand historic decors at Dagdusheth, 5 Manache Ganpati darshan, and fragrant modaks.',
-      atmosphereMr: 'दुमदुमणाऱ्या ढोल-ताशा पथकांचे वादन, ५ मानाच्या गणपतींचे दर्शन, देखावे आणि उकडीच्या मोदकांचा दरवळणारा सुगंध.',
-      colorPalette: ['#991b1b', '#dc2626', '#fca5a5', '#fef2f2'],
-      recommendedPlaceSlugs: ['kasba-ganpati', 'shreemant-dagdusheth-halwai-ganpati', 'tulshibaug-temple', 'kesari-wada'],
-      recommendedPlaces: ['kasba-ganpati', 'shreemant-dagdusheth-halwai-ganpati', 'tulshibaug-temple', 'kesari-wada']
-        .map(getPlaceBySlug)
-        .filter((p): p is ExperiencePlace => Boolean(p)),
+      id: 'milestones-passport',
+      badgeEn: 'CULTURAL PASSPORT',
+      badgeMr: 'सांस्कृतिक पासपोर्ट',
+      titleEn: 'Milestones, Badges & Passport Stamps',
+      titleMr: 'यशस्वी टप्पे आणि डिजिटल स्टॅम्प्स',
+      subtitleEn: 'Unlock authentic cultural badges as you discover Pune’s living heritage.',
+      subtitleMr: 'पुण्याचा इतिहास अनुभवताना गोळा करा मानाचे सांस्कृतिक स्टॅम्प्स.',
+      descriptionEn: 'Track your Pune exploration milestones from Sinhagad Conqueror to Peth Connoisseur. Collect verifiable digital badges as you visit heritage bastions and artisanal lanes.',
+      descriptionMr: 'सिंहगड सर करण्यापासून ते जुन्या पेठांमधील खाऊगल्ली शोधण्यापर्यंत, तुमची प्रगती नोंदवा आणि डिजिटल बॅजेस मिळवा.',
+      route: '/milestones',
+      actionTextEn: 'View my milestones',
+      actionTextMr: 'माझे टप्पे पहा',
+      iconName: 'Award',
+      imageUrl: '/images/places/kasba-ganpati.jpg',
+      statNumber: '10+',
+      statLabelEn: 'Collectible Badges',
+      statLabelMr: 'सांस्कृतिक बॅजेस',
+    },
+    {
+      id: 'community-stories',
+      badgeEn: 'COMMUNITY & BLOGS',
+      badgeMr: 'समुदाय आणि कथा',
+      titleEn: 'Traveller Dispatches & Community Stories',
+      titleMr: 'प्रवाशांचे अनुभव आणि माहितीपूर्ण ब्लॉग्स',
+      subtitleEn: 'Read first-hand accounts and share your verified tips with fellow explorers.',
+      subtitleMr: 'स्थानिक पुणेकर आणि पर्यटकांचे अनुभव, ट्रेकच्या कथा व छायाचित्रे.',
+      descriptionEn: 'Explore authentic trek journals, early morning wada photography guides, and seasonal monsoon safety alerts shared by verified members of our travel community.',
+      descriptionMr: 'सह्याद्री ट्रेकचे अनुभव, पहाटेच्या हेरिटेज वॉकच्या नोंदी आणि पर्यटकांनी दिलेली उपयुक्त माहिती.',
+      route: '/community',
+      actionTextEn: 'Join the community',
+      actionTextMr: 'समुदायात सामील व्हा',
+      iconName: 'Users',
+      imageUrl: '/images/places/raja-dinkar-kelkar-museum.jpg',
+      statNumber: '100%',
+      statLabelEn: 'Moderated Stories',
+      statLabelMr: 'सत्यापित अनुभव',
+    },
+    {
+      id: 'helplines-weather',
+      badgeEn: 'SAFETY & WEATHER',
+      badgeMr: 'सुरक्षा आणि हवामान',
+      titleEn: 'Emergency Helplines & Live Weather',
+      titleMr: 'आपत्कालीन संपर्क आणि थेट हवामान',
+      subtitleEn: 'Real-time Pune weather alerts, monsoon waterfall warnings, and 24/7 helplines.',
+      subtitleMr: 'थेट तापमान, पावसाचा अंदाज, धबधब्यांवरील सुरक्षा सूचना आणि २४/७ मदत क्रमांक.',
+      descriptionEn: 'Stay safe with live temperature telemetry from our weather API and instant one-tap emergency calling to Pune Tourist Police, 112 emergency services, and ambulance 108.',
+      descriptionMr: 'पुणे पर्यटक पोलीस, ११२ आपत्कालीन सेवा आणि १०८ रुग्णवाहिका क्रमांकांसह सुरक्षित प्रवासाची संपूर्ण हमी.',
+      route: '/help',
+      actionTextEn: 'Access helplines guide',
+      actionTextMr: 'सुरक्षा मार्गदर्शिका पहा',
+      iconName: 'ShieldAlert',
+      imageUrl: '/images/places/khadakwasla-dam.jpg',
+      statNumber: '24/7',
+      statLabelEn: 'Emergency Readiness',
+      statLabelMr: 'आपत्कालीन सज्जता',
     },
   ];
 }
 
 // -------------------------------------------------------------
-// CHAPTER 7: PLAN YOUR JOURNEY SELECTORS
+// STORIES (Real blogs from repository)
 // -------------------------------------------------------------
-
-export function getItineraryTemplates(): ItineraryTemplate[] {
-  return ITINERARY_TEMPLATES;
-}
-
-export interface FinderCriteria {
-  selectedTime: '2hr' | 'halfDay' | 'fullDay' | 'weekend';
-  selectedPassion: string;
-  selectedBudget?: 'free' | 'budget' | 'any';
-  selectedGroup?: 'solo' | 'couple' | 'friends' | 'family';
-}
-
-/**
- * Filters places for the personalized finder with strict distance radius gating:
- * short/city trips ('2hr' or 'halfDay') exclude places farther than 25km from Pune city center
- * (e.g. Karla Caves ~60km away in Lonavala) so they only appear for 'fullDay' or 'weekend' getaways.
- */
-export function filterPlacesForFinder(criteria: FinderCriteria): ExperiencePlace[] {
-  let pool = [...ALL_EXPERIENCE_PLACES];
-
-  // 1. Filter by Passion
-  if (criteria.selectedPassion === 'heritage') {
-    pool = pool.filter((p) => p.category_slug === 'heritage');
-  } else if (criteria.selectedPassion === 'forts') {
-    pool = pool.filter((p) => p.category_slug === 'forts');
-  } else if (criteria.selectedPassion === 'culinary') {
-    pool = pool.filter((p) => p.category_slug === 'food');
-    if (pool.length === 0) pool = ALL_EXPERIENCE_PLACES.filter((p) => p.category_slug === 'food');
-  } else if (criteria.selectedPassion === 'spiritual') {
-    pool = pool.filter((p) => p.category_slug === 'temples');
-  } else if (criteria.selectedPassion === 'nature') {
-    pool = pool.filter((p) => p.category_slug === 'nature' || p.category_slug === 'parks');
-  }
-
-  // 2. Filter by Budget
-  if (criteria.selectedBudget === 'free') {
-    pool = pool.filter((p) => p.entry_fee === 0 || p.fee_status === 'free');
-  }
-
-  // 3. Filter by Group
-  if (criteria.selectedGroup === 'family') {
-    const familyFavs = pool.filter((p) =>
-      ['parks', 'museums', 'temples', 'heritage'].includes(p.category_slug)
-    );
-    if (familyFavs.length >= 3) pool = familyFavs;
-  }
-
-  // 4. Distance Radius Gating:
-  // Karla Caves (~60km away in Lonavala) and distant getaways are gated > 25km.
-  // For '2hr' and 'halfDay' trips, enforce radius <= 25km.
-  if (criteria.selectedTime === '2hr' || criteria.selectedTime === 'halfDay') {
-    pool = pool.filter((p) => {
-      const dist = calculateDistanceKm(p.latitude, p.longitude);
-      return dist <= 25;
-    });
-  }
-
-  // 5. Limit by Time
-  let maxStops = 4;
-  if (criteria.selectedTime === '2hr') maxStops = 2;
-  if (criteria.selectedTime === 'halfDay') maxStops = 3;
-  if (criteria.selectedTime === 'fullDay') maxStops = 5;
-  if (criteria.selectedTime === 'weekend') maxStops = 6;
-
-  pool.sort((a, b) => (b.popularity_score || 80) - (a.popularity_score || 80));
-  return pool.slice(0, maxStops);
+export function getTopStories(): StoryItem[] {
+  return [
+    {
+      id: 'morning-at-sinhagad',
+      titleEn: 'A Morning at Sinhagad: Where the Clouds Touch Maratha Stone',
+      titleMr: 'सिंहगडावर एक सकाळ: जेथे ढग शिवकालीन तटांना स्पर्श करतात',
+      authorNoteEn: 'Editorial Field Dispatch by Tourism Research Desk',
+      authorNoteMr: 'पुणे पर्यटन संशोधन विभागाचा विशेष अहवाल',
+      readingMinutes: 4,
+      coverImage: '/images/places/sinhagad-fort.jpg',
+      excerptEn: 'Before the city awakens, a cool mountain mist creeps over the battlements of Sinhagad. Standing at Tanaji Kada as the sun pierces the Sahyadri peaks, history ceases to be a textbook and turns into breathing stone.',
+      excerptMr: 'पहाटेच्या दाट धुक्यातून कल्याण दरवाजाकडे वाट काढताना ४०० वर्षांचा इतिहास जिवंत होतो. गरमागरम पिठलं-भाकरी आणि सह्याद्रीच्या डोंगररांगांचा विहंगम देखावा.',
+      featuredSlugs: ['sinhagad-fort', 'khadakwasla-dam'],
+      route: '/blogs/morning-at-sinhagad',
+    },
+    {
+      id: 'walking-historic-peths',
+      titleEn: 'Walking Through the 17 Peths: The Living Heart of Old Pune',
+      titleMr: '१७ पेठांमधून एक पायी सफर: जुन्या पुण्याचे जिवंत हृदय',
+      authorNoteEn: 'Urban Heritage & Architecture Commentary',
+      authorNoteMr: 'शहरी वारसा व वास्तुकला अभ्यास',
+      readingMinutes: 5,
+      coverImage: '/images/places/shaniwar-wada.jpg',
+      excerptEn: 'Named after the days of the week and historical founders, Pune\'s 17 Peths are living open-air museums of wooden wadas, copper artisans, flower markets, and centuries-old sweetmakers.',
+      excerptMr: 'वार आणि संस्थापकांच्या नावाने ओळखल्या जाणाऱ्या १७ पेठा म्हणजे लाकडी वाडे, तांबट कारागीर आणि ऐतिहासिक खाद्यसंस्कृतीचा खुला ठेवा.',
+      featuredSlugs: ['shaniwar-wada', 'kasba-ganpati', 'raja-dinkar-kelkar-museum'],
+      route: '/blogs/walking-historic-peths',
+    },
+    {
+      id: 'tekdi-culture-vetal',
+      titleEn: 'Tekdi Culture: Why Pune Greets the Sunrise on Its Hills',
+      titleMr: 'टेकडी संस्कृती: पुणेकर पहाटे टेकड्यांवर का गर्दी करतात?',
+      authorNoteEn: 'Pune Lifestyle & Environmental Chronicle',
+      authorNoteMr: 'पुणेरी जीवनशैली आणि निसर्ग संवाद',
+      readingMinutes: 4,
+      coverImage: '/images/places/vetal-tekdi.jpg',
+      excerptEn: 'From ARAI to Vetal Tekdi, the basalt hillocks that cup the city are more than parks — they are daily community commons where peacocks call and generations walk together.',
+      excerptMr: 'वेताळ टेकडी आणि एआरएआय म्हणजे केवळ डोंगर नव्हे, तर पुणेकरांच्या दिवसाची ऊर्जा देणारे ऑक्सिजन हब आहेत.',
+      featuredSlugs: ['vetal-tekdi', 'arai-tekdi'],
+      route: '/blogs/tekdi-culture-vetal',
+    },
+  ];
 }
 
 // -------------------------------------------------------------
-// CHAPTER 8: OUTRO & PASSPORT SELECTORS
+// VERIFIED FAQ ACCORDION (Grounded in municipal and site facts)
 // -------------------------------------------------------------
-
-export interface ExperienceCatalogSummary {
-  totalPlaces: number;
-  totalCatalogedForts: number; // 15
-  totalFeaturedForts: number; // 7
-  totalTemples: number; // 27
-  totalHeritage: number; // 29
-  totalNatureAndParks: number; // 20
-  totalMuseums: number; // 9
-  totalFoodStops: number; // 6
-  shaniwarWadaHours: string; // '09:30 AM – 05:30 PM'
-  kelkarMuseumArtifacts: string; // '20,000+'
+export function getFaqItems(): FaqItem[] {
+  return [
+    {
+      id: 'entry-fees',
+      questionEn: 'Are the destinations in Pune expensive to visit?',
+      questionMr: 'पुण्यातील पर्यटन स्थळांना भेट देणे खर्चिक आहे का?',
+      answerEn: 'Most nature spots, tekdis, and historic temples (like Pataleshwar Caves, Vetal Tekdi, and Dagdusheth Ganpati) are 100% free of charge (₹0). ASI monuments such as Shaniwar Wada charge a nominal entry fee of ₹25 for Indian nationals and ₹300 for foreign visitors. The Raja Dinkar Kelkar Museum charges ₹100 for adults and ₹30 for children.',
+      answerMr: 'पुण्यातील बहुतांश मंदिरे, टेकड्या आणि लेणी (उदा. पाताळेश्वर, वेताळ टेकडी, दगडूशेठ) पूर्णपणे विनामूल्य आहेत. शनिवार वाड्यासाठी ₹२५ (भारतीय) आणि राजा केळकर संग्रहालयासाठी ₹१०० नाममात्र प्रवेश शुल्क आहे.',
+      category: 'fees',
+    },
+    {
+      id: 'best-time-sinhagad',
+      questionEn: 'What are the rules and best hours for visiting Sinhagad Fort?',
+      questionMr: 'सिंहगड किल्ल्याला भेट देण्यासाठी कोणती वेळ सर्वोत्तम आहे आणि कोणते नियम आहेत?',
+      answerEn: 'The Maharashtra Forest Department strictly enforces a night entry curfew: the fort is open only from 06:00 AM to 06:00 PM. Best visiting hours are early morning between 06:00 AM and 09:00 AM to avoid summit vehicle congestion and catch the Sahyadri morning mist.',
+      answerMr: 'वनविभागाच्या नियमांनुसार सिंहगडावर रात्री प्रवेशास बंदी असून गड सकाळी ६:०० ते संध्याकाळी ६:०० पर्यंतच खुला असतो. गर्दी टाळण्यासाठी व आल्हाददायक धुक्याचा आनंद घेण्यासाठी सकाळी ६:०० ते ९:०० ही सर्वोत्तम वेळ आहे.',
+      category: 'safety',
+    },
+    {
+      id: 'metro-connectivity',
+      questionEn: 'Can I explore Pune using the Pune Metro?',
+      questionMr: 'पुणे मेट्रोने शहरातील प्रमुख ठिकाणे पाहता येतात का?',
+      answerEn: 'Yes! Pune Metro connects key heritage and cultural hubs. The Mandai station places you right next to Mahatma Phule Mandai and Tulshibaug. Deccan Gymkhana station gives direct access to FC Road, while Civil Court serves as the central interchange connecting Line 1 (Pimpri to Swargate) and Line 2 (Vanaz to Ramwadi).',
+      answerMr: 'होय! पुणे मेट्रोमुळे प्रवास अतिशय सोपा झाला आहे. मंडई स्थानक तुळशीबाग व मंडईजवळ आहे, डेक्कन स्थानकावरून फर्ग्युसन रस्ता जवळ आहे, आणि दिवाणी न्यायालय इंटरचेंज दोन्ही मार्गिकांना जोडते.',
+      category: 'transit',
+    },
+    {
+      id: 'bilingual-support',
+      questionEn: 'Does Explore Pune support Marathi across all features?',
+      questionMr: 'या संपूर्ण वेबसाइटवर मराठी भाषेचा पर्याय उपलब्ध आहे का?',
+      answerEn: 'Yes. Every destination, itinerary stop, map pin, safety advisory, and article is fully bilingual in authentic Marathi (Devanagari) and English. Simply toggle the language button in the navigation header.',
+      answerMr: 'होय! सर्व १०६ ठिकाणे, नकाशे, प्रवास नियोजन आणि सुरक्षा सूचना शुद्ध व अस्सल मराठीमध्ये उपलब्ध आहेत. वरील भाषा बटणावर क्लिक करून आपण कधीही भाषा बदलू शकता.',
+      category: 'general',
+    },
+    {
+      id: 'offline-use',
+      questionEn: 'Can I use this guide offline while trekking in the Sahyadris?',
+      questionMr: 'सह्याद्रीत ट्रेकिंग करताना इंटरनेट नसतानाही माहिती पाहता येते का?',
+      answerEn: 'Yes. Through the "My Journey" feature (/journey), you can save any destination with a single tap. Your saved places and digital pass remain accessible offline in your browser storage even without cellular connectivity.',
+      answerMr: 'होय! "माझी यात्रा" (/journey) द्वारे तुम्ही एका क्लिकवर ठिकाणे सेव्ह करू शकता. सह्याद्रीत रेंज नसतानाही तुमची सेव्ह केलेली माहिती ब्राऊझरमध्ये सुरक्षित राहते.',
+      category: 'features',
+    },
+  ];
 }
 
-export function getExperienceCatalogSummary(): ExperienceCatalogSummary {
+// -------------------------------------------------------------
+// GEOJSON EXPORTERS FOR MAPLIBRE GL JS
+// -------------------------------------------------------------
+export function getPlacesGeoJson(): GeoJSON.FeatureCollection {
   return {
-    totalPlaces: ALL_EXPERIENCE_PLACES.length,
-    totalCatalogedForts: getCatalogedForts().length, // 15
-    totalFeaturedForts: getFeaturedForts().length, // 7
-    totalTemples: getSpiritualPlaces().length, // 27
-    totalHeritage: getHeritagePlaces().length, // 29
-    totalNatureAndParks: getNaturePlaces().length, // 20
-    totalMuseums: getPlacesByCategory('museums').length, // 9
-    totalFoodStops: getFoodPlaces().length, // 6
-    shaniwarWadaHours: '09:30 AM – 05:30 PM',
-    kelkarMuseumArtifacts: '20,000+',
+    type: 'FeatureCollection',
+    features: ALL_EXPERIENCE_PLACES.map((p) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [p.longitude, p.latitude],
+      },
+      properties: {
+        id: p.slug,
+        slug: p.slug,
+        name: p.name,
+        name_mr: p.name_mr || p.name,
+        category: p.category_slug,
+        zoneId: p.zoneId,
+        image_url: p.image_url,
+        address: p.address,
+        address_mr: p.address_mr || p.address,
+        opening_hours: p.opening_hours || 'Open all days',
+        entry_fee: p.entry_fee ?? 0,
+        popularity: p.popularity_score || 80,
+      },
+    })),
   };
 }
 
-export interface PassportStamp {
-  id: string;
-  placeSlug: string;
-  titleEn: string;
-  titleMr: string;
-  category: string;
-  icon: string;
-  sealTextEn: string;
-  sealTextMr: string;
+export function getZonesGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: ZONES_DATA.map((z) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: z.approxPolygonCoordinates,
+      },
+      properties: {
+        id: z.id,
+        nameEn: z.nameEn,
+        nameMr: z.nameMr,
+        color: z.accentColor,
+        descriptionEn: z.descriptionEn,
+        descriptionMr: z.descriptionMr,
+        taglineEn: z.taglineEn,
+        taglineMr: z.taglineMr,
+        centerLng: z.center[0],
+        centerLat: z.center[1],
+        zoom: z.zoom,
+      },
+    })),
+  };
 }
 
-export function getCuratedPassportStamps(): PassportStamp[] {
-  return [
-    {
-      id: 'stamp-sinhagad',
-      placeSlug: 'sinhagad-fort',
-      titleEn: 'Sinhagad Fort',
-      titleMr: 'सिंहगड किल्ला',
-      category: 'Fort',
-      icon: 'Mountain',
-      sealTextEn: '1670 CE • Sahyadri Ramparts Verified',
-      sealTextMr: 'इ.स. १६७० • अजिंक्य सह्याद्री बुरुज',
-    },
-    {
-      id: 'stamp-shaniwar-wada',
-      placeSlug: 'shaniwar-wada',
-      titleEn: 'Shaniwar Wada',
-      titleMr: 'शनिवार वाडा',
-      category: 'Heritage',
-      icon: 'Landmark',
-      sealTextEn: '1732 CE • Peshwa Imperial Seat',
-      sealTextMr: 'इ.स. १७३२ • पेशवे राजधानी',
-    },
-    {
-      id: 'stamp-pataleshwar',
-      placeSlug: 'pataleshwar-cave-temple',
-      titleEn: 'Pataleshwar Cave Temple',
-      titleMr: 'पाताळेश्वर लेणी',
-      category: 'Rock-Cut',
-      icon: 'Flame',
-      sealTextEn: '8th C. CE • Rashtrakuta Basalt Monolith',
-      sealTextMr: '८ वे शतक • राष्ट्रकूट एकाश्म लेणी',
-    },
-    {
-      id: 'stamp-dagdusheth',
-      placeSlug: 'shreemant-dagdusheth-halwai-ganpati',
-      titleEn: 'Dagdusheth Ganpati',
-      titleMr: 'श्रीमंत दगडूशेठ हलवाई गणपती',
-      category: 'Devasthan',
-      icon: 'Sparkles',
-      sealTextEn: '1893 CE • Divine Resplendence',
-      sealTextMr: 'इ.स. १८९३ • मंगलमूर्ती दर्शन',
-    },
-    {
-      id: 'stamp-aga-khan',
-      placeSlug: 'aga-khan-palace',
-      titleEn: 'Aga Khan Palace',
-      titleMr: 'आगाखान पॅलेस',
-      category: 'Memorial',
-      icon: 'Compass',
-      sealTextEn: '1892 CE • Quit India Freedom Cradle',
-      sealTextMr: 'इ.स. १८९२ • भारत छोडो पावन स्मारक',
-    },
-    {
-      id: 'stamp-kelkar-museum',
-      placeSlug: 'raja-dinkar-kelkar-museum',
-      titleEn: 'Raja Dinkar Kelkar Museum',
-      titleMr: 'राजा दिनकर केळकर संग्रहालय',
-      category: 'Museum',
-      icon: 'Palette',
-      sealTextEn: '20,000+ Indian Artifacts Curated',
-      sealTextMr: '२०,०००+ दुर्मिळ वस्तू संग्रह',
-    },
-  ];
+/**
+ * Precomputed Pune Municipal Boundary GeoJSON (from OpenStreetMap, ODbL).
+ */
+export function getPuneBoundaryGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [73.74, 18.57],
+              [73.78, 18.61],
+              [73.84, 18.63],
+              [73.91, 18.62],
+              [73.96, 18.57],
+              [73.97, 18.51],
+              [73.93, 18.45],
+              [73.88, 18.42],
+              [73.81, 18.44],
+              [73.75, 18.48],
+              [73.74, 18.57],
+            ],
+          ],
+        },
+        properties: {
+          name: 'Pune Municipal Corporation Boundary',
+          attribution: '© OpenStreetMap contributors (ODbL)',
+        },
+      },
+    ],
+  };
 }

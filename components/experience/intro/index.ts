@@ -1,0 +1,9 @@
+export { default as Preloader } from './Preloader';
+export { default as Hero } from './Hero';
+export { default as MarqueeStrip } from './MarqueeStrip';
+export { default as CategorySlider } from './CategorySlider';
+export { default as FeatureGuidePinned } from './FeatureGuidePinned';
+export { default as NumbersStrip } from './NumbersStrip';
+export { default as StoriesRow } from './StoriesRow';
+export { default as FaqAccordion } from './FaqAccordion';
+export { default as Bridge } from './Bridge';
