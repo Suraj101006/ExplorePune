@@ -24,6 +24,10 @@ const ExperienceWorld3D = dynamic(
   }
 );
 
+// Experience Foundation (Phase 1): Provider & Smooth Motion Bootstrap
+import ExperienceProvider from '@/components/experience/context/ExperienceProvider';
+import LenisBootstrap from '@/components/experience/motion/LenisBootstrap';
+
 // Custom Interactive Trailing Cursor
 import ExperienceCursor from '@/components/experience/ExperienceCursor';
 import ExperienceCinematicIntro from '@/components/experience/ExperienceCinematicIntro';
@@ -124,14 +128,16 @@ export default function ExperiencePage() {
   };
 
   return (
-    <main className="experience-root">
-      {/* Extraordinary 10-Second Cinematic Opening Overture (Code of Sagar & Studio Macaco style) */}
-      {showIntro && isClient && (
-        <ExperienceCinematicIntro
-          onComplete={handleIntroComplete}
-          isMr={isMr}
-        />
-      )}
+    <ExperienceProvider>
+      <LenisBootstrap>
+        <main className="experience-root">
+          {/* Extraordinary 10-Second Cinematic Opening Overture (Code of Sagar & Studio Macaco style) */}
+          {showIntro && isClient && (
+            <ExperienceCinematicIntro
+              onComplete={handleIntroComplete}
+              isMr={isMr}
+            />
+          )}
 
       {/* JSON-LD Schema Script */}
       <script
@@ -209,5 +215,7 @@ export default function ExperiencePage() {
         <ExperienceFooterCta isMr={isMr} />
       </div>
     </main>
+      </LenisBootstrap>
+    </ExperienceProvider>
   );
 }

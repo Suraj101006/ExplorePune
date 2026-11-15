@@ -197,4 +197,50 @@ describe('Experience Pune — Immersive Tourism Discovery Platform (/experience)
     expect(content).toContain('createBiquadFilter');
     expect(content).toContain('setTargetAtTime');
   });
+
+  it('13. Phase 1 Foundation: ExperienceProvider provides scroll, audio, lite mode, and reduced motion states', () => {
+    const providerPath = path.join(rootDir, 'components/experience/context/ExperienceProvider.tsx');
+    expect(fs.existsSync(providerPath)).toBe(true);
+    const content = fs.readFileSync(providerPath, 'utf8');
+
+    expect(content).toContain('toggleAudio');
+    expect(content).toContain('toggleLiteMode');
+    expect(content).toContain('prefers-reduced-motion');
+    expect(content).toContain('globalChapterRegistry');
+  });
+
+  it('14. Phase 1 Foundation: LenisBootstrap binds smooth scrolling with GSAP ScrollTrigger and provides Lite bypass', () => {
+    const lenisPath = path.join(rootDir, 'components/experience/motion/LenisBootstrap.tsx');
+    expect(fs.existsSync(lenisPath)).toBe(true);
+    const content = fs.readFileSync(lenisPath, 'utf8');
+
+    expect(content).toContain("import Lenis from 'lenis'");
+    expect(content).toContain("import { ScrollTrigger } from 'gsap/ScrollTrigger'");
+    expect(content).toContain('isLiteMode || prefersReducedMotion');
+    expect(content).toContain('gsap.ticker.add');
+    expect(content).toContain('lenis.destroy()');
+  });
+
+  it('15. Phase 1 Foundation: ChapterRegistry handles registration, enter/exit, and scrub progress', () => {
+    const registryPath = path.join(rootDir, 'lib/experience/registry.ts');
+    expect(fs.existsSync(registryPath)).toBe(true);
+    const content = fs.readFileSync(registryPath, 'utf8');
+
+    expect(content).toContain('register(chapter');
+    expect(content).toContain('unregister(id');
+    expect(content).toContain('scrubChapter(id');
+    expect(content).toContain('globalChapterRegistry');
+  });
+
+  it('16. Phase 1 Foundation: CREDITS.md documents asset licenses, provenance, and third-party dependencies', () => {
+    const creditsPath = path.join(rootDir, 'public/experience/CREDITS.md');
+    expect(fs.existsSync(creditsPath)).toBe(true);
+    const content = fs.readFileSync(creditsPath, 'utf8');
+
+    expect(content).toContain('Hard Rule #8');
+    expect(content).toContain('gsap');
+    expect(content).toContain('lenis');
+    expect(content).toContain('howler');
+    expect(content).toContain('Archaeological Survey of India');
+  });
 });

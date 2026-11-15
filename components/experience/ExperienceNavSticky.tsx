@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Film } from 'lucide-react';
+import { Film, Feather, Volume2, VolumeX } from 'lucide-react';
+import { useExperience } from './context/ExperienceContext';
 
 interface ExperienceNavStickyProps {
   isMr: boolean;
@@ -11,6 +12,13 @@ interface ExperienceNavStickyProps {
 export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceNavStickyProps) {
   const [activeSection, setActiveSection] = useState('hero');
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  let expContext: ReturnType<typeof useExperience> | null = null;
+  try {
+    expContext = useExperience();
+  } catch (e) {
+    expContext = null;
+  }
 
   const sections = [
     { id: 'hero', label: isMr ? 'मुख्य' : 'Intro' },
@@ -89,6 +97,32 @@ export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceN
             </button>
           ))}
         </div>
+
+        {/* Calm/Lite Mode & Audio Controls (Hard Rule #3 & #4) */}
+        {expContext && (
+          <div className="exp-nav-quick-toggles">
+            <button
+              type="button"
+              onClick={expContext.toggleLiteMode}
+              className={`exp-nav-toggle-btn ${expContext.isLiteMode ? 'active-lite' : ''}`}
+              title={expContext.isLiteMode ? 'Lite Mode Active (CSS only) — Click for 3D' : 'Calm / Lite Mode (?lite=1)'}
+              aria-label={expContext.isLiteMode ? 'Lite Mode Active' : 'Enable Calm / Lite Mode'}
+            >
+              <Feather size={12} style={{ marginRight: 4, display: 'inline' }} />
+              <span>{expContext.isLiteMode ? (isMr ? 'लाईट चालू' : 'Lite ON') : (isMr ? 'शांत मोड' : 'Calm / Lite')}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={expContext.toggleAudio}
+              className={`exp-nav-toggle-btn ${expContext.isAudioEnabled ? 'active-audio' : ''}`}
+              title={expContext.isAudioEnabled ? 'Audio Active — Click to Mute' : 'Audio Muted — Click to Enable'}
+              aria-label={expContext.isAudioEnabled ? 'Mute Audio' : 'Enable Audio'}
+            >
+              {expContext.isAudioEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+            </button>
+          </div>
+        )}
       </div>
       {/* Visual Scroll Progress Bar */}
       <div
