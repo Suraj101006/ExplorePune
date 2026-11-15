@@ -1,4 +1,5 @@
 export { default as ChapterPlayground } from './ChapterPlayground';
+export { default } from './ChapterPlayground';
 export { default as MisalBuilderGame } from './MisalBuilderGame';
 export { default as TambatRhythmGame } from './TambatRhythmGame';
 export { default as TanajiClimbGame } from './TanajiClimbGame';

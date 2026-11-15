@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useLanguage } from '@/lib/LanguageContext';
 import './experience.css';
 
-// Dynamic client import for WebGL Three.js canvas (zero SSR overhead)
+// Dynamic client import for Three.js WebGL canvas (zero SSR overhead)
 const ExperienceCanvas = dynamic(
   () => import('@/components/experience/ExperienceCanvas'),
   {
@@ -24,16 +24,31 @@ const ExperienceWorld3D = dynamic(
   }
 );
 
-// Experience Foundation (Phase 1): Provider & Smooth Motion Bootstrap
+// Experience Foundation: Context Provider, Lenis Smooth Motion, Web Audio Architecture, and Central WebGL Scene
 import ExperienceProvider from '@/components/experience/context/ExperienceProvider';
 import LenisBootstrap from '@/components/experience/motion/LenisBootstrap';
 import AudioManager from '@/components/experience/audio/AudioManager';
+import AudioControls from '@/components/experience/audio/AudioControls';
+import LazyWebGLCanvas from '@/components/experience/webgl/LazyWebGLCanvas';
 
 // Custom Interactive Trailing Cursor
 import ExperienceCursor from '@/components/experience/ExperienceCursor';
 import ExperienceCinematicIntro from '@/components/experience/ExperienceCinematicIntro';
 
-// 15 Comprehensive Experience Sections & Next-Gen Storytelling
+// 9 Epic Chapters of "Pune Through Time"
+import {
+  ChapterPreloader,
+  ChapterArrival,
+  ChapterEpochs,
+  ChapterPathways,
+  ChapterLivingMap,
+  ChapterPlayground,
+  ChapterSeasons,
+  ChapterPlan,
+  ChapterOutro,
+} from '@/components/experience/chapters';
+
+// Core Experience Discoveries & Storytelling Sections (SSR & Crawlable Content)
 import ExperienceHero from '@/components/experience/ExperienceHero';
 import ExperienceNavSticky from '@/components/experience/ExperienceNavSticky';
 import ExperiencePinnedJourney from '@/components/experience/ExperiencePinnedJourney';
@@ -55,15 +70,15 @@ import ExperienceFooterCta from '@/components/experience/ExperienceFooterCta';
 
 export default function ExperiencePage() {
   const { isMr } = useLanguage();
-  const [showIntro, setShowIntro] = React.useState<boolean>(true);
+  const [showIntro, setShowIntro] = React.useState<boolean>(false);
   const [isClient, setIsClient] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     setIsClient(true);
     try {
       const dismissed = sessionStorage.getItem('ep_experience_intro_dismissed');
-      if (dismissed === 'true') {
-        setShowIntro(false);
+      if (dismissed !== 'true') {
+        // First visit overture if desired
       }
     } catch (e) {
       // Graceful fallback in sandboxed iframe/storage environments
@@ -89,7 +104,7 @@ export default function ExperiencePage() {
         '@type': 'TouristDestination',
         '@id': 'https://explorepune-guide.vercel.app/experience#destination',
         name: 'Experience Pune — Immersive Tourism Discovery Platform',
-        alternateName: 'पुणे अनुभव',
+        alternateName: 'पुणे अनुभव: काळाच्या प्रवासात',
         description:
           'Next-generation immersive tourism discovery platform exploring 106 verified destinations, 3D interactive terrain, Maratha forts, Peshwa heritage wadas, authentic culinary institutions, and seasonal itineraries across Pune, Maharashtra.',
         url: 'https://explorepune-guide.vercel.app/experience',
@@ -132,92 +147,121 @@ export default function ExperiencePage() {
     <ExperienceProvider>
       <AudioManager>
         <LenisBootstrap>
-          <main className="experience-root">
-          {/* Extraordinary 10-Second Cinematic Opening Overture (Code of Sagar & Studio Macaco style) */}
-          {showIntro && isClient && (
-            <ExperienceCinematicIntro
-              onComplete={handleIntroComplete}
-              isMr={isMr}
+          <main className="experience-root relative min-h-screen text-slate-100 bg-[#080b11]">
+            {/* Chapter 0: Preloader & Hardware Calibration (0% to 100% Devanagari Counter) */}
+            <ChapterPreloader onComplete={handleIntroComplete} />
+
+            {/* Optional 10-Second Cinematic Opening Overture Replay */}
+            {showIntro && isClient && (
+              <ExperienceCinematicIntro
+                onComplete={handleIntroComplete}
+                isMr={isMr}
+              />
+            )}
+
+            {/* JSON-LD Schema Script */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
             />
-          )}
 
-      {/* JSON-LD Schema Script */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-      />
+            {/* Central WebGL Three.js Scene: Sahyadri terrain, Sinhagad summit, Shaniwar Wada plinth & sky dome */}
+            <LazyWebGLCanvas sceneId="central-world" />
 
-      {/* Subtle Three.js Fixed Background WebGL Starfield/Particles Canvas */}
-      <ExperienceCanvas currentScene={1} />
+            {/* Subtle Three.js Fixed Background WebGL Starfield/Particles Canvas */}
+            <ExperienceCanvas currentScene={1} />
 
-      {/* Interactive Trailing Cursor (Desktop) */}
-      <ExperienceCursor />
+            {/* Floating Glassmorphic Audio Controls HUD */}
+            <AudioControls />
 
-      {/* Atmospheric Overlays */}
-      <div className="exp-vignette" aria-hidden="true" />
-      <div className="exp-grid-overlay" aria-hidden="true" />
+            {/* Interactive Trailing Cursor (Desktop) */}
+            <ExperienceCursor />
 
-      {/* Sticky Quick-Navigation Bar */}
-      <ExperienceNavSticky isMr={isMr} onReplayIntro={handleReplayIntro} />
+            {/* Atmospheric Overlays */}
+            <div className="exp-vignette pointer-events-none fixed inset-0 z-[1]" aria-hidden="true" />
+            <div className="exp-grid-overlay pointer-events-none fixed inset-0 z-[1]" aria-hidden="true" />
 
-      {/* Interconnected Experience Sections */}
-      <div className="exp-content-wrapper">
-        {/* Section 01: Cinematic Hero */}
-        <ExperienceHero isMr={isMr} />
+            {/* Sticky Quick-Navigation Bar with 9 Chapters, Calm/Lite Mode & Audio Toggle */}
+            <ExperienceNavSticky isMr={isMr} onReplayIntro={handleReplayIntro} />
 
-        {/* Signature 3D Experience: Explore Pune as a Digital World */}
-        <ExperienceWorld3D isMr={isMr} />
+            {/* Sequential Episodic Chapters (0 to 8) */}
+            <div className="exp-content-wrapper relative z-10">
+              {/* Chapter 1: Arrival ("प्रवेश" / Threshold: The Basalt Horizon) */}
+              <ChapterArrival />
+              <div className="sr-only">
+                <ExperienceHero isMr={isMr} />
+              </div>
 
-        {/* Advanced Scroll-Based Epoch Storytelling (Code of Sagar style) */}
-        <ExperiencePinnedJourney isMr={isMr} />
+              {/* Chapter 2: Four Epochs ("चार युगे" / The 4 Epochs of Pune) */}
+              <ChapterEpochs />
+              <div className="sr-only">
+                <ExperiencePinnedJourney isMr={isMr} />
+              </div>
 
-        {/* Section 02: 16 Discovery Categories */}
-        <ExperienceCategories isMr={isMr} />
+              {/* Chapter 3: Sixteen Pathways ("सोळा वाटा" / The 16 Living Veins) */}
+              <ChapterPathways />
+              <div className="sr-only">
+                <ExperienceCategories isMr={isMr} />
+              </div>
 
-        {/* Section 03: Interactive Pune Geographical Experience Map */}
-        <ExperienceMap isMr={isMr} />
+              {/* Chapter 4: Living Map ("जिवंत नकाशा" / Cartography of 17 Peths & 106 Sanctuaries) */}
+              <ChapterLivingMap />
+              <div className="sr-only">
+                <ExperienceWorld3D isMr={isMr} />
+                <ExperienceMap isMr={isMr} />
+              </div>
 
-        {/* Section 04: Explore Pune's Living Heritage */}
-        <HeritageStorySection isMr={isMr} />
+              {/* Chapter 5: Tactile Playground ("खेळ आणि कौशल्य" / 5 Tactile Mini-Games) */}
+              <ChapterPlayground />
 
-        {/* Section 05: Forts & Adventure Experiences */}
-        <AdventureFortsSection isMr={isMr} />
+              {/* Deep-Dive Cultural Heritage & Sanctuaries Catalog (Server-Rendered & Accessible) */}
+              <section className="exp-deep-dive-archive max-w-7xl mx-auto px-4 py-12 space-y-16">
+                <div id="heritage">
+                  <HeritageStorySection isMr={isMr} />
+                </div>
+                <div id="forts">
+                  <AdventureFortsSection isMr={isMr} />
+                </div>
+                <div id="food">
+                  <TasteOfPuneSection isMr={isMr} />
+                </div>
+                <div id="curiosities">
+                  <ExperienceCuriosityCabinet isMr={isMr} />
+                </div>
+                <div id="culture">
+                  <CultureTraditionsSection isMr={isMr} />
+                </div>
+                <div id="nature">
+                  <NatureEscapesSection isMr={isMr} />
+                </div>
+                <div id="gems">
+                  <HiddenGemsSection isMr={isMr} />
+                </div>
+              </section>
 
-        {/* Section 06: Taste of Pune (Culinary Magazine) */}
-        <TasteOfPuneSection isMr={isMr} />
+              {/* Chapter 6: Seasons ("चार ऋतू" / The Sahyadri Breath) */}
+              <ChapterSeasons />
+              <div className="sr-only">
+                <SeasonalExperienceSection isMr={isMr} />
+              </div>
 
-        {/* Playful Interactive Discovery: Cabinet of Curiosities (Studio Macaco style) */}
-        <ExperienceCuriosityCabinet isMr={isMr} />
+              {/* Chapter 7: Your Plan ("नियोजन आणि पासपोर्ट" / The Pune Expedition Studio) */}
+              <ChapterPlan />
+              <div className="sr-only">
+                <PersonalizedFinder isMr={isMr} />
+                <ItineraryBuilderSection isMr={isMr} />
+                <CommunityProgressSection isMr={isMr} />
+              </div>
 
-        {/* Section 07: Culture & Living Local Traditions */}
-        <CultureTraditionsSection isMr={isMr} />
-
-        {/* Section 08: Nature & Peaceful Escapes */}
-        <NatureEscapesSection isMr={isMr} />
-
-        {/* Section 09: Hidden Gems of Pune */}
-        <HiddenGemsSection isMr={isMr} />
-
-        {/* Section 10: Experience Pune Through the Seasons */}
-        <SeasonalExperienceSection isMr={isMr} />
-
-        {/* Section 11: Personalized Experience Finder */}
-        <PersonalizedFinder isMr={isMr} />
-
-        {/* Section 12: Build Your Own Pune Itinerary */}
-        <ItineraryBuilderSection isMr={isMr} />
-
-        {/* Section 13: Editorial Experience Stories */}
-        <ExperienceStoriesSection isMr={isMr} />
-
-        {/* Section 14: User Experience & Community Progress Passport */}
-        <CommunityProgressSection isMr={isMr} />
-
-        {/* Section 15: Final Immersive Call to Action */}
-        <ExperienceFooterCta isMr={isMr} />
-      </div>
-    </main>
-      </LenisBootstrap>
+              {/* Chapter 8: Outro ("समारोप" / The Deccan Reverie & Horizon Portal) */}
+              <ChapterOutro />
+              <div className="sr-only">
+                <ExperienceStoriesSection isMr={isMr} />
+                <ExperienceFooterCta isMr={isMr} />
+              </div>
+            </div>
+          </main>
+        </LenisBootstrap>
       </AudioManager>
     </ExperienceProvider>
   );

@@ -4,5 +4,7 @@ export { default as ChapterEpochs } from './epochs';
 export { EpochSceneMorph } from './epochs-scene';
 export { default as ChapterPathways } from './pathways';
 export { ChapterLivingMap } from './map';
+export { default as ChapterPlayground } from './playground';
 export { default as ChapterSeasons } from './seasons';
+export { default as ChapterPlan } from './plan';
 export { default as ChapterOutro } from './outro';

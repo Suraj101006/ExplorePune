@@ -26,6 +26,7 @@ export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceN
     { id: 'pinned-journey', label: isMr ? '४ युगे' : 'Epochs' },
     { id: 'categories', label: isMr ? '१६ श्रेणी' : 'Categories' },
     { id: 'map', label: isMr ? 'नकाशा' : 'Map' },
+    { id: 'playground', label: isMr ? 'खेळ' : 'Playground' },
     { id: 'heritage', label: isMr ? 'वारसा' : 'Heritage' },
     { id: 'forts', label: isMr ? 'किल्ले' : 'Forts' },
     { id: 'food', label: isMr ? 'खाद्य' : 'Culinary' },
@@ -40,6 +41,21 @@ export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceN
     { id: 'community', label: isMr ? 'समुदाय' : 'Community' },
   ];
 
+  const aliasMap: Record<string, string> = {
+    hero: 'arrival',
+    world3d: 'chapter-living-map',
+    'pinned-journey': 'epochs',
+    categories: 'pathways',
+    map: 'chapter-living-map',
+    finder: 'plan',
+    planner: 'plan',
+    community: 'plan',
+  };
+
+  const getTargetElement = (id: string): HTMLElement | null => {
+    return document.getElementById(id) || (aliasMap[id] ? document.getElementById(aliasMap[id]) : null);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -50,7 +66,7 @@ export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceN
       // Check which section is in view
       const scrollPos = window.scrollY + 180;
       for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i].id);
+        const el = getTargetElement(sections[i].id);
         if (el && el.offsetTop <= scrollPos) {
           setActiveSection(sections[i].id);
           break;
@@ -63,7 +79,7 @@ export default function ExperienceNavSticky({ isMr, onReplayIntro }: ExperienceN
   }, []);
 
   const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
+    const el = getTargetElement(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
