@@ -27,6 +27,7 @@ const ExperienceWorld3D = dynamic(
 // Experience Foundation (Phase 1): Provider & Smooth Motion Bootstrap
 import ExperienceProvider from '@/components/experience/context/ExperienceProvider';
 import LenisBootstrap from '@/components/experience/motion/LenisBootstrap';
+import AudioManager from '@/components/experience/audio/AudioManager';
 
 // Custom Interactive Trailing Cursor
 import ExperienceCursor from '@/components/experience/ExperienceCursor';
@@ -129,8 +130,9 @@ export default function ExperiencePage() {
 
   return (
     <ExperienceProvider>
-      <LenisBootstrap>
-        <main className="experience-root">
+      <AudioManager>
+        <LenisBootstrap>
+          <main className="experience-root">
           {/* Extraordinary 10-Second Cinematic Opening Overture (Code of Sagar & Studio Macaco style) */}
           {showIntro && isClient && (
             <ExperienceCinematicIntro
@@ -216,6 +218,7 @@ export default function ExperiencePage() {
       </div>
     </main>
       </LenisBootstrap>
+      </AudioManager>
     </ExperienceProvider>
   );
 }

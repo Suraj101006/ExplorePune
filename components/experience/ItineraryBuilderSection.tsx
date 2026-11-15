@@ -76,8 +76,17 @@ export default function ItineraryBuilderSection({ isMr }: ItineraryBuilderSectio
     }
   };
 
-  // Compute total travel time estimate
-  const estimatedHours = Math.round((customStops.length * 1.25) * 10) / 10;
+  // Check if current stops match the active preset template
+  const isMatchingPreset =
+    Boolean(activeTemplate) &&
+    customStops.length === activeTemplate.stops.length &&
+    customStops.every((slug, i) => slug === activeTemplate.stops[i]);
+
+  // Compute total travel time estimate:
+  // Respect preset template duration or compute realistic dwell & transit time
+  const estimatedHours = isMatchingPreset
+    ? activeTemplate.estimatedHours
+    : Math.round((customStops.length * 0.75 + Math.max(0, customStops.length - 1) * 0.25) * 10) / 10;
 
   return (
     <section id="planner" className="exp-section exp-planner-section">

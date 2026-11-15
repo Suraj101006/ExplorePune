@@ -1024,7 +1024,7 @@ export default function HomeExplorer({
                 <Mountain size={20} />
               </div>
               <span style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', background: '#ffedd5', padding: '3px 8px', borderRadius: 'var(--radius-sm)' }}>
-                {isMr ? '१२ गड-किल्ले' : '12 Forts'}
+                {isMr ? '१५ गड-किल्ले' : '15 Forts'}
               </span>
             </div>
             <div>

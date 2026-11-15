@@ -1,15 +1,22 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { AudioContext } from './audio/useAudioEngine';
 
 export default function ExperienceAudio() {
+  const audioContext = useContext(AudioContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
   const oscRef = useRef<OscillatorNode[]>([]);
 
   const toggleAudio = () => {
+    if (audioContext) {
+      audioContext.toggleAudio();
+      return;
+    }
+
     if (isPlaying) {
       // Fade out
       if (gainNodeRef.current && audioCtxRef.current) {
@@ -81,16 +88,18 @@ export default function ExperienceAudio() {
     };
   }, []);
 
+  const active = audioContext ? (audioContext.isAudioEnabled && !audioContext.isMuted) : isPlaying;
+
   return (
     <button
       type="button"
       onClick={toggleAudio}
-      className={`exp-control-btn ${isPlaying ? 'active' : ''}`}
-      aria-label={isPlaying ? 'Mute ambient soundscape' : 'Enable ambient soundscape'}
-      title={isPlaying ? 'Mute ambient audio' : 'Enable ambient cinematic drone'}
+      className={`exp-control-btn exp-audio-btn ${active ? 'active' : ''}`}
+      aria-label={active ? 'Mute ambient soundscape' : 'Enable ambient soundscape'}
+      title={active ? 'Mute ambient audio' : 'Enable ambient cinematic drone'}
     >
-      {isPlaying ? <Volume2 size={14} /> : <VolumeX size={14} />}
-      <span>{isPlaying ? 'Sound On' : 'Sound Off'}</span>
+      {active ? <Volume2 size={14} /> : <VolumeX size={14} />}
+      <span>{active ? 'Sound On' : 'Sound Off'}</span>
     </button>
   );
 }

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AudioContext } from './audio/useAudioEngine';
 import {
   Sparkles,
   Award,
@@ -127,6 +128,40 @@ const CURIOSITY_TRIVIA = [
 export default function ExperienceCuriosityCabinet({ isMr }: ExperienceCuriosityCabinetProps) {
   const [selectedRelic, setSelectedRelic] = useState<HeritageRelic | null>(null);
   const [openTriviaIdx, setOpenTriviaIdx] = useState<number | null>(null);
+  const audio = useContext(AudioContext);
+
+  const handleSelectRelic = (relic: HeritageRelic) => {
+    setSelectedRelic(relic);
+    if (audio?.playSfx) {
+      if (relic.id === 'tambat-copper-bamb') {
+        audio.playSfx('hammer');
+      } else if (relic.id === 'peshwa-rajmudra') {
+        audio.playSfx('coin');
+      } else {
+        audio.playSfx('click');
+      }
+    }
+  };
+
+  const handleCloseRelic = () => {
+    setSelectedRelic(null);
+    audio?.playSfx?.('click');
+  };
+
+  const handleToggleTrivia = (idx: number) => {
+    const next = openTriviaIdx === idx ? null : idx;
+    setOpenTriviaIdx(next);
+    if (audio?.playSfx && next !== null) {
+      if (idx === 2) {
+        // Misal tarri question
+        audio.playSfx('sizzle');
+      } else {
+        audio.playSfx('fanfare');
+      }
+    } else {
+      audio?.playSfx?.('click');
+    }
+  };
 
   return (
     <section id="curiosities" className="exp-section exp-curiosities-section" aria-label="Interactive Heritage Relics">
@@ -153,13 +188,13 @@ export default function ExperienceCuriosityCabinet({ isMr }: ExperienceCuriosity
             <div
               key={relic.id}
               className="exp-relic-card"
-              onClick={() => setSelectedRelic(relic)}
+              onClick={() => handleSelectRelic(relic)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  setSelectedRelic(relic);
+                  handleSelectRelic(relic);
                 }
               }}
               aria-label={`Inspect ${relic.name}`}
@@ -214,7 +249,7 @@ export default function ExperienceCuriosityCabinet({ isMr }: ExperienceCuriosity
                 <div key={idx} className={`exp-trivia-item ${isOpen ? 'open' : ''}`}>
                   <button
                     type="button"
-                    onClick={() => setOpenTriviaIdx(isOpen ? null : idx)}
+                    onClick={() => handleToggleTrivia(idx)}
                     className="exp-trivia-question-btn"
                   >
                     <span>{isMr ? t.questionMr : t.question}</span>
@@ -237,7 +272,7 @@ export default function ExperienceCuriosityCabinet({ isMr }: ExperienceCuriosity
       {selectedRelic && (
         <div
           className="exp-modal-backdrop"
-          onClick={() => setSelectedRelic(null)}
+          onClick={handleCloseRelic}
           role="dialog"
           aria-modal="true"
         >
@@ -256,7 +291,7 @@ export default function ExperienceCuriosityCabinet({ isMr }: ExperienceCuriosity
               <div className="overlay" />
               <button
                 type="button"
-                onClick={() => setSelectedRelic(null)}
+                onClick={handleCloseRelic}
                 className="exp-modal-close inside"
                 aria-label="Close relic inspector"
               >

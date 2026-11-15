@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useEffect, useState } from 'react';
 import { useExperience } from '@/components/experience/context/ExperienceContext';
+import ExperienceWebGLScene from './ExperienceWebGLScene';
 
 interface LazyWebGLCanvasProps {
   sceneId?: string;
 }
 
 export default function LazyWebGLCanvas({ sceneId = 'world' }: LazyWebGLCanvasProps) {
-  const { isLiteMode, prefersReducedMotion } = useExperience();
+  const { isLiteMode, prefersReducedMotion, activeChapter } = useExperience();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -46,6 +46,12 @@ export default function LazyWebGLCanvas({ sceneId = 'world' }: LazyWebGLCanvasPr
         zIndex: 0,
       }}
       aria-hidden="true"
-    />
+    >
+      <ExperienceWebGLScene
+        activeChapter={activeChapter}
+        isInteractive={false}
+        className="w-full h-full pointer-events-none"
+      />
+    </div>
   );
 }

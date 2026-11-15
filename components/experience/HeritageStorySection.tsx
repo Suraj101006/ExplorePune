@@ -33,7 +33,7 @@ const FEATURED_HERITAGE_DESTINATIONS = [
     architecture: 'Maratha-Mughal Fortified Citadel & Teak Palaces',
     story: 'The epicentre of the Maratha Empire from where Peshwa Bajirao I and his successors directed military campaigns spanning Attock to Cuttack. Behind the massive Delhi Gate with its steel elephant spikes lies centuries of royal ambition and dramatic history.',
     significance: 'Historic seat of the Peshwa administration; Centrally Protected Monument under Archaeological Survey of India (ASI).',
-    visitingNote: '09:00 AM – 05:30 PM • Sound & Light Show in evenings • Ticket: ₹25 (Indian), ₹300 (Foreigner).',
+    visitingNote: '09:30 AM – 05:30 PM • Sound & Light Show in evenings • Ticket: ₹25 (Indian), ₹300 (Foreigner).',
   },
   {
     slug: 'aga-khan-palace',
@@ -71,7 +71,7 @@ const FEATURED_HERITAGE_DESTINATIONS = [
     titleMr: 'राजा दिनकर केळकर संग्रहालय',
     builtYear: '1962 (Dr. D.G. Kelkar)',
     architecture: 'Traditional Rajasthani-Maratha Stone Courtyard Museum',
-    story: 'The lifelong obsession of Dr. Dinkar G. Kelkar, who traversed remote Indian villages to rescue over 22,000 priceless artifacts of everyday Indian life, including musical instruments, lock mechanisms, and the restored Mastani Mahal.',
+    story: 'The lifelong obsession of Dr. Dinkar G. Kelkar, who traversed remote Indian villages to rescue over 20,000+ priceless artifacts of everyday Indian life, including musical instruments, lock mechanisms, and the restored Mastani Mahal.',
     significance: 'One of the world\'s most remarkable private collections of everyday historical crafts.',
     visitingNote: '10:00 AM – 05:30 PM • Entry: ₹100 (Adult), ₹30 (Child) • Shukrawar Peth.',
   },

@@ -23,6 +23,24 @@ import {
 } from 'lucide-react';
 import { toggleSavedPlace, isPlaceSaved } from '@/lib/savedPlaces';
 
+const PUNE_CENTER_LAT = 18.5204;
+const PUNE_CENTER_LNG = 73.8567;
+
+function getDistanceFromPuneCenterKm(lat?: number, lng?: number): number {
+  if (typeof lat !== 'number' || typeof lng !== 'number') return 0;
+  const R = 6371; // Earth's radius in km
+  const dLat = ((lat - PUNE_CENTER_LAT) * Math.PI) / 180;
+  const dLon = ((lng - PUNE_CENTER_LNG) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((PUNE_CENTER_LAT * Math.PI) / 180) *
+      Math.cos((lat * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 interface PersonalizedFinderProps {
   isMr: boolean;
 }
@@ -68,7 +86,17 @@ export default function PersonalizedFinder({ isMr }: PersonalizedFinderProps) {
       if (familyFavs.length >= 3) pool = familyFavs;
     }
 
-    // 4. Limit by Time
+    // 4. Distance Radius Gating
+    // Short / city trips ('2hr' or 'halfDay') exclude places farther than 25km from Pune city center
+    // (e.g. Karla Caves ~60km away in Lonavala) so they only appear for 'fullDay' or 'weekend' getaways.
+    if (selectedTime === '2hr' || selectedTime === 'halfDay') {
+      pool = pool.filter((p) => {
+        const distKm = getDistanceFromPuneCenterKm(p.latitude, p.longitude);
+        return distKm <= 25;
+      });
+    }
+
+    // 5. Limit by Time
     let maxStops = 4;
     if (selectedTime === '2hr') maxStops = 2;
     if (selectedTime === 'halfDay') maxStops = 3;

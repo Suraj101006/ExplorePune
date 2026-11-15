@@ -1,0 +1,363 @@
+/* ==========================================================================
+   EXPLORE PUNE: "PUNE THROUGH TIME" DESIGN TOKENS
+   Curated by Creative & Art Direction
+   Authentic Cultural Design Tokens: Basalt Black, Peshwa Saffron, Teak Brown,
+   Monsoon-Sky Blue, Shalu Gold, Stone Gray, Parchment Cream.
+   Bilingual Typography (Devanagari + English Serif/Sans), Motion Curves & Radii.
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     1. RAW PALETTE TOKENS
+     ------------------------------------------------------------------------ */
+  /* Basalt Black (Deccan Volcanic Stone) */
+  --exp-basalt-950: #04060a;
+  --exp-basalt-900: #080b11;
+  --exp-basalt-800: #0f172a;
+  --exp-basalt-700: #1e293b;
+  --exp-basalt-600: #334155;
+  --exp-basalt-500: #475569;
+  --exp-basalt-400: #64748b;
+  --exp-basalt-300: #94a3b8;
+  --exp-basalt-200: #cbd5e1;
+  --exp-basalt-100: #f1f5f9;
+  --exp-basalt-50:  #f8fafc;
+
+  /* Peshwa Saffron (Maratha Bhagwa & Royal Seal) */
+  --exp-saffron-900: #7c2d12;
+  --exp-saffron-800: #9a3412;
+  --exp-saffron-700: #c2410c;
+  --exp-saffron-600: #ea580c;
+  --exp-saffron-500: #f97316;
+  --exp-saffron-400: #fb923c;
+  --exp-saffron-300: #fdba74;
+  --exp-saffron-200: #fed7aa;
+  --exp-saffron-100: #ffedd5;
+  --exp-saffron-50:  #fff7ed;
+
+  /* Teak Brown (Shaniwar Wada Heavy Timber & Wooden Pillars) */
+  --exp-teak-950: #260e04;
+  --exp-teak-900: #451a03;
+  --exp-teak-800: #78350f;
+  --exp-teak-700: #92400e;
+  --exp-teak-600: #b45309;
+  --exp-teak-500: #d97706;
+  --exp-teak-400: #f59e0b;
+  --exp-teak-300: #fcd34d;
+  --exp-teak-200: #fde68a;
+  --exp-teak-100: #fef3c7;
+
+  /* Monsoon-Sky Blue (Sahyadri Cloudbursts & Sinhagad Mist) */
+  --exp-monsoon-950: #032030;
+  --exp-monsoon-900: #073b4c;
+  --exp-monsoon-800: #0369a1;
+  --exp-monsoon-700: #0284c7;
+  --exp-monsoon-600: #0ea5e9;
+  --exp-monsoon-500: #38bdf8;
+  --exp-monsoon-400: #7dd3fc;
+  --exp-monsoon-300: #bae6fd;
+  --exp-monsoon-200: #e0f2fe;
+  --exp-monsoon-100: #f0f9ff;
+
+  /* Shalu Gold (Paithani Zari, Ganpati Ornaments) */
+  --exp-gold-900: #713f12;
+  --exp-gold-800: #854d0e;
+  --exp-gold-700: #a16207;
+  --exp-gold-600: #ca8a04;
+  --exp-gold-500: #eab308;
+  --exp-gold-400: #facc15;
+  --exp-gold-300: #fde047;
+  --exp-gold-200: #fef08a;
+  --exp-gold-100: #fef9c3;
+  --exp-gold-50:  #fefce8;
+
+  /* Stone Gray (Sinhagad Ramparts, Pataleshwar Rock-Cut Basalt) */
+  --exp-stone-900: #1c1917;
+  --exp-stone-800: #292524;
+  --exp-stone-700: #44403c;
+  --exp-stone-600: #57534e;
+  --exp-stone-500: #78716c;
+  --exp-stone-400: #a8a29e;
+  --exp-stone-300: #d6d3d1;
+  --exp-stone-200: #e7e5e4;
+  --exp-stone-100: #f5f5f4;
+  --exp-stone-50:  #fafaf9;
+
+  /* Parchment Cream (Modi Script Manuscripts & Warkari Khadi) */
+  --exp-parchment-900: #d5c4a1;
+  --exp-parchment-800: #ebdcc8;
+  --exp-parchment-700: #f3ece0;
+  --exp-parchment-600: #f6efe0;
+  --exp-parchment-500: #fbf7ed;
+  --exp-parchment-400: #fdfbf7;
+  --exp-parchment-300: #ffffff;
+
+  /* Sahyadri Emerald & Foliage Green */
+  --exp-emerald-900: #064e3b;
+  --exp-emerald-800: #065f46;
+  --exp-emerald-700: #047857;
+  --exp-emerald-600: #059669;
+  --exp-emerald-500: #10b981;
+  --exp-emerald-400: #34d399;
+  --exp-emerald-300: #6ee7b7;
+  --exp-emerald-100: #d1fae5;
+
+  /* Tambat Copper (Hand-beaten Metalcraft) */
+  --exp-copper-900: #582106;
+  --exp-copper-800: #7c2d12;
+  --exp-copper-700: #9a3412;
+  --exp-copper-600: #b45309;
+  --exp-copper-500: #d97706;
+  --exp-copper-400: #f59e0b;
+
+  /* ------------------------------------------------------------------------
+     2. TYPOGRAPHY TOKENS (BILINGUAL ENGLISH & DEVANAGARI)
+     ------------------------------------------------------------------------ */
+  --exp-font-display-en: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --exp-font-display-mr: 'Rozha One', 'Gotu', 'Tiro Devanagari Marathi', 'Noto Serif Devanagari', serif;
+  --exp-font-display-bilingual: 'Rozha One', 'Cinzel', 'Playfair Display', 'Tiro Devanagari Marathi', Georgia, serif;
+
+  --exp-font-body-en: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --exp-font-body-mr: 'Noto Sans Devanagari', 'Mukta', 'Poppins', system-ui, sans-serif;
+  --exp-font-body-bilingual: 'Noto Sans Devanagari', 'Inter', 'Mukta', system-ui, sans-serif;
+
+  --exp-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  /* Fluid Responsive Font Sizes */
+  --exp-text-display-1: clamp(3rem, 7vw + 1rem, 6.5rem);
+  --exp-text-display-2: clamp(2.25rem, 5vw + 0.75rem, 4.5rem);
+  --exp-text-h1: clamp(1.85rem, 3.5vw + 0.5rem, 3.25rem);
+  --exp-text-h2: clamp(1.4rem, 2.5vw + 0.4rem, 2.25rem);
+  --exp-text-h3: clamp(1.15rem, 1.8vw + 0.3rem, 1.65rem);
+  --exp-text-h4: clamp(1rem, 1.2vw + 0.2rem, 1.25rem);
+  --exp-text-body-lg: clamp(1.05rem, 1.1vw + 0.1rem, 1.2rem);
+  --exp-text-body: 1rem;
+  --exp-text-body-sm: 0.875rem;
+  --exp-text-caption: 0.75rem;
+  --exp-text-micro: 0.675rem;
+
+  /* Line Heights (Devanagari matras require loose vertical room) */
+  --exp-leading-tight: 1.1;
+  --exp-leading-snug: 1.25;
+  --exp-leading-normal: 1.5;
+  --exp-leading-relaxed: 1.7;
+  --exp-leading-loose: 1.9;
+
+  /* Letter Spacing */
+  --exp-tracking-tighter: -0.04em;
+  --exp-tracking-tight: -0.02em;
+  --exp-tracking-normal: 0em;
+  --exp-tracking-wide: 0.04em;
+  --exp-tracking-wider: 0.08em;
+  --exp-tracking-widest: 0.18em;
+
+  /* ------------------------------------------------------------------------
+     3. SPACING & RADII TOKENS
+     ------------------------------------------------------------------------ */
+  --exp-space-0: 0px;
+  --exp-space-1: 4px;
+  --exp-space-2: 8px;
+  --exp-space-3: 12px;
+  --exp-space-4: 16px;
+  --exp-space-5: 20px;
+  --exp-space-6: 24px;
+  --exp-space-8: 32px;
+  --exp-space-10: 40px;
+  --exp-space-12: 48px;
+  --exp-space-16: 64px;
+  --exp-space-20: 80px;
+  --exp-space-24: 96px;
+  --exp-space-32: 128px;
+  --exp-space-40: 160px;
+
+  --exp-radius-none: 0px;
+  --exp-radius-xs: 2px;
+  --exp-radius-sm: 4px;
+  --exp-radius-md: 8px;
+  --exp-radius-lg: 12px;
+  --exp-radius-xl: 16px;
+  --exp-radius-2xl: 24px;
+  --exp-radius-3xl: 32px;
+  --exp-radius-full: 9999px;
+
+  /* ------------------------------------------------------------------------
+     4. MOTION TOKENS (DURATIONS & AUTHENTIC EASINGS)
+     ------------------------------------------------------------------------ */
+  --exp-duration-instant: 0ms;
+  --exp-duration-micro: 100ms;
+  --exp-duration-fast: 200ms;
+  --exp-duration-base: 400ms;
+  --exp-duration-deliberate: 600ms;
+  --exp-duration-slow: 800ms;
+  --exp-duration-cinematic: 1200ms;
+  --exp-duration-epic: 2000ms;
+  --exp-duration-ambient: 8000ms;
+
+  --exp-ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --exp-ease-peshwa: cubic-bezier(0.22, 1, 0.36, 1);
+  --exp-ease-cinematic-peshwa: cubic-bezier(0.19, 1, 0.22, 1);
+  --exp-ease-spring-gentle: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --exp-ease-sahyadri-mist: cubic-bezier(0.4, 0, 0.2, 1);
+  --exp-ease-monsoon-surge: cubic-bezier(0.77, 0, 0.175, 1);
+  --exp-ease-linear: linear;
+
+  /* ------------------------------------------------------------------------
+     5. DEFAULT (DARK THEME) SEMANTIC MAPPINGS
+     ------------------------------------------------------------------------ */
+  --exp-bg-canvas: var(--exp-basalt-900);
+  --exp-bg-surface: rgba(15, 23, 42, 0.85);
+  --exp-bg-surface-hover: rgba(30, 41, 59, 0.95);
+  --exp-bg-surface-subtle: var(--exp-basalt-800);
+  --exp-bg-surface-elevated: var(--exp-basalt-700);
+  --exp-bg-overlay: rgba(4, 6, 10, 0.92);
+  --exp-bg-vignette: radial-gradient(circle at 50% 50%, transparent 35%, rgba(4, 6, 10, 0.92) 100%);
+
+  --exp-text-primary: #f8fafc;
+  --exp-text-secondary: #94a3b8;
+  --exp-text-muted: #64748b;
+  --exp-text-accent: var(--exp-gold-400);
+  --exp-text-saffron: var(--exp-saffron-500);
+  --exp-text-inverse: var(--exp-basalt-950);
+
+  --exp-border-subtle: rgba(255, 255, 255, 0.08);
+  --exp-border-default: rgba(255, 255, 255, 0.14);
+  --exp-border-strong: rgba(255, 255, 255, 0.24);
+  --exp-border-glow-saffron: rgba(234, 88, 12, 0.45);
+  --exp-border-glow-gold: rgba(245, 158, 11, 0.45);
+  --exp-border-glow-monsoon: rgba(56, 189, 248, 0.45);
+
+  --exp-accent-primary: var(--exp-saffron-600);
+  --exp-accent-primary-hover: var(--exp-saffron-500);
+  --exp-accent-secondary: var(--exp-gold-500);
+  --exp-accent-secondary-hover: var(--exp-gold-400);
+  --exp-accent-monsoon: var(--exp-monsoon-500);
+  --exp-accent-teak: var(--exp-teak-600);
+  --exp-accent-emerald: var(--exp-emerald-500);
+
+  --exp-shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --exp-shadow-card: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 1px rgba(255, 255, 255, 0.1);
+  --exp-shadow-float: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --exp-shadow-modal: 0 32px 80px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(245, 158, 11, 0.25);
+  --exp-shadow-glow-saffron: 0 0 35px rgba(234, 88, 12, 0.28);
+  --exp-shadow-glow-gold: 0 0 35px rgba(245, 158, 11, 0.28);
+  --exp-shadow-glow-monsoon: 0 0 35px rgba(56, 189, 248, 0.28);
+  --exp-shadow-gold-rim: 0 0 0 1px rgba(245, 158, 11, 0.3), 0 4px 20px rgba(245, 158, 11, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   6. LIGHT THEME SEMANTIC MAPPINGS (WARM EDITORIAL PARCHMENT)
+   -------------------------------------------------------------------------- */
+[data-theme='light'],
+.light .experience-root,
+.experience-root.theme-light {
+  --exp-bg-canvas: var(--exp-parchment-600);
+  --exp-bg-surface: rgba(253, 251, 247, 0.92);
+  --exp-bg-surface-hover: rgba(255, 255, 255, 0.98);
+  --exp-bg-surface-subtle: var(--exp-parchment-700);
+  --exp-bg-surface-elevated: #ffffff;
+  --exp-bg-overlay: rgba(246, 239, 224, 0.94);
+  --exp-bg-vignette: radial-gradient(circle at 50% 50%, transparent 40%, rgba(220, 208, 185, 0.6) 100%);
+
+  --exp-text-primary: var(--exp-basalt-950);
+  --exp-text-secondary: var(--exp-stone-700);
+  --exp-text-muted: var(--exp-stone-500);
+  --exp-text-accent: var(--exp-teak-800);
+  --exp-text-saffron: var(--exp-saffron-700);
+  --exp-text-inverse: #f8fafc;
+
+  --exp-border-subtle: rgba(68, 64, 60, 0.12);
+  --exp-border-default: rgba(68, 64, 60, 0.2);
+  --exp-border-strong: rgba(68, 64, 60, 0.35);
+  --exp-border-glow-saffron: rgba(194, 65, 12, 0.4);
+  --exp-border-glow-gold: rgba(180, 83, 9, 0.4);
+  --exp-border-glow-monsoon: rgba(2, 132, 199, 0.4);
+
+  --exp-accent-primary: var(--exp-saffron-700);
+  --exp-accent-primary-hover: var(--exp-saffron-600);
+  --exp-accent-secondary: var(--exp-teak-700);
+  --exp-accent-secondary-hover: var(--exp-teak-600);
+  --exp-accent-monsoon: var(--exp-monsoon-700);
+  --exp-accent-teak: var(--exp-teak-800);
+  --exp-accent-emerald: var(--exp-emerald-800);
+
+  --exp-shadow-subtle: 0 2px 8px rgba(68, 64, 60, 0.08);
+  --exp-shadow-card: 0 6px 24px rgba(68, 64, 60, 0.12), 0 0 1px rgba(68, 64, 60, 0.15);
+  --exp-shadow-float: 0 16px 40px rgba(68, 64, 60, 0.18), 0 0 0 1px rgba(68, 64, 60, 0.1);
+  --exp-shadow-modal: 0 28px 70px rgba(68, 64, 60, 0.25), 0 0 0 1px rgba(120, 53, 15, 0.2);
+  --exp-shadow-glow-saffron: 0 0 25px rgba(234, 88, 12, 0.18);
+  --exp-shadow-glow-gold: 0 0 25px rgba(202, 138, 4, 0.18);
+  --exp-shadow-glow-monsoon: 0 0 25px rgba(2, 132, 199, 0.18);
+  --exp-shadow-gold-rim: 0 0 0 1px rgba(180, 83, 9, 0.25), 0 4px 16px rgba(180, 83, 9, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   7. CALM / LITE MODE & REDUCED MOTION SAFEGUARDS
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .exp-canvas-container,
+  .exp-world3d-section canvas,
+  .exp-particle-canvas {
+    display: none !important;
+  }
+}
+
+/* Calm / Lite Mode Class (?lite=1) */
+.exp-lite-mode,
+[data-lite-mode='true'] {
+  --exp-duration-cinematic: var(--exp-duration-fast);
+  --exp-duration-epic: var(--exp-duration-base);
+  --exp-duration-ambient: 0ms;
+}
+
+.exp-lite-mode .exp-canvas-container,
+[data-lite-mode='true'] .exp-canvas-container {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. TYPOGRAPHY & UTILITY HELPER CLASSES
+   -------------------------------------------------------------------------- */
+.font-display-pune {
+  font-family: var(--exp-font-display-bilingual);
+  letter-spacing: var(--exp-tracking-wide);
+}
+
+.font-display-mr {
+  font-family: var(--exp-font-display-mr);
+  line-height: var(--exp-leading-loose);
+}
+
+.font-body-pune {
+  font-family: var(--exp-font-body-bilingual);
+}
+
+.font-telemetry {
+  font-family: var(--exp-font-mono);
+  letter-spacing: var(--exp-tracking-wider);
+  text-transform: uppercase;
+}
+
+.glow-saffron {
+  box-shadow: var(--exp-shadow-glow-saffron);
+}
+
+.glow-gold {
+  box-shadow: var(--exp-shadow-glow-gold);
+}
+
+.glow-monsoon {
+  box-shadow: var(--exp-shadow-glow-monsoon);
+}
+
+.rim-gold {
+  box-shadow: var(--exp-shadow-gold-rim);
+}
