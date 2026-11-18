@@ -22,8 +22,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const token =
+      body.token ||
+      body.verificationToken ||
+      req.cookies.get('ep_otp_token')?.value;
+
     const trimmedEmail = email.trim().toLowerCase();
-    const result = verifyOtpCode(trimmedEmail, code);
+    const result = verifyOtpCode(trimmedEmail, code, token);
 
     if (!result.valid) {
       return NextResponse.json(
@@ -32,7 +37,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       verified: true,
       email: trimmedEmail,
@@ -40,6 +45,9 @@ export async function POST(req: NextRequest) {
       name: name?.trim() || null,
       message: 'Verification code confirmed.',
     });
+
+    response.cookies.delete('ep_otp_token');
+    return response;
   } catch (err: any) {
     console.error('Error in /api/v1/auth/verify-code:', err);
     return NextResponse.json(

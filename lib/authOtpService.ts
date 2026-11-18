@@ -9,7 +9,7 @@ interface StoredOtpRecord {
   purpose: string;
 }
 
-// In-memory OTP storage with 10-minute expiry
+// In-memory OTP storage with 10-minute expiry (fallback for local testing)
 const OTP_STORE = new Map<string, StoredOtpRecord>();
 const RATE_LIMIT_STORE = new Map<string, number[]>();
 
@@ -61,6 +61,79 @@ export function checkSendRateLimit(email: string): { allowed: boolean; retryAfte
 }
 
 /**
+ * Creates a stateless, tamper-proof verification token.
+ * This ensures OTP verification works seamlessly across serverless Lambda instances (e.g. Vercel).
+ */
+export function createOtpVerificationToken(
+  email: string,
+  code: string,
+  purpose: string = 'register',
+  ttlMs: number = OTP_TTL_MS
+): string {
+  const norm = normalizeEmail(email);
+  const expiresAt = Date.now() + ttlMs;
+  const payload = `${norm}:${expiresAt}:${purpose}`;
+  const hmac = crypto
+    .createHmac('sha256', OTP_SECRET)
+    .update(`${payload}:${code.trim()}`)
+    .digest('hex');
+  const tokenRaw = `${payload}.${hmac}`;
+  return Buffer.from(tokenRaw, 'utf8').toString('base64url');
+}
+
+/**
+ * Verifies an entered OTP code against a cryptographically signed verification token.
+ */
+export function verifyOtpToken(
+  email: string,
+  enteredCode: string,
+  token: string
+): { valid: boolean; reason?: string; authSecret?: string } {
+  try {
+    const norm = normalizeEmail(email);
+    const decoded = Buffer.from(token, 'base64url').toString('utf8');
+    const dotIndex = decoded.lastIndexOf('.');
+    if (dotIndex === -1) {
+      return { valid: false, reason: 'Invalid or malformed verification token. Please request a new code.' };
+    }
+
+    const payload = decoded.slice(0, dotIndex);
+    const hmac = decoded.slice(dotIndex + 1);
+
+    const [tokenEmail, expiresAtStr, purpose] = payload.split(':');
+    if (!tokenEmail || !expiresAtStr) {
+      return { valid: false, reason: 'Invalid verification token payload. Please request a new code.' };
+    }
+
+    if (tokenEmail !== norm) {
+      return { valid: false, reason: 'Verification code does not match this email address. Please request a new code.' };
+    }
+
+    const expiresAt = Number(expiresAtStr);
+    if (isNaN(expiresAt) || Date.now() > expiresAt) {
+      return { valid: false, reason: 'Verification code has expired. Please request a new code.' };
+    }
+
+    const expectedHmac = crypto
+      .createHmac('sha256', OTP_SECRET)
+      .update(`${payload}:${enteredCode.trim()}`)
+      .digest('hex');
+
+    const hmacBuf = Buffer.from(hmac, 'hex');
+    const expectedBuf = Buffer.from(expectedHmac, 'hex');
+
+    if (hmacBuf.length === expectedBuf.length && crypto.timingSafeEqual(hmacBuf, expectedBuf)) {
+      const authSecret = deriveEmailAuthSecret(norm);
+      return { valid: true, authSecret };
+    } else {
+      return { valid: false, reason: 'Incorrect verification code. Please check your email and try again.' };
+    }
+  } catch (err) {
+    return { valid: false, reason: 'Invalid or corrupted verification session. Please request a new code.' };
+  }
+}
+
+/**
  * Generates and stores a new 6-digit OTP code for an email.
  */
 export function createAndStoreOtp(email: string, purpose: string = 'signin'): string {
@@ -82,12 +155,18 @@ export function createAndStoreOtp(email: string, purpose: string = 'signin'): st
 }
 
 /**
- * Verifies an entered OTP code against the stored hash.
+ * Verifies an entered OTP code against either a stateless token or the stored record.
  */
 export function verifyOtpCode(
   email: string,
-  enteredCode: string
+  enteredCode: string,
+  token?: string
 ): { valid: boolean; reason?: string; authSecret?: string } {
+  // If stateless token provided (recommended for serverless environments like Vercel)
+  if (token && typeof token === 'string' && token.trim().length > 0) {
+    return verifyOtpToken(email, enteredCode, token.trim());
+  }
+
   const norm = normalizeEmail(email);
   const record = OTP_STORE.get(norm);
 
@@ -139,4 +218,3 @@ export function _resetOtpStoresForTesting(): void {
   OTP_STORE.clear();
   RATE_LIMIT_STORE.clear();
 }
-

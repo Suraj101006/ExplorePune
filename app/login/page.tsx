@@ -47,6 +47,7 @@ export default function LoginPage() {
   const [signUpStep, setSignUpStep] = useState<'form' | 'verify'>('form');
   const [signUpOtpDigits, setSignUpOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [signUpResendTimer, setSignUpResendTimer] = useState(0);
+  const [verificationToken, setVerificationToken] = useState<string>('');
   const signUpDigitRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Phone SMS OTP step state (mode === 'phone')
@@ -265,6 +266,13 @@ export default function LoginPage() {
         return;
       }
 
+      if (data.verificationToken) {
+        setVerificationToken(data.verificationToken);
+        try {
+          sessionStorage.setItem('ep_reg_token', data.verificationToken);
+        } catch {}
+      }
+
       setSignUpStep('verify');
       setSignUpOtpDigits(['', '', '', '', '', '']);
       setSignUpResendTimer(60);
@@ -292,11 +300,20 @@ export default function LoginPage() {
 
     setBusy(true);
     try {
-      // Step A: Verify code with secure backend OTP engine
+      const tokenToVerify =
+        verificationToken ||
+        (typeof window !== 'undefined' ? sessionStorage.getItem('ep_reg_token') || '' : '');
+
+      // Step A: Verify code with secure backend OTP engine (stateless token supported)
       const res = await fetch('/api/v1/auth/verify-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), code, name: name.trim() }),
+        body: JSON.stringify({
+          email: email.trim(),
+          code,
+          name: name.trim(),
+          verificationToken: tokenToVerify,
+        }),
       });
 
       const data = await res.json();
@@ -305,6 +322,10 @@ export default function LoginPage() {
         setBusy(false);
         return;
       }
+
+      try {
+        sessionStorage.removeItem('ep_reg_token');
+      } catch {}
 
       // Step B: Email verified! Create the authenticated Firebase user
       try {

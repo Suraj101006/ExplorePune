@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkSendRateLimit, createAndStoreOtp } from '@/lib/authOtpService';
+import { checkSendRateLimit, createAndStoreOtp, createOtpVerificationToken } from '@/lib/authOtpService';
 import { sendAuthVerificationCodeEmail } from '@/lib/mail';
 
 export const dynamic = 'force-dynamic';
@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Generate and store 6-digit verification code
+    // 2. Generate and store 6-digit verification code & stateless signed token
     const code = createAndStoreOtp(trimmedEmail, purpose);
+    const verificationToken = createOtpVerificationToken(trimmedEmail, code, purpose);
 
     // 3. Dispatch Email with Explore Pune branding
     const emailResult = await sendAuthVerificationCodeEmail({
@@ -55,12 +56,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: 'Verification code sent successfully to your email.',
       email: trimmedEmail,
+      verificationToken,
       mode: emailResult.mode,
     });
+
+    response.cookies.set('ep_otp_token', verificationToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60, // 15 minutes
+      path: '/',
+    });
+
+    return response;
   } catch (err: any) {
     console.error('Error in /api/v1/auth/send-code:', err);
     return NextResponse.json(
