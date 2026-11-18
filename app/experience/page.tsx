@@ -12,7 +12,8 @@ import {
   StoryTrail,
   PUNE_TALUKAS,
 } from '@/lib/experience/puneDistrictData';
-import { MapLayerState } from '@/components/experience/DistrictMapControls';
+import { MapLayerState, TimeOfDayKey } from '@/components/experience/DistrictMapControls';
+import { ambientAudio } from '@/lib/experience/ambientAudio';
 import './experience.css';
 
 // Dynamic import for WebGL Map to avoid SSR overhead
@@ -51,6 +52,7 @@ export default function ExperiencePage() {
 
   // Basemap & Layer states
   const [currentStyle, setCurrentStyle] = useState<MapStyleKey>('satellite');
+  const [timeOfDay, setTimeOfDay] = useState<TimeOfDayKey>('afternoon');
   const [layerState, setLayerState] = useState<MapLayerState>({
     districtBoundary: true,
     talukaBoundaries: true,
@@ -66,6 +68,13 @@ export default function ExperiencePage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [is3d, setIs3d] = useState<boolean>(true);
+
+  // Custom Multi-Stop Trail State
+  const [customTrailPlaces, setCustomTrailPlaces] = useState<ExperiencePlace[]>([]);
+
+  // Ambient Drift & Audio state
+  const [isDrifting, setIsDrifting] = useState<boolean>(false);
+  const [isSoundActive, setIsSoundActive] = useState<boolean>(false);
 
   // Explore Anywhere Spotlight Modal state
   const [isExploreModalOpen, setIsExploreModalOpen] = useState<boolean>(false);
@@ -134,6 +143,51 @@ export default function ExperiencePage() {
   const handleSelectTaluka = useCallback((talukaId: string) => {
     setSelectedTaluka(talukaId);
     mapRef.current?.flyToTaluka(talukaId);
+  }, []);
+
+  // Custom Multi-Stop Trail Handlers
+  const handleAddToCustomTrail = useCallback((place: ExperiencePlace) => {
+    setCustomTrailPlaces((prev) => {
+      if (prev.some((p) => p.slug === place.slug)) return prev;
+      return [...prev, place];
+    });
+  }, []);
+
+  const handleRemoveFromCustomTrail = useCallback((slug: string) => {
+    setCustomTrailPlaces((prev) => prev.filter((p) => p.slug !== slug));
+  }, []);
+
+  const handleDrawCustomTrail = useCallback((places: ExperiencePlace[]) => {
+    if (places.length < 2) return;
+    const coords: [number, number][] = places.map((p) => [p.longitude, p.latitude]);
+    mapRef.current?.setCustomRouteLine?.(coords);
+  }, []);
+
+  const handleClearCustomTrail = useCallback(() => {
+    setCustomTrailPlaces([]);
+    mapRef.current?.clearCustomRouteLine?.();
+  }, []);
+
+  // Ambient 3D Camera Drift Toggle
+  const handleToggleDrift = useCallback(() => {
+    const active = mapRef.current?.toggleAmbientDrift?.();
+    setIsDrifting(!!active);
+  }, []);
+
+  // Ambient Mountain Breeze Soundscape Toggle
+  const handleToggleSound = useCallback(() => {
+    const active = ambientAudio.toggleAmbientWind();
+    setIsSoundActive(active);
+  }, []);
+
+  // Fullscreen Mode Toggle
+  const handleToggleFullscreen = useCallback(() => {
+    mapRef.current?.toggleFullscreen?.();
+  }, []);
+
+  // 3D Orbit Camera around a place
+  const handleOrbitPlace = useCallback((place: ExperiencePlace) => {
+    mapRef.current?.orbitAroundTarget?.(place.latitude, place.longitude);
   }, []);
 
   // Handle Driving Route Visualization
@@ -362,6 +416,7 @@ export default function ExperiencePage() {
           <LivePuneDistrictMap
             ref={mapRef}
             currentStyle={currentStyle}
+            timeOfDay={timeOfDay}
             layerState={layerState}
             selectedPlace={selectedPlace}
             selectedCategory={selectedCategory}
@@ -386,6 +441,7 @@ export default function ExperiencePage() {
               totalLocations={allPlaces.length}
               activePlaceCount={allPlaces.length}
               selectedCategoryName={selectedCategory}
+              timeOfDay={timeOfDay}
               onOpenExploreAnywhere={() => setIsExploreModalOpen(true)}
               lang={lang}
             />
@@ -410,10 +466,15 @@ export default function ExperiencePage() {
           selectedCategory={selectedCategory}
           selectedTaluka={selectedTaluka}
           searchQuery={searchQuery}
+          customTrailPlaces={customTrailPlaces}
           onSearchChange={setSearchQuery}
           onSelectCategory={setSelectedCategory}
           onSelectTaluka={handleSelectTaluka}
           onSelectPlace={handleSelectPlace}
+          onAddToCustomTrail={handleAddToCustomTrail}
+          onRemoveFromCustomTrail={handleRemoveFromCustomTrail}
+          onDrawCustomTrail={handleDrawCustomTrail}
+          onClearCustomTrail={handleClearCustomTrail}
           isCollapsed={isCollapsed}
           onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
           lang={lang}
@@ -424,8 +485,11 @@ export default function ExperiencePage() {
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
           onFocusSatellite={(p) => mapRef.current?.flyToPlace(p)}
+          onOrbit={handleOrbitPlace}
           onShowRoute={handleShowRoute}
           onClearRoute={handleClearRoute}
+          onAddToTrail={handleAddToCustomTrail}
+          isPlaceInTrail={!!selectedPlace && customTrailPlaces.some((p) => p.slug === selectedPlace.slug)}
           isRouteActive={isRouteActive}
           lang={lang}
         />
@@ -453,16 +517,23 @@ export default function ExperiencePage() {
         {/* Bottom-Right Navigation, Basemap Switcher & Layer Controls */}
         <DistrictMapControls
           currentStyle={currentStyle}
+          timeOfDay={timeOfDay}
           layerState={layerState}
           onSelectStyle={setCurrentStyle}
+          onSelectTimeOfDay={setTimeOfDay}
           onToggleLayer={handleToggleLayer}
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onResetDistrictView={handleResetView}
           onToggleTilt={handleToggleTilt}
           onLocateUser={handleLocateUser}
+          onToggleDrift={handleToggleDrift}
+          onToggleSound={handleToggleSound}
+          onToggleFullscreen={handleToggleFullscreen}
           onReplayIntro={() => setShowIntro(true)}
           is3d={is3d}
+          isDrifting={isDrifting}
+          isSoundActive={isSoundActive}
           lang={lang}
         />
       </div>

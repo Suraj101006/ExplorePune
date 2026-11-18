@@ -240,13 +240,17 @@ export default function ExploreAnywhereModal({
                         : 'bg-white/[0.03] hover:bg-white/[0.08] border-white/5'
                     }`}
                   >
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-900">
+                    <div
+                      className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-900"
+                      style={{ position: 'relative', width: '48px', height: '48px', minWidth: '48px', minHeight: '48px', flexShrink: 0, overflow: 'hidden' }}
+                    >
                       <Image
                         src={place.image_url || '/images/hero-shaniwar-wada.webp'}
                         alt={name}
                         fill
                         sizes="48px"
                         className="object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
 
@@ -275,13 +279,17 @@ export default function ExploreAnywhereModal({
             <div className="w-full md:w-1/2 p-5 flex flex-col justify-between bg-zinc-950 overflow-y-auto custom-scrollbar">
               <div className="space-y-4">
                 {/* Photo Preview */}
-                <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 shadow-xl">
+                <div
+                  className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 shadow-xl"
+                  style={{ position: 'relative', width: '100%', height: '176px', overflow: 'hidden' }}
+                >
                   <Image
                     src={currentPreview.image_url || '/images/hero-shaniwar-wada.webp'}
                     alt={previewName}
                     fill
                     sizes="(max-width: 768px) 100vw, 500px"
                     className="object-cover"
+                    style={{ objectFit: 'cover' }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">

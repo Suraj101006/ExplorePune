@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Route, Navigation, ExternalLink, ArrowRight } from 'lucide-react';
+import { MapPin, Route, Navigation, ExternalLink, ArrowRight, Eye, Plus, Check } from 'lucide-react';
 import { ExperiencePlace } from '@/lib/experience/types';
 import {
   formatCoordinatesDD,
@@ -12,13 +12,17 @@ import {
   getElevationEstimate,
   calculateDistanceKm,
 } from '@/lib/experience/puneDistrictData';
+import { ambientAudio } from '@/lib/experience/ambientAudio';
 
 interface DistrictLocationDrawerProps {
   place: ExperiencePlace | null;
   onClose: () => void;
   onFocusSatellite: (place: ExperiencePlace) => void;
+  onOrbit?: (place: ExperiencePlace) => void;
   onShowRoute?: (place: ExperiencePlace) => void;
   onClearRoute?: () => void;
+  onAddToTrail?: (place: ExperiencePlace) => void;
+  isPlaceInTrail?: boolean;
   isRouteActive?: boolean;
   userCoords?: { latitude: number; longitude: number } | null;
   lang?: string;
@@ -28,8 +32,11 @@ export default function DistrictLocationDrawer({
   place,
   onClose,
   onFocusSatellite,
+  onOrbit,
   onShowRoute,
   onClearRoute,
+  onAddToTrail,
+  isPlaceInTrail = false,
   isRouteActive = false,
   userCoords,
   lang = 'en',
@@ -71,8 +78,9 @@ export default function DistrictLocationDrawer({
     try {
       await navigator.clipboard.writeText(`${lat.toFixed(6)}, ${lng.toFixed(6)}`);
       setCopied(true);
+      ambientAudio.playUiBlip(1040, 0.05);
       setTimeout(() => setCopied(false), 2200);
-    } catch (e) {
+    } catch {
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     }
@@ -81,11 +89,14 @@ export default function DistrictLocationDrawer({
   return (
     <aside
       style={{ maxHeight: 'calc(100% - 2rem)' }}
-      className="fixed md:absolute top-auto bottom-0 md:top-4 md:bottom-4 right-0 md:right-4 z-30 w-full md:w-[420px] max-h-[85vh] md:max-h-none flex flex-col bg-black/95 backdrop-blur-2xl border-t md:border border-emerald-500/30 rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom md:slide-in-from-right text-white select-none"
+      className="fixed md:absolute top-auto bottom-0 md:top-4 md:bottom-4 right-0 md:right-4 z-30 w-full md:w-[420px] max-h-[85vh] md:max-h-none flex flex-col bg-black/95 backdrop-blur-2xl border-t md:border border-emerald-500/40 rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom md:slide-in-from-right text-white select-none"
       aria-label={`${placeName} Coordinates & Geographical Details`}
     >
       {/* Top Image Banner */}
-      <div className="relative h-44 md:h-52 w-full flex-shrink-0 bg-zinc-950">
+      <div
+        className="relative h-44 md:h-52 w-full flex-shrink-0 bg-zinc-950"
+        style={{ position: 'relative', width: '100%', height: '176px', overflow: 'hidden' }}
+      >
         <Image
           src={place.image_url || '/images/hero-shaniwar-wada.webp'}
           alt={placeName}
@@ -93,6 +104,7 @@ export default function DistrictLocationDrawer({
           priority
           sizes="(max-width: 768px) 100vw, 420px"
           className="object-cover"
+          style={{ objectFit: 'cover' }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
 
@@ -120,7 +132,7 @@ export default function DistrictLocationDrawer({
             <span>{isMr ? taluka.nameMr : taluka.nameEn}</span>
           </span>
           <span className="text-[10px] font-mono text-white/80 bg-black/80 px-2 py-1 rounded-lg border border-white/10">
-            ALT: ~{elevation}m MSL
+            ⛰️ ALT: ~{elevation}m MSL
           </span>
         </div>
       </div>
@@ -181,7 +193,7 @@ export default function DistrictLocationDrawer({
           </div>
         </div>
 
-        {/* Municipal Hours & Entry Fee */}
+        {/* Visiting Hours & Entry Fee */}
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
             <span className="text-[10px] uppercase font-mono tracking-widest text-white/40 block mb-0.5">
@@ -217,41 +229,65 @@ export default function DistrictLocationDrawer({
 
       {/* Action Buttons Footer */}
       <div className="p-4 border-t border-white/10 bg-zinc-950 flex flex-col gap-2 flex-shrink-0">
-        <div className="grid grid-cols-2 gap-2">
-          {/* 1. Focus on Map (Fly Drone) */}
+        <div className="grid grid-cols-3 gap-2">
+          {/* 1. Show on Map */}
           <button
             type="button"
             onClick={() => onFocusSatellite(place)}
-            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-lg shadow-emerald-900/30"
+            className="flex items-center justify-center gap-1 px-2.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-lg"
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <circle cx="12" cy="12" r="3" strokeWidth={2} />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v3m0 14v3m-10-10h3m14 0h3" />
-            </svg>
-            <span>{isMr ? 'नकाशावर दाखवा' : 'SHOW ON MAP'}</span>
+            <span>{isMr ? 'शोध' : 'FLY TO'}</span>
           </button>
 
-          {/* 2. Toggle Driving Route Line */}
-          {onShowRoute && (
+          {/* 2. Orbit 3D */}
+          {onOrbit && (
             <button
               type="button"
-              onClick={() => {
-                if (isRouteActive && onClearRoute) onClearRoute();
-                else onShowRoute(place);
-              }}
-              className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold border transition-colors ${
-                isRouteActive
-                  ? 'bg-cyan-900/40 border-cyan-400 text-cyan-300'
+              onClick={() => onOrbit(place)}
+              className="flex items-center justify-center gap-1 px-2.5 py-2.5 rounded-xl bg-amber-600/90 hover:bg-amber-500 text-white text-xs font-bold transition-all border border-amber-400/40"
+            >
+              <Eye size={13} />
+              <span>{isMr ? '३D प्रदक्षिणा' : '3D ORBIT'}</span>
+            </button>
+          )}
+
+          {/* 3. Add to Custom Route */}
+          {onAddToTrail && (
+            <button
+              type="button"
+              onClick={() => onAddToTrail(place)}
+              className={`flex items-center justify-center gap-1 px-2.5 py-2.5 rounded-xl text-xs font-bold border transition-colors ${
+                isPlaceInTrail
+                  ? 'bg-emerald-950/80 border-emerald-400 text-emerald-300'
                   : 'bg-white/10 hover:bg-white/20 border-white/10 text-white'
               }`}
             >
-              <Route size={14} />
-              <span>{isRouteActive ? (isMr ? 'मार्ग काढा' : 'CLEAR ROUTE') : (isMr ? 'रस्ता मार्ग' : 'VIEW ROUTE')}</span>
+              {isPlaceInTrail ? <Check size={13} /> : <Plus size={13} />}
+              <span>{isPlaceInTrail ? 'ADDED' : '+ TRAIL'}</span>
             </button>
           )}
         </div>
 
-        {/* 3. Explore Destination Detail Page */}
+        {/* Show Route from Pune Station */}
+        {onShowRoute && (
+          <button
+            type="button"
+            onClick={() => {
+              if (isRouteActive && onClearRoute) onClearRoute();
+              else onShowRoute(place);
+            }}
+            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-mono font-bold border transition-colors ${
+              isRouteActive
+                ? 'bg-cyan-900/40 border-cyan-400 text-cyan-300'
+                : 'bg-white/5 hover:bg-white/10 border-white/10 text-white/80'
+            }`}
+          >
+            <Route size={13} />
+            <span>{isRouteActive ? 'CLEAR ROAD ROUTE' : 'DRAW ROUTE FROM PUNE STATION'}</span>
+          </button>
+        )}
+
+        {/* Explore Destination Detail Page */}
         <Link
           href={`/places/${place.slug}`}
           className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold border border-white/10 transition-colors"
@@ -262,7 +298,7 @@ export default function DistrictLocationDrawer({
           </svg>
         </Link>
 
-        {/* 4. Google Maps External Link */}
+        {/* Google Maps External Link */}
         <a
           href={googleMapsUrl}
           target="_blank"

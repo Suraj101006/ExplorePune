@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef, useCallback } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -22,9 +22,13 @@ import {
   getPuneHighwaysGeoJson,
   PUNE_TALUKAS,
   formatCoordinatesDD,
+  calculateDistanceKm,
+  getTalukaOrRegion,
+  getElevationEstimate,
   MapStyleKey,
 } from '@/lib/experience/puneDistrictData';
-import { MapLayerState } from './DistrictMapControls';
+import { MapLayerState, TimeOfDayKey } from './DistrictMapControls';
+import { ambientAudio } from '@/lib/experience/ambientAudio';
 
 export interface DistrictMapHandle {
   flyToPlace: (place: ExperiencePlace) => void;
@@ -40,13 +44,18 @@ export interface DistrictMapHandle {
   clearDrivingRoute: () => void;
   setStoryTrailLine: (coords: [number, number][]) => void;
   clearStoryTrailLine: () => void;
+  setCustomRouteLine?: (coords: [number, number][]) => void;
+  clearCustomRouteLine?: () => void;
   playIntroFlyIn: () => void;
   orbitAroundTarget?: (lat: number, lng: number) => void;
+  toggleAmbientDrift?: () => boolean;
+  toggleFullscreen?: () => void;
 }
 
 interface LivePuneDistrictMapProps {
   currentStyle: MapStyleKey;
   layerState: MapLayerState;
+  timeOfDay?: TimeOfDayKey;
   selectedPlace: ExperiencePlace | null;
   selectedCategory: string;
   selectedTaluka: string;
@@ -68,6 +77,20 @@ const DEFAULT_CENTER: [number, number] = [73.8567, 18.5204];
 const DEFAULT_ZOOM = 10.2;
 const DEFAULT_PITCH = 45;
 const DEFAULT_BEARING = -15;
+
+// Flagship destination slugs that get prominent badge labels at overview zoom
+const FLAGSHIP_SLUGS = [
+  'shaniwar-wada',
+  'sinhagad-fort',
+  'rajgad-fort',
+  'shivneri-fort',
+  'lonavala',
+  'shreemant-dagdusheth-halwai-ganpati',
+  'aga-khan-palace',
+  'bhimashankar-temple',
+  'karla-caves',
+  'khadakwasla-dam',
+];
 
 // Real Satellite Hybrid Style
 const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
@@ -162,6 +185,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     {
       currentStyle,
       layerState,
+      timeOfDay = 'afternoon',
       selectedPlace,
       selectedCategory,
       selectedTaluka,
@@ -174,19 +198,26 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     },
     ref
   ) {
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<maplibregl.Map | null>(null);
     const markersRef = useRef<maplibregl.Marker[]>([]);
     const activeMarkerRef = useRef<maplibregl.Marker | null>(null);
     const travelerMarkerRef = useRef<maplibregl.Marker | null>(null);
+    const customWaypointsRef = useRef<maplibregl.Marker[]>([]);
 
-    // Animation frames refs
+    // Animation frame refs
     const routeAnimRef = useRef<number | null>(null);
     const trailAnimRef = useRef<number | null>(null);
+    const customRouteAnimRef = useRef<number | null>(null);
     const orbitAnimRef = useRef<number | null>(null);
+    const driftAnimRef = useRef<number | null>(null);
+    const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
     const [isTilted, setIsTilted] = useState<boolean>(is3d);
+    const [isDriftActive, setIsDriftActive] = useState<boolean>(false);
+    const isDriftEnabledRef = useRef<boolean>(true);
 
     // 1. Initialize Map
     useEffect(() => {
@@ -225,6 +256,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       // Cursor movement telemetry
       map.on('mousemove', (e) => {
         onCursorMove(e.lngLat.lat, e.lngLat.lng);
+        handleUserInteraction();
       });
 
       // Camera changes telemetry
@@ -234,21 +266,69 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       map.on('pitch', reportCamera);
       map.on('rotate', reportCamera);
 
+      // Handle user interaction to pause ambient drift
+      const handleUserInteraction = () => {
+        if (driftAnimRef.current) {
+          cancelAnimationFrame(driftAnimRef.current);
+          driftAnimRef.current = null;
+          setIsDriftActive(false);
+        }
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        if (isDriftEnabledRef.current) {
+          idleTimerRef.current = setTimeout(() => {
+            startAmbientDrift();
+          }, 8000);
+        }
+      };
+
+      map.on('dragstart', handleUserInteraction);
+      map.on('zoomstart', handleUserInteraction);
+      map.on('rotatestart', handleUserInteraction);
+      map.on('pitchstart', handleUserInteraction);
+
       mapRef.current = map;
 
       return () => {
         if (routeAnimRef.current) cancelAnimationFrame(routeAnimRef.current);
         if (trailAnimRef.current) cancelAnimationFrame(trailAnimRef.current);
+        if (customRouteAnimRef.current) cancelAnimationFrame(customRouteAnimRef.current);
         if (orbitAnimRef.current) cancelAnimationFrame(orbitAnimRef.current);
+        if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
         markersRef.current.forEach((m) => m.remove());
         markersRef.current = [];
+        customWaypointsRef.current.forEach((m) => m.remove());
+        customWaypointsRef.current = [];
+
         if (activeMarkerRef.current) activeMarkerRef.current.remove();
         if (travelerMarkerRef.current) travelerMarkerRef.current.remove();
 
         map.remove();
         mapRef.current = null;
       };
+    }, []);
+
+    // Ambient Slow Cinematic Drift
+    const startAmbientDrift = useCallback(() => {
+      const map = mapRef.current;
+      if (!map || !isDriftEnabledRef.current) return;
+      if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+
+      setIsDriftActive(true);
+      let angle = map.getBearing();
+
+      const driftLoop = () => {
+        if (!mapRef.current || !isDriftEnabledRef.current) {
+          setIsDriftActive(false);
+          return;
+        }
+        angle = (angle + 0.035) % 360;
+        mapRef.current.setBearing(angle);
+        driftAnimRef.current = requestAnimationFrame(driftLoop);
+      };
+
+      driftAnimRef.current = requestAnimationFrame(driftLoop);
     }, []);
 
     // 2. Switch Styles Dynamically
@@ -288,7 +368,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'fill-color': '#10b981',
-            'fill-opacity': 0.05,
+            'fill-opacity': 0.04,
           },
         });
 
@@ -308,7 +388,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // C. 15 Taluka Boundaries
+      // B. 15 Taluka Boundaries
       if (!map.getSource('pune-talukas-source')) {
         map.addSource('pune-talukas-source', {
           type: 'geojson',
@@ -343,7 +423,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
         });
 
-        // Highlight selected taluka boundary
+        // Highlight selected taluka boundary with Laser Pulse
         map.addLayer({
           id: 'pune-taluka-highlight-fill',
           type: 'fill',
@@ -351,7 +431,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           filter: ['==', 'id', ''],
           paint: {
             'fill-color': '#f59e0b',
-            'fill-opacity': 0.18,
+            'fill-opacity': 0.22,
           },
         });
 
@@ -362,13 +442,13 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           filter: ['==', 'id', ''],
           paint: {
             'line-color': '#f59e0b',
-            'line-width': 3.2,
-            'line-opacity': 0.95,
+            'line-width': 3.8,
+            'line-opacity': 1,
           },
         });
       }
 
-      // D. Rivers & Reservoirs
+      // C. Rivers & Reservoirs
       if (!map.getSource('pune-rivers-source')) {
         map.addSource('pune-rivers-source', {
           type: 'geojson',
@@ -385,7 +465,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'fill-color': '#0284c7',
-            'fill-opacity': 0.45,
+            'fill-opacity': 0.5,
           },
         });
 
@@ -399,13 +479,13 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'line-color': '#38bdf8',
-            'line-width': 2.5,
-            'line-opacity': 0.8,
+            'line-width': 2.8,
+            'line-opacity': 0.85,
           },
         });
       }
 
-      // E. Major Highways
+      // D. Major Highways
       if (!map.getSource('pune-highways-source')) {
         map.addSource('pune-highways-source', {
           type: 'geojson',
@@ -421,14 +501,14 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'line-color': '#fbbf24',
-            'line-width': 2,
-            'line-opacity': 0.65,
+            'line-width': 2.2,
+            'line-opacity': 0.75,
             'line-dasharray': [4, 1.5],
           },
         });
       }
 
-      // F. Driving Route Line Source
+      // E. Driving Route Line Source
       if (!map.getSource('driving-route-source')) {
         map.addSource('driving-route-source', {
           type: 'geojson',
@@ -454,7 +534,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // G. Story Trail Line Source
+      // F. Story Trail Line Source
       if (!map.getSource('story-trail-source')) {
         map.addSource('story-trail-source', {
           type: 'geojson',
@@ -474,9 +554,35 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'line-color': '#ef4444',
-            'line-width': 4,
-            'line-opacity': 0.9,
+            'line-width': 4.2,
+            'line-opacity': 0.95,
             'line-dasharray': [3, 2],
+          },
+        });
+      }
+
+      // G. Custom Multi-Stop Route Line Source
+      if (!map.getSource('custom-route-source')) {
+        map.addSource('custom-route-source', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        });
+
+        map.addLayer({
+          id: 'custom-route-line',
+          type: 'line',
+          source: 'custom-route-source',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#10b981',
+            'line-width': 4.5,
+            'line-opacity': 0.95,
           },
         });
       }
@@ -546,7 +652,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       }
     }, [is3d, isMapLoaded]);
 
-    // 7. Render All 106 Location Markers
+    // 7. Render All 106 Location Markers with Level of Detail & Hover Cards
     const renderPlaceMarkers = () => {
       const map = mapRef.current;
       if (!map) return;
@@ -560,6 +666,12 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
       const filtered = allPlaces.filter((p) => {
         if (selectedCategory !== 'all' && p.category_slug !== selectedCategory) return false;
+        if (selectedTaluka !== 'all') {
+          const taluka = getTalukaOrRegion(p.latitude, p.longitude, p.address);
+          if (taluka.id !== selectedTaluka && !taluka.nameEn.toLowerCase().includes(selectedTaluka.toLowerCase())) {
+            return false;
+          }
+        }
         if (q) {
           const matchName = (p.name || '').toLowerCase().includes(q) || (p.name_mr || '').toLowerCase().includes(q);
           const matchCoords = p.latitude.toString().includes(q) || p.longitude.toString().includes(q);
@@ -570,36 +682,72 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
       filtered.forEach((place) => {
         const el = document.createElement('div');
-        el.className = 'group relative flex flex-col items-center cursor-pointer';
+        el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
 
-        // Category color
+        // Distinct category color & icon
         let color = '#10b981';
         let icon = '📍';
         if (place.category_slug === 'forts') { color = '#ef4444'; icon = '🏰'; }
-        if (place.category_slug === 'heritage') { color = '#f59e0b'; icon = '🏛️'; }
-        if (place.category_slug === 'temples') { color = '#f97316'; icon = '🛕'; }
-        if (place.category_slug === 'museums') { color = '#06b6d4'; icon = '🏺'; }
-        if (place.category_slug === 'nature') { color = '#10b981'; icon = '🌲'; }
-        if (place.category_slug === 'parks') { color = '#84cc16'; icon = '💧'; }
-        if (place.category_slug === 'food') { color = '#ec4899'; icon = '☕'; }
+        else if (place.category_slug === 'heritage') { color = '#f59e0b'; icon = '🏛️'; }
+        else if (place.category_slug === 'temples') { color = '#f97316'; icon = '🛕'; }
+        else if (place.category_slug === 'museums') { color = '#8b5cf6'; icon = '🏺'; }
+        else if (place.category_slug === 'nature') { color = '#10b981'; icon = '🌲'; }
+        else if (place.category_slug === 'parks') { color = '#06b6d4'; icon = '💧'; }
+        else if (place.category_slug === 'food') { color = '#ec4899'; icon = '☕'; }
 
         const coordsStr = `${place.latitude.toFixed(4)}, ${place.longitude.toFixed(4)}`;
         const placeName = lang === 'mr' ? place.name_mr || place.name : place.name;
+        const isFlagship = FLAGSHIP_SLUGS.includes(place.slug);
+        const taluka = getTalukaOrRegion(place.latitude, place.longitude, place.address);
+        const dist = calculateDistanceKm(18.5204, 73.8567, place.latitude, place.longitude);
+        const elevation = getElevationEstimate(place.latitude, place.longitude, place.category_slug);
 
         el.innerHTML = `
-          <div class="px-2 py-0.5 rounded-md bg-black/90 text-white border border-white/20 text-[9px] font-mono whitespace-nowrap shadow-xl mb-1 opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all pointer-events-none flex items-center gap-1">
-            <span>${icon}</span>
-            <span class="font-bold">${placeName}</span>
-            <span class="text-amber-300 font-mono text-[8px] pl-0.5">${coordsStr}</span>
+          <!-- Interactive Floating Hover Card -->
+          <div class="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-60 p-2.5 rounded-2xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-200 z-50 text-white">
+            <div class="relative h-24 w-full rounded-xl overflow-hidden bg-zinc-900 mb-2">
+              <img src="${place.image_url || '/images/hero-shaniwar-wada.webp'}" alt="${placeName}" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-mono font-black uppercase tracking-wider bg-black/85 text-emerald-300 border border-emerald-500/40">
+                ${place.category_slug}
+              </span>
+              <span class="absolute bottom-1.5 right-2 px-1.5 py-0.5 rounded text-[8px] font-mono text-white/90 bg-black/80 border border-white/10">
+                ${taluka.nameEn.split(' ')[0]}
+              </span>
+            </div>
+            <div class="font-black text-xs text-white truncate px-0.5 leading-snug">${placeName}</div>
+            <div class="flex items-center justify-between text-[9px] font-mono text-white/60 mt-1 px-0.5">
+              <span class="text-amber-300 font-bold">${coordsStr}</span>
+              <span class="text-emerald-400 font-bold">${dist} km</span>
+              <span class="text-cyan-300">⛰️ ~${elevation}m</span>
+            </div>
+            <div class="mt-2 pt-1.5 border-t border-white/10 text-[9px] font-mono text-emerald-300/90 text-center font-bold uppercase tracking-wider">
+              Click to Fly & Orbit 3D ↗
+            </div>
           </div>
-          <div class="relative flex items-center justify-center">
-            <span class="absolute inline-flex h-6 w-6 rounded-full opacity-60 pin-ripple-anim" style="background-color: ${color};"></span>
-            <span class="relative inline-flex rounded-full h-3.5 w-3.5 border-2 border-white shadow-lg" style="background-color: ${color};"></span>
+
+          <!-- Pin Head Badge (Flagships always, others on hover or zoom in) -->
+          <div class="marker-title-badge ${isFlagship ? 'flex' : 'hidden group-hover:flex'} items-center gap-1 px-2.5 py-1 rounded-full bg-black/90 text-white border border-white/20 text-[10px] font-mono whitespace-nowrap shadow-2xl mb-1 transition-transform group-hover:scale-105">
+            <span>${icon}</span>
+            <span class="font-bold text-white text-[10px]">${placeName}</span>
+          </div>
+
+          <!-- Pulsing Beacon Pin Point -->
+          <div class="relative flex items-center justify-center transition-transform group-hover:scale-125">
+            <span class="absolute inline-flex h-7 w-7 rounded-full opacity-60 pin-ripple-anim" style="background-color: ${color};"></span>
+            <span class="relative inline-flex items-center justify-center rounded-full h-5 w-5 border-2 border-white/95 shadow-2xl text-[9px]" style="background-color: ${color};">
+              <span class="scale-75">${icon}</span>
+            </span>
           </div>
         `;
 
+        el.addEventListener('mouseenter', () => {
+          ambientAudio.playUiBlip(720, 0.03);
+        });
+
         el.addEventListener('click', (ev) => {
           ev.stopPropagation();
+          ambientAudio.playUiBlip(980, 0.06);
           onPlaceSelect(place);
         });
 
@@ -638,18 +786,18 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       }
 
       const activeEl = document.createElement('div');
-      activeEl.className = 'flex flex-col items-center pointer-events-none z-30';
+      activeEl.className = 'flex flex-col items-center pointer-events-none z-40 select-none';
       const coordsText = formatCoordinatesDD(selectedPlace.latitude, selectedPlace.longitude, 5);
       const name = lang === 'mr' ? selectedPlace.name_mr || selectedPlace.name : selectedPlace.name;
 
       activeEl.innerHTML = `
-        <div class="px-3 py-1 rounded-xl bg-black/95 text-white border border-emerald-400 shadow-2xl backdrop-blur-md mb-1.5 text-center">
-          <div class="text-[11px] font-black uppercase text-emerald-400 truncate max-w-[200px]">${name}</div>
-          <div class="text-[9px] font-mono text-amber-300 font-bold">${coordsText}</div>
+        <div class="px-3.5 py-1.5 rounded-2xl bg-black/95 text-white border-2 border-emerald-400 shadow-2xl backdrop-blur-xl mb-2 text-center animate-bounce">
+          <div class="text-xs font-black uppercase tracking-wider text-emerald-400 truncate max-w-[220px]">${name}</div>
+          <div class="text-[9px] font-mono text-amber-300 font-bold tracking-tight">${coordsText}</div>
         </div>
         <div class="relative flex items-center justify-center">
-          <span class="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-emerald-400 opacity-80"></span>
-          <span class="relative inline-flex rounded-full h-5 w-5 bg-emerald-500 border-2 border-white shadow-2xl"></span>
+          <span class="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-emerald-400 opacity-80"></span>
+          <span class="relative inline-flex rounded-full h-6 w-6 bg-emerald-500 border-2 border-white shadow-2xl"></span>
         </div>
       `;
 
@@ -669,19 +817,21 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           center: [place.longitude, place.latitude],
           zoom: 15.2,
           pitch: isTilted ? 54 : 0,
-          bearing: -15,
+          bearing: -20,
           duration: 1800,
           essential: true,
         });
       },
 
-      flyToCoordinates: (lat: number, lng: number, zoom = 15, pitch = 50, bearing = 0) => {
-        mapRef.current?.flyTo({
+      flyToCoordinates: (lat: number, lng: number, zoom = 14, pitch = 45, bearing = -15) => {
+        const map = mapRef.current;
+        if (!map) return;
+        map.flyTo({
           center: [lng, lat],
           zoom,
           pitch: isTilted ? pitch : 0,
           bearing,
-          duration: 2000,
+          duration: 1800,
           essential: true,
         });
       },
@@ -690,7 +840,11 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         const map = mapRef.current;
         if (!map) return;
         if (talukaId === 'all') {
-          map.fitBounds(PUNE_DISTRICT_BOUNDS, { padding: 60, duration: 1600, pitch: isTilted ? DEFAULT_PITCH : 0 });
+          map.fitBounds(PUNE_DISTRICT_BOUNDS, {
+            padding: 60,
+            duration: 1800,
+            pitch: isTilted ? DEFAULT_PITCH : 0,
+          });
           return;
         }
         const taluka = PUNE_TALUKAS.find((t) => t.id === talukaId);
@@ -740,13 +894,17 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             mapRef.current?.flyTo({
               center: [longitude, latitude],
               zoom: 14.5,
-              pitch: isTilted ? 50 : 0,
-              duration: 1600,
+              pitch: isTilted ? 45 : 0,
+              duration: 1800,
             });
 
-            // Drop user marker
+            // Pulse beacon for user location
             const userPin = document.createElement('div');
-            userPin.className = 'w-4 h-4 rounded-full bg-cyan-400 border-2 border-white shadow-xl animate-pulse';
+            userPin.className = 'relative flex items-center justify-center';
+            userPin.innerHTML = `
+              <span class="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-blue-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 border-2 border-white shadow-xl"></span>
+            `;
             new maplibregl.Marker({ element: userPin })
               .setLngLat([longitude, latitude])
               .addTo(mapRef.current!);
@@ -780,9 +938,9 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         const travelerEl = document.createElement('div');
         travelerEl.className = 'relative flex items-center justify-center pointer-events-none z-30';
         travelerEl.innerHTML = `
-          <span class="absolute inline-flex h-7 w-7 rounded-full bg-cyan-400/40 animate-ping"></span>
-          <span class="relative inline-flex items-center justify-center rounded-full h-6 w-6 bg-cyan-600 border-2 border-white shadow-xl text-white">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <span class="absolute inline-flex h-8 w-8 rounded-full bg-cyan-400/50 animate-ping"></span>
+          <span class="relative inline-flex items-center justify-center rounded-full h-7 w-7 bg-cyan-600 border-2 border-white shadow-2xl text-white">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
             </svg>
           </span>
@@ -913,6 +1071,90 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         }
       },
 
+      // Custom Multi-Stop Trail Drawing & Numbered Waypoints
+      setCustomRouteLine: (coords: [number, number][]) => {
+        const map = mapRef.current;
+        if (!map || coords.length === 0) return;
+
+        if (customRouteAnimRef.current) {
+          cancelAnimationFrame(customRouteAnimRef.current);
+          customRouteAnimRef.current = null;
+        }
+        customWaypointsRef.current.forEach((m) => m.remove());
+        customWaypointsRef.current = [];
+
+        // Add numbered waypoint markers
+        coords.forEach((coord, idx) => {
+          const wpEl = document.createElement('div');
+          wpEl.className = 'flex items-center justify-center pointer-events-none z-30';
+          wpEl.innerHTML = `
+            <div class="w-6 h-6 rounded-full bg-emerald-500 text-black border-2 border-white shadow-xl flex items-center justify-center font-mono font-black text-[11px] animate-pulse">
+              ${idx + 1}
+            </div>
+          `;
+          const m = new maplibregl.Marker({ element: wpEl, anchor: 'center' })
+            .setLngLat(coord)
+            .addTo(map);
+          customWaypointsRef.current.push(m);
+        });
+
+        // Generate curved path across all waypoints
+        const interpolated: [number, number][] = [];
+        for (let i = 0; i < coords.length - 1; i++) {
+          const seg = generateCurvedPath(coords[i], coords[i + 1], 18);
+          interpolated.push(...seg);
+        }
+        if (interpolated.length === 0) interpolated.push(...coords);
+
+        const bounds = new maplibregl.LngLatBounds(coords[0], coords[0]);
+        coords.forEach((pt) => bounds.extend(pt));
+        map.fitBounds(bounds, { padding: 90, duration: 1800, pitch: isTilted ? 48 : 0 });
+
+        let step = 1;
+        const animate = () => {
+          if (!mapRef.current) return;
+          const currentSlice = interpolated.slice(0, step);
+          const src = mapRef.current.getSource('custom-route-source') as maplibregl.GeoJSONSource;
+          if (src) {
+            src.setData({
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: currentSlice,
+                  },
+                  properties: {},
+                },
+              ],
+            });
+          }
+
+          if (step < interpolated.length) {
+            step += 1;
+            customRouteAnimRef.current = requestAnimationFrame(animate);
+          }
+        };
+
+        customRouteAnimRef.current = requestAnimationFrame(animate);
+      },
+
+      clearCustomRouteLine: () => {
+        const map = mapRef.current;
+        if (customRouteAnimRef.current) {
+          cancelAnimationFrame(customRouteAnimRef.current);
+          customRouteAnimRef.current = null;
+        }
+        customWaypointsRef.current.forEach((m) => m.remove());
+        customWaypointsRef.current = [];
+        if (!map) return;
+        const src = map.getSource('custom-route-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({ type: 'FeatureCollection', features: [] });
+        }
+      },
+
       // 3D Cinematic Orbit around a Landmark
       orbitAroundTarget: (lat: number, lng: number) => {
         const map = mapRef.current;
@@ -924,7 +1166,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
         let bearing = map.getBearing();
         let frames = 0;
-        const maxFrames = 200;
+        const maxFrames = 220;
         const bearingStep = 360 / maxFrames;
 
         const orbit = () => {
@@ -939,14 +1181,41 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
         map.flyTo({
           center: [lng, lat],
-          zoom: 15.5,
+          zoom: 15.6,
           pitch: 58,
-          duration: 1200,
+          duration: 1400,
         });
 
         setTimeout(() => {
           orbitAnimRef.current = requestAnimationFrame(orbit);
-        }, 1200);
+        }, 1400);
+      },
+
+      // Toggle Ambient 3D Camera Drift
+      toggleAmbientDrift: () => {
+        isDriftEnabledRef.current = !isDriftEnabledRef.current;
+        if (!isDriftEnabledRef.current) {
+          if (driftAnimRef.current) {
+            cancelAnimationFrame(driftAnimRef.current);
+            driftAnimRef.current = null;
+          }
+          setIsDriftActive(false);
+          return false;
+        } else {
+          startAmbientDrift();
+          return true;
+        }
+      },
+
+      // Fullscreen Mode Toggle
+      toggleFullscreen: () => {
+        const target = wrapperRef.current || containerRef.current;
+        if (!target) return;
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        } else {
+          target.requestFullscreen().catch(() => {});
+        }
       },
 
       // Opening Cinematic Fly-In from Maharashtra overview to Pune District
@@ -973,9 +1242,31 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       },
     }));
 
+    // Time-of-Day atmospheric overlay class
+    const todOverlayClass =
+      timeOfDay === 'morning'
+        ? 'tod-overlay-morning'
+        : timeOfDay === 'golden'
+        ? 'tod-overlay-golden'
+        : timeOfDay === 'night'
+        ? 'tod-overlay-night'
+        : 'tod-overlay-afternoon';
+
     return (
-      <div className="relative w-full h-full min-h-[580px] bg-zinc-950 overflow-hidden">
+      <div ref={wrapperRef} className="relative w-full h-full min-h-[580px] bg-zinc-950 overflow-hidden select-none">
+        {/* Real Satellite / Topo / Dark Canvas */}
         <div ref={containerRef} className="w-full h-full" />
+
+        {/* Time-of-Day Atmospheric Filter */}
+        <div className={`absolute inset-0 pointer-events-none z-10 transition-colors duration-1000 ${todOverlayClass}`} />
+
+        {/* Subtle Ambient Drift Indicator in bottom corner */}
+        {isDriftActive && (
+          <div className="absolute bottom-4 left-4 z-20 pointer-events-none flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-emerald-500/30 text-[10px] font-mono text-emerald-300 shadow-xl">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>CINEMATIC 3D DRIFT ACTIVE</span>
+          </div>
+        )}
       </div>
     );
   }

@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Compass, Navigation, Search, Clock } from 'lucide-react';
+import { Compass, Navigation, Search, Clock, Sun, Moon, Sunrise, Sunset } from 'lucide-react';
 import { formatCoordinatesDD, formatCoordinatesDMS, getTalukaOrRegion } from '@/lib/experience/puneDistrictData';
+import { TimeOfDayKey } from './DistrictMapControls';
 
 interface LiveDistrictTelemetryProps {
   cursorLat: number | null;
@@ -12,6 +13,7 @@ interface LiveDistrictTelemetryProps {
   totalLocations: number;
   activePlaceCount: number;
   selectedCategoryName: string;
+  timeOfDay?: TimeOfDayKey;
   onOpenExploreAnywhere?: () => void;
   lang?: string;
   className?: string;
@@ -25,6 +27,7 @@ export default function LiveDistrictTelemetry({
   totalLocations,
   activePlaceCount,
   selectedCategoryName,
+  timeOfDay = 'afternoon',
   onOpenExploreAnywhere,
   lang = 'en',
   className = '',
@@ -63,82 +66,95 @@ export default function LiveDistrictTelemetry({
 
   return (
     <header
-      className={`flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-white/10 text-white shadow-2xl transition-all ${className}`}
+      className={`flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-black/85 backdrop-blur-2xl border border-white/15 text-white shadow-2xl transition-all select-none ${className}`}
       role="banner"
       aria-label="Live Pune District Map Status"
     >
-      {/* District & Status Indicator */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center p-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
-          <Compass size={16} />
+      {/* 1. District & Real-time Compass Needle */}
+      <div className="flex items-center gap-3 min-w-0">
+        <div
+          className="flex items-center justify-center p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 transition-transform duration-300"
+          title={`Camera Heading: ${Math.round(bearing)}°`}
+        >
+          <Compass
+            size={18}
+            className="transition-transform duration-300"
+            style={{ transform: `rotate(${-Math.round(bearing)}deg)` }}
+          />
         </div>
 
-        <div>
+        <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-xs font-bold uppercase tracking-wider text-white">
-              {isMr ? 'पुणे जिल्हा थेट नकाशा' : 'Explore Pune • District Map'}
+            <h1 className="text-xs font-black uppercase tracking-wider text-white truncate">
+              {isMr ? 'पुणे जिल्हा थेट नकाशा' : 'EXPLORE PUNE DISTRICT'}
             </h1>
-            <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/10 text-emerald-300 font-mono">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-mono font-bold flex-shrink-0">
               15 TALUKAS
             </span>
           </div>
-          <p className="text-[10px] text-white/60 truncate max-w-[180px] sm:max-w-xs">
+          <p className="text-[10px] text-white/60 truncate font-mono">
             {isMr ? talukaInfo.nameMr : talukaInfo.nameEn}
           </p>
         </div>
       </div>
 
-      {/* Center Live Coordinates Display */}
-      <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.05] border border-white/10 font-mono text-xs">
-        <Navigation size={12} className="text-amber-400" />
-        <span className="text-amber-400 text-[10px] font-semibold uppercase tracking-wider">
-          Coordinates:
+      {/* 2. Center Live Coordinates Display (Strictly Non-Wrapping) */}
+      <div className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-xs flex-shrink-0">
+        <Navigation
+          size={13}
+          className="text-amber-400 flex-shrink-0 transition-transform duration-300"
+          style={{ transform: `rotate(${-Math.round(bearing)}deg)` }}
+        />
+        <span className="text-amber-400 text-[10px] font-bold uppercase tracking-wider flex-shrink-0">
+          COORDINATES:
         </span>
-        <span className="text-white font-bold tracking-tight">
+        <span className="text-white font-black tracking-tight whitespace-nowrap">
           {formattedCoords}
         </span>
         <button
           type="button"
           onClick={() => setUseDms(!useDms)}
-          title="Toggle Decimal / DMS format"
-          className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-white/80 hover:text-white uppercase font-sans hover:bg-white/20 transition-colors ml-1"
+          title="Toggle Decimal Degrees / DMS format"
+          className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-white/80 hover:text-white uppercase font-sans hover:bg-white/20 transition-colors ml-1 font-bold"
         >
           {useDms ? 'DD' : 'DMS'}
         </button>
       </div>
 
-      {/* Right Stats, Quick Search & Camera Pitch */}
-      <div className="flex items-center gap-2.5 text-[11px] font-mono">
+      {/* 3. Right Stats, Quick Search & Live Clock */}
+      <div className="flex items-center gap-2.5 text-[11px] font-mono flex-shrink-0">
         {/* Quick Search Shortcut Pill */}
         {onOpenExploreAnywhere && (
           <button
             type="button"
             onClick={onOpenExploreAnywhere}
             title="Explore Anywhere & Jump to GPS Coordinates (Press /)"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all hover:scale-105 active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all hover:scale-105 active:scale-95"
           >
             <Search size={13} />
             <span className="hidden sm:inline">{isMr ? 'कुठेही शोधा' : 'EXPLORE'}</span>
-            <kbd className="px-1.5 py-0.2 rounded bg-black/50 text-[10px] text-white/60 border border-white/10 font-mono">
+            <kbd className="px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white/70 border border-white/10 font-mono">
               /
             </kbd>
           </button>
         )}
 
-        <div className="hidden sm:flex items-center gap-2 text-white/70">
+        {/* Places Count */}
+        <div className="hidden sm:flex items-center gap-1.5 text-white/70 text-xs">
           <span className="text-white/40">Places:</span>
-          <span className="text-emerald-400 font-bold">
+          <span className="text-emerald-400 font-black">
             {activePlaceCount}/{totalLocations}
           </span>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 text-white/50 text-[10px]">
-          <span>BEARING: {Math.round(bearing)}°</span>
+        {/* Pitch / Bearing Indicator */}
+        <div className="hidden lg:flex items-center gap-1.5 text-white/50 text-[10px]">
+          <span>{Math.round(pitch)}° TILT</span>
         </div>
 
-        {/* Live IST Clock */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-emerald-300 font-bold text-xs">
-          <Clock size={12} className="text-emerald-400" />
+        {/* Live IST Clock & Atmosphere Pill */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-emerald-300 font-bold text-xs whitespace-nowrap">
+          <Clock size={12} className="text-emerald-400 flex-shrink-0" />
           <span>{istTime || 'IST'}</span>
         </div>
       </div>

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* Explore Pune - Experience v2 Stylesheet */
+/* =========================================================================
+   Explore Pune - Immersive Interactive Experience v3 Stylesheet
+   ========================================================================= */
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
@@ -9,8 +11,8 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Custom delicate dark scrollbar */
@@ -20,38 +22,136 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   border-radius: 9999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(16, 185, 129, 0.25);
   border-radius: 9999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(16, 185, 129, 0.5);
 }
 
-/* Map Pin Pulse */
+/* Map Pin Pulse Animation */
 @keyframes pin-ripple {
   0% {
     transform: scale(0.8);
-    opacity: 1;
+    opacity: 0.9;
   }
   100% {
-    transform: scale(2.4);
+    transform: scale(2.6);
     opacity: 0;
   }
 }
 
 .pin-ripple-anim {
-  animation: pin-ripple 1.8s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  animation: pin-ripple 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
-/* Ensure maplibre canvas covers entire container */
+/* Floating HUD Hover Animation */
+@keyframes hud-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.hud-float-anim {
+  animation: hud-float 4s ease-in-out infinite;
+}
+
+/* Laser Boundary Glow Animation */
+@keyframes laser-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.95)) drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));
+  }
+}
+
+.laser-glow-anim {
+  animation: laser-glow 2.5s ease-in-out infinite;
+}
+
+/* Shimmer Light Sweep on Cards */
+@keyframes card-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.card-shimmer-hover:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(16, 185, 129, 0.12) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: card-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Radar Sweep Effect for Telemetry */
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep-anim {
+  animation: radar-sweep 5s linear infinite;
+}
+
+/* Ensure maplibre canvas covers entire container without distortion */
 .maplibregl-canvas {
   width: 100% !important;
   height: 100% !important;
   outline: none;
+}
+
+/* Smooth MapLibre Popup Styling */
+.maplibregl-popup-content {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  border-radius: 1rem !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: rgba(9, 9, 11, 0.95) !important;
+}
+
+/* Time of Day Atmospheric Overlays */
+.tod-overlay-morning {
+  background: radial-gradient(circle at 75% 25%, rgba(254, 240, 138, 0.08) 0%, transparent 60%),
+              linear-gradient(180deg, rgba(251, 191, 36, 0.04) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.tod-overlay-afternoon {
+  background: radial-gradient(circle at 50% 10%, rgba(56, 189, 248, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.tod-overlay-golden {
+  background: radial-gradient(circle at 80% 60%, rgba(249, 115, 22, 0.12) 0%, transparent 70%),
+              linear-gradient(180deg, rgba(217, 119, 6, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.tod-overlay-night {
+  background: radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
 }

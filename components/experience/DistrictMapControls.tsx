@@ -11,8 +11,19 @@ import {
   Satellite,
   Mountain,
   Moon,
+  Sun,
+  Sunset,
+  Sunrise,
+  Compass,
+  Volume2,
+  VolumeX,
+  Maximize2,
+  Eye,
+  RotateCcw,
 } from 'lucide-react';
 import { MapStyleKey, MAP_STYLE_OPTIONS } from '@/lib/experience/puneDistrictData';
+
+export type TimeOfDayKey = 'morning' | 'afternoon' | 'golden' | 'night' | 'auto';
 
 export interface MapLayerState {
   districtBoundary: boolean;
@@ -24,32 +35,46 @@ export interface MapLayerState {
 
 interface DistrictMapControlsProps {
   currentStyle: MapStyleKey;
+  timeOfDay?: TimeOfDayKey;
   layerState: MapLayerState;
   onSelectStyle: (style: MapStyleKey) => void;
+  onSelectTimeOfDay?: (tod: TimeOfDayKey) => void;
   onToggleLayer: (layerKey: keyof MapLayerState) => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetDistrictView: () => void;
   onToggleTilt: () => void;
   onLocateUser: () => void;
+  onToggleDrift?: () => void;
+  onToggleSound?: () => void;
+  onToggleFullscreen?: () => void;
   onReplayIntro?: () => void;
   is3d: boolean;
+  isDrifting?: boolean;
+  isSoundActive?: boolean;
   lang?: string;
   className?: string;
 }
 
 export default function DistrictMapControls({
   currentStyle,
+  timeOfDay = 'afternoon',
   layerState,
   onSelectStyle,
+  onSelectTimeOfDay,
   onToggleLayer,
   onZoomIn,
   onZoomOut,
   onResetDistrictView,
   onToggleTilt,
   onLocateUser,
+  onToggleDrift,
+  onToggleSound,
+  onToggleFullscreen,
   onReplayIntro,
   is3d,
+  isDrifting = false,
+  isSoundActive = false,
   lang = 'en',
   className = '',
 }: DistrictMapControlsProps) {
@@ -59,13 +84,13 @@ export default function DistrictMapControls({
 
   return (
     <div
-      className={`absolute bottom-6 right-4 z-20 flex flex-col items-end gap-2 ${className}`}
+      className={`absolute bottom-6 right-4 z-20 flex flex-col items-end gap-2.5 ${className}`}
       role="group"
       aria-label="Map Visuals & Navigation Controls"
     >
-      {/* Layer Toggles Popover */}
+      {/* 1. Layer Toggles Popover */}
       {showLayerMenu && (
-        <div className="p-3 rounded-2xl bg-black/95 backdrop-blur-xl border border-emerald-500/30 shadow-2xl text-xs space-y-2 mb-1 w-64 animate-in fade-in slide-in-from-bottom-2 text-white select-none">
+        <div className="p-3.5 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl text-xs space-y-2 mb-1 w-64 animate-in fade-in slide-in-from-bottom-2 text-white select-none">
           <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400 px-1 pb-1 border-b border-white/10 flex items-center justify-between">
             <span>{isMr ? 'भौगोलिक स्तर (LAYERS)' : 'GEOGRAPHIC LAYERS'}</span>
             <button
@@ -79,7 +104,7 @@ export default function DistrictMapControls({
 
           <div className="space-y-1.5">
             {/* 1. District Boundary */}
-            <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
+            <label className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
                 <Map size={14} className="text-emerald-400" />
                 <span>{isMr ? 'जिल्हा सीमा' : 'District Boundary'}</span>
@@ -93,7 +118,7 @@ export default function DistrictMapControls({
             </label>
 
             {/* 2. Taluka Boundaries */}
-            <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
+            <label className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
                 <Landmark size={14} className="text-amber-400" />
                 <span>{isMr ? '१५ तालुके सीमा' : '15 Taluka Boundaries'}</span>
@@ -107,7 +132,7 @@ export default function DistrictMapControls({
             </label>
 
             {/* 3. Rivers & Reservoirs */}
-            <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
+            <label className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
                 <Droplets size={14} className="text-cyan-400" />
                 <span>{isMr ? 'नद्या व जलाशय' : 'Rivers & Reservoirs'}</span>
@@ -121,9 +146,9 @@ export default function DistrictMapControls({
             </label>
 
             {/* 4. Major Highways */}
-            <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
+            <label className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <Route size={14} className="text-indigo-400" />
+                <Route size={14} className="text-amber-300" />
                 <span>{isMr ? 'प्रमुख महामार्ग' : 'Major Highways'}</span>
               </span>
               <input
@@ -135,10 +160,10 @@ export default function DistrictMapControls({
             </label>
 
             {/* 5. Destination Markers */}
-            <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
+            <label className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
                 <MapPin size={14} className="text-rose-400" />
-                <span>{isMr ? '१०६ जीपीएस स्थाने' : '106 GPS Landmarks'}</span>
+                <span>{isMr ? '१०६ स्थळ निर्देशक' : '106 Landmark Pins'}</span>
               </span>
               <input
                 type="checkbox"
@@ -151,93 +176,245 @@ export default function DistrictMapControls({
         </div>
       )}
 
-      {/* Style Switcher Popover */}
+      {/* 2. Basemap Style & Atmosphere Popover */}
       {showStyleMenu && (
-        <div className="p-2.5 rounded-2xl bg-black/95 backdrop-blur-xl border border-emerald-500/30 shadow-2xl text-xs space-y-1 mb-1 w-56 animate-in fade-in slide-in-from-bottom-2 text-white">
-          <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400 px-2 py-1 border-b border-white/10 flex items-center justify-between">
-            <span>{isMr ? 'नकाशा प्रकार निवडा' : 'SELECT MAP STYLE'}</span>
-            <button
-              type="button"
-              onClick={() => setShowStyleMenu(false)}
-              className="text-white/40 hover:text-white"
-            >
-              ✕
-            </button>
+        <div className="p-3.5 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl text-xs space-y-3 mb-1 w-64 animate-in fade-in slide-in-from-bottom-2 text-white select-none">
+          {/* Basemaps Section */}
+          <div>
+            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400 pb-1 border-b border-white/10 flex items-center justify-between mb-2">
+              <span>{isMr ? 'नकाशा प्रकार' : 'BASEMAP CARTOGRAPHY'}</span>
+              <button
+                type="button"
+                onClick={() => setShowStyleMenu(false)}
+                className="text-white/40 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-1">
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectStyle('satellite');
+                  setShowStyleMenu(false);
+                }}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-left transition-all ${
+                  currentStyle === 'satellite'
+                    ? 'bg-emerald-500/20 border border-emerald-400 text-white font-bold'
+                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/80'
+                }`}
+              >
+                <Satellite size={15} className="text-emerald-400" />
+                <div>
+                  <div className="text-xs font-mono">{isMr ? 'उपग्रह छायाचित्र' : 'Satellite Imagery'}</div>
+                  <div className="text-[9px] text-white/40">Esri World High-Res</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectStyle('topo');
+                  setShowStyleMenu(false);
+                }}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-left transition-all ${
+                  currentStyle === 'topo'
+                    ? 'bg-emerald-500/20 border border-emerald-400 text-white font-bold'
+                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/80'
+                }`}
+              >
+                <Mountain size={15} className="text-amber-400" />
+                <div>
+                  <div className="text-xs font-mono">{isMr ? 'भूरूप (टोपोग्राफी)' : 'Topographic Relief'}</div>
+                  <div className="text-[9px] text-white/40">Sahyadri elevation ridges</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectStyle('dark');
+                  setShowStyleMenu(false);
+                }}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-left transition-all ${
+                  currentStyle === 'dark'
+                    ? 'bg-emerald-500/20 border border-emerald-400 text-white font-bold'
+                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/80'
+                }`}
+              >
+                <Moon size={15} className="text-cyan-400" />
+                <div>
+                  <div className="text-xs font-mono">{isMr ? 'डार्क टॅक्टिकल' : 'Dark Tactical GIS'}</div>
+                  <div className="text-[9px] text-white/40">Luminous neon vector</div>
+                </div>
+              </button>
+            </div>
           </div>
 
-          {MAP_STYLE_OPTIONS.map((opt) => (
-            <button
-              key={opt.key}
-              type="button"
-              onClick={() => {
-                onSelectStyle(opt.key);
-                setShowStyleMenu(false);
-              }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left transition-colors font-mono text-xs ${
-                currentStyle === opt.key
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50'
-                  : 'hover:bg-white/10 text-white/70 hover:text-white'
-              }`}
-            >
-              <span className="flex-shrink-0 text-emerald-400">
-                {opt.key === 'satellite' && <Satellite size={16} />}
-                {opt.key === 'topo' && <Mountain size={16} />}
-                {opt.key === 'dark' && <Moon size={16} />}
+          {/* Time of Day Lighting Section */}
+          {onSelectTimeOfDay && (
+            <div className="pt-2 border-t border-white/10">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 block mb-1.5">
+                {isMr ? 'वेळ व वातावरण प्रकाश' : 'ATMOSPHERIC LIGHTING'}
               </span>
-              <div className="flex-1 min-w-0">
-                <div className="font-bold truncate">{isMr ? opt.labelMr : opt.labelEn}</div>
-                <div className="text-[9px] text-white/40 truncate">{opt.descriptionEn}</div>
+              <div className="grid grid-cols-2 gap-1 font-mono text-[10px]">
+                <button
+                  type="button"
+                  onClick={() => onSelectTimeOfDay('morning')}
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
+                    timeOfDay === 'morning'
+                      ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold'
+                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  <Sunrise size={12} className="text-amber-400" />
+                  <span>Morning</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectTimeOfDay('afternoon')}
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
+                    timeOfDay === 'afternoon'
+                      ? 'bg-sky-500/20 border-sky-400 text-sky-300 font-bold'
+                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  <Sun size={12} className="text-sky-400" />
+                  <span>Daylight</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectTimeOfDay('golden')}
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
+                    timeOfDay === 'golden'
+                      ? 'bg-orange-500/20 border-orange-400 text-orange-300 font-bold'
+                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  <Sunset size={12} className="text-orange-400" />
+                  <span>Sunset</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectTimeOfDay('night')}
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
+                    timeOfDay === 'night'
+                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 font-bold'
+                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  <Moon size={12} className="text-cyan-400" />
+                  <span>Night</span>
+                </button>
               </div>
-            </button>
-          ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Main Controls Dock */}
-      <div className="flex flex-col items-center gap-1.5 p-1.5 rounded-2xl bg-black/85 backdrop-blur-md border border-emerald-500/30 shadow-2xl">
-        {/* Style Switcher Button */}
-        <button
-          type="button"
-          onClick={() => {
-            setShowStyleMenu(!showStyleMenu);
-            setShowLayerMenu(false);
-          }}
-          aria-expanded={showStyleMenu}
-          title="Switch Map Layers (Satellite / Topo / Dark)"
-          className="w-9 h-9 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 flex items-center justify-center border border-emerald-500/40 transition-colors"
-        >
-          <Layers size={16} />
-        </button>
-
-        {/* Geographic Layers Toggle Menu Button */}
+      {/* Main Floating Tool Column */}
+      <div className="flex flex-col gap-1.5 p-1.5 rounded-3xl bg-black/90 backdrop-blur-2xl border border-white/15 shadow-2xl text-white select-none">
+        {/* Layer Toggles Button */}
         <button
           type="button"
           onClick={() => {
             setShowLayerMenu(!showLayerMenu);
             setShowStyleMenu(false);
           }}
-          aria-expanded={showLayerMenu}
-          title="Toggle Geographic Layers (District, Talukas, Rivers, Roads)"
-          className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-emerald-400 flex items-center justify-center transition-colors"
+          title={isMr ? 'भौगोलिक स्तर' : 'Geographic Layers'}
+          aria-label="Toggle map layers"
+          className={`p-2.5 rounded-2xl transition-all ${
+            showLayerMenu ? 'bg-emerald-500 text-black font-bold' : 'hover:bg-white/10 text-white/80 hover:text-white'
+          }`}
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
+          <Layers size={18} />
         </button>
 
-        <div className="w-6 h-px bg-white/10 my-0.5" />
+        {/* Style & Atmosphere Button */}
+        <button
+          type="button"
+          onClick={() => {
+            setShowStyleMenu(!showStyleMenu);
+            setShowLayerMenu(false);
+          }}
+          title={isMr ? 'नकाशा व वातावरण' : 'Map Style & Atmosphere'}
+          aria-label="Toggle map styles and atmosphere"
+          className={`p-2.5 rounded-2xl transition-all ${
+            showStyleMenu ? 'bg-emerald-500 text-black font-bold' : 'hover:bg-white/10 text-white/80 hover:text-white'
+          }`}
+        >
+          <Satellite size={18} />
+        </button>
+
+        {/* 3D Tilt Perspective Toggle */}
+        <button
+          type="button"
+          onClick={onToggleTilt}
+          title={is3d ? 'Switch to 2D Flat View' : 'Switch to 3D Perspective View'}
+          aria-label="Toggle 2D or 3D terrain pitch"
+          className="p-2.5 rounded-2xl hover:bg-white/10 text-white/80 hover:text-white transition-all font-mono text-xs font-black"
+        >
+          <span className={`px-1 py-0.5 rounded text-[10px] ${is3d ? 'bg-emerald-500 text-black font-bold' : 'bg-white/10 text-white/60'}`}>
+            {is3d ? '3D' : '2D'}
+          </span>
+        </button>
+
+        {/* Ambient 3D Camera Drift Toggle */}
+        {onToggleDrift && (
+          <button
+            type="button"
+            onClick={onToggleDrift}
+            title={isDrifting ? 'Pause Cinematic Drift' : 'Enable Cinematic 3D Drift'}
+            aria-label="Toggle idle camera drift"
+            className={`p-2.5 rounded-2xl transition-all ${
+              isDrifting ? 'bg-emerald-500/30 text-emerald-300' : 'hover:bg-white/10 text-white/70 hover:text-white'
+            }`}
+          >
+            <Compass size={18} className={isDrifting ? 'animate-spin' : ''} style={{ animationDuration: '8s' }} />
+          </button>
+        )}
+
+        {/* Sound Atmosphere Toggle */}
+        {onToggleSound && (
+          <button
+            type="button"
+            onClick={onToggleSound}
+            title={isSoundActive ? 'Mute Ambient Audio' : 'Play Sahyadri Nature Breeze Audio'}
+            aria-label="Toggle ambient nature sound"
+            className={`p-2.5 rounded-2xl transition-all ${
+              isSoundActive ? 'bg-emerald-500 text-black font-bold' : 'hover:bg-white/10 text-white/70 hover:text-white'
+            }`}
+          >
+            {isSoundActive ? <Volume2 size={18} /> : <VolumeX size={18} />}
+          </button>
+        )}
+
+        {/* Fullscreen Mode Toggle */}
+        {onToggleFullscreen && (
+          <button
+            type="button"
+            onClick={onToggleFullscreen}
+            title="Toggle Edge-to-Edge Fullscreen"
+            aria-label="Fullscreen map view"
+            className="p-2.5 rounded-2xl hover:bg-white/10 text-white/80 hover:text-white transition-all"
+          >
+            <Maximize2 size={17} />
+          </button>
+        )}
+
+        {/* Divider */}
+        <div className="w-5 h-px bg-white/15 mx-auto my-0.5" />
 
         {/* Zoom In */}
         <button
           type="button"
           onClick={onZoomIn}
           title="Zoom In"
-          aria-label="Zoom in"
-          className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors"
+          aria-label="Zoom in on map"
+          className="p-2.5 rounded-2xl hover:bg-white/10 text-white/80 hover:text-white transition-all font-mono font-bold text-sm"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
+          +
         </button>
 
         {/* Zoom Out */}
@@ -245,73 +422,33 @@ export default function DistrictMapControls({
           type="button"
           onClick={onZoomOut}
           title="Zoom Out"
-          aria-label="Zoom out"
-          className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors"
+          aria-label="Zoom out on map"
+          className="p-2.5 rounded-2xl hover:bg-white/10 text-white/80 hover:text-white transition-all font-mono font-bold text-sm"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-          </svg>
+          −
         </button>
-
-        <div className="w-6 h-px bg-white/10 my-0.5" />
 
         {/* Reset District View */}
         <button
           type="button"
           onClick={onResetDistrictView}
-          title="Reset to Full Pune District Extent"
-          aria-label="Reset to full Pune district view"
-          className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors"
+          title={isMr ? 'संपूर्ण जिल्हा केंद्र' : 'Reset to Full Pune District Extent'}
+          aria-label="Reset map bounds to entire Pune district"
+          className="p-2.5 rounded-2xl hover:bg-white/10 text-white/80 hover:text-white transition-all"
         >
-          <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <circle cx="12" cy="12" r="9" strokeWidth={1.5} />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v3m0 12v3m-9-9h3m12 0h3" />
-          </svg>
+          <RotateCcw size={16} />
         </button>
 
-        {/* 2D / 3D Tilt Toggle */}
-        <button
-          type="button"
-          onClick={onToggleTilt}
-          title={is3d ? 'Switch to Flat 2D View' : 'Switch to 3D Tilted Perspective'}
-          aria-label="Toggle 2D/3D perspective"
-          className={`w-9 h-9 rounded-xl font-mono text-xs font-black transition-colors ${
-            is3d
-              ? 'bg-emerald-500 text-black shadow-md'
-              : 'bg-white/5 hover:bg-white/15 text-white/70'
-          }`}
-        >
-          {is3d ? '3D' : '2D'}
-        </button>
-
-        {/* Locate User via Browser Geolocation */}
+        {/* Locate User */}
         <button
           type="button"
           onClick={onLocateUser}
-          title="Locate My Position on Pune District Map"
-          aria-label="Locate my position on map"
-          className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-cyan-400 flex items-center justify-center transition-colors"
+          title={isMr ? 'माझे स्थान शोधा' : 'Locate My Position'}
+          aria-label="Find and center on my location"
+          className="p-2.5 rounded-2xl hover:bg-white/10 text-emerald-400 hover:text-emerald-300 transition-all"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+          <MapPin size={17} />
         </button>
-
-        {/* Replay Intro Calibration Button */}
-        {onReplayIntro && (
-          <button
-            type="button"
-            onClick={onReplayIntro}
-            title="Replay Opening Geographical Calibration"
-            aria-label="Replay intro"
-            className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/15 text-white/50 hover:text-white flex items-center justify-center transition-colors"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-        )}
       </div>
     </div>
   );
