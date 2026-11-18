@@ -113,7 +113,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match all request paths except static files (_next/static, _next/image, favicon, public images)
-    '/((?!_next/static|_next/image|favicon.ico|images/).*)',
+    // Match all request paths except static files (_next/static, _next/image, favicon, public images, maplibre worker)
+    '/((?!_next/static|_next/image|favicon.ico|images/|maplibre-gl-worker).*)',
   ],
 };

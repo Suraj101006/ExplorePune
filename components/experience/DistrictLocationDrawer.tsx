@@ -80,6 +80,7 @@ export default function DistrictLocationDrawer({
 
   return (
     <aside
+      style={{ maxHeight: 'calc(100% - 2rem)' }}
       className="fixed md:absolute top-auto bottom-0 md:top-4 md:bottom-4 right-0 md:right-4 z-30 w-full md:w-[420px] max-h-[85vh] md:max-h-none flex flex-col bg-black/95 backdrop-blur-2xl border-t md:border border-emerald-500/30 rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 animate-in fade-in slide-in-from-bottom md:slide-in-from-right text-white select-none"
       aria-label={`${placeName} Coordinates & Geographical Details`}
     >
@@ -125,7 +126,7 @@ export default function DistrictLocationDrawer({
       </div>
 
       {/* Main Coordinate Inspector Body */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-3.5 custom-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-5 space-y-3.5 custom-scrollbar">
         {/* Name & Alternative Name */}
         <div>
           <h2 className="text-xl font-black text-white tracking-tight leading-tight">

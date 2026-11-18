@@ -3,6 +3,16 @@
 import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+
+// Ensure MapLibre Web Worker loads from local public directory with correct module/script MIME
+if (typeof window !== 'undefined') {
+  try {
+    maplibregl.setWorkerUrl(`${window.location.origin}/maplibre-gl-worker.js`);
+  } catch {
+    maplibregl.setWorkerUrl('/maplibre-gl-worker.js');
+  }
+}
+
 import { getAllPlaces } from '@/lib/experience/selectors';
 import { ExperiencePlace } from '@/lib/experience/types';
 import {
@@ -58,9 +68,6 @@ const DEFAULT_CENTER: [number, number] = [73.8567, 18.5204];
 const DEFAULT_ZOOM = 10.2;
 const DEFAULT_PITCH = 45;
 const DEFAULT_BEARING = -15;
-
-// AWS Open Data Terrarium DEM Tiles (Free, No Auth Key required)
-const AWS_TERRARIUM_DEM_TILES = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
 
 // Real Satellite Hybrid Style
 const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
@@ -185,6 +192,14 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     useEffect(() => {
       if (!containerRef.current || mapRef.current) return;
 
+      if (typeof window !== 'undefined') {
+        try {
+          maplibregl.setWorkerUrl(`${window.location.origin}/maplibre-gl-worker.js`);
+        } catch {
+          maplibregl.setWorkerUrl('/maplibre-gl-worker.js');
+        }
+      }
+
       const initialStyle =
         currentStyle === 'satellite'
           ? SATELLITE_HYBRID_STYLE
@@ -255,44 +270,9 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     }, [currentStyle]);
 
-    // 3. Setup All Geographic Vector & Terrain Layers
+    // 3. Setup All Geographic Vector & Boundaries
     const setupAllGeographicLayers = (map: maplibregl.Map) => {
-      // A. Real 3D Terrain DEM & Hillshading
-      if (!map.getSource('terrain-dem')) {
-        try {
-          map.addSource('terrain-dem', {
-            type: 'raster-dem',
-            tiles: [AWS_TERRARIUM_DEM_TILES],
-            encoding: 'terrarium',
-            tileSize: 256,
-            maxzoom: 15,
-          });
-
-          // Add hillshade layer for Sahyadri slope relief
-          if (!map.getLayer('terrain-hillshade')) {
-            map.addLayer({
-              id: 'terrain-hillshade',
-              type: 'hillshade',
-              source: 'terrain-dem',
-              layout: { visibility: 'visible' },
-              paint: {
-                'hillshade-shadow-color': '#090d16',
-                'hillshade-highlight-color': '#ffffff',
-                'hillshade-accent-color': '#0284c7',
-                'hillshade-exaggeration': 0.7,
-              },
-            });
-          }
-
-          if (is3d) {
-            map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
-          }
-        } catch (e) {
-          console.warn('3D Terrain source notice:', e);
-        }
-      }
-
-      // B. District Perimeter
+      // A. District Perimeter
       if (!map.getSource('pune-district-source')) {
         map.addSource('pune-district-source', {
           type: 'geojson',
@@ -545,7 +525,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       }
     }, [selectedTaluka, isMapLoaded]);
 
-    // 6. Sync 3D Terrain & Camera Pitch when is3d changes
+    // 6. Sync 3D Perspective & Camera Pitch when is3d changes
     useEffect(() => {
       const map = mapRef.current;
       if (!map || !isMapLoaded) return;
@@ -553,19 +533,15 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       setIsTilted(is3d);
       if (is3d) {
         try {
-          if (map.getSource('terrain-dem')) {
-            map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
-          }
           map.easeTo({ pitch: 55, bearing: -15, duration: 800 });
         } catch (e) {
-          console.warn('Set terrain notice:', e);
+          console.warn('Set pitch notice:', e);
         }
       } else {
         try {
-          map.setTerrain(null);
           map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
         } catch (e) {
-          console.warn('Clear terrain notice:', e);
+          console.warn('Clear pitch notice:', e);
         }
       }
     }, [is3d, isMapLoaded]);
@@ -742,16 +718,8 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         const nextTilt = !isTilted;
         setIsTilted(nextTilt);
         if (nextTilt) {
-          try {
-            if (map.getSource('terrain-dem')) {
-              map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
-            }
-          } catch (e) {}
           map.easeTo({ pitch: 55, bearing: -15, duration: 800 });
         } else {
-          try {
-            map.setTerrain(null);
-          } catch (e) {}
           map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
         }
       },

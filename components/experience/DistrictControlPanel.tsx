@@ -103,6 +103,7 @@ export default function DistrictControlPanel({
 
       {/* Main Panel Drawer */}
       <aside
+        style={{ maxHeight: 'calc(100% - 5rem)' }}
         className={`absolute top-16 left-4 bottom-4 z-20 w-[340px] md:w-[380px] max-w-[calc(100vw-32px)] flex flex-col bg-black/95 backdrop-blur-2xl border border-emerald-500/30 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 text-white select-none ${
           isCollapsed ? '-translate-x-[120%] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'
         }`}
@@ -215,7 +216,7 @@ export default function DistrictControlPanel({
         </div>
 
         {/* Scrollable Landmark Cards List */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+        <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2 custom-scrollbar">
           {filteredPlaces.length === 0 ? (
             <div className="py-12 text-center text-white/40 text-xs font-mono">
               <p>No landmarks found matching query.</p>

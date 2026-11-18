@@ -353,7 +353,10 @@ export default function ExperiencePage() {
       {/* ========================================================================= */}
       {/* HERO: FULL-VIEWPORT LIVING PUNE DISTRICT MAP CANVAS                        */}
       {/* ========================================================================= */}
-      <div className="relative w-full h-[90vh] min-h-[640px] max-h-[1100px] bg-zinc-950 overflow-hidden select-none">
+      <div
+        className="relative w-full bg-zinc-950 overflow-hidden select-none"
+        style={{ height: '90vh', minHeight: '640px', maxHeight: '1100px' }}
+      >
         {/* Real Satellite / Topo / Dark 3D MapLibre Canvas */}
         <div className="absolute inset-0 z-0">
           <LivePuneDistrictMap
