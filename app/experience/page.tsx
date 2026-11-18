@@ -25,7 +25,7 @@ const LivePuneDistrictMap = dynamic(
       <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-zinc-950 text-white/70">
         <div className="w-10 h-10 border-2 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin mb-4" />
         <p className="text-xs uppercase tracking-widest text-emerald-400 font-sans font-semibold">
-          Loading Pune District Interactive Map...
+          Loading Pune District Open-World 3D Map...
         </p>
       </div>
     ),
@@ -33,15 +33,28 @@ const LivePuneDistrictMap = dynamic(
 );
 
 import type { DistrictMapHandle } from '@/components/experience/LivePuneDistrictMap';
-import LiveDistrictTelemetry from '@/components/experience/LiveDistrictTelemetry';
+import GameHUD, { GameMapMode, CameraModeKey } from '@/components/experience/GameHUD';
+import GameMinimap from '@/components/experience/GameMinimap';
+import GameControlsHUD from '@/components/experience/GameControlsHUD';
+import GameWaypointBar from '@/components/experience/GameWaypointBar';
+import DiscoveryMissionsModal, { DiscoveryMission } from '@/components/experience/DiscoveryMissionsModal';
+import AchievementsModal from '@/components/experience/AchievementsModal';
+import AchievementToast from '@/components/experience/AchievementToast';
 import DistrictRegionBar from '@/components/experience/DistrictRegionBar';
 import DistrictControlPanel from '@/components/experience/DistrictControlPanel';
 import DistrictLocationDrawer from '@/components/experience/DistrictLocationDrawer';
 import DistrictTourController from '@/components/experience/DistrictTourController';
-import DistrictMapControls from '@/components/experience/DistrictMapControls';
 import DistrictDirectoryTable from '@/components/experience/DistrictDirectoryTable';
 import ExploreAnywhereModal from '@/components/experience/ExploreAnywhereModal';
 import MapIntro from '@/components/experience/MapIntro';
+import {
+  loadExplorationProfile,
+  recordPlaceVisit,
+  recordMissionCompleted,
+  ExplorationAchievement,
+  UserExplorationProfile,
+  MASTER_ACHIEVEMENTS,
+} from '@/lib/experience/achievements';
 
 export default function ExperiencePage() {
   const { lang, isMr } = useLanguage();
@@ -50,9 +63,13 @@ export default function ExperiencePage() {
   // Opening Intro state (defaults to false so users immediately access the live map)
   const [showIntro, setShowIntro] = useState<boolean>(false);
 
-  // Basemap & Layer states
+  // Basemap & Open-World Map Mode states
+  const [mapMode, setMapMode] = useState<GameMapMode>('open-world');
+  const [cameraMode, setCameraMode] = useState<CameraModeKey>('explorer');
   const [currentStyle, setCurrentStyle] = useState<MapStyleKey>('satellite');
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDayKey>('afternoon');
+  const [is3d, setIs3d] = useState<boolean>(true);
+
   const [layerState, setLayerState] = useState<MapLayerState>({
     districtBoundary: true,
     talukaBoundaries: true,
@@ -66,8 +83,20 @@ export default function ExperiencePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTaluka, setSelectedTaluka] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const [is3d, setIs3d] = useState<boolean>(true);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true); // Default collapsed for 95% unoccluded 3D map!
+  const [isRegionsOpen, setIsRegionsOpen] = useState<boolean>(false); // Clean sky by default; toggleable from HUD
+
+  // GTA GPS Waypoint & Route state
+  const [waypointPlace, setWaypointPlace] = useState<ExperiencePlace | null>(null);
+
+  // Discovery Missions state
+  const [isMissionsModalOpen, setIsMissionsModalOpen] = useState<boolean>(false);
+  const [activeMission, setActiveMission] = useState<DiscoveryMission | null>(null);
+
+  // Exploration Achievements & Trophies state
+  const [isAchievementsOpen, setIsAchievementsOpen] = useState<boolean>(false);
+  const [activeAchievementToast, setActiveAchievementToast] = useState<ExplorationAchievement | null>(null);
+  const [profile, setProfile] = useState<UserExplorationProfile>(loadExplorationProfile());
 
   // Custom Multi-Stop Trail State
   const [customTrailPlaces, setCustomTrailPlaces] = useState<ExperiencePlace[]>([]);
@@ -82,11 +111,16 @@ export default function ExperiencePage() {
   // Driving Route state
   const [isRouteActive, setIsRouteActive] = useState<boolean>(false);
 
-  // Live Telemetry state
+  // Live Camera & Telemetry state
   const [cursorLat, setCursorLat] = useState<number | null>(null);
   const [cursorLng, setCursorLng] = useState<number | null>(null);
-  const [cameraPitch, setCameraPitch] = useState<number>(45);
-  const [cameraBearing, setCameraBearing] = useState<number>(-15);
+  const [cameraState, setCameraState] = useState({
+    centerLat: 18.5204,
+    centerLng: 73.8567,
+    bearing: -15,
+    pitch: 45,
+    zoom: 10.2,
+  });
 
   // Autonomous Drone Tour & Story Trails state
   const [isTouring, setIsTouring] = useState<boolean>(false);
@@ -102,7 +136,13 @@ export default function ExperiencePage() {
     mapRef.current?.playIntroFlyIn();
   }, []);
 
-  // Keyboard shortcut listener for Explore Anywhere (`/` or `Ctrl+K`)
+  // Handle GTA 5-Mode Camera Switcher (Declared before keyboard listener)
+  const handleSelectCameraMode = useCallback((mode: CameraModeKey) => {
+    setCameraMode(mode);
+    mapRef.current?.setCameraMode?.(mode, selectedPlace || waypointPlace);
+  }, [selectedPlace, waypointPlace]);
+
+  // Keyboard shortcut listener for Explore Anywhere (`/` or `Ctrl+K`), Camera Modes (1-5), Missions (M), Trophies (T)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -112,17 +152,47 @@ export default function ExperiencePage() {
           target.tagName === 'TEXTAREA' ||
           target.isContentEditable);
 
-      if (e.key === '/' && !isInput) {
+      if (isInput) return;
+
+      if (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
         setIsExploreModalOpen(true);
-      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && !isInput) {
-        e.preventDefault();
-        setIsExploreModalOpen(true);
+      } else if (e.key === '1') {
+        handleSelectCameraMode('world');
+      } else if (e.key === '2') {
+        handleSelectCameraMode('explorer');
+      } else if (e.key === '3') {
+        handleSelectCameraMode('destination');
+      } else if (e.key === '4') {
+        handleSelectCameraMode('cinematic');
+      } else if (e.key === '5') {
+        handleSelectCameraMode('navigation');
+      } else if (e.key.toLowerCase() === 'm') {
+        setIsMissionsModalOpen((prev) => !prev);
+      } else if (e.key.toLowerCase() === 't') {
+        setIsAchievementsOpen((prev) => !prev);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleSelectCameraMode]);
+
+  // Handle Map Mode Selection (Open-World 3D, Satellite, Classic 2D)
+  const handleSelectMapMode = useCallback((mode: GameMapMode) => {
+    setMapMode(mode);
+    if (mode === 'open-world') {
+      setCurrentStyle('satellite');
+      setIs3d(true);
+      mapRef.current?.pitchUp?.();
+    } else if (mode === 'satellite') {
+      setCurrentStyle('satellite');
+      setIs3d(true);
+    } else {
+      setCurrentStyle('topo');
+      setIs3d(false);
+      mapRef.current?.pitchDown?.();
+    }
   }, []);
 
   // Handle Layer Toggle
@@ -133,16 +203,64 @@ export default function ExperiencePage() {
     }));
   }, []);
 
-  // Handle Place Selection
+  // Handle Place Selection & Discovery Achievements Recording
   const handleSelectPlace = useCallback((place: ExperiencePlace) => {
     setSelectedPlace(place);
     mapRef.current?.flyToPlace(place);
-  }, []);
+
+    // Record place visit for exploration trophies
+    const { profile: updatedProfile, newlyUnlocked } = recordPlaceVisit(place, allPlaces);
+    setProfile(updatedProfile);
+    if (newlyUnlocked.length > 0) {
+      setActiveAchievementToast(newlyUnlocked[0]);
+    }
+  }, [allPlaces]);
 
   // Handle Taluka Selection
   const handleSelectTaluka = useCallback((talukaId: string) => {
     setSelectedTaluka(talukaId);
     mapRef.current?.flyToTaluka(talukaId);
+  }, []);
+
+  // GTA GPS Waypoint Handlers
+  const handleSetWaypoint = useCallback((place: ExperiencePlace) => {
+    setWaypointPlace(place);
+    setSelectedPlace(place);
+    ambientAudio.playUiBlip(1040, 0.08);
+
+    // Generate glowing GPS route line from player/camera center to waypoint
+    const origin: [number, number] = [cameraState.centerLng, cameraState.centerLat];
+    const destination: [number, number] = [place.longitude, place.latitude];
+    mapRef.current?.setGtaWaypointRoute?.(origin, destination);
+  }, [cameraState]);
+
+  const handleClearWaypoint = useCallback(() => {
+    setWaypointPlace(null);
+    mapRef.current?.clearGtaWaypointRoute?.();
+  }, []);
+
+  // Discovery Missions Selection Handler
+  const handleSelectMission = useCallback((mission: DiscoveryMission, stops: ExperiencePlace[]) => {
+    setActiveMission(mission);
+    setCustomTrailPlaces(stops);
+
+    // Draw mission route line on map
+    const coords: [number, number][] = stops.map((s) => [s.longitude, s.latitude]);
+    mapRef.current?.setCustomRouteLine?.(coords);
+
+    // Fly to first stop of mission
+    if (stops[0]) {
+      setSelectedPlace(stops[0]);
+      setWaypointPlace(stops[0]);
+      mapRef.current?.flyToCoordinates(stops[0].latitude, stops[0].longitude, 14.5, 52, -20);
+    }
+
+    // Record mission exploration milestone
+    const { profile: updatedProfile, newlyUnlocked } = recordMissionCompleted(mission.id);
+    setProfile(updatedProfile);
+    if (newlyUnlocked.length > 0) {
+      setActiveAchievementToast(newlyUnlocked[0]);
+    }
   }, []);
 
   // Custom Multi-Stop Trail Handlers
@@ -165,6 +283,7 @@ export default function ExperiencePage() {
 
   const handleClearCustomTrail = useCallback(() => {
     setCustomTrailPlaces([]);
+    setActiveMission(null);
     mapRef.current?.clearCustomRouteLine?.();
   }, []);
 
@@ -193,7 +312,6 @@ export default function ExperiencePage() {
   // Handle Driving Route Visualization
   const handleShowRoute = useCallback((place: ExperiencePlace) => {
     setIsRouteActive(true);
-    // Pune Station: [73.8744, 18.5284]
     mapRef.current?.setDrivingRoute([73.8744, 18.5284], [place.longitude, place.latitude]);
   }, []);
 
@@ -210,8 +328,11 @@ export default function ExperiencePage() {
 
   // Camera Change Tracker
   const handleCameraChange = useCallback((pitch: number, bearing: number) => {
-    setCameraPitch(pitch);
-    setCameraBearing(bearing);
+    setCameraState((prev) => ({ ...prev, pitch, bearing }));
+  }, []);
+
+  const handleCameraUpdate = useCallback((state: { centerLat: number; centerLng: number; bearing: number; pitch: number; zoom: number }) => {
+    setCameraState(state);
   }, []);
 
   // Autonomous Tour Execution
@@ -254,11 +375,9 @@ export default function ExperiencePage() {
     setActiveStoryTrailId(trail.id);
     setTourStopIndex(0);
 
-    // Set animated trail line on map
     const coords: [number, number][] = trail.stops.map((s) => [s.longitude, s.latitude]);
     mapRef.current?.setStoryTrailLine(coords);
 
-    // Fly to first stop
     const firstStop = trail.stops[0];
     if (firstStop) {
       const place = getPlaceBySlug(firstStop.slug);
@@ -338,18 +457,19 @@ export default function ExperiencePage() {
   const handleZoomOut = () => mapRef.current?.zoomOut();
   const handleResetView = () => {
     setSelectedPlace(null);
+    setWaypointPlace(null);
     setSelectedTaluka('all');
     setSelectedCategory('all');
     setSearchQuery('');
     setIsRouteActive(false);
     mapRef.current?.clearDrivingRoute();
+    mapRef.current?.clearGtaWaypointRoute?.();
     mapRef.current?.resetDistrictView();
   };
   const handleToggleTilt = () => {
     setIs3d(!is3d);
     mapRef.current?.toggleTilt();
   };
-  const handleLocateUser = () => mapRef.current?.locateUser();
 
   // Scroll to Map and focus on a place from Directory Table
   const handleFocusPlaceFromDirectory = (slug: string) => {
@@ -365,8 +485,8 @@ export default function ExperiencePage() {
   const jsonLdData = {
     '@context': 'https://schema.org',
     '@type': 'TouristDestination',
-    name: isMr ? 'पुणे जिल्हा थेट संवादी नकाशा व GPS निर्देशांक' : 'Pune District Interactive Living Map & GPS Coordinates',
-    description: 'Explore live coordinates, real 3D satellite terrain, 15 talukas, and all 106 destinations across Pune District.',
+    name: isMr ? 'पुणे जिल्हा थेट संवादी नकाशा व GTA ओपन-वर्ल्ड अनुभव' : 'Pune District Open-World 3D Map & GPS Navigation',
+    description: 'Explore live coordinates, 3D terrain, 15 talukas, minimap radar, and all 106 destinations across Pune District.',
     url: 'https://explorepune-guide.vercel.app/experience',
     geo: {
       '@type': 'GeoCoordinates',
@@ -404,14 +524,38 @@ export default function ExperiencePage() {
         lang={lang}
       />
 
+      {/* GTA Open-World Discovery Missions Dialog */}
+      <DiscoveryMissionsModal
+        isOpen={isMissionsModalOpen}
+        onClose={() => setIsMissionsModalOpen(false)}
+        onSelectMission={handleSelectMission}
+        lang={lang}
+      />
+
+      {/* Exploration Achievements / Trophies Modal */}
+      <AchievementsModal
+        isOpen={isAchievementsOpen}
+        onClose={() => setIsAchievementsOpen(false)}
+        profile={profile}
+        totalLocations={allPlaces.length}
+        lang={lang}
+      />
+
+      {/* GTA In-Game Achievement Unlock Toast */}
+      <AchievementToast
+        achievement={activeAchievementToast}
+        onDismiss={() => setActiveAchievementToast(null)}
+        lang={lang}
+      />
+
       {/* ========================================================================= */}
-      {/* HERO: FULL-VIEWPORT LIVING PUNE DISTRICT MAP CANVAS                        */}
+      {/* HERO: FULL-VIEWPORT LIVING PUNE DISTRICT 3D MAP CANVAS                     */}
       {/* ========================================================================= */}
       <div
         className="relative w-full bg-zinc-950 overflow-hidden select-none"
         style={{ height: '90vh', minHeight: '640px', maxHeight: '1100px' }}
       >
-        {/* Real Satellite / Topo / Dark 3D MapLibre Canvas */}
+        {/* Real Satellite / Topo / 3D Open-World MapLibre Canvas */}
         <div className="absolute inset-0 z-0">
           <LivePuneDistrictMap
             ref={mapRef}
@@ -425,40 +569,53 @@ export default function ExperiencePage() {
             onPlaceSelect={handleSelectPlace}
             onCursorMove={handleCursorMove}
             onCameraChange={handleCameraChange}
+            onCameraUpdate={handleCameraUpdate}
             is3d={is3d}
             lang={lang}
           />
         </div>
 
-        {/* Top Floating Live GPS Telemetry Bar */}
-        <div className="absolute top-3 left-4 right-4 z-20 pointer-events-none">
-          <div className="pointer-events-auto max-w-7xl mx-auto">
-            <LiveDistrictTelemetry
-              cursorLat={cursorLat}
-              cursorLng={cursorLng}
-              pitch={cameraPitch}
-              bearing={cameraBearing}
-              totalLocations={allPlaces.length}
-              activePlaceCount={allPlaces.length}
-              selectedCategoryName={selectedCategory}
-              timeOfDay={timeOfDay}
-              onOpenExploreAnywhere={() => setIsExploreModalOpen(true)}
-              lang={lang}
-            />
-          </div>
+        {/* Top GTA Game HUD & Compass Tape */}
+        <div className="absolute top-2 left-0 right-0 z-20 pointer-events-none">
+          <GameHUD
+            bearing={cameraState.bearing}
+            pitch={cameraState.pitch}
+            zoom={cameraState.zoom}
+            centerLat={cameraState.centerLat}
+            centerLng={cameraState.centerLng}
+            mapMode={mapMode}
+            cameraMode={cameraMode}
+            timeOfDay={timeOfDay}
+            onSelectMapMode={handleSelectMapMode}
+            onSelectCameraMode={handleSelectCameraMode}
+            onSelectTimeOfDay={setTimeOfDay}
+            onOpenMissions={() => setIsMissionsModalOpen(true)}
+            onOpenAchievements={() => setIsAchievementsOpen(true)}
+            onOpenSearch={() => setIsExploreModalOpen(true)}
+            onToggleAtlas={() => setIsCollapsed(!isCollapsed)}
+            isAtlasOpen={!isCollapsed}
+            onToggleRegions={() => setIsRegionsOpen(!isRegionsOpen)}
+            isRegionsOpen={isRegionsOpen}
+            totalLocations={allPlaces.length}
+            unlockedTrophiesCount={profile.unlockedAchievementIds.length}
+            totalTrophiesCount={MASTER_ACHIEVEMENTS.length}
+            lang={lang}
+          />
         </div>
 
-        {/* Top Regional Taluka Navigator Bar */}
-        <div className="absolute top-16 left-4 right-4 z-20 pointer-events-none">
-          <div className="pointer-events-auto max-w-7xl mx-auto">
-            <DistrictRegionBar
-              selectedTaluka={selectedTaluka}
-              onSelectTaluka={handleSelectTaluka}
-              allPlaces={allPlaces}
-              lang={lang}
-            />
+        {/* Top Regional Taluka Navigator Bar (Toggleable from HUD) */}
+        {isRegionsOpen && (
+          <div className="absolute top-16 left-4 right-4 z-20 pointer-events-none animate-in fade-in slide-in-from-top-2">
+            <div className="pointer-events-auto max-w-7xl mx-auto">
+              <DistrictRegionBar
+                selectedTaluka={selectedTaluka}
+                onSelectTaluka={handleSelectTaluka}
+                allPlaces={allPlaces}
+                lang={lang}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Left Floating Search & 15-Taluka Landmark Directory Panel */}
         <DistrictControlPanel
@@ -480,6 +637,37 @@ export default function ExperiencePage() {
           lang={lang}
         />
 
+        {/* Bottom-Left Circular GTA Radar Minimap */}
+        <div className={`absolute bottom-4 left-4 z-20 pointer-events-none ${selectedPlace ? 'hidden md:block' : ''}`}>
+          <GameMinimap
+            centerLat={cameraState.centerLat}
+            centerLng={cameraState.centerLng}
+            bearing={cameraState.bearing}
+            pitch={cameraState.pitch}
+            zoom={cameraState.zoom}
+            allPlaces={allPlaces}
+            selectedPlace={selectedPlace}
+            waypointPlace={waypointPlace}
+            onSelectPlace={handleSelectPlace}
+            onResetBearing={() => mapRef.current?.resetNorth?.()}
+            lang={lang}
+          />
+        </div>
+
+        {/* Bottom Floating GPS Waypoint Navigation Banner */}
+        {waypointPlace && (
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 max-w-xl w-[calc(100%-2rem)] pointer-events-none">
+            <GameWaypointBar
+              waypointPlace={waypointPlace}
+              playerCoords={{ latitude: cameraState.centerLat, longitude: cameraState.centerLng }}
+              onClearWaypoint={handleClearWaypoint}
+              onFlyToWaypoint={(p) => mapRef.current?.flyToPlace(p)}
+              onInspectWaypoint={(p) => setSelectedPlace(p)}
+              lang={lang}
+            />
+          </div>
+        )}
+
         {/* Right Location Coordinate Inspector Drawer */}
         <DistrictLocationDrawer
           place={selectedPlace}
@@ -489,6 +677,7 @@ export default function ExperiencePage() {
           onShowRoute={handleShowRoute}
           onClearRoute={handleClearRoute}
           onAddToTrail={handleAddToCustomTrail}
+          onSetWaypoint={handleSetWaypoint}
           isPlaceInTrail={!!selectedPlace && customTrailPlaces.some((p) => p.slug === selectedPlace.slug)}
           isRouteActive={isRouteActive}
           lang={lang}
@@ -507,35 +696,29 @@ export default function ExperiencePage() {
           onSkipPrev={handleSkipPrev}
           onStopTour={handleStopTour}
           onOrbitStop={handleOrbitStop}
-          onInspectStop={() => {
-            // Selected place drawer opens automatically
-          }}
+          onInspectStop={() => {}}
           lang={lang}
           className={isTouring ? 'top-28 md:top-24' : 'top-28 md:top-24'}
         />
 
-        {/* Bottom-Right Navigation, Basemap Switcher & Layer Controls */}
-        <DistrictMapControls
-          currentStyle={currentStyle}
-          timeOfDay={timeOfDay}
-          layerState={layerState}
-          onSelectStyle={setCurrentStyle}
-          onSelectTimeOfDay={setTimeOfDay}
-          onToggleLayer={handleToggleLayer}
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-          onResetDistrictView={handleResetView}
-          onToggleTilt={handleToggleTilt}
-          onLocateUser={handleLocateUser}
-          onToggleDrift={handleToggleDrift}
-          onToggleSound={handleToggleSound}
-          onToggleFullscreen={handleToggleFullscreen}
-          onReplayIntro={() => setShowIntro(true)}
-          is3d={is3d}
-          isDrifting={isDrifting}
-          isSoundActive={isSoundActive}
-          lang={lang}
-        />
+        {/* Bottom-Right Game Camera Controls & Shortcut Guide */}
+        <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
+          <GameControlsHUD
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+            onResetView={handleResetView}
+            onRotateLeft={() => mapRef.current?.rotateLeft?.()}
+            onRotateRight={() => mapRef.current?.rotateRight?.()}
+            onPitchUp={() => mapRef.current?.pitchUp?.()}
+            onPitchDown={() => mapRef.current?.pitchDown?.()}
+            onToggleFullscreen={handleToggleFullscreen}
+            onToggleSound={handleToggleSound}
+            isSoundActive={isSoundActive}
+            is3d={is3d}
+            onToggleTilt={handleToggleTilt}
+            lang={lang}
+          />
+        </div>
       </div>
 
       {/* ========================================================================= */}

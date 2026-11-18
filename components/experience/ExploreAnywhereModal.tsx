@@ -135,7 +135,10 @@ export default function ExploreAnywhereModal({
       role="dialog"
       aria-modal="true"
       aria-label="Explore Anywhere GPS Destination Finder"
-      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-3 md:p-6 animate-in fade-in duration-200"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-xl flex items-center justify-center p-3 md:p-6 animate-in fade-in duration-200"
     >
       <div className="relative w-full max-w-5xl max-h-[90vh] bg-zinc-950 border border-emerald-500/40 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-white">
         {/* Top Header & Search Input */}

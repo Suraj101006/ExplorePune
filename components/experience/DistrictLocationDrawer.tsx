@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Route, Navigation, ExternalLink, ArrowRight, Eye, Plus, Check } from 'lucide-react';
+import { MapPin, Route, Navigation, ExternalLink, Eye, Plus, Check, Target, Compass } from 'lucide-react';
 import { ExperiencePlace } from '@/lib/experience/types';
+import { getAllPlaces } from '@/lib/experience/selectors';
 import {
   formatCoordinatesDD,
   formatCoordinatesDMS,
@@ -22,6 +23,7 @@ interface DistrictLocationDrawerProps {
   onShowRoute?: (place: ExperiencePlace) => void;
   onClearRoute?: () => void;
   onAddToTrail?: (place: ExperiencePlace) => void;
+  onSetWaypoint?: (place: ExperiencePlace) => void;
   isPlaceInTrail?: boolean;
   isRouteActive?: boolean;
   userCoords?: { latitude: number; longitude: number } | null;
@@ -36,6 +38,7 @@ export default function DistrictLocationDrawer({
   onShowRoute,
   onClearRoute,
   onAddToTrail,
+  onSetWaypoint,
   isPlaceInTrail = false,
   isRouteActive = false,
   userCoords,
@@ -43,6 +46,22 @@ export default function DistrictLocationDrawer({
 }: DistrictLocationDrawerProps) {
   const isMr = lang === 'mr';
   const [copied, setCopied] = useState<boolean>(false);
+
+  // Find 3 nearest destinations for seamless open-world exploration (Hook declared before conditional return)
+  const nearbyPlaces = React.useMemo(() => {
+    if (!place) return [];
+    const pLat = place.latitude;
+    const pLng = place.longitude;
+    const all = getAllPlaces();
+    return all
+      .filter((p) => p.slug !== place.slug)
+      .map((p) => ({
+        place: p,
+        distanceKm: calculateDistanceKm(pLat, pLng, p.latitude, p.longitude),
+      }))
+      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .slice(0, 3);
+  }, [place]);
 
   // Close on Escape key
   useEffect(() => {
@@ -225,10 +244,86 @@ export default function DistrictLocationDrawer({
             <p className="leading-snug">{address}</p>
           </div>
         )}
+
+        {/* Nearby Discoveries (Open-World Continuous Exploration) */}
+        {nearbyPlaces.length > 0 && (
+          <div className="pt-2.5 border-t border-white/10">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1">
+                <Compass size={11} />
+                <span>{isMr ? 'जवळपासची शोधस्थळे' : 'NEARBY DISCOVERIES'}</span>
+              </span>
+              <span className="text-[9px] font-mono text-white/40">Within Pune District</span>
+            </div>
+            <div className="grid grid-cols-1 gap-1.5">
+              {nearbyPlaces.map(({ place: np, distanceKm }) => (
+                <div
+                  key={np.slug}
+                  className="flex items-center justify-between p-2 rounded-xl bg-white/[0.03] border border-white/10 hover:border-emerald-500/40 transition-colors"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="w-8 h-8 rounded-lg overflow-hidden relative flex-shrink-0 bg-zinc-800">
+                      <Image
+                        src={np.image_url || '/images/hero-shaniwar-wada.webp'}
+                        alt={np.name}
+                        fill
+                        sizes="32px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-white truncate">
+                        {isMr ? np.name_mr || np.name : np.name}
+                      </p>
+                      <p className="text-[10px] font-mono text-emerald-400">
+                        {distanceKm} km away
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => onFocusSatellite(np)}
+                      className="px-2 py-1 rounded bg-white/10 hover:bg-emerald-500 hover:text-black text-white text-[10px] font-mono font-bold transition-all"
+                      title="Fly to this destination"
+                    >
+                      FLY
+                    </button>
+                    {onSetWaypoint && (
+                      <button
+                        type="button"
+                        onClick={() => onSetWaypoint(np)}
+                        className="px-2 py-1 rounded bg-cyan-500/20 hover:bg-cyan-400 hover:text-black text-cyan-300 text-[10px] font-mono font-bold transition-all"
+                        title="Set as GPS Waypoint"
+                      >
+                        GPS
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Action Buttons Footer */}
       <div className="p-4 border-t border-white/10 bg-zinc-950 flex flex-col gap-2 flex-shrink-0">
+        {/* Set GPS Waypoint Action */}
+        {onSetWaypoint && (
+          <button
+            type="button"
+            onClick={() => {
+              onSetWaypoint(place);
+              ambientAudio.playUiBlip(940, 0.06);
+            }}
+            className="w-full py-2.5 px-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-[1.01] active:scale-98"
+          >
+            <Target size={14} />
+            <span>{isMr ? 'GPS वेपॉईंट निश्चित करा' : 'SET AS GPS WAYPOINT'}</span>
+          </button>
+        )}
+
         <div className="grid grid-cols-3 gap-2">
           {/* 1. Show on Map */}
           <button

@@ -28,6 +28,7 @@ import {
   MapStyleKey,
 } from '@/lib/experience/puneDistrictData';
 import { MapLayerState, TimeOfDayKey } from './DistrictMapControls';
+import { CameraModeKey } from './GameHUD';
 import { ambientAudio } from '@/lib/experience/ambientAudio';
 
 export interface DistrictMapHandle {
@@ -50,6 +51,14 @@ export interface DistrictMapHandle {
   orbitAroundTarget?: (lat: number, lng: number) => void;
   toggleAmbientDrift?: () => boolean;
   toggleFullscreen?: () => void;
+  rotateLeft?: () => void;
+  rotateRight?: () => void;
+  pitchUp?: () => void;
+  pitchDown?: () => void;
+  resetNorth?: () => void;
+  setGtaWaypointRoute?: (start: [number, number], end: [number, number]) => void;
+  clearGtaWaypointRoute?: () => void;
+  setCameraMode?: (mode: CameraModeKey, targetPlace?: ExperiencePlace | null) => void;
 }
 
 interface LivePuneDistrictMapProps {
@@ -63,6 +72,13 @@ interface LivePuneDistrictMapProps {
   onPlaceSelect: (place: ExperiencePlace) => void;
   onCursorMove: (lat: number, lng: number) => void;
   onCameraChange: (pitch: number, bearing: number) => void;
+  onCameraUpdate?: (state: {
+    centerLat: number;
+    centerLng: number;
+    bearing: number;
+    pitch: number;
+    zoom: number;
+  }) => void;
   is3d?: boolean;
   lang?: string;
 }
@@ -74,9 +90,9 @@ const PUNE_DISTRICT_BOUNDS: [[number, number], [number, number]] = [
 ];
 
 const DEFAULT_CENTER: [number, number] = [73.8567, 18.5204];
-const DEFAULT_ZOOM = 10.2;
-const DEFAULT_PITCH = 45;
-const DEFAULT_BEARING = -15;
+const DEFAULT_ZOOM = 10.0;
+const DEFAULT_PITCH = 60;
+const DEFAULT_BEARING = -20;
 
 // Flagship destination slugs that get prominent badge labels at overview zoom
 const FLAGSHIP_SLUGS = [
@@ -193,6 +209,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       onPlaceSelect,
       onCursorMove,
       onCameraChange,
+      onCameraUpdate,
       is3d = true,
       lang = 'en',
     },
@@ -248,9 +265,26 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         attributionControl: false,
       });
 
+      // Camera state emitter for GTA HUD & Minimap
+      const reportCamera = () => {
+        const pitch = map.getPitch();
+        const bearing = map.getBearing();
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        onCameraChange(pitch, bearing);
+        onCameraUpdate?.({
+          centerLat: center.lat,
+          centerLng: center.lng,
+          bearing,
+          pitch,
+          zoom,
+        });
+      };
+
       map.on('load', () => {
         setIsMapLoaded(true);
         setupAllGeographicLayers(map);
+        reportCamera();
       });
 
       // Cursor movement telemetry
@@ -259,12 +293,10 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         handleUserInteraction();
       });
 
-      // Camera changes telemetry
-      const reportCamera = () => {
-        onCameraChange(map.getPitch(), map.getBearing());
-      };
       map.on('pitch', reportCamera);
       map.on('rotate', reportCamera);
+      map.on('move', reportCamera);
+      map.on('zoom', reportCamera);
 
       // Handle user interaction to pause ambient drift
       const handleUserInteraction = () => {
@@ -286,9 +318,90 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       map.on('rotatestart', handleUserInteraction);
       map.on('pitchstart', handleUserInteraction);
 
+      // GTA Game-Style Keyboard Camera Navigation
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const target = e.target as HTMLElement | null;
+        if (
+          target &&
+          (target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.isContentEditable)
+        ) {
+          return;
+        }
+
+        const m = mapRef.current;
+        if (!m) return;
+
+        const PAN_STEP = 55;
+        const ROTATE_STEP = 6;
+        const PITCH_STEP = 6;
+
+        switch (e.code) {
+          case 'KeyW':
+          case 'ArrowUp':
+            e.preventDefault();
+            m.panBy([0, -PAN_STEP], { duration: 90 });
+            handleUserInteraction();
+            break;
+          case 'KeyS':
+          case 'ArrowDown':
+            e.preventDefault();
+            m.panBy([0, PAN_STEP], { duration: 90 });
+            handleUserInteraction();
+            break;
+          case 'KeyA':
+          case 'ArrowLeft':
+            e.preventDefault();
+            m.panBy([-PAN_STEP, 0], { duration: 90 });
+            handleUserInteraction();
+            break;
+          case 'KeyD':
+          case 'ArrowRight':
+            e.preventDefault();
+            m.panBy([PAN_STEP, 0], { duration: 90 });
+            handleUserInteraction();
+            break;
+          case 'KeyQ':
+            e.preventDefault();
+            m.setBearing(m.getBearing() - ROTATE_STEP);
+            handleUserInteraction();
+            break;
+          case 'KeyE':
+            e.preventDefault();
+            m.setBearing(m.getBearing() + ROTATE_STEP);
+            handleUserInteraction();
+            break;
+          case 'KeyR':
+            e.preventDefault();
+            m.setPitch(Math.min(75, m.getPitch() + PITCH_STEP));
+            handleUserInteraction();
+            break;
+          case 'KeyF':
+            e.preventDefault();
+            m.setPitch(Math.max(0, m.getPitch() - PITCH_STEP));
+            handleUserInteraction();
+            break;
+          case 'Space':
+            e.preventDefault();
+            m.easeTo({
+              center: DEFAULT_CENTER,
+              zoom: DEFAULT_ZOOM,
+              pitch: DEFAULT_PITCH,
+              bearing: DEFAULT_BEARING,
+              duration: 800,
+            });
+            break;
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+
       mapRef.current = map;
 
       return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+
         if (routeAnimRef.current) cancelAnimationFrame(routeAnimRef.current);
         if (trailAnimRef.current) cancelAnimationFrame(trailAnimRef.current);
         if (customRouteAnimRef.current) cancelAnimationFrame(customRouteAnimRef.current);
@@ -350,8 +463,78 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     }, [currentStyle]);
 
+    // Atmospheric Horizon & Sky Lighting based on time of day
+    const updateAtmosphericSky = (map: maplibregl.Map, tod: TimeOfDayKey) => {
+      try {
+        if (tod === 'morning') {
+          map.setSky({
+            'sky-color': '#7c3aed',
+            'horizon-color': '#f472b6',
+            'fog-color': '#a855f7',
+            'fog-ground-blend': 0.45,
+            'atmosphere-blend': 0.8,
+          });
+        } else if (tod === 'golden') {
+          map.setSky({
+            'sky-color': '#ea580c',
+            'horizon-color': '#fed7aa',
+            'fog-color': '#9a3412',
+            'fog-ground-blend': 0.45,
+            'atmosphere-blend': 0.85,
+          });
+        } else if (tod === 'night') {
+          map.setSky({
+            'sky-color': '#020617',
+            'horizon-color': '#0f172a',
+            'fog-color': '#1e293b',
+            'fog-ground-blend': 0.55,
+            'atmosphere-blend': 0.9,
+          });
+        } else {
+          // afternoon / daylight
+          map.setSky({
+            'sky-color': '#0284c7',
+            'horizon-color': '#bae6fd',
+            'fog-color': '#64748b',
+            'fog-ground-blend': 0.35,
+            'atmosphere-blend': 0.75,
+          });
+        }
+      } catch (e) {
+        console.warn('[MapLibre] setSky notice:', e);
+      }
+    };
+
+    // React to timeOfDay prop changes dynamically
+    useEffect(() => {
+      const map = mapRef.current;
+      if (!map || !isMapLoaded) return;
+      updateAtmosphericSky(map, timeOfDay);
+    }, [timeOfDay, isMapLoaded]);
+
     // 3. Setup All Geographic Vector & Boundaries
     const setupAllGeographicLayers = (map: maplibregl.Map) => {
+      // 0. Real 3D DEM Terrain Elevation (AWS Open Data Terrarium Tiles)
+      if (!map.getSource('terrarium-dem')) {
+        map.addSource('terrarium-dem', {
+          type: 'raster-dem',
+          tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+          encoding: 'terrarium',
+          tileSize: 256,
+          maxzoom: 15,
+        });
+      }
+
+      if (is3d) {
+        try {
+          map.setTerrain({ source: 'terrarium-dem', exaggeration: 1.45 });
+        } catch (e) {
+          console.warn('[MapLibre] 3D Terrain notice:', e);
+        }
+      }
+
+      updateAtmosphericSky(map, timeOfDay);
+
       // A. District Perimeter
       if (!map.getSource('pune-district-source')) {
         map.addSource('pune-district-source', {
@@ -587,6 +770,72 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
+      // H. GTA GPS Glowing Waypoint Route (Dual-Layered Neon Trail)
+      if (!map.getSource('gta-waypoint-source')) {
+        map.addSource('gta-waypoint-source', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        });
+
+        // Outer Neon Glow Trail
+        map.addLayer({
+          id: 'gta-waypoint-glow',
+          type: 'line',
+          source: 'gta-waypoint-source',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#06b6d4',
+            'line-width': 10,
+            'line-opacity': 0.5,
+            'line-blur': 4,
+          },
+        });
+
+        // Inner Laser Core
+        map.addLayer({
+          id: 'gta-waypoint-core',
+          type: 'line',
+          source: 'gta-waypoint-source',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#ffffff',
+            'line-width': 3.5,
+            'line-opacity': 0.95,
+          },
+        });
+      }
+
+      // 3D Building Extrusions for Open-World Mode (if building data is present)
+      try {
+        const style = map.getStyle();
+        const hasBuildingLayer = style.layers?.some((l) => (l as unknown as { 'source-layer'?: string })['source-layer'] === 'building');
+        if (hasBuildingLayer && !map.getLayer('3d-buildings-extrusion')) {
+          map.addLayer({
+            id: '3d-buildings-extrusion',
+            source: 'openmaptiles',
+            'source-layer': 'building',
+            filter: ['==', 'extrude', 'true'],
+            type: 'fill-extrusion',
+            minzoom: 13,
+            paint: {
+              'fill-extrusion-color': '#1e293b',
+              'fill-extrusion-height': ['coalesce', ['get', 'render_height'], ['get', 'height'], 15],
+              'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], ['get', 'min_height'], 0],
+              'fill-extrusion-opacity': 0.85,
+            },
+          });
+        }
+      } catch {}
+
       renderPlaceMarkers();
     };
 
@@ -639,12 +888,16 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       setIsTilted(is3d);
       if (is3d) {
         try {
-          map.easeTo({ pitch: 55, bearing: -15, duration: 800 });
+          if (map.getSource('terrarium-dem')) {
+            map.setTerrain({ source: 'terrarium-dem', exaggeration: 1.45 });
+          }
+          map.easeTo({ pitch: 60, bearing: -20, duration: 800 });
         } catch (e) {
           console.warn('Set pitch notice:', e);
         }
       } else {
         try {
+          map.setTerrain(null);
           map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
         } catch (e) {
           console.warn('Clear pitch notice:', e);
@@ -727,9 +980,10 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           </div>
 
           <!-- Pin Head Badge (Flagships always, others on hover or zoom in) -->
-          <div class="marker-title-badge ${isFlagship ? 'flex' : 'hidden group-hover:flex'} items-center gap-1 px-2.5 py-1 rounded-full bg-black/90 text-white border border-white/20 text-[10px] font-mono whitespace-nowrap shadow-2xl mb-1 transition-transform group-hover:scale-105">
+          <div class="marker-title-badge ${isFlagship ? 'flex' : 'hidden group-hover:flex'} items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/90 text-white border border-white/20 text-[10px] font-mono whitespace-nowrap shadow-2xl mb-1 transition-transform group-hover:scale-105">
             <span>${icon}</span>
             <span class="font-bold text-white text-[10px]">${placeName}</span>
+            <span class="text-[9px] text-amber-300 font-bold ml-1">⛰️~${elevation}m</span>
           </div>
 
           <!-- Pulsing Beacon Pin Point -->
@@ -1215,6 +1469,183 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           document.exitFullscreen().catch(() => {});
         } else {
           target.requestFullscreen().catch(() => {});
+        }
+      },
+
+      // GTA On-Screen & Keyboard Camera Handlers
+      rotateLeft: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        m.easeTo({ bearing: m.getBearing() - 25, duration: 250 });
+      },
+
+      rotateRight: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        m.easeTo({ bearing: m.getBearing() + 25, duration: 250 });
+      },
+
+      pitchUp: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        m.easeTo({ pitch: Math.min(75, m.getPitch() + 15), duration: 250 });
+      },
+
+      pitchDown: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        m.easeTo({ pitch: Math.max(0, m.getPitch() - 15), duration: 250 });
+      },
+
+      resetNorth: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        m.easeTo({ bearing: 0, duration: 350 });
+      },
+
+      // Set Dual-Layered Glowing GPS Waypoint Navigation Line
+      setGtaWaypointRoute: (start: [number, number], end: [number, number]) => {
+        const m = mapRef.current;
+        if (!m) return;
+        const curved = generateCurvedPath(start, end, 40);
+        const src = m.getSource('gta-waypoint-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'LineString',
+                  coordinates: curved,
+                },
+                properties: {},
+              },
+            ],
+          });
+        }
+      },
+
+      clearGtaWaypointRoute: () => {
+        const m = mapRef.current;
+        if (!m) return;
+        const src = m.getSource('gta-waypoint-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({
+            type: 'FeatureCollection',
+            features: [],
+          });
+        }
+      },
+
+      // GTA 5-Mode Camera Director
+      setCameraMode: (mode: CameraModeKey, targetPlace?: ExperiencePlace | null) => {
+        const m = mapRef.current;
+        if (!m) return;
+
+        // Cancel any active orbit loop if leaving cinematic mode
+        if (mode !== 'cinematic' && orbitAnimRef.current) {
+          cancelAnimationFrame(orbitAnimRef.current);
+          orbitAnimRef.current = null;
+        }
+
+        switch (mode) {
+          case 'world':
+            // Wide aerial overview of entire Pune District
+            m.flyTo({
+              center: DEFAULT_CENTER,
+              zoom: 9.3,
+              pitch: 42,
+              bearing: -15,
+              duration: 1600,
+              essential: true,
+            });
+            break;
+
+          case 'explorer':
+            // Angled 3D view for open-world exploration
+            m.flyTo({
+              zoom: 12.4,
+              pitch: 62,
+              bearing: -25,
+              duration: 1200,
+              essential: true,
+            });
+            break;
+
+          case 'destination':
+            // Close camera focused on landmark
+            if (targetPlace) {
+              m.flyTo({
+                center: [targetPlace.longitude, targetPlace.latitude],
+                zoom: 15.6,
+                pitch: 66,
+                bearing: -35,
+                duration: 1600,
+                essential: true,
+              });
+            } else if (selectedPlace) {
+              m.flyTo({
+                center: [selectedPlace.longitude, selectedPlace.latitude],
+                zoom: 15.6,
+                pitch: 66,
+                bearing: -35,
+                duration: 1600,
+                essential: true,
+              });
+            } else {
+              m.flyTo({
+                zoom: 14.5,
+                pitch: 65,
+                bearing: -30,
+                duration: 1200,
+              });
+            }
+            break;
+
+          case 'cinematic':
+            // Continuous 360° circular orbit flyover
+            const lat = targetPlace?.latitude || selectedPlace?.latitude || m.getCenter().lat;
+            const lng = targetPlace?.longitude || selectedPlace?.longitude || m.getCenter().lng;
+            m.flyTo({
+              center: [lng, lat],
+              zoom: 15.4,
+              pitch: 64,
+              duration: 1400,
+            });
+            setTimeout(() => {
+              let curBearing = m.getBearing();
+              const loop = () => {
+                if (!mapRef.current) return;
+                curBearing = (curBearing + 0.18) % 360;
+                mapRef.current.setBearing(curBearing);
+                orbitAnimRef.current = requestAnimationFrame(loop);
+              };
+              orbitAnimRef.current = requestAnimationFrame(loop);
+            }, 1400);
+            break;
+
+          case 'navigation':
+            // Route-following camera angled towards destination
+            if (targetPlace) {
+              const dLat = targetPlace.latitude - m.getCenter().lat;
+              const dLng = targetPlace.longitude - m.getCenter().lng;
+              const angleRad = Math.atan2(dLng, dLat);
+              const bearingDeg = (angleRad * 180) / Math.PI;
+              m.flyTo({
+                zoom: 14.2,
+                pitch: 68,
+                bearing: bearingDeg,
+                duration: 1500,
+                essential: true,
+              });
+            } else {
+              m.flyTo({
+                pitch: 68,
+                duration: 800,
+              });
+            }
+            break;
         }
       },
 
