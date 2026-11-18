@@ -31,6 +31,7 @@ export interface DistrictMapHandle {
   setStoryTrailLine: (coords: [number, number][]) => void;
   clearStoryTrailLine: () => void;
   playIntroFlyIn: () => void;
+  orbitAroundTarget?: (lat: number, lng: number) => void;
 }
 
 interface LivePuneDistrictMapProps {
@@ -43,6 +44,7 @@ interface LivePuneDistrictMapProps {
   onPlaceSelect: (place: ExperiencePlace) => void;
   onCursorMove: (lat: number, lng: number) => void;
   onCameraChange: (pitch: number, bearing: number) => void;
+  is3d?: boolean;
   lang?: string;
 }
 
@@ -56,6 +58,9 @@ const DEFAULT_CENTER: [number, number] = [73.8567, 18.5204];
 const DEFAULT_ZOOM = 10.2;
 const DEFAULT_PITCH = 45;
 const DEFAULT_BEARING = -15;
+
+// AWS Open Data Terrarium DEM Tiles (Free, No Auth Key required)
+const AWS_TERRARIUM_DEM_TILES = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
 
 // Real Satellite Hybrid Style
 const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
@@ -119,6 +124,32 @@ const TOPO_TERRAIN_STYLE: maplibregl.StyleSpecification = {
 // Dark Tactical Style
 const DARK_TACTICAL_STYLE = 'https://tiles.openfreemap.org/styles/dark';
 
+/**
+ * Generates an interpolated curved path between two points that mimics natural highway / valley corridors
+ */
+function generateCurvedPath(
+  start: [number, number],
+  end: [number, number],
+  steps: number = 36
+): [number, number][] {
+  const points: [number, number][] = [];
+  const dx = end[0] - start[0];
+  const dy = end[1] - start[1];
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const perpX = -dy / (dist || 1);
+  const perpY = dx / (dist || 1);
+  const bend = Math.min(0.035, dist * 0.14) * (start[0] > end[0] ? 1 : -1);
+
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const arc = Math.sin(t * Math.PI) * bend;
+    const lng = start[0] + dx * t + perpX * arc;
+    const lat = start[1] + dy * t + perpY * arc;
+    points.push([Number(lng.toFixed(5)), Number(lat.toFixed(5))]);
+  }
+  return points;
+}
+
 const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapProps>(
   function LivePuneDistrictMap(
     {
@@ -131,6 +162,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       onPlaceSelect,
       onCursorMove,
       onCameraChange,
+      is3d = true,
       lang = 'en',
     },
     ref
@@ -139,9 +171,15 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     const mapRef = useRef<maplibregl.Map | null>(null);
     const markersRef = useRef<maplibregl.Marker[]>([]);
     const activeMarkerRef = useRef<maplibregl.Marker | null>(null);
+    const travelerMarkerRef = useRef<maplibregl.Marker | null>(null);
+
+    // Animation frames refs
+    const routeAnimRef = useRef<number | null>(null);
+    const trailAnimRef = useRef<number | null>(null);
+    const orbitAnimRef = useRef<number | null>(null);
 
     const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
-    const [isTilted, setIsTilted] = useState<boolean>(true);
+    const [isTilted, setIsTilted] = useState<boolean>(is3d);
 
     // 1. Initialize Map
     useEffect(() => {
@@ -184,9 +222,15 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       mapRef.current = map;
 
       return () => {
+        if (routeAnimRef.current) cancelAnimationFrame(routeAnimRef.current);
+        if (trailAnimRef.current) cancelAnimationFrame(trailAnimRef.current);
+        if (orbitAnimRef.current) cancelAnimationFrame(orbitAnimRef.current);
+
         markersRef.current.forEach((m) => m.remove());
         markersRef.current = [];
         if (activeMarkerRef.current) activeMarkerRef.current.remove();
+        if (travelerMarkerRef.current) travelerMarkerRef.current.remove();
+
         map.remove();
         mapRef.current = null;
       };
@@ -211,9 +255,44 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     }, [currentStyle]);
 
-    // 3. Setup All Geographic Vector Layers (District, 15 Talukas, Rivers, Highways, Routes)
+    // 3. Setup All Geographic Vector & Terrain Layers
     const setupAllGeographicLayers = (map: maplibregl.Map) => {
-      // A. District Perimeter
+      // A. Real 3D Terrain DEM & Hillshading
+      if (!map.getSource('terrain-dem')) {
+        try {
+          map.addSource('terrain-dem', {
+            type: 'raster-dem',
+            tiles: [AWS_TERRARIUM_DEM_TILES],
+            encoding: 'terrarium',
+            tileSize: 256,
+            maxzoom: 15,
+          });
+
+          // Add hillshade layer for Sahyadri slope relief
+          if (!map.getLayer('terrain-hillshade')) {
+            map.addLayer({
+              id: 'terrain-hillshade',
+              type: 'hillshade',
+              source: 'terrain-dem',
+              layout: { visibility: 'visible' },
+              paint: {
+                'hillshade-shadow-color': '#090d16',
+                'hillshade-highlight-color': '#ffffff',
+                'hillshade-accent-color': '#0284c7',
+                'hillshade-exaggeration': 0.7,
+              },
+            });
+          }
+
+          if (is3d) {
+            map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
+          }
+        } catch (e) {
+          console.warn('3D Terrain source notice:', e);
+        }
+      }
+
+      // B. District Perimeter
       if (!map.getSource('pune-district-source')) {
         map.addSource('pune-district-source', {
           type: 'geojson',
@@ -249,7 +328,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // B. 15 Taluka Boundaries
+      // C. 15 Taluka Boundaries
       if (!map.getSource('pune-talukas-source')) {
         map.addSource('pune-talukas-source', {
           type: 'geojson',
@@ -283,9 +362,33 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'line-dasharray': [3, 2],
           },
         });
+
+        // Highlight selected taluka boundary
+        map.addLayer({
+          id: 'pune-taluka-highlight-fill',
+          type: 'fill',
+          source: 'pune-talukas-source',
+          filter: ['==', 'id', ''],
+          paint: {
+            'fill-color': '#f59e0b',
+            'fill-opacity': 0.18,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-taluka-highlight-stroke',
+          type: 'line',
+          source: 'pune-talukas-source',
+          filter: ['==', 'id', ''],
+          paint: {
+            'line-color': '#f59e0b',
+            'line-width': 3.2,
+            'line-opacity': 0.95,
+          },
+        });
       }
 
-      // C. Rivers & Reservoirs
+      // D. Rivers & Reservoirs
       if (!map.getSource('pune-rivers-source')) {
         map.addSource('pune-rivers-source', {
           type: 'geojson',
@@ -322,7 +425,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // D. Major Highways
+      // E. Major Highways
       if (!map.getSource('pune-highways-source')) {
         map.addSource('pune-highways-source', {
           type: 'geojson',
@@ -345,7 +448,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // E. Driving Route Line Source
+      // F. Driving Route Line Source
       if (!map.getSource('driving-route-source')) {
         map.addSource('driving-route-source', {
           type: 'geojson',
@@ -365,13 +468,13 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'line-color': '#06b6d4',
-            'line-width': 4,
-            'line-opacity': 0.9,
+            'line-width': 4.5,
+            'line-opacity': 0.95,
           },
         });
       }
 
-      // F. Story Trail Connecting Line Source
+      // G. Story Trail Line Source
       if (!map.getSource('story-trail-source')) {
         map.addSource('story-trail-source', {
           type: 'geojson',
@@ -391,8 +494,8 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           paint: {
             'line-color': '#ef4444',
-            'line-width': 3.5,
-            'line-opacity': 0.85,
+            'line-width': 4,
+            'line-opacity': 0.9,
             'line-dasharray': [3, 2],
           },
         });
@@ -427,7 +530,47 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     }, [layerState, isMapLoaded]);
 
-    // 5. Render All 106 Location Markers
+    // 5. Update Taluka Highlight Filter
+    useEffect(() => {
+      const map = mapRef.current;
+      if (!map || !isMapLoaded) return;
+
+      const filter: any =
+        selectedTaluka && selectedTaluka !== 'all' ? ['==', 'id', selectedTaluka] : ['==', 'id', ''];
+      if (map.getLayer('pune-taluka-highlight-fill')) {
+        map.setFilter('pune-taluka-highlight-fill', filter);
+      }
+      if (map.getLayer('pune-taluka-highlight-stroke')) {
+        map.setFilter('pune-taluka-highlight-stroke', filter);
+      }
+    }, [selectedTaluka, isMapLoaded]);
+
+    // 6. Sync 3D Terrain & Camera Pitch when is3d changes
+    useEffect(() => {
+      const map = mapRef.current;
+      if (!map || !isMapLoaded) return;
+
+      setIsTilted(is3d);
+      if (is3d) {
+        try {
+          if (map.getSource('terrain-dem')) {
+            map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
+          }
+          map.easeTo({ pitch: 55, bearing: -15, duration: 800 });
+        } catch (e) {
+          console.warn('Set terrain notice:', e);
+        }
+      } else {
+        try {
+          map.setTerrain(null);
+          map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
+        } catch (e) {
+          console.warn('Clear terrain notice:', e);
+        }
+      }
+    }, [is3d, isMapLoaded]);
+
+    // 7. Render All 106 Location Markers
     const renderPlaceMarkers = () => {
       const map = mapRef.current;
       if (!map) return;
@@ -454,7 +597,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         el.className = 'group relative flex flex-col items-center cursor-pointer';
 
         // Category color
-        let color = '#10b981'; // default emerald
+        let color = '#10b981';
         let icon = '📍';
         if (place.category_slug === 'forts') { color = '#ef4444'; icon = '🏰'; }
         if (place.category_slug === 'heritage') { color = '#f59e0b'; icon = '🏛️'; }
@@ -503,7 +646,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       }
     }, [selectedCategory, selectedTaluka, searchQuery, isMapLoaded, lang]);
 
-    // 6. Active Selected Place Indicator
+    // 8. Active Selected Place Indicator
     useEffect(() => {
       const map = mapRef.current;
       if (!map || !selectedPlace) {
@@ -541,7 +684,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       activeMarkerRef.current = marker;
     }, [selectedPlace, lang]);
 
-    // 7. Imperative Handle Methods
+    // 9. Imperative Handle Methods
     useImperativeHandle(ref, () => ({
       flyToPlace: (place: ExperiencePlace) => {
         const map = mapRef.current;
@@ -549,7 +692,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         map.flyTo({
           center: [place.longitude, place.latitude],
           zoom: 15.2,
-          pitch: 52,
+          pitch: isTilted ? 54 : 0,
           bearing: -15,
           duration: 1800,
           essential: true,
@@ -560,7 +703,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         mapRef.current?.flyTo({
           center: [lng, lat],
           zoom,
-          pitch,
+          pitch: isTilted ? pitch : 0,
           bearing,
           duration: 2000,
           essential: true,
@@ -571,12 +714,12 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         const map = mapRef.current;
         if (!map) return;
         if (talukaId === 'all') {
-          map.fitBounds(PUNE_DISTRICT_BOUNDS, { padding: 60, duration: 1600, pitch: DEFAULT_PITCH });
+          map.fitBounds(PUNE_DISTRICT_BOUNDS, { padding: 60, duration: 1600, pitch: isTilted ? DEFAULT_PITCH : 0 });
           return;
         }
         const taluka = PUNE_TALUKAS.find((t) => t.id === talukaId);
         if (taluka) {
-          map.fitBounds(taluka.bounds, { padding: 50, duration: 1800, pitch: 48 });
+          map.fitBounds(taluka.bounds, { padding: 50, duration: 1800, pitch: isTilted ? 48 : 0 });
         }
       },
 
@@ -586,7 +729,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         map.fitBounds(PUNE_DISTRICT_BOUNDS, {
           padding: 60,
           duration: 1600,
-          pitch: DEFAULT_PITCH,
+          pitch: isTilted ? DEFAULT_PITCH : 0,
         });
       },
 
@@ -598,10 +741,19 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         if (!map) return;
         const nextTilt = !isTilted;
         setIsTilted(nextTilt);
-        map.easeTo({
-          pitch: nextTilt ? 55 : 0,
-          duration: 800,
-        });
+        if (nextTilt) {
+          try {
+            if (map.getSource('terrain-dem')) {
+              map.setTerrain({ source: 'terrain-dem', exaggeration: 1.6 });
+            }
+          } catch (e) {}
+          map.easeTo({ pitch: 55, bearing: -15, duration: 800 });
+        } else {
+          try {
+            map.setTerrain(null);
+          } catch (e) {}
+          map.easeTo({ pitch: 0, bearing: 0, duration: 800 });
+        }
       },
 
       setStyle: (style: MapStyleKey) => {
@@ -620,7 +772,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             mapRef.current?.flyTo({
               center: [longitude, latitude],
               zoom: 14.5,
-              pitch: 50,
+              pitch: isTilted ? 50 : 0,
               duration: 1600,
             });
 
@@ -639,44 +791,87 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         );
       },
 
-      // Set Driving Route Line from Pune Station [73.8744, 18.5284] to Destination
+      // Progressive Animated Driving Route Line Drawing with Moving Traveler Beacon
       setDrivingRoute: (start: [number, number], end: [number, number]) => {
         const map = mapRef.current;
         if (!map) return;
 
-        // Generate interpolated corridor line
-        const midLng = (start[0] + end[0]) / 2 + (start[1] > end[1] ? 0.02 : -0.02);
-        const midLat = (start[1] + end[1]) / 2;
-        const coordinates = [
-          start,
-          [midLng, midLat],
-          end,
-        ];
-
-        const src = map.getSource('driving-route-source') as maplibregl.GeoJSONSource;
-        if (src) {
-          src.setData({
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'LineString',
-                  coordinates,
-                },
-                properties: {},
-              },
-            ],
-          });
+        // Cancel prior route animations
+        if (routeAnimRef.current) {
+          cancelAnimationFrame(routeAnimRef.current);
+          routeAnimRef.current = null;
+        }
+        if (travelerMarkerRef.current) {
+          travelerMarkerRef.current.remove();
+          travelerMarkerRef.current = null;
         }
 
-        // Fit map bounds to encompass the route
+        const fullCoords = generateCurvedPath(start, end, 36);
+
+        // Create glowing traveler beacon
+        const travelerEl = document.createElement('div');
+        travelerEl.className = 'relative flex items-center justify-center pointer-events-none z-30';
+        travelerEl.innerHTML = `
+          <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-cyan-400 opacity-75"></span>
+          <span class="relative inline-flex items-center justify-center rounded-full h-5 w-5 bg-cyan-500 border-2 border-white shadow-xl text-[10px] text-white">
+            🚗
+          </span>
+        `;
+
+        const marker = new maplibregl.Marker({ element: travelerEl, anchor: 'center' })
+          .setLngLat(start)
+          .addTo(map);
+        travelerMarkerRef.current = marker;
+
+        // Fit map bounds
         const bounds = new maplibregl.LngLatBounds(start, end);
-        map.fitBounds(bounds, { padding: 90, duration: 1600, pitch: 48 });
+        map.fitBounds(bounds, { padding: 90, duration: 1600, pitch: isTilted ? 48 : 0 });
+
+        let step = 1;
+        const animate = () => {
+          if (!mapRef.current) return;
+          const currentSlice = fullCoords.slice(0, step);
+          const src = mapRef.current.getSource('driving-route-source') as maplibregl.GeoJSONSource;
+          if (src) {
+            src.setData({
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: currentSlice,
+                  },
+                  properties: {},
+                },
+              ],
+            });
+          }
+
+          const tip = fullCoords[step - 1];
+          if (tip && travelerMarkerRef.current) {
+            travelerMarkerRef.current.setLngLat(tip);
+          }
+
+          if (step < fullCoords.length) {
+            step += 1;
+            routeAnimRef.current = requestAnimationFrame(animate);
+          }
+        };
+
+        routeAnimRef.current = requestAnimationFrame(animate);
       },
 
       clearDrivingRoute: () => {
         const map = mapRef.current;
+        if (routeAnimRef.current) {
+          cancelAnimationFrame(routeAnimRef.current);
+          routeAnimRef.current = null;
+        }
+        if (travelerMarkerRef.current) {
+          travelerMarkerRef.current.remove();
+          travelerMarkerRef.current = null;
+        }
         if (!map) return;
         const src = map.getSource('driving-route-source') as maplibregl.GeoJSONSource;
         if (src) {
@@ -684,42 +879,104 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         }
       },
 
-      // Set Story Trail Route Line
+      // Progressive Animated Story Trail Drawing
       setStoryTrailLine: (coords: [number, number][]) => {
         const map = mapRef.current;
         if (!map || coords.length === 0) return;
 
-        const src = map.getSource('story-trail-source') as maplibregl.GeoJSONSource;
-        if (src) {
-          src.setData({
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'LineString',
-                  coordinates: coords,
-                },
-                properties: {},
-              },
-            ],
-          });
+        if (trailAnimRef.current) {
+          cancelAnimationFrame(trailAnimRef.current);
+          trailAnimRef.current = null;
         }
 
-        if (coords.length > 1) {
-          const bounds = new maplibregl.LngLatBounds(coords[0], coords[1]);
-          coords.forEach((pt) => bounds.extend(pt));
-          map.fitBounds(bounds, { padding: 80, duration: 2000, pitch: 50 });
+        const interpolated: [number, number][] = [];
+        for (let i = 0; i < coords.length - 1; i++) {
+          const seg = generateCurvedPath(coords[i], coords[i + 1], 16);
+          interpolated.push(...seg);
         }
+        if (interpolated.length === 0) interpolated.push(...coords);
+
+        const bounds = new maplibregl.LngLatBounds(coords[0], coords[0]);
+        coords.forEach((pt) => bounds.extend(pt));
+        map.fitBounds(bounds, { padding: 80, duration: 1800, pitch: isTilted ? 50 : 0 });
+
+        let step = 1;
+        const animateTrail = () => {
+          if (!mapRef.current) return;
+          const currentSlice = interpolated.slice(0, step);
+          const src = mapRef.current.getSource('story-trail-source') as maplibregl.GeoJSONSource;
+          if (src) {
+            src.setData({
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: currentSlice,
+                  },
+                  properties: {},
+                },
+              ],
+            });
+          }
+
+          if (step < interpolated.length) {
+            step += 1;
+            trailAnimRef.current = requestAnimationFrame(animateTrail);
+          }
+        };
+
+        trailAnimRef.current = requestAnimationFrame(animateTrail);
       },
 
       clearStoryTrailLine: () => {
         const map = mapRef.current;
+        if (trailAnimRef.current) {
+          cancelAnimationFrame(trailAnimRef.current);
+          trailAnimRef.current = null;
+        }
         if (!map) return;
         const src = map.getSource('story-trail-source') as maplibregl.GeoJSONSource;
         if (src) {
           src.setData({ type: 'FeatureCollection', features: [] });
         }
+      },
+
+      // 3D Cinematic Orbit around a Landmark
+      orbitAroundTarget: (lat: number, lng: number) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (orbitAnimRef.current) {
+          cancelAnimationFrame(orbitAnimRef.current);
+          orbitAnimRef.current = null;
+        }
+
+        let bearing = map.getBearing();
+        let frames = 0;
+        const maxFrames = 200;
+        const bearingStep = 360 / maxFrames;
+
+        const orbit = () => {
+          if (!mapRef.current) return;
+          bearing += bearingStep;
+          mapRef.current.setBearing(bearing);
+          frames += 1;
+          if (frames < maxFrames) {
+            orbitAnimRef.current = requestAnimationFrame(orbit);
+          }
+        };
+
+        map.flyTo({
+          center: [lng, lat],
+          zoom: 15.5,
+          pitch: 58,
+          duration: 1200,
+        });
+
+        setTimeout(() => {
+          orbitAnimRef.current = requestAnimationFrame(orbit);
+        }, 1200);
       },
 
       // Opening Cinematic Fly-In from Maharashtra overview to Pune District

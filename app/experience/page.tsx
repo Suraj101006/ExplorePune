@@ -8,6 +8,7 @@ import { ExperiencePlace } from '@/lib/experience/types';
 import {
   MapStyleKey,
   DISTRICT_TOUR_STOPS,
+  STORY_TRAILS,
   StoryTrail,
   PUNE_TALUKAS,
 } from '@/lib/experience/puneDistrictData';
@@ -32,11 +33,13 @@ const LivePuneDistrictMap = dynamic(
 
 import type { DistrictMapHandle } from '@/components/experience/LivePuneDistrictMap';
 import LiveDistrictTelemetry from '@/components/experience/LiveDistrictTelemetry';
+import DistrictRegionBar from '@/components/experience/DistrictRegionBar';
 import DistrictControlPanel from '@/components/experience/DistrictControlPanel';
 import DistrictLocationDrawer from '@/components/experience/DistrictLocationDrawer';
 import DistrictTourController from '@/components/experience/DistrictTourController';
 import DistrictMapControls from '@/components/experience/DistrictMapControls';
 import DistrictDirectoryTable from '@/components/experience/DistrictDirectoryTable';
+import ExploreAnywhereModal from '@/components/experience/ExploreAnywhereModal';
 import MapIntro from '@/components/experience/MapIntro';
 
 export default function ExperiencePage() {
@@ -64,6 +67,9 @@ export default function ExperiencePage() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [is3d, setIs3d] = useState<boolean>(true);
 
+  // Explore Anywhere Spotlight Modal state
+  const [isExploreModalOpen, setIsExploreModalOpen] = useState<boolean>(false);
+
   // Driving Route state
   const [isRouteActive, setIsRouteActive] = useState<boolean>(false);
 
@@ -85,6 +91,29 @@ export default function ExperiencePage() {
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
     mapRef.current?.playIntroFlyIn();
+  }, []);
+
+  // Keyboard shortcut listener for Explore Anywhere (`/` or `Ctrl+K`)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const isInput =
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable);
+
+      if (e.key === '/' && !isInput) {
+        e.preventDefault();
+        setIsExploreModalOpen(true);
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && !isInput) {
+        e.preventDefault();
+        setIsExploreModalOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Handle Layer Toggle
@@ -171,7 +200,7 @@ export default function ExperiencePage() {
     setActiveStoryTrailId(trail.id);
     setTourStopIndex(0);
 
-    // Set trail line on map
+    // Set animated trail line on map
     const coords: [number, number][] = trail.stops.map((s) => [s.longitude, s.latitude]);
     mapRef.current?.setStoryTrailLine(coords);
 
@@ -194,10 +223,23 @@ export default function ExperiencePage() {
   }, []);
 
   const handleSkipNext = useCallback(() => {
-    const total = activeStoryTrailId ? 5 : DISTRICT_TOUR_STOPS.length;
+    const total = activeStoryTrailId
+      ? STORY_TRAILS.find((t) => t.id === activeStoryTrailId)?.stops.length || 5
+      : DISTRICT_TOUR_STOPS.length;
     const nextIdx = tourStopIndex + 1;
     if (nextIdx < total) {
-      executeTourStop(nextIdx);
+      if (activeStoryTrailId) {
+        const trail = STORY_TRAILS.find((t) => t.id === activeStoryTrailId);
+        if (trail && trail.stops[nextIdx]) {
+          setTourStopIndex(nextIdx);
+          const stop = trail.stops[nextIdx];
+          const place = getPlaceBySlug(stop.slug);
+          if (place) setSelectedPlace(place);
+          mapRef.current?.flyToCoordinates(stop.latitude, stop.longitude, 14.8, 52, -20);
+        }
+      } else {
+        executeTourStop(nextIdx);
+      }
     } else {
       handleStopTour();
     }
@@ -205,14 +247,46 @@ export default function ExperiencePage() {
 
   const handleSkipPrev = useCallback(() => {
     const prevIdx = Math.max(0, tourStopIndex - 1);
-    executeTourStop(prevIdx);
-  }, [tourStopIndex, executeTourStop]);
+    if (activeStoryTrailId) {
+      const trail = STORY_TRAILS.find((t) => t.id === activeStoryTrailId);
+      if (trail && trail.stops[prevIdx]) {
+        setTourStopIndex(prevIdx);
+        const stop = trail.stops[prevIdx];
+        const place = getPlaceBySlug(stop.slug);
+        if (place) setSelectedPlace(place);
+        mapRef.current?.flyToCoordinates(stop.latitude, stop.longitude, 14.8, 52, -20);
+      }
+    } else {
+      executeTourStop(prevIdx);
+    }
+  }, [tourStopIndex, activeStoryTrailId, executeTourStop]);
+
+  // Orbit landmark in 3D
+  const handleOrbitStop = useCallback(() => {
+    if (selectedPlace) {
+      mapRef.current?.orbitAroundTarget?.(selectedPlace.latitude, selectedPlace.longitude);
+    } else if (activeStoryTrailId) {
+      const trail = STORY_TRAILS.find((t) => t.id === activeStoryTrailId);
+      const stop = trail?.stops[tourStopIndex];
+      if (stop) {
+        mapRef.current?.orbitAroundTarget?.(stop.latitude, stop.longitude);
+      }
+    } else {
+      const stop = DISTRICT_TOUR_STOPS[tourStopIndex];
+      if (stop) {
+        mapRef.current?.orbitAroundTarget?.(stop.latitude, stop.longitude);
+      }
+    }
+  }, [selectedPlace, activeStoryTrailId, tourStopIndex]);
 
   // Controls Handlers
   const handleZoomIn = () => mapRef.current?.zoomIn();
   const handleZoomOut = () => mapRef.current?.zoomOut();
   const handleResetView = () => {
     setSelectedPlace(null);
+    setSelectedTaluka('all');
+    setSelectedCategory('all');
+    setSearchQuery('');
     setIsRouteActive(false);
     mapRef.current?.clearDrivingRoute();
     mapRef.current?.resetDistrictView();
@@ -238,7 +312,7 @@ export default function ExperiencePage() {
     '@context': 'https://schema.org',
     '@type': 'TouristDestination',
     name: isMr ? 'पुणे जिल्हा थेट संवादी नकाशा व GPS निर्देशांक' : 'Pune District Interactive Living Map & GPS Coordinates',
-    description: 'Explore live coordinates, real satellite terrain, 15 talukas, and all 106 destinations across Pune District.',
+    description: 'Explore live coordinates, real 3D satellite terrain, 15 talukas, and all 106 destinations across Pune District.',
     url: 'https://explorepune-guide.vercel.app/experience',
     geo: {
       '@type': 'GeoCoordinates',
@@ -268,11 +342,19 @@ export default function ExperiencePage() {
         lang={lang}
       />
 
+      {/* Explore Anywhere Direct GPS Jump Spotlight Dialog */}
+      <ExploreAnywhereModal
+        isOpen={isExploreModalOpen}
+        onClose={() => setIsExploreModalOpen(false)}
+        onSelectAndFly={handleSelectPlace}
+        lang={lang}
+      />
+
       {/* ========================================================================= */}
       {/* HERO: FULL-VIEWPORT LIVING PUNE DISTRICT MAP CANVAS                        */}
       {/* ========================================================================= */}
-      <div className="relative w-full h-[88vh] min-h-[620px] max-h-[1080px] bg-zinc-950 overflow-hidden select-none">
-        {/* Real Satellite / Topo / Dark MapLibre Canvas */}
+      <div className="relative w-full h-[90vh] min-h-[640px] max-h-[1100px] bg-zinc-950 overflow-hidden select-none">
+        {/* Real Satellite / Topo / Dark 3D MapLibre Canvas */}
         <div className="absolute inset-0 z-0">
           <LivePuneDistrictMap
             ref={mapRef}
@@ -285,6 +367,7 @@ export default function ExperiencePage() {
             onPlaceSelect={handleSelectPlace}
             onCursorMove={handleCursorMove}
             onCameraChange={handleCameraChange}
+            is3d={is3d}
             lang={lang}
           />
         </div>
@@ -300,6 +383,19 @@ export default function ExperiencePage() {
               totalLocations={allPlaces.length}
               activePlaceCount={allPlaces.length}
               selectedCategoryName={selectedCategory}
+              onOpenExploreAnywhere={() => setIsExploreModalOpen(true)}
+              lang={lang}
+            />
+          </div>
+        </div>
+
+        {/* Top Regional Taluka Navigator Bar */}
+        <div className="absolute top-16 left-4 right-4 z-20 pointer-events-none">
+          <div className="pointer-events-auto max-w-7xl mx-auto">
+            <DistrictRegionBar
+              selectedTaluka={selectedTaluka}
+              onSelectTaluka={handleSelectTaluka}
+              allPlaces={allPlaces}
               lang={lang}
             />
           </div>
@@ -343,7 +439,12 @@ export default function ExperiencePage() {
           onSkipNext={handleSkipNext}
           onSkipPrev={handleSkipPrev}
           onStopTour={handleStopTour}
+          onOrbitStop={handleOrbitStop}
+          onInspectStop={() => {
+            // Selected place drawer opens automatically
+          }}
           lang={lang}
+          className={isTouring ? 'top-28 md:top-24' : 'top-28 md:top-24'}
         />
 
         {/* Bottom-Right Navigation, Basemap Switcher & Layer Controls */}

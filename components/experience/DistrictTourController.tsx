@@ -6,6 +6,7 @@ import {
   STORY_TRAILS,
   StoryTrail,
   DistrictTourStop,
+  StoryTrailStop,
   formatCoordinatesDD,
 } from '@/lib/experience/puneDistrictData';
 
@@ -20,6 +21,8 @@ interface DistrictTourControllerProps {
   onSkipNext: () => void;
   onSkipPrev?: () => void;
   onStopTour: () => void;
+  onOrbitStop?: () => void;
+  onInspectStop?: () => void;
   lang?: string;
   className?: string;
 }
@@ -35,6 +38,8 @@ export default function DistrictTourController({
   onSkipNext,
   onSkipPrev,
   onStopTour,
+  onOrbitStop,
+  onInspectStop,
   lang = 'en',
   className = '',
 }: DistrictTourControllerProps) {
@@ -47,26 +52,32 @@ export default function DistrictTourController({
   // Active stop calculation
   let totalStops = DISTRICT_TOUR_STOPS.length;
   let currentStopName = '';
+  let currentStopNameAlt = '';
   let currentStopTaluka = '';
   let currentStopSignificance = '';
   let currentCoords = '';
+  let currentElevation = 560;
 
   if (activeTrail) {
     totalStops = activeTrail.stops.length;
-    const stop = activeTrail.stops[currentStopIndex] || activeTrail.stops[0];
+    const stop: StoryTrailStop | undefined = activeTrail.stops[currentStopIndex] || activeTrail.stops[0];
     if (stop) {
       currentStopName = isMr ? stop.nameMr : stop.nameEn;
+      currentStopNameAlt = isMr ? stop.nameEn : stop.nameMr;
       currentStopSignificance = isMr ? stop.significanceMr : stop.significanceEn;
       currentCoords = formatCoordinatesDD(stop.latitude, stop.longitude, 4);
-      currentStopTaluka = activeTrail.titleEn;
+      currentStopTaluka = isMr ? activeTrail.titleMr : activeTrail.titleEn;
+      currentElevation = stop.elevationMeters;
     }
   } else {
     const stop: DistrictTourStop | undefined = DISTRICT_TOUR_STOPS[currentStopIndex];
     if (stop) {
       currentStopName = isMr ? stop.nameMr : stop.nameEn;
+      currentStopNameAlt = isMr ? stop.nameEn : stop.nameMr;
       currentStopTaluka = isMr ? stop.talukaMr : stop.talukaEn;
       currentStopSignificance = isMr ? stop.significanceMr : stop.significanceEn;
       currentCoords = formatCoordinatesDD(stop.latitude, stop.longitude, 4);
+      currentElevation = stop.elevationMeters;
     }
   }
 
@@ -76,10 +87,10 @@ export default function DistrictTourController({
       <div className={`absolute top-16 right-4 z-20 flex flex-col items-end gap-2 ${className}`}>
         {/* Story Trails Popover Menu */}
         {showStoryMenu && (
-          <div className="p-3 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl text-xs space-y-2 w-72 mb-1 animate-in fade-in slide-in-from-top-2 text-white">
-            <div className="flex items-center justify-between px-1 pb-1 border-b border-white/10">
+          <div className="p-3.5 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl text-xs space-y-2 w-80 mb-1 animate-in fade-in slide-in-from-top-2 text-white">
+            <div className="flex items-center justify-between px-1 pb-1.5 border-b border-white/10">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400">
-                {isMr ? 'भौगोलिक कथा मार्ग' : 'GEOGRAPHICAL STORY TRAILS'}
+                {isMr ? '५ निवडक भौगोलिक कथा मार्ग' : '5 CURATED GEOGRAPHICAL TRAILS'}
               </span>
               <button
                 type="button"
@@ -90,7 +101,7 @@ export default function DistrictTourController({
               </button>
             </div>
 
-            <div className="space-y-1.5 max-h-[320px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-1.5 max-h-[340px] overflow-y-auto custom-scrollbar">
               {STORY_TRAILS.map((trail) => (
                 <button
                   key={trail.id}
@@ -101,7 +112,7 @@ export default function DistrictTourController({
                   }}
                   className="w-full flex items-start gap-2.5 p-2.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.1] border border-white/5 text-left transition-all hover:scale-[1.02]"
                 >
-                  <span className="text-xl p-1 rounded-xl bg-black/50">{trail.icon}</span>
+                  <span className="text-xl p-1.5 rounded-xl bg-black/50 flex-shrink-0">{trail.icon}</span>
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-white text-xs truncate">
                       {isMr ? trail.titleMr : trail.titleEn}
@@ -109,9 +120,14 @@ export default function DistrictTourController({
                     <div className="text-[10px] text-white/50 line-clamp-1 mt-0.5">
                       {isMr ? trail.subtitleMr : trail.subtitleEn}
                     </div>
-                    <span className="inline-block mt-1 text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                      {trail.stops.length} {isMr ? 'थांबे' : 'Stops'}
-                    </span>
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
+                        {trail.stops.length} {isMr ? 'थांबे' : 'Stops'}
+                      </span>
+                      <span className="text-[9px] font-mono text-white/40">
+                        {isMr ? 'कथा मार्ग' : 'Geographic Trail'}
+                      </span>
+                    </div>
                   </div>
                 </button>
               ))}
@@ -156,35 +172,33 @@ export default function DistrictTourController({
     );
   }
 
-  // Active Tour HUD
+  // Active Storytelling & Flyover HUD Card
   const progressPercent = Math.round(((currentStopIndex + 1) / totalStops) * 100);
 
   return (
     <div
-      className={`absolute top-16 left-1/2 -translate-x-1/2 z-30 w-[92%] max-w-lg p-4 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-400/50 shadow-2xl animate-in fade-in slide-in-from-top-4 text-white ${className}`}
+      className={`absolute top-16 left-1/2 -translate-x-1/2 z-30 w-[94%] max-w-lg p-4 rounded-3xl bg-black/95 backdrop-blur-2xl border border-emerald-400/50 shadow-2xl animate-in fade-in slide-in-from-top-4 text-white ${className}`}
       role="region"
-      aria-label="Pune District Aerial Tour Controller"
+      aria-label="Pune District Geographical Storytelling Center"
     >
       {/* Header Row */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-emerald-500 text-black flex items-center justify-center font-bold animate-pulse">
-            <svg className="w-4 h-4 fill-black" viewBox="0 0 24 24">
-              <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
-            </svg>
+      <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/10">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 rounded-2xl bg-emerald-500 text-black flex items-center justify-center font-bold shadow-lg flex-shrink-0 animate-pulse">
+            <span className="text-sm">{activeTrail ? activeTrail.icon : '✈️'}</span>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-mono font-black uppercase tracking-wider text-emerald-400">
+              <h3 className="text-xs font-mono font-black uppercase tracking-wider text-emerald-400 truncate">
                 {activeTrail
                   ? (isMr ? activeTrail.titleMr : activeTrail.titleEn)
-                  : (isMr ? 'थेट हवाई सफर सुरू' : 'DISTRICT GEOGRAPHICAL TOUR')}
+                  : (isMr ? 'जिल्हा थेट हवाई सफर' : 'PUNE DISTRICT AERIAL EXPEDITION')}
               </h3>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/10 text-white/70">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-white/80 font-bold flex-shrink-0">
                 {currentStopIndex + 1} / {totalStops}
               </span>
             </div>
-            <p className="text-[10px] font-mono text-white/50 truncate max-w-[280px]">
+            <p className="text-[10px] font-mono text-white/50 truncate">
               {currentStopTaluka}
             </p>
           </div>
@@ -195,7 +209,7 @@ export default function DistrictTourController({
           type="button"
           onClick={onStopTour}
           aria-label="Exit tour"
-          className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors"
+          className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors flex-shrink-0 ml-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -203,25 +217,63 @@ export default function DistrictTourController({
         </button>
       </div>
 
-      {/* Target Landmark & Coordinates Box */}
-      <div className="p-3 rounded-2xl bg-zinc-950/90 border border-emerald-500/30 mb-3">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-black text-white truncate max-w-[70%]">
-            {currentStopName}
-          </span>
-          <span className="text-[10px] font-mono text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-600/40">
-            {currentCoords}
-          </span>
+      {/* Target Landmark, Elevation & Coordinates Box */}
+      <div className="p-3.5 rounded-2xl bg-zinc-950/90 border border-emerald-500/30 mb-3 space-y-2">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h4 className="text-sm font-black text-white leading-tight">
+              {currentStopName}
+            </h4>
+            {currentStopNameAlt && (
+              <span className="text-[10px] text-white/50 font-mono">
+                {currentStopNameAlt}
+              </span>
+            )}
+          </div>
+          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+            <span className="text-[10px] font-mono text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded-md border border-amber-600/40 font-bold">
+              {currentCoords}
+            </span>
+            <span className="text-[9px] font-mono text-cyan-300 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-700/30">
+              ⛰️ {currentElevation}m MSL
+            </span>
+          </div>
         </div>
-        <p className="text-[11px] text-white/70 line-clamp-1 leading-snug">
+
+        <p className="text-xs text-white/80 leading-relaxed font-sans">
           {currentStopSignificance}
         </p>
+
+        {/* Quick Orbit / Inspect Buttons */}
+        <div className="flex items-center gap-2 pt-1 border-t border-white/5">
+          {onOrbitStop && (
+            <button
+              type="button"
+              onClick={onOrbitStop}
+              className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[10px] font-mono text-emerald-300 flex items-center gap-1 transition-colors"
+            >
+              <span>👁️</span>
+              <span>{isMr ? '३D प्रदक्षिणा' : '3D Orbit View'}</span>
+            </button>
+          )}
+
+          {onInspectStop && (
+            <button
+              type="button"
+              onClick={onInspectStop}
+              className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[10px] font-mono text-white/80 hover:text-white flex items-center gap-1 transition-colors"
+            >
+              <span>📋</span>
+              <span>{isMr ? 'संपूर्ण माहिती' : 'Place Profile'}</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Progress Bar */}
       <div className="w-full h-1 bg-white/10 rounded-full mb-3 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full transition-all duration-500"
+          className="h-full bg-gradient-to-r from-emerald-500 via-amber-400 to-cyan-400 rounded-full transition-all duration-500"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
@@ -260,7 +312,7 @@ export default function DistrictTourController({
         <button
           type="button"
           onClick={onSkipNext}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition-all shadow-lg"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition-all shadow-lg hover:scale-105 active:scale-95"
         >
           <span>{currentStopIndex + 1 === totalStops ? (isMr ? 'पूर्ण करा' : 'FINISH') : (isMr ? 'पुढील स्थान' : 'NEXT STOP')}</span>
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

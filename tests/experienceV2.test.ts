@@ -300,5 +300,65 @@ describe('Explore Pune Experience - Pune District Coordinate & Real Satellite En
       });
     });
   });
+
+  it('validates 5 Critical Geographic Recommendations: 3D Terrain, Taluka Regions, Routes, Storytelling, and Quick Search', async () => {
+    const {
+      PUNE_TALUKAS,
+      getTalukaOrRegion,
+      getElevationEstimate,
+      STORY_TRAILS,
+      calculateDistanceKm,
+    } = await import('../lib/experience/puneDistrictData');
+    const { getAllPlaces } = await import('../lib/experience/selectors');
+
+    const places = getAllPlaces();
+    expect(places.length).toBe(106);
+
+    // 1. Real 3D Terrain & Elevation
+    places.forEach((p) => {
+      const elev = getElevationEstimate(p.latitude, p.longitude, p.category_slug);
+      expect(elev).toBeGreaterThan(500); // Pune plateau is >550m MSL
+      if (p.category_slug === 'forts') {
+        expect(elev).toBeGreaterThanOrEqual(1000); // High Sahyadri crests
+      }
+    });
+
+    // 2. Discover Places by Geographical Region (15 Talukas)
+    const talukaPlaceCounts: Record<string, number> = {};
+    PUNE_TALUKAS.forEach((t) => {
+      talukaPlaceCounts[t.id] = 0;
+    });
+
+    places.forEach((p) => {
+      const taluka = getTalukaOrRegion(p.latitude, p.longitude, p.address);
+      expect(taluka.id).toBeTruthy();
+      expect(taluka.nameEn).toBeTruthy();
+      expect(taluka.nameMr).toBeTruthy();
+      talukaPlaceCounts[taluka.id] = (talukaPlaceCounts[taluka.id] || 0) + 1;
+    });
+
+    // Verify key regional hubs have destinations
+    expect(talukaPlaceCounts['maval']).toBeGreaterThanOrEqual(5);
+    expect(talukaPlaceCounts['haveli']).toBeGreaterThanOrEqual(4);
+    expect(talukaPlaceCounts['pune-city']).toBeGreaterThanOrEqual(20);
+
+    // 3. Animated Geographical Journeys (distance calculation)
+    const puneStation = { lat: 18.5284, lng: 73.8744 };
+    places.forEach((p) => {
+      const dist = calculateDistanceKm(puneStation.lat, puneStation.lng, p.latitude, p.longitude);
+      expect(dist).toBeGreaterThanOrEqual(0);
+      expect(dist).toBeLessThan(140); // All within Pune District perimeter
+    });
+
+    // 4. Geographical Storytelling
+    expect(STORY_TRAILS.length).toBe(5);
+    const fortsTrail = STORY_TRAILS.find((t) => t.id === 'sahyadri-forts');
+    expect(fortsTrail).toBeDefined();
+    expect(fortsTrail?.stops.length).toBe(7); // Shivneri, Lohagad, Tikona, Sinhagad, Torna, Rajgad, Purandar
+
+    // 5. Explore Anywhere (searchability across all places)
+    const searchForts = places.filter((p) => p.category_slug === 'forts' || p.name.toLowerCase().includes('fort'));
+    expect(searchForts.length).toBeGreaterThanOrEqual(15);
+  });
 });
 

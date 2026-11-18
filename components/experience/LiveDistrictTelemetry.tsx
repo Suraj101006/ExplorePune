@@ -11,6 +11,7 @@ interface LiveDistrictTelemetryProps {
   totalLocations: number;
   activePlaceCount: number;
   selectedCategoryName: string;
+  onOpenExploreAnywhere?: () => void;
   lang?: string;
   className?: string;
 }
@@ -23,6 +24,7 @@ export default function LiveDistrictTelemetry({
   totalLocations,
   activePlaceCount,
   selectedCategoryName,
+  onOpenExploreAnywhere,
   lang = 'en',
   className = '',
 }: LiveDistrictTelemetryProps) {
@@ -60,7 +62,7 @@ export default function LiveDistrictTelemetry({
 
   return (
     <header
-      className={`flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-black/80 backdrop-blur-xl border border-emerald-500/30 text-white shadow-2xl transition-all ${className}`}
+      className={`flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-black/85 backdrop-blur-xl border border-emerald-500/30 text-white shadow-2xl transition-all ${className}`}
       role="banner"
       aria-label="Live Pune District GPS Telemetry"
     >
@@ -77,10 +79,10 @@ export default function LiveDistrictTelemetry({
               {isMr ? 'पुणे जिल्हा थेट नकाशा' : 'PUNE DISTRICT • LIVE MAP'}
             </h1>
             <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/10 text-white/70 font-mono">
-              14 TALUKAS
+              15 TALUKAS
             </span>
           </div>
-          <p className="text-[10px] text-white/60 truncate max-w-[200px] sm:max-w-xs">
+          <p className="text-[10px] text-white/60 truncate max-w-[180px] sm:max-w-xs">
             {isMr ? talukaInfo.nameMr : talukaInfo.nameEn}
           </p>
         </div>
@@ -104,8 +106,24 @@ export default function LiveDistrictTelemetry({
         </button>
       </div>
 
-      {/* Right Stats & Camera Pitch */}
-      <div className="flex items-center gap-3 text-[11px] font-mono">
+      {/* Right Stats, Quick Search & Camera Pitch */}
+      <div className="flex items-center gap-2.5 text-[11px] font-mono">
+        {/* Quick Search Shortcut Pill */}
+        {onOpenExploreAnywhere && (
+          <button
+            type="button"
+            onClick={onOpenExploreAnywhere}
+            title="Explore Anywhere & Jump to GPS Coordinates (Press /)"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all hover:scale-105 active:scale-95"
+          >
+            <span>🔍</span>
+            <span className="hidden sm:inline">{isMr ? 'कुठेही शोधा' : 'EXPLORE'}</span>
+            <kbd className="px-1.5 py-0.2 rounded bg-black/50 text-[10px] text-white/60 border border-white/10 font-mono">
+              /
+            </kbd>
+          </button>
+        )}
+
         <div className="hidden sm:flex items-center gap-2 text-white/70">
           <span className="text-white/40">ONLINE:</span>
           <span className="text-emerald-400 font-bold">
