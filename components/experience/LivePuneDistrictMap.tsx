@@ -7,23 +7,35 @@ import { getAllPlaces } from '@/lib/experience/selectors';
 import { ExperiencePlace } from '@/lib/experience/types';
 import {
   getPuneDistrictBoundaryGeoJson,
+  getPuneTalukasGeoJson,
+  getPuneRiversGeoJson,
+  getPuneHighwaysGeoJson,
+  PUNE_TALUKAS,
   formatCoordinatesDD,
   MapStyleKey,
 } from '@/lib/experience/puneDistrictData';
+import { MapLayerState } from './DistrictMapControls';
 
 export interface DistrictMapHandle {
   flyToPlace: (place: ExperiencePlace) => void;
   flyToCoordinates: (lat: number, lng: number, zoom?: number, pitch?: number, bearing?: number) => void;
+  flyToTaluka: (talukaId: string) => void;
   resetDistrictView: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
   toggleTilt: () => void;
   setStyle: (style: MapStyleKey) => void;
   locateUser: () => void;
+  setDrivingRoute: (start: [number, number], end: [number, number]) => void;
+  clearDrivingRoute: () => void;
+  setStoryTrailLine: (coords: [number, number][]) => void;
+  clearStoryTrailLine: () => void;
+  playIntroFlyIn: () => void;
 }
 
 interface LivePuneDistrictMapProps {
   currentStyle: MapStyleKey;
+  layerState: MapLayerState;
   selectedPlace: ExperiencePlace | null;
   selectedCategory: string;
   selectedTaluka: string;
@@ -34,10 +46,10 @@ interface LivePuneDistrictMapProps {
   lang?: string;
 }
 
-// Bounding box for entire Pune District
+// Full district bounds for extent fitting
 const PUNE_DISTRICT_BOUNDS: [[number, number], [number, number]] = [
-  [73.20, 18.02], // Southwest: Bhor/Velhe/Mahad border
-  [75.05, 19.38], // Northeast: Junnar/Shirur/Indapur border
+  [73.20, 18.02], // Southwest: Bhor / Velhe / Mahad border
+  [75.05, 19.38], // Northeast: Junnar / Shirur / Indapur border
 ];
 
 const DEFAULT_CENTER: [number, number] = [73.8567, 18.5204];
@@ -45,7 +57,7 @@ const DEFAULT_ZOOM = 10.2;
 const DEFAULT_PITCH = 45;
 const DEFAULT_BEARING = -15;
 
-// Real Satellite Hybrid Style (Esri World Imagery + Reference Names/Roads Overlay)
+// Real Satellite Hybrid Style
 const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
   version: 8,
   sources: {
@@ -53,7 +65,7 @@ const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
       type: 'raster',
       tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
       tileSize: 256,
-      attribution: '© Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, IGP, and the GIS User Community',
+      attribution: '© Esri, Maxar, Earthstar Geographics, USDA FSA, USGS, Aerogrid, IGN, IGP',
       maxzoom: 19,
     },
     'esri-reference': {
@@ -81,7 +93,7 @@ const SATELLITE_HYBRID_STYLE: maplibregl.StyleSpecification = {
   ],
 };
 
-// Real Topographic Terrain Style (Physical elevation, ghats and contours)
+// Real Topographic Terrain Style
 const TOPO_TERRAIN_STYLE: maplibregl.StyleSpecification = {
   version: 8,
   sources: {
@@ -89,7 +101,7 @@ const TOPO_TERRAIN_STYLE: maplibregl.StyleSpecification = {
       type: 'raster',
       tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'],
       tileSize: 256,
-      attribution: '© Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey',
+      attribution: '© Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO',
       maxzoom: 19,
     },
   },
@@ -104,13 +116,14 @@ const TOPO_TERRAIN_STYLE: maplibregl.StyleSpecification = {
   ],
 };
 
-// Tactical Dark Style
+// Dark Tactical Style
 const DARK_TACTICAL_STYLE = 'https://tiles.openfreemap.org/styles/dark';
 
 const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapProps>(
   function LivePuneDistrictMap(
     {
       currentStyle,
+      layerState,
       selectedPlace,
       selectedCategory,
       selectedTaluka,
@@ -153,7 +166,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
       map.on('load', () => {
         setIsMapLoaded(true);
-        setupDistrictLayers(map);
+        setupAllGeographicLayers(map);
       });
 
       // Cursor movement telemetry
@@ -192,39 +205,41 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         map.setStyle(DARK_TACTICAL_STYLE);
       }
 
-      // Re-add district layers on style data reload
       map.once('styledata', () => {
-        setupDistrictLayers(map);
+        setupAllGeographicLayers(map);
         renderPlaceMarkers();
       });
     }, [currentStyle]);
 
-    // 3. District Boundary Layer
-    const setupDistrictLayers = (map: maplibregl.Map) => {
-      const districtGeoJson = getPuneDistrictBoundaryGeoJson();
-
+    // 3. Setup All Geographic Vector Layers (District, 15 Talukas, Rivers, Highways, Routes)
+    const setupAllGeographicLayers = (map: maplibregl.Map) => {
+      // A. District Perimeter
       if (!map.getSource('pune-district-source')) {
         map.addSource('pune-district-source', {
           type: 'geojson',
-          data: districtGeoJson,
+          data: getPuneDistrictBoundaryGeoJson(),
         });
 
-        // Translucent cyber fill
         map.addLayer({
           id: 'pune-district-fill',
           type: 'fill',
           source: 'pune-district-source',
+          layout: {
+            visibility: layerState.districtBoundary ? 'visible' : 'none',
+          },
           paint: {
             'fill-color': '#10b981',
-            'fill-opacity': 0.06,
+            'fill-opacity': 0.05,
           },
         });
 
-        // Glowing animated district boundary line
         map.addLayer({
           id: 'pune-district-stroke',
           type: 'line',
           source: 'pune-district-source',
+          layout: {
+            visibility: layerState.districtBoundary ? 'visible' : 'none',
+          },
           paint: {
             'line-color': '#10b981',
             'line-width': 2.5,
@@ -234,9 +249,105 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
       }
 
-      // Flight Route Source for drone tours
-      if (!map.getSource('tour-flight-source')) {
-        map.addSource('tour-flight-source', {
+      // B. 15 Taluka Boundaries
+      if (!map.getSource('pune-talukas-source')) {
+        map.addSource('pune-talukas-source', {
+          type: 'geojson',
+          data: getPuneTalukasGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-talukas-fill',
+          type: 'fill',
+          source: 'pune-talukas-source',
+          layout: {
+            visibility: layerState.talukaBoundaries ? 'visible' : 'none',
+          },
+          paint: {
+            'fill-color': '#f59e0b',
+            'fill-opacity': 0.03,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-talukas-stroke',
+          type: 'line',
+          source: 'pune-talukas-source',
+          layout: {
+            visibility: layerState.talukaBoundaries ? 'visible' : 'none',
+          },
+          paint: {
+            'line-color': '#f59e0b',
+            'line-width': 1.2,
+            'line-opacity': 0.5,
+            'line-dasharray': [3, 2],
+          },
+        });
+      }
+
+      // C. Rivers & Reservoirs
+      if (!map.getSource('pune-rivers-source')) {
+        map.addSource('pune-rivers-source', {
+          type: 'geojson',
+          data: getPuneRiversGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-rivers-polygons',
+          type: 'fill',
+          source: 'pune-rivers-source',
+          filter: ['==', '$type', 'Polygon'],
+          layout: {
+            visibility: layerState.rivers ? 'visible' : 'none',
+          },
+          paint: {
+            'fill-color': '#0284c7',
+            'fill-opacity': 0.45,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-rivers-lines',
+          type: 'line',
+          source: 'pune-rivers-source',
+          filter: ['==', '$type', 'LineString'],
+          layout: {
+            visibility: layerState.rivers ? 'visible' : 'none',
+          },
+          paint: {
+            'line-color': '#38bdf8',
+            'line-width': 2.5,
+            'line-opacity': 0.8,
+          },
+        });
+      }
+
+      // D. Major Highways
+      if (!map.getSource('pune-highways-source')) {
+        map.addSource('pune-highways-source', {
+          type: 'geojson',
+          data: getPuneHighwaysGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-highways-lines',
+          type: 'line',
+          source: 'pune-highways-source',
+          layout: {
+            visibility: layerState.highways ? 'visible' : 'none',
+          },
+          paint: {
+            'line-color': '#fbbf24',
+            'line-width': 2,
+            'line-opacity': 0.65,
+            'line-dasharray': [4, 1.5],
+          },
+        });
+      }
+
+      // E. Driving Route Line Source
+      if (!map.getSource('driving-route-source')) {
+        map.addSource('driving-route-source', {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
@@ -245,17 +356,44 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         });
 
         map.addLayer({
-          id: 'tour-flight-line',
+          id: 'driving-route-line',
           type: 'line',
-          source: 'tour-flight-source',
+          source: 'driving-route-source',
           layout: {
             'line-join': 'round',
             'line-cap': 'round',
           },
           paint: {
-            'line-color': '#F1293A',
-            'line-width': 3.5,
+            'line-color': '#06b6d4',
+            'line-width': 4,
             'line-opacity': 0.9,
+          },
+        });
+      }
+
+      // F. Story Trail Connecting Line Source
+      if (!map.getSource('story-trail-source')) {
+        map.addSource('story-trail-source', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        });
+
+        map.addLayer({
+          id: 'story-trail-line',
+          type: 'line',
+          source: 'story-trail-source',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#ef4444',
+            'line-width': 3.5,
+            'line-opacity': 0.85,
+            'line-dasharray': [3, 2],
           },
         });
       }
@@ -263,7 +401,33 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       renderPlaceMarkers();
     };
 
-    // 4. Render All 106 Location Markers with Exact Coordinates
+    // 4. Update Layer Visibilities based on layerState prop
+    useEffect(() => {
+      const map = mapRef.current;
+      if (!map || !isMapLoaded) return;
+
+      const setVisibility = (layerId: string, visible: boolean) => {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', visible ? 'visible' : 'none');
+        }
+      };
+
+      setVisibility('pune-district-fill', layerState.districtBoundary);
+      setVisibility('pune-district-stroke', layerState.districtBoundary);
+      setVisibility('pune-talukas-fill', layerState.talukaBoundaries);
+      setVisibility('pune-talukas-stroke', layerState.talukaBoundaries);
+      setVisibility('pune-rivers-polygons', layerState.rivers);
+      setVisibility('pune-rivers-lines', layerState.rivers);
+      setVisibility('pune-highways-lines', layerState.highways);
+
+      // Markers visibility
+      markersRef.current.forEach((m) => {
+        const el = m.getElement();
+        if (el) el.style.display = layerState.markers ? 'flex' : 'none';
+      });
+    }, [layerState, isMapLoaded]);
+
+    // 5. Render All 106 Location Markers
     const renderPlaceMarkers = () => {
       const map = mapRef.current;
       if (!map) return;
@@ -291,20 +455,21 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
         // Category color
         let color = '#10b981'; // default emerald
-        if (place.category_slug === 'forts') color = '#ef4444'; // red
-        if (place.category_slug === 'heritage') color = '#f59e0b'; // amber
-        if (place.category_slug === 'temples') color = '#f97316'; // orange
-        if (place.category_slug === 'museums') color = '#06b6d4'; // cyan
-        if (place.category_slug === 'parks') color = '#84cc16'; // lime
-        if (place.category_slug === 'food') color = '#ec4899'; // pink
+        let icon = '📍';
+        if (place.category_slug === 'forts') { color = '#ef4444'; icon = '🏰'; }
+        if (place.category_slug === 'heritage') { color = '#f59e0b'; icon = '🏛️'; }
+        if (place.category_slug === 'temples') { color = '#f97316'; icon = '🛕'; }
+        if (place.category_slug === 'museums') { color = '#06b6d4'; icon = '🏺'; }
+        if (place.category_slug === 'nature') { color = '#10b981'; icon = '🌲'; }
+        if (place.category_slug === 'parks') { color = '#84cc16'; icon = '💧'; }
+        if (place.category_slug === 'food') { color = '#ec4899'; icon = '☕'; }
 
-        // Coordinate Badge Pill (Visible on hover or selection)
         const coordsStr = `${place.latitude.toFixed(4)}, ${place.longitude.toFixed(4)}`;
         const placeName = lang === 'mr' ? place.name_mr || place.name : place.name;
 
         el.innerHTML = `
-          <div class="px-2 py-0.5 rounded-md bg-black/85 text-white border border-white/20 text-[9px] font-mono whitespace-nowrap shadow-xl mb-1 opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all pointer-events-none flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${color};"></span>
+          <div class="px-2 py-0.5 rounded-md bg-black/90 text-white border border-white/20 text-[9px] font-mono whitespace-nowrap shadow-xl mb-1 opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all pointer-events-none flex items-center gap-1">
+            <span>${icon}</span>
             <span class="font-bold">${placeName}</span>
             <span class="text-amber-300 font-mono text-[8px] pl-0.5">${coordsStr}</span>
           </div>
@@ -323,6 +488,10 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           .setLngLat([place.longitude, place.latitude])
           .addTo(map);
 
+        if (!layerState.markers) {
+          el.style.display = 'none';
+        }
+
         markersRef.current.push(marker);
       });
     };
@@ -334,7 +503,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       }
     }, [selectedCategory, selectedTaluka, searchQuery, isMapLoaded, lang]);
 
-    // 5. Active Selected Place Indicator
+    // 6. Active Selected Place Indicator
     useEffect(() => {
       const map = mapRef.current;
       if (!map || !selectedPlace) {
@@ -355,7 +524,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       const name = lang === 'mr' ? selectedPlace.name_mr || selectedPlace.name : selectedPlace.name;
 
       activeEl.innerHTML = `
-        <div class="px-3 py-1 rounded-xl bg-black/90 text-white border border-emerald-400 shadow-2xl backdrop-blur-md mb-1.5 text-center">
+        <div class="px-3 py-1 rounded-xl bg-black/95 text-white border border-emerald-400 shadow-2xl backdrop-blur-md mb-1.5 text-center">
           <div class="text-[11px] font-black uppercase text-emerald-400 truncate max-w-[200px]">${name}</div>
           <div class="text-[9px] font-mono text-amber-300 font-bold">${coordsText}</div>
         </div>
@@ -372,7 +541,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       activeMarkerRef.current = marker;
     }, [selectedPlace, lang]);
 
-    // 6. Imperative Handle Methods
+    // 7. Imperative Handle Methods
     useImperativeHandle(ref, () => ({
       flyToPlace: (place: ExperiencePlace) => {
         const map = mapRef.current;
@@ -396,6 +565,19 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           duration: 2000,
           essential: true,
         });
+      },
+
+      flyToTaluka: (talukaId: string) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (talukaId === 'all') {
+          map.fitBounds(PUNE_DISTRICT_BOUNDS, { padding: 60, duration: 1600, pitch: DEFAULT_PITCH });
+          return;
+        }
+        const taluka = PUNE_TALUKAS.find((t) => t.id === talukaId);
+        if (taluka) {
+          map.fitBounds(taluka.bounds, { padding: 50, duration: 1800, pitch: 48 });
+        }
       },
 
       resetDistrictView: () => {
@@ -455,6 +637,112 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           },
           { enableHighAccuracy: true, timeout: 8000 }
         );
+      },
+
+      // Set Driving Route Line from Pune Station [73.8744, 18.5284] to Destination
+      setDrivingRoute: (start: [number, number], end: [number, number]) => {
+        const map = mapRef.current;
+        if (!map) return;
+
+        // Generate interpolated corridor line
+        const midLng = (start[0] + end[0]) / 2 + (start[1] > end[1] ? 0.02 : -0.02);
+        const midLat = (start[1] + end[1]) / 2;
+        const coordinates = [
+          start,
+          [midLng, midLat],
+          end,
+        ];
+
+        const src = map.getSource('driving-route-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'LineString',
+                  coordinates,
+                },
+                properties: {},
+              },
+            ],
+          });
+        }
+
+        // Fit map bounds to encompass the route
+        const bounds = new maplibregl.LngLatBounds(start, end);
+        map.fitBounds(bounds, { padding: 90, duration: 1600, pitch: 48 });
+      },
+
+      clearDrivingRoute: () => {
+        const map = mapRef.current;
+        if (!map) return;
+        const src = map.getSource('driving-route-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({ type: 'FeatureCollection', features: [] });
+        }
+      },
+
+      // Set Story Trail Route Line
+      setStoryTrailLine: (coords: [number, number][]) => {
+        const map = mapRef.current;
+        if (!map || coords.length === 0) return;
+
+        const src = map.getSource('story-trail-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'LineString',
+                  coordinates: coords,
+                },
+                properties: {},
+              },
+            ],
+          });
+        }
+
+        if (coords.length > 1) {
+          const bounds = new maplibregl.LngLatBounds(coords[0], coords[1]);
+          coords.forEach((pt) => bounds.extend(pt));
+          map.fitBounds(bounds, { padding: 80, duration: 2000, pitch: 50 });
+        }
+      },
+
+      clearStoryTrailLine: () => {
+        const map = mapRef.current;
+        if (!map) return;
+        const src = map.getSource('story-trail-source') as maplibregl.GeoJSONSource;
+        if (src) {
+          src.setData({ type: 'FeatureCollection', features: [] });
+        }
+      },
+
+      // Opening Cinematic Fly-In from Maharashtra overview to Pune District
+      playIntroFlyIn: () => {
+        const map = mapRef.current;
+        if (!map) return;
+        map.jumpTo({
+          center: [73.8567, 18.5204],
+          zoom: 7.0,
+          pitch: 0,
+          bearing: 0,
+        });
+
+        setTimeout(() => {
+          map.flyTo({
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
+            pitch: DEFAULT_PITCH,
+            bearing: DEFAULT_BEARING,
+            duration: 2400,
+            essential: true,
+          });
+        }, 300);
       },
     }));
 

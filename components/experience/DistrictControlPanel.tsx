@@ -4,7 +4,12 @@ import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { ExperiencePlace } from '@/lib/experience/types';
 import { getAllPlaces, getCategories } from '@/lib/experience/selectors';
-import { formatCoordinatesDD, getTalukaOrRegion } from '@/lib/experience/puneDistrictData';
+import {
+  formatCoordinatesDD,
+  getTalukaOrRegion,
+  calculateDistanceKm,
+  PUNE_TALUKAS,
+} from '@/lib/experience/puneDistrictData';
 
 interface DistrictControlPanelProps {
   selectedPlace: ExperiencePlace | null;
@@ -13,7 +18,7 @@ interface DistrictControlPanelProps {
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onSelectCategory: (cat: string) => void;
-  onSelectTaluka: (taluka: string) => void;
+  onSelectTaluka: (talukaId: string) => void;
   onSelectPlace: (place: ExperiencePlace) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
@@ -49,12 +54,12 @@ export default function DistrictControlPanel({
       // Taluka filter
       if (selectedTaluka !== 'all') {
         const taluka = getTalukaOrRegion(p.latitude, p.longitude, p.address);
-        if (!taluka.nameEn.toLowerCase().includes(selectedTaluka.toLowerCase())) {
+        if (taluka.id !== selectedTaluka && !taluka.nameEn.toLowerCase().includes(selectedTaluka.toLowerCase())) {
           return false;
         }
       }
 
-      // Search filter (handles place name, category, or lat/lng numbers!)
+      // Search filter (name, address, category, or coordinates)
       if (q) {
         const nameEn = (p.name || '').toLowerCase();
         const nameMr = (p.name_mr || '').toLowerCase();
@@ -82,12 +87,12 @@ export default function DistrictControlPanel({
         <button
           type="button"
           onClick={onToggleCollapse}
-          aria-label="Expand Pune District directory"
-          className="absolute top-16 left-4 z-20 flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-black/85 backdrop-blur-md border border-emerald-500/40 text-white shadow-2xl hover:bg-black transition-transform hover:scale-105"
+          aria-label="Expand Pune District landmark directory"
+          className="absolute top-16 left-4 z-20 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-black/85 backdrop-blur-md border border-emerald-500/40 text-white shadow-2xl hover:bg-black transition-transform hover:scale-105 active:scale-95"
         >
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-xs font-mono font-bold uppercase tracking-wider">
-            {filteredPlaces.length} Locations
+            {filteredPlaces.length} {isMr ? 'स्थाने' : 'Locations'}
           </span>
           <svg className="w-3.5 h-3.5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -97,18 +102,18 @@ export default function DistrictControlPanel({
 
       {/* Main Panel Drawer */}
       <aside
-        className={`absolute top-16 left-4 bottom-4 z-20 w-[350px] md:w-[380px] max-w-[calc(100vw-32px)] flex flex-col bg-black/90 backdrop-blur-2xl border border-emerald-500/30 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 text-white ${
+        className={`absolute top-16 left-4 bottom-4 z-20 w-[340px] md:w-[380px] max-w-[calc(100vw-32px)] flex flex-col bg-black/95 backdrop-blur-2xl border border-emerald-500/30 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 text-white select-none ${
           isCollapsed ? '-translate-x-[120%] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'
         }`}
         aria-label="Pune District Landmark Explorer"
       >
         {/* Panel Header */}
-        <div className="p-4 border-b border-white/10 flex-shrink-0 bg-zinc-950/70">
-          <div className="flex items-center justify-between mb-2.5">
+        <div className="p-4 border-b border-white/10 flex-shrink-0 bg-zinc-950/80">
+          <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <h2 className="text-xs font-mono font-black uppercase tracking-widest text-emerald-400">
-                {isMr ? 'पुणे जिल्हा स्थान निर्देशांक' : 'DISTRICT COORDINATES'}
+                {isMr ? 'पुणे जिल्हा स्थान निर्देशांक' : 'DISTRICT DIRECTORY'}
               </h2>
             </div>
             <button
@@ -118,22 +123,22 @@ export default function DistrictControlPanel({
               className="p-1 rounded-full bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Search Box */}
+          {/* Real-time Search Input */}
           <div className="relative mb-2.5">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder={isMr ? 'नाव किंवा GPS निर्देशांक शोधा (उदा. 18.36)...' : 'Search by name or coordinates (e.g. 18.36)...'}
-              className="w-full pl-9 pr-8 py-2 text-xs font-mono text-white bg-zinc-900 border border-emerald-500/30 rounded-xl placeholder:text-white/40 focus:outline-none focus:border-emerald-400"
+              placeholder={isMr ? 'नाव, किल्ला, मंदिर किंवा निर्देशांक शोधा...' : 'Search fort, temple, lake, coordinates...'}
+              className="w-full px-3.5 py-2 pl-9 rounded-xl bg-white/5 border border-white/15 focus:border-emerald-400 focus:outline-none text-xs text-white placeholder-white/40 font-mono transition-colors"
             />
             <svg
-              className="w-4 h-4 text-emerald-400/60 absolute left-2.5 top-1/2 -translate-y-1/2"
+              className="w-4 h-4 text-white/40 absolute left-2.5 top-1/2 -translate-y-1/2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -144,88 +149,94 @@ export default function DistrictControlPanel({
               <button
                 type="button"
                 onClick={() => onSearchChange('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
-                aria-label="Clear search"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white text-xs"
               >
                 ✕
               </button>
             )}
           </div>
 
-          {/* Category Tabs Scroll */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+          {/* 15 Taluka Selector Dropdown */}
+          <div className="mb-2">
+            <label className="text-[10px] font-mono text-white/40 uppercase tracking-widest block mb-1">
+              {isMr ? 'तालुका निवडा (१५ तालुके)' : 'SELECT TALUKA (15 REGIONS)'}
+            </label>
+            <select
+              value={selectedTaluka}
+              onChange={(e) => onSelectTaluka(e.target.value)}
+              className="w-full px-2.5 py-1.5 rounded-xl bg-zinc-900 border border-emerald-500/30 text-xs font-mono text-emerald-300 focus:outline-none cursor-pointer"
+            >
+              <option value="all">
+                {isMr ? 'सर्व १५ तालुके (संपूर्ण जिल्हा)' : 'All 15 Talukas (Whole District)'}
+              </option>
+              {PUNE_TALUKAS.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {isMr ? t.nameMr : t.nameEn} ({isMr ? t.headquartersMr : t.headquartersEn})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Horizontal Category Filter Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 text-[11px] font-mono">
             <button
               type="button"
               onClick={() => onSelectCategory('all')}
-              className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+              className={`px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap ${
                 selectedCategory === 'all'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'bg-white/5 hover:bg-white/10 text-white/60 hover:text-white'
+                  ? 'bg-emerald-500 text-black font-bold'
+                  : 'bg-white/5 hover:bg-white/10 text-white/70'
               }`}
             >
-              All (106)
+              All ({allPlaces.length})
             </button>
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat.slug;
-              return (
-                <button
-                  key={cat.slug}
-                  type="button"
-                  onClick={() => onSelectCategory(cat.slug)}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold tracking-wider whitespace-nowrap transition-all ${
-                    isActive
-                      ? 'text-white bg-white/20 border border-emerald-400 shadow-md'
-                      : 'bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border border-transparent'
-                  }`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.color }} />
-                  <span>{isMr ? cat.nameMr : cat.nameEn}</span>
-                  <span className="text-[9px] opacity-70">({cat.count})</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Taluka Quick Filter */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 border-t border-white/5 text-[10px] font-mono">
-            <span className="text-white/40 flex-shrink-0">TALUKA:</span>
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'junnar', label: 'Junnar' },
-              { id: 'maval', label: 'Maval' },
-              { id: 'mulshi', label: 'Mulshi' },
-              { id: 'velhe', label: 'Velhe' },
-              { id: 'pune', label: 'City Core' },
-              { id: 'purandar', label: 'Purandar' },
-            ].map((t) => (
+            {categories.map((cat) => (
               <button
-                key={t.id}
+                key={cat.slug}
                 type="button"
-                onClick={() => onSelectTaluka(t.id)}
-                className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors ${
-                  selectedTaluka === t.id
-                    ? 'bg-amber-400 text-black font-bold'
-                    : 'bg-white/5 text-white/60 hover:text-white'
+                onClick={() => onSelectCategory(cat.slug)}
+                className={`px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap ${
+                  selectedCategory === cat.slug
+                    ? 'bg-emerald-500 text-black font-bold'
+                    : 'bg-white/5 hover:bg-white/10 text-white/70'
                 }`}
               >
-                {t.label}
+                {isMr ? cat.nameMr : cat.nameEn} ({cat.count})
               </button>
             ))}
           </div>
         </div>
 
-        {/* Scrollable Locations List */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2 min-h-0 custom-scrollbar">
+        {/* Results Counter Bar */}
+        <div className="px-4 py-1.5 bg-zinc-950/60 border-b border-white/5 flex items-center justify-between text-[10px] font-mono text-white/50 flex-shrink-0">
+          <span>{filteredPlaces.length} {isMr ? 'स्थाने आढळली' : 'Landmarks Found'}</span>
+          <span>Pune Datum: WGS 84</span>
+        </div>
+
+        {/* Scrollable Landmark Cards List */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
           {filteredPlaces.length === 0 ? (
-            <div className="py-12 text-center text-white/40 font-mono text-xs">
-              <p>NO LOCATIONS MATCH QUERY</p>
+            <div className="py-12 text-center text-white/40 text-xs font-mono">
+              <p>No landmarks found matching query.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  onSearchChange('');
+                  onSelectCategory('all');
+                  onSelectTaluka('all');
+                }}
+                className="mt-3 px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs hover:bg-emerald-500/30"
+              >
+                Reset All Filters
+              </button>
             </div>
           ) : (
             filteredPlaces.map((place) => {
-              const isSelected = selectedPlace?.id === place.id;
-              const placeName = isMr ? place.name_mr || place.name : place.name;
+              const isSelected = selectedPlace?.slug === place.slug;
               const coords = formatCoordinatesDD(place.latitude, place.longitude, 4);
               const taluka = getTalukaOrRegion(place.latitude, place.longitude, place.address);
+              const dist = calculateDistanceKm(18.5204, 73.8567, place.latitude, place.longitude);
+              const name = isMr ? place.name_mr || place.name : place.name;
 
               return (
                 <div
@@ -233,65 +244,51 @@ export default function DistrictControlPanel({
                   onClick={() => onSelectPlace(place)}
                   role="button"
                   tabIndex={0}
-                  aria-pressed={isSelected}
-                  className={`p-2.5 rounded-2xl cursor-pointer transition-all border flex gap-3 items-center group ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') onSelectPlace(place);
+                  }}
+                  className={`p-2.5 rounded-2xl flex items-center gap-3 cursor-pointer transition-all border ${
                     isSelected
-                      ? 'bg-emerald-950/60 border-emerald-400 shadow-xl'
-                      : 'bg-white/[0.03] hover:bg-white/[0.08] border-white/5 hover:border-emerald-500/30'
+                      ? 'bg-emerald-950/60 border-emerald-400 shadow-lg shadow-emerald-950/50 scale-[1.01]'
+                      : 'bg-white/[0.03] hover:bg-white/[0.08] border-white/5 hover:border-white/15'
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-zinc-900 flex-shrink-0 border border-white/10">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-zinc-900">
                     <Image
                       src={place.image_url || '/images/hero-shaniwar-wada.webp'}
-                      alt={placeName}
+                      alt={name}
                       fill
                       sizes="48px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover"
                     />
                   </div>
 
-                  {/* Info */}
+                  {/* Place Details */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <span className="text-[9px] font-mono font-bold uppercase text-emerald-400 truncate">
-                        {place.category_slug}
-                      </span>
-                      <span className="text-[9px] font-mono text-white/40 truncate">
-                        {taluka.nameEn.split(' ')[0]}
+                      <h4 className="text-xs font-bold text-white truncate max-w-[170px]">
+                        {name}
+                      </h4>
+                      <span className="text-[9px] font-mono text-amber-300 font-semibold">
+                        {dist} km
                       </span>
                     </div>
 
-                    <h3 className="text-xs font-bold text-white truncate group-hover:text-emerald-300 transition-colors">
-                      {placeName}
-                    </h3>
-
-                    {/* Coordinates Chip */}
-                    <div className="mt-1 flex items-center gap-1.5 text-[10px] font-mono text-amber-300/90 bg-black/40 px-2 py-0.5 rounded-md border border-white/5 w-fit">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                      <span>{coords}</span>
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/50 mb-1">
+                      <span className="text-emerald-400">📍 {isMr ? taluka.nameMr : taluka.nameEn}</span>
+                      <span>•</span>
+                      <span className="truncate">{place.category_slug}</span>
                     </div>
-                  </div>
 
-                  {/* Arrow Indicator */}
-                  <div className="text-white/20 group-hover:text-emerald-400 transition-colors pr-1">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <div className="text-[9px] font-mono text-white/40 truncate">
+                      {coords}
+                    </div>
                   </div>
                 </div>
               );
             })
           )}
-        </div>
-
-        {/* Footer Status */}
-        <div className="p-3 border-t border-white/10 bg-zinc-950 flex items-center justify-between text-[11px] font-mono text-white/50 flex-shrink-0">
-          <span>{filteredPlaces.length} LOCATIONS PINNED</span>
-          <span className="text-emerald-400 flex items-center gap-1 font-bold">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            100% REAL GPS
-          </span>
         </div>
       </aside>
     </>

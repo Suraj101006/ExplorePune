@@ -233,18 +233,71 @@ describe('Explore Pune Experience - Pune District Coordinate & Real Satellite En
     expect(coords.length).toBeGreaterThan(10);
   });
 
-  it('configures 8 iconic autonomous tour waypoints across Pune District', async () => {
-    const { DISTRICT_TOUR_STOPS } = await import('../lib/experience/puneDistrictData');
-    expect(DISTRICT_TOUR_STOPS.length).toBe(8);
+  it('defines all 15 official talukas of Pune District with valid bounds and GeoJSON', async () => {
+    const { PUNE_TALUKAS, getPuneTalukasGeoJson } = await import(
+      '../lib/experience/puneDistrictData'
+    );
+    expect(PUNE_TALUKAS.length).toBe(15);
 
-    DISTRICT_TOUR_STOPS.forEach((stop) => {
-      expect(stop.nameEn).toBeTruthy();
-      expect(stop.nameMr).toBeTruthy();
-      expect(stop.latitude).toBeGreaterThan(18.0);
-      expect(stop.latitude).toBeLessThan(19.5);
-      expect(stop.longitude).toBeGreaterThan(73.0);
-      expect(stop.longitude).toBeLessThan(75.0);
-      expect(stop.elevationMeters).toBeGreaterThan(400);
+    const requiredTalukaIds = [
+      'pune-city',
+      'haveli',
+      'pcmc',
+      'maval',
+      'mulshi',
+      'bhor',
+      'velhe',
+      'purandar',
+      'baramati',
+      'indapur',
+      'daund',
+      'shirur',
+      'khed',
+      'junnar',
+      'ambegaon',
+    ];
+
+    requiredTalukaIds.forEach((id) => {
+      const taluka = PUNE_TALUKAS.find((t) => t.id === id);
+      expect(taluka, `Missing taluka: ${id}`).toBeDefined();
+      expect(taluka?.nameEn).toBeTruthy();
+      expect(taluka?.nameMr).toBeTruthy();
+      expect(taluka?.bounds.length).toBe(2);
+    });
+
+    const talukasGeoJson = getPuneTalukasGeoJson();
+    expect(talukasGeoJson.type).toBe('FeatureCollection');
+    expect(talukasGeoJson.features.length).toBe(15);
+  });
+
+  it('provides verified Pune District rivers, reservoirs, and highway corridors GeoJSON', async () => {
+    const { getPuneRiversGeoJson, getPuneHighwaysGeoJson } = await import(
+      '../lib/experience/puneDistrictData'
+    );
+
+    const riversGeoJson = getPuneRiversGeoJson();
+    expect(riversGeoJson.type).toBe('FeatureCollection');
+    expect(riversGeoJson.features.length).toBeGreaterThanOrEqual(5);
+
+    const highwaysGeoJson = getPuneHighwaysGeoJson();
+    expect(highwaysGeoJson.type).toBe('FeatureCollection');
+    expect(highwaysGeoJson.features.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('configures 5 curated geographical storytelling trails across Pune District', async () => {
+    const { STORY_TRAILS } = await import('../lib/experience/puneDistrictData');
+    expect(STORY_TRAILS.length).toBe(5);
+
+    STORY_TRAILS.forEach((trail) => {
+      expect(trail.id).toBeTruthy();
+      expect(trail.titleEn).toBeTruthy();
+      expect(trail.titleMr).toBeTruthy();
+      expect(trail.stops.length).toBeGreaterThanOrEqual(4);
+      trail.stops.forEach((stop) => {
+        expect(stop.nameEn).toBeTruthy();
+        expect(stop.latitude).toBeGreaterThan(18.0);
+        expect(stop.longitude).toBeGreaterThan(73.0);
+      });
     });
   });
 });

@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 describe('Layout Responsiveness & Viewport Constraint Benchmarks', () => {
-  const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
+  const rawCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
+  const globalsCss = rawCss.replace(/\r\n/g, '\n');
 
   const VIEWPORT_WIDTHS = [1920, 1440, 1366, 1024, 768, 430, 390, 375, 360, 320];
 
