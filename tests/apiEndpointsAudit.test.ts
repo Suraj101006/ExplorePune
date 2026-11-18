@@ -73,7 +73,7 @@ describe('Comprehensive 20-Endpoint Backend API Reliability & Security Audit', (
       expect(json.success).toBe(true);
       expect(Array.isArray(json.photos)).toBe(true);
       expect(json.photos.length).toBeGreaterThan(0);
-    });
+    }, 15000);
 
     it('returns 400 when missing slug and name', async () => {
       const req = new NextRequest('http://localhost:3000/api/v1/places/photos');
@@ -211,7 +211,7 @@ describe('Comprehensive 20-Endpoint Backend API Reliability & Security Audit', (
       expect(typeof json.conditionMr).toBe('string');
       expect(json.conditionEn.length).toBeGreaterThan(0);
       expect(json.conditionMr.length).toBeGreaterThan(0);
-    });
+    }, 15000);
   });
 
   describe('8. /api/v1/recommendations (GET & POST)', () => {

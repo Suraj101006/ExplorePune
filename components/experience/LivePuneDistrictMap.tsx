@@ -20,6 +20,10 @@ import {
   getPuneTalukasGeoJson,
   getPuneRiversGeoJson,
   getPuneHighwaysGeoJson,
+  getPuneRailwaysGeoJson,
+  getPuneForestReservesGeoJson,
+  getPuneMountainRangesGeoJson,
+  getPuneBridgesGeoJson,
   PUNE_TALUKAS,
   formatCoordinatesDD,
   calculateDistanceKm,
@@ -810,6 +814,121 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'line-color': '#ffffff',
             'line-width': 3.5,
             'line-opacity': 0.95,
+          },
+        });
+      }
+
+      // I. Protected Forest Reserves & Wildlife Sanctuaries (Canopy Layer)
+      if (!map.getSource('pune-forests-source')) {
+        map.addSource('pune-forests-source', {
+          type: 'geojson',
+          data: getPuneForestReservesGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-forests-fill',
+          type: 'fill',
+          source: 'pune-forests-source',
+          paint: {
+            'fill-color': '#059669',
+            'fill-opacity': 0.16,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-forests-stroke',
+          type: 'line',
+          source: 'pune-forests-source',
+          paint: {
+            'line-color': '#10b981',
+            'line-width': 1.6,
+            'line-opacity': 0.65,
+            'line-dasharray': [3, 2],
+          },
+        });
+      }
+
+      // J. Sahyadri Mountain Ridgelines & Crest Water Divide
+      if (!map.getSource('pune-mountains-source')) {
+        map.addSource('pune-mountains-source', {
+          type: 'geojson',
+          data: getPuneMountainRangesGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-mountains-glow',
+          type: 'line',
+          source: 'pune-mountains-source',
+          paint: {
+            'line-color': '#f59e0b',
+            'line-width': 5,
+            'line-opacity': 0.25,
+            'line-blur': 2,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-mountains-line',
+          type: 'line',
+          source: 'pune-mountains-source',
+          paint: {
+            'line-color': '#d97706',
+            'line-width': 2.2,
+            'line-opacity': 0.8,
+            'line-dasharray': [6, 2],
+          },
+        });
+      }
+
+      // K. Pune Central Railway Corridors
+      if (!map.getSource('pune-railways-source')) {
+        map.addSource('pune-railways-source', {
+          type: 'geojson',
+          data: getPuneRailwaysGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-railways-bed',
+          type: 'line',
+          source: 'pune-railways-source',
+          paint: {
+            'line-color': '#334155',
+            'line-width': 3.5,
+            'line-opacity': 0.85,
+          },
+        });
+
+        map.addLayer({
+          id: 'pune-railways-ties',
+          type: 'line',
+          source: 'pune-railways-source',
+          paint: {
+            'line-color': '#e2e8f0',
+            'line-width': 1.8,
+            'line-opacity': 0.95,
+            'line-dasharray': [2, 3],
+          },
+        });
+      }
+
+      // L. Pune City Heritage Bridges (Mula-Mutha river crossings)
+      if (!map.getSource('pune-bridges-source')) {
+        map.addSource('pune-bridges-source', {
+          type: 'geojson',
+          data: getPuneBridgesGeoJson(),
+        });
+
+        map.addLayer({
+          id: 'pune-bridges-circles',
+          type: 'circle',
+          source: 'pune-bridges-source',
+          minzoom: 11,
+          paint: {
+            'circle-radius': 6,
+            'circle-color': '#f97316',
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#ffffff',
+            'circle-opacity': 0.9,
           },
         });
       }

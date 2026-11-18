@@ -1244,3 +1244,322 @@ export const MAP_STYLE_OPTIONS: MapStyleOption[] = [
     descriptionEn: 'High-contrast nocturnal cartography designed for heritage discovery',
   },
 ];
+
+/**
+ * GeoJSON FeatureCollection of Pune District Railway Corridors
+ * (Central Railway: Mumbai Mainline, Daund/Solapur Line, Miraj South Line)
+ */
+export function getPuneRailwaysGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      // Pune - Lonavala - Mumbai Suburban/Mainline Corridor
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.8744, 18.5284], // Pune Railway Station
+            [73.8510, 18.5320], // Shivajinagar
+            [73.8340, 18.5610], // Khadki
+            [73.8290, 18.5780], // Dapodi
+            [73.8180, 18.5990], // Kasarwadi
+            [73.8010, 18.6270], // Pimpri
+            [73.7840, 18.6350], // Chinchwad
+            [73.7660, 18.6510], // Akurdi
+            [73.7220, 18.7080], // Dehu Road
+            [73.6820, 18.7320], // Talegaon Dabhade
+            [73.6120, 18.7450], // Vadgaon Maval
+            [73.5580, 18.7610], // Kamshet
+            [73.4720, 18.7630], // Malavli
+            [73.4080, 18.7520], // Lonavala
+            [73.3750, 18.7610], // Khandala Ghat Descent
+          ],
+        },
+        properties: {
+          name: 'Pune - Mumbai Mainline (Central Railway)',
+          nameMr: 'पुणे - मुंबई मुख्य रेल्वेमार्ग',
+          type: 'mainline',
+        },
+      },
+      // Pune - Daund - Solapur Eastern Trunk Corridor
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.8744, 18.5284], // Pune Station
+            [73.9180, 18.5080], // Ghorpudi
+            [73.9350, 18.5050], // Hadapsar
+            [74.0150, 18.4920], // Loni
+            [74.1200, 18.4810], // Uruli Kanchan
+            [74.2500, 18.4680], // Yawat
+            [74.3800, 18.4610], // Kedgaon
+            [74.4750, 18.4550], // Patas
+            [74.5820, 18.4640], // Daund Junction
+          ],
+        },
+        properties: {
+          name: 'Pune - Daund Trunk Line',
+          nameMr: 'पुणे - दौंड मुख्य रेल्वेमार्ग',
+          type: 'mainline',
+        },
+      },
+      // Pune - Miraj - Kolhapur Southern Branch
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.8744, 18.5284], // Pune Station
+            [73.9180, 18.5080], // Ghorpudi
+            [73.9620, 18.4680], // Saswad Road / Phursungi
+            [74.0520, 18.3980], // Alandi Station / Shindawane Ghat
+            [74.1520, 18.3120], // Ambale
+            [74.1680, 18.2810], // Jejuri Station
+            [74.1950, 18.1250], // Nira (District Southern Border)
+          ],
+        },
+        properties: {
+          name: 'Pune - Miraj Southern Railway',
+          nameMr: 'पुणे - मिरज दक्षिण रेल्वेमार्ग',
+          type: 'branchline',
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * GeoJSON FeatureCollection of Major Protected Forest Reserves & Wildlife Sanctuaries
+ */
+export function getPuneForestReservesGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      // 1. Bhimashankar Wildlife Sanctuary (Sacred Cloud Forest & Shekru habitat)
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [73.48, 19.02],
+              [73.58, 19.12],
+              [73.65, 19.10],
+              [73.62, 19.00],
+              [73.52, 18.96],
+              [73.48, 19.02],
+            ],
+          ],
+        },
+        properties: {
+          name: 'Bhimashankar Wildlife Sanctuary',
+          nameMr: 'भीमाशंकर वन्यजीव अभयारण्य (शेकरू निवास)',
+          type: 'sanctuary',
+        },
+      },
+      // 2. Tamhini Ghat & Mulshi Rainforest Corridor
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [73.35, 18.45],
+              [73.48, 18.53],
+              [73.52, 18.48],
+              [73.42, 18.38],
+              [73.35, 18.45],
+            ],
+          ],
+        },
+        properties: {
+          name: 'Tamhini Ghat Protected Forest Corridor',
+          nameMr: 'ताम्हिणी घाट संरक्षित वनक्षेत्र',
+          type: 'corridor',
+        },
+      },
+      // 3. Sinhagad - Khadakwasla Forest Reserve
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [73.72, 18.34],
+              [73.78, 18.39],
+              [73.80, 18.35],
+              [73.74, 18.32],
+              [73.72, 18.34],
+            ],
+          ],
+        },
+        properties: {
+          name: 'Sinhagad Forest Reserve',
+          nameMr: 'सिंहगड राखीव वनक्षेत्र',
+          type: 'reserve',
+        },
+      },
+      // 4. Rajgad - Torna Swarajya Highland Reserve
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [73.58, 18.25],
+              [73.72, 18.30],
+              [73.70, 18.23],
+              [73.60, 18.21],
+              [73.58, 18.25],
+            ],
+          ],
+        },
+        properties: {
+          name: 'Rajgad - Torna Swarajya Highland Reserve',
+          nameMr: 'राजगड - तोरणा गिरिदुर्ग संरक्षित वनक्षेत्र',
+          type: 'reserve',
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * GeoJSON FeatureCollection of Major Sahyadri Mountain Ridgelines in Pune District
+ */
+export function getPuneMountainRangesGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      // Main Sahyadri Western Ghats Crest Line (North to South Water Divide)
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.68, 19.32], // Harishchandragad / Junnar boundary
+            [73.60, 19.18], // Shivneri / Naneghat Pass
+            [73.53, 19.06], // Bhimashankar Crest
+            [73.42, 18.78], // Rajmachi / Khandala Escarpment
+            [73.38, 18.52], // Tamhini Pass Ridge
+            [73.55, 18.28], // Torna / Velhe Crest
+            [73.68, 18.20], // Madhe Ghat Escarpment into Konkan
+            [73.82, 18.06], // Bhor Ghat crest into Mahad
+          ],
+        },
+        properties: {
+          name: 'Sahyadri Main Mountain Crest Line (Western Ghats)',
+          nameMr: 'सह्याद्री मुख्य रांग व कोकण कडा (जलविभाजक)',
+          type: 'mountain_crest',
+        },
+      },
+      // Katraj - Sinhagad Range
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.88, 18.44], // Katraj Ghat Pass
+            [73.82, 18.39], // Khadakwasla ridge
+            [73.755, 18.366], // Sinhagad Citadel Peak (1312m)
+            [73.68, 18.35], // Vinzar pass
+          ],
+        },
+        properties: {
+          name: 'Katraj - Sinhagad Range',
+          nameMr: 'कात्रज - सिंहगड डोंगररांग',
+          type: 'ridge',
+        },
+      },
+      // Purandar - Vajragad Spur
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [73.92, 18.33], // Bapdeo Ghat Pass
+            [73.978, 18.278], // Purandar Fort Peak (1387m)
+            [74.02, 18.28], // Vajragad
+          ],
+        },
+        properties: {
+          name: 'Purandar - Vajragad Spur',
+          nameMr: 'पुरंदर - वज्रगड डोंगररांग',
+          type: 'ridge',
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * GeoJSON FeatureCollection of Pune City Heritage Bridges
+ */
+export function getPuneBridgesGeoJson(): GeoJSON.FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [73.8505, 18.5175],
+        },
+        properties: {
+          name: 'Lakdi Pul (Sambhaji Bridge, 1761)',
+          nameMr: 'लाकडी पूल (संभाजी पूल, १७६१)',
+          year: 1761,
+        },
+      },
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [73.8502, 18.5192],
+        },
+        properties: {
+          name: 'Z-Bridge (Kakasaheb Gadgil)',
+          nameMr: 'झेड-पूल (काकासाहेब गाडगीळ पूल)',
+        },
+      },
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [73.8550, 18.5225],
+        },
+        properties: {
+          name: 'Shivaji Bridge (Lloyd Bridge, 1922)',
+          nameMr: 'छत्रपती शिवाजी पूल (लॉयड पूल, १९२२)',
+          year: 1922,
+        },
+      },
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [73.8652, 18.5320],
+        },
+        properties: {
+          name: 'Sangam Bridge (Wellesley Bridge, 1875)',
+          nameMr: 'संगम पूल (वेलेस्ली पूल, १८७५)',
+          year: 1875,
+        },
+      },
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [73.8820, 18.5385],
+        },
+        properties: {
+          name: 'Bund Garden Bridge (Fitzgerald Bridge, 1867)',
+          nameMr: 'बंडगार्डन पूल (फिट्झगेराल्ड पूल, १८६७)',
+          year: 1867,
+        },
+      },
+    ],
+  };
+}

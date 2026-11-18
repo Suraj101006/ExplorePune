@@ -157,4 +157,80 @@ describe('GTA-Inspired Open-World 3D Map & Navigation System', () => {
     const resMsn = recordMissionCompleted('mission-swarajya');
     expect(resMsn.profile.unlockedAchievementIds).toContain('trail_master');
   });
+
+  it('validates authentic Pune District geographical data and boundary constraints', async () => {
+    const {
+      getPuneDistrictBoundaryGeoJson,
+      getPuneTalukasGeoJson,
+      getPuneRiversGeoJson,
+      getPuneHighwaysGeoJson,
+      getPuneRailwaysGeoJson,
+      getPuneForestReservesGeoJson,
+      getPuneMountainRangesGeoJson,
+      getPuneBridgesGeoJson,
+      PUNE_TALUKAS,
+    } = await import('../lib/experience/puneDistrictData');
+
+    // 1. All 15 talukas verified
+    expect(PUNE_TALUKAS.length).toBe(15);
+    PUNE_TALUKAS.forEach((taluka) => {
+      expect(taluka.id).toBeTruthy();
+      expect(taluka.nameEn).toBeTruthy();
+      expect(taluka.nameMr).toBeTruthy();
+      expect(taluka.centroid[0]).toBeGreaterThan(73.2);
+      expect(taluka.centroid[0]).toBeLessThan(75.2);
+      expect(taluka.centroid[1]).toBeGreaterThan(17.9);
+      expect(taluka.centroid[1]).toBeLessThan(19.4);
+    });
+
+    // 2. District & Taluka GeoJSON
+    const districtGeo = getPuneDistrictBoundaryGeoJson();
+    expect(districtGeo.type).toBe('FeatureCollection');
+    expect(districtGeo.features.length).toBeGreaterThan(0);
+
+    const talukasGeo = getPuneTalukasGeoJson();
+    expect(talukasGeo.features.length).toBe(15);
+
+    // 3. Rivers & Highways GeoJSON
+    const riversGeo = getPuneRiversGeoJson();
+    expect(riversGeo.features.length).toBeGreaterThan(5);
+
+    const highwaysGeo = getPuneHighwaysGeoJson();
+    expect(highwaysGeo.features.length).toBeGreaterThanOrEqual(4);
+
+    // 4. Railways, Forests, Mountains & Bridges GeoJSON
+    const railwaysGeo = getPuneRailwaysGeoJson();
+    expect(railwaysGeo.features.length).toBe(3); // Mumbai Mainline, Daund Trunk, Miraj Line
+    railwaysGeo.features.forEach((f) => {
+      expect(f.geometry.type).toBe('LineString');
+    });
+
+    const forestsGeo = getPuneForestReservesGeoJson();
+    expect(forestsGeo.features.length).toBeGreaterThanOrEqual(4); // Bhimashankar, Tamhini, Sinhagad, Rajgad-Torna
+    forestsGeo.features.forEach((f) => {
+      expect(f.geometry.type).toBe('Polygon');
+    });
+
+    const mountainsGeo = getPuneMountainRangesGeoJson();
+    expect(mountainsGeo.features.length).toBe(3); // Sahyadri crest, Katraj-Sinhagad, Purandar-Vajragad
+    mountainsGeo.features.forEach((f) => {
+      expect(f.geometry.type).toBe('LineString');
+    });
+
+    const bridgesGeo = getPuneBridgesGeoJson();
+    expect(bridgesGeo.features.length).toBe(5); // Lakdi Pul, Z-Bridge, Shivaji Bridge, Sangam Bridge, Bund Garden
+    bridgesGeo.features.forEach((f) => {
+      expect(f.geometry.type).toBe('Point');
+    });
+
+    // 5. All 106 destinations coordinates sanity check
+    const allPlaces = getAllPlaces();
+    expect(allPlaces.length).toBe(106);
+    allPlaces.forEach((p) => {
+      expect(p.latitude, `Place ${p.slug} latitude`).toBeGreaterThan(17.9);
+      expect(p.latitude, `Place ${p.slug} latitude`).toBeLessThan(19.4);
+      expect(p.longitude, `Place ${p.slug} longitude`).toBeGreaterThan(73.2);
+      expect(p.longitude, `Place ${p.slug} longitude`).toBeLessThan(75.2);
+    });
+  });
 });
