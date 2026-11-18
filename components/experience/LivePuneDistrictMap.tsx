@@ -63,6 +63,9 @@ export interface DistrictMapHandle {
   setGtaWaypointRoute?: (start: [number, number], end: [number, number]) => void;
   clearGtaWaypointRoute?: () => void;
   setCameraMode?: (mode: CameraModeKey, targetPlace?: ExperiencePlace | null) => void;
+  getExplorerPosition?: () => [number, number];
+  setExplorerPosition?: (lng: number, lat: number) => void;
+  teleportExplorerToPlace?: (place: ExperiencePlace) => void;
 }
 
 interface LivePuneDistrictMapProps {
@@ -226,6 +229,8 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     const activeMarkerRef = useRef<maplibregl.Marker | null>(null);
     const travelerMarkerRef = useRef<maplibregl.Marker | null>(null);
     const customWaypointsRef = useRef<maplibregl.Marker[]>([]);
+    const explorerMarkerRef = useRef<maplibregl.Marker | null>(null);
+    const explorerPosRef = useRef<[number, number]>([73.8553, 18.5196]); // Shaniwar Wada default
 
     // Animation frame refs
     const routeAnimRef = useRef<number | null>(null);
@@ -239,6 +244,63 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     const [isTilted, setIsTilted] = useState<boolean>(is3d);
     const [isDriftActive, setIsDriftActive] = useState<boolean>(false);
     const isDriftEnabledRef = useRef<boolean>(true);
+
+    // Virtual Explorer Marker Creator & Dynamic Heading Cone
+    const initOrUpdateVirtualExplorer = useCallback(
+      (m: maplibregl.Map, lng: number, lat: number, bearing: number = 0) => {
+        explorerPosRef.current = [lng, lat];
+        if (!explorerMarkerRef.current) {
+          const el = document.createElement('div');
+          el.className = 'virtual-explorer-container group relative flex flex-col items-center cursor-pointer select-none z-40';
+          el.innerHTML = `
+            <!-- Rotating Dynamic Field-of-View Cone -->
+            <div id="explorer-fov-cone" class="absolute -top-12 w-24 h-24 pointer-events-none transition-transform duration-100 ease-out" style="transform: rotate(${bearing}deg);">
+              <svg viewBox="0 0 100 100" class="w-full h-full opacity-70 drop-shadow-[0_0_10px_rgba(16,185,129,0.9)]">
+                <defs>
+                  <radialGradient id="playerFovGrad" cx="50%" cy="100%" r="100%">
+                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.85"/>
+                    <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <polygon points="50,100 12,5 88,5" fill="url(#playerFovGrad)" />
+              </svg>
+            </div>
+
+            <!-- Outer Pulsing Radar Rings -->
+            <span class="absolute -inset-3 rounded-full border-2 border-emerald-400 opacity-60 animate-ping"></span>
+            <span class="absolute -inset-1.5 rounded-full border border-cyan-400 opacity-40"></span>
+
+            <!-- Core Player Avatar Marker -->
+            <div class="relative w-11 h-11 rounded-2xl bg-zinc-950/95 border-2 border-emerald-400 shadow-[0_0_25px_rgba(16,185,129,0.85)] flex items-center justify-center text-emerald-300">
+              <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+                <circle cx="12" cy="7" r="4" />
+                <path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z" />
+              </svg>
+            </div>
+
+            <!-- Floating Callout Label -->
+            <div class="mt-1 px-2.5 py-0.5 rounded-full bg-black/95 border border-emerald-500/60 text-[9px] font-mono font-black text-emerald-300 tracking-wider flex items-center gap-1.5 shadow-2xl backdrop-blur-md">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>YOU · VIRTUAL EXPLORER</span>
+            </div>
+          `;
+
+          const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+            .setLngLat([lng, lat])
+            .addTo(m);
+
+          explorerMarkerRef.current = marker;
+        } else {
+          explorerMarkerRef.current.setLngLat([lng, lat]);
+          const cone = document.getElementById('explorer-fov-cone');
+          if (cone) {
+            cone.style.transform = `rotate(${bearing}deg)`;
+          }
+        }
+      },
+      []
+    );
 
     // 1. Initialize Map
     useEffect(() => {
@@ -283,11 +345,18 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           pitch,
           zoom,
         });
+
+        // Rotate explorer vision cone to match player orientation
+        const cone = document.getElementById('explorer-fov-cone');
+        if (cone) {
+          cone.style.transform = `rotate(${bearing}deg)`;
+        }
       };
 
       map.on('load', () => {
         setIsMapLoaded(true);
         setupAllGeographicLayers(map);
+        initOrUpdateVirtualExplorer(map, explorerPosRef.current[0], explorerPosRef.current[1], DEFAULT_BEARING);
         reportCamera();
       });
 
@@ -420,6 +489,10 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
         if (activeMarkerRef.current) activeMarkerRef.current.remove();
         if (travelerMarkerRef.current) travelerMarkerRef.current.remove();
+        if (explorerMarkerRef.current) {
+          explorerMarkerRef.current.remove();
+          explorerMarkerRef.current = null;
+        }
 
         map.remove();
         mapRef.current = null;
@@ -1264,23 +1337,15 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         navigator.geolocation.getCurrentPosition(
           (pos) => {
             const { latitude, longitude } = pos.coords;
-            mapRef.current?.flyTo({
+            const m = mapRef.current;
+            if (!m) return;
+            initOrUpdateVirtualExplorer(m, longitude, latitude, m.getBearing());
+            m.flyTo({
               center: [longitude, latitude],
-              zoom: 14.5,
-              pitch: isTilted ? 45 : 0,
+              zoom: 14.8,
+              pitch: isTilted ? 55 : 0,
               duration: 1800,
             });
-
-            // Pulse beacon for user location
-            const userPin = document.createElement('div');
-            userPin.className = 'relative flex items-center justify-center';
-            userPin.innerHTML = `
-              <span class="animate-ping absolute inline-flex h-10 w-10 rounded-full bg-blue-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 border-2 border-white shadow-xl"></span>
-            `;
-            new maplibregl.Marker({ element: userPin })
-              .setLngLat([longitude, latitude])
-              .addTo(mapRef.current!);
           },
           (err) => {
             console.warn('Geolocation error:', err.message);
@@ -1766,6 +1831,29 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             }
             break;
         }
+      },
+
+      // Virtual Explorer Position & Teleportation
+      getExplorerPosition: () => {
+        return explorerPosRef.current;
+      },
+
+      setExplorerPosition: (lng: number, lat: number) => {
+        const m = mapRef.current;
+        if (!m) return;
+        initOrUpdateVirtualExplorer(m, lng, lat, m.getBearing());
+      },
+
+      teleportExplorerToPlace: (place: ExperiencePlace) => {
+        const m = mapRef.current;
+        if (!m) return;
+        initOrUpdateVirtualExplorer(m, place.longitude, place.latitude, m.getBearing());
+        m.flyTo({
+          center: [place.longitude, place.latitude],
+          zoom: 14.8,
+          pitch: 58,
+          duration: 1200,
+        });
       },
 
       // Opening Cinematic Fly-In from Maharashtra overview to Pune District

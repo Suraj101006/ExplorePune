@@ -11,6 +11,7 @@ import {
   STORY_TRAILS,
   StoryTrail,
   PUNE_TALUKAS,
+  calculateDistanceKm,
 } from '@/lib/experience/puneDistrictData';
 import { MapLayerState, TimeOfDayKey } from '@/components/experience/DistrictMapControls';
 import { ambientAudio } from '@/lib/experience/ambientAudio';
@@ -40,6 +41,7 @@ import GameWaypointBar from '@/components/experience/GameWaypointBar';
 import DiscoveryMissionsModal, { DiscoveryMission } from '@/components/experience/DiscoveryMissionsModal';
 import AchievementsModal from '@/components/experience/AchievementsModal';
 import AchievementToast from '@/components/experience/AchievementToast';
+import GameNotificationBanner, { GameNotification } from '@/components/experience/GameNotificationBanner';
 import DistrictRegionBar from '@/components/experience/DistrictRegionBar';
 import DistrictControlPanel from '@/components/experience/DistrictControlPanel';
 import DistrictLocationDrawer from '@/components/experience/DistrictLocationDrawer';
@@ -51,6 +53,7 @@ import {
   loadExplorationProfile,
   recordPlaceVisit,
   recordMissionCompleted,
+  recordMissionStopProgress,
   ExplorationAchievement,
   UserExplorationProfile,
   MASTER_ACHIEVEMENTS,
@@ -97,6 +100,12 @@ export default function ExperiencePage() {
   const [isAchievementsOpen, setIsAchievementsOpen] = useState<boolean>(false);
   const [activeAchievementToast, setActiveAchievementToast] = useState<ExplorationAchievement | null>(null);
   const [profile, setProfile] = useState<UserExplorationProfile>(loadExplorationProfile());
+
+  // Game-Style Notifications state
+  const [gameNotification, setGameNotification] = useState<GameNotification | null>(null);
+
+  // User Device GPS Location (for authentic on-site proximity discovery)
+  const [userLocationCoords, setUserLocationCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
   // Custom Multi-Stop Trail State
   const [customTrailPlaces, setCustomTrailPlaces] = useState<ExperiencePlace[]>([]);
@@ -204,17 +213,75 @@ export default function ExperiencePage() {
   }, []);
 
   // Handle Place Selection & Discovery Achievements Recording
-  const handleSelectPlace = useCallback((place: ExperiencePlace) => {
-    setSelectedPlace(place);
-    mapRef.current?.flyToPlace(place);
+  const handleSelectPlace = useCallback(
+    (place: ExperiencePlace) => {
+      setSelectedPlace(place);
+      mapRef.current?.flyToPlace(place);
 
-    // Record place visit for exploration trophies
-    const { profile: updatedProfile, newlyUnlocked } = recordPlaceVisit(place, allPlaces);
-    setProfile(updatedProfile);
-    if (newlyUnlocked.length > 0) {
-      setActiveAchievementToast(newlyUnlocked[0]);
-    }
-  }, [allPlaces]);
+      // Record place visit for exploration trophies & optional proximity
+      const {
+        profile: updatedProfile,
+        newlyUnlocked,
+        isFirstDiscovery,
+        isProximityDiscovery,
+        talukaName,
+      } = recordPlaceVisit(place, allPlaces, userLocationCoords || undefined);
+      setProfile(updatedProfile);
+
+      // Check if place progresses active mission
+      let missionCompletedNow = false;
+      if (activeMission && activeMission.stopSlugs.includes(place.slug)) {
+        const { profile: msnProfile, newlyCompleted, newlyUnlocked: msnAchievements } =
+          recordMissionStopProgress(activeMission.id, place.slug, activeMission.stopSlugs);
+        setProfile(msnProfile);
+
+        if (newlyCompleted) {
+          missionCompletedNow = true;
+          setGameNotification({
+            id: `msn_comp_${Date.now()}`,
+            type: 'mission_completed',
+            title: isMr ? `${activeMission.titleMr} पूर्ण!` : `${activeMission.titleEn} Completed!`,
+            subtitle: isMr
+              ? `सर्व ${activeMission.stopSlugs.length} मार्ग ठिकाणांची यशस्वी सफर!`
+              : `All ${activeMission.stopSlugs.length} trail waypoints successfully explored!`,
+            xp: 250,
+            badge: 'MISSION COMPLETE',
+          });
+        }
+
+        if (msnAchievements.length > 0) {
+          setActiveAchievementToast(msnAchievements[0]);
+        }
+      }
+
+      if (newlyUnlocked.length > 0) {
+        setActiveAchievementToast(newlyUnlocked[0]);
+        if (!missionCompletedNow) {
+          setGameNotification({
+            id: `ach_${Date.now()}`,
+            type: 'achievement_unlocked',
+            title: isMr ? newlyUnlocked[0].titleMr : newlyUnlocked[0].titleEn,
+            subtitle: isMr ? newlyUnlocked[0].descriptionMr : newlyUnlocked[0].descriptionEn,
+            xp: newlyUnlocked[0].xp,
+            icon: newlyUnlocked[0].icon,
+            badge: newlyUnlocked[0].code,
+          });
+        }
+      } else if (isFirstDiscovery && !missionCompletedNow) {
+        setGameNotification({
+          id: `disc_${Date.now()}`,
+          type: 'destination_discovered',
+          title: isMr ? place.name_mr || place.name : place.name,
+          subtitle: isProximityDiscovery
+            ? `${isMr ? 'प्रत्यक्ष जागेवर शोध' : 'On-Site GPS Discovery'} · ${talukaName || place.category_slug}`
+            : `${isMr ? 'अ‍ॅटलस शोध' : 'Atlas Discovery'} · ${talukaName || place.category_slug}`,
+          xp: isProximityDiscovery ? 150 : 50,
+          badge: isProximityDiscovery ? 'ON-SITE GPS' : 'NEW DISCOVERY',
+        });
+      }
+    },
+    [allPlaces, userLocationCoords, activeMission, isMr]
+  );
 
   // Handle Taluka Selection
   const handleSelectTaluka = useCallback((talukaId: string) => {
@@ -223,16 +290,31 @@ export default function ExperiencePage() {
   }, []);
 
   // GTA GPS Waypoint Handlers
-  const handleSetWaypoint = useCallback((place: ExperiencePlace) => {
-    setWaypointPlace(place);
-    setSelectedPlace(place);
-    ambientAudio.playUiBlip(1040, 0.08);
+  const handleSetWaypoint = useCallback(
+    (place: ExperiencePlace) => {
+      setWaypointPlace(place);
+      setSelectedPlace(place);
+      ambientAudio.playUiBlip(1040, 0.08);
 
-    // Generate glowing GPS route line from player/camera center to waypoint
-    const origin: [number, number] = [cameraState.centerLng, cameraState.centerLat];
-    const destination: [number, number] = [place.longitude, place.latitude];
-    mapRef.current?.setGtaWaypointRoute?.(origin, destination);
-  }, [cameraState]);
+      // Generate glowing GPS route line from virtual explorer (or camera center) to waypoint
+      const origin: [number, number] =
+        mapRef.current?.getExplorerPosition?.() || [cameraState.centerLng, cameraState.centerLat];
+      const destination: [number, number] = [place.longitude, place.latitude];
+      mapRef.current?.setGtaWaypointRoute?.(origin, destination);
+
+      const distKm = calculateDistanceKm(origin[1], origin[0], place.latitude, place.longitude);
+      const estDriveMin = Math.max(5, Math.round((distKm / 32) * 60));
+
+      setGameNotification({
+        id: `wp_${Date.now()}`,
+        type: 'waypoint_added',
+        title: isMr ? place.name_mr || place.name : place.name,
+        subtitle: `${distKm} km · ${isMr ? 'अंदाजे वेळ' : 'Est. Drive'}: ${estDriveMin} min`,
+        badge: 'GPS WAYPOINT',
+      });
+    },
+    [cameraState, isMr]
+  );
 
   const handleClearWaypoint = useCallback(() => {
     setWaypointPlace(null);
@@ -240,28 +322,32 @@ export default function ExperiencePage() {
   }, []);
 
   // Discovery Missions Selection Handler
-  const handleSelectMission = useCallback((mission: DiscoveryMission, stops: ExperiencePlace[]) => {
-    setActiveMission(mission);
-    setCustomTrailPlaces(stops);
+  const handleSelectMission = useCallback(
+    (mission: DiscoveryMission, stops: ExperiencePlace[]) => {
+      setActiveMission(mission);
+      setCustomTrailPlaces(stops);
 
-    // Draw mission route line on map
-    const coords: [number, number][] = stops.map((s) => [s.longitude, s.latitude]);
-    mapRef.current?.setCustomRouteLine?.(coords);
+      // Draw mission route line on map
+      const coords: [number, number][] = stops.map((s) => [s.longitude, s.latitude]);
+      mapRef.current?.setCustomRouteLine?.(coords);
 
-    // Fly to first stop of mission
-    if (stops[0]) {
-      setSelectedPlace(stops[0]);
-      setWaypointPlace(stops[0]);
-      mapRef.current?.flyToCoordinates(stops[0].latitude, stops[0].longitude, 14.5, 52, -20);
-    }
+      // Fly to first stop of mission and position Virtual Explorer there
+      if (stops[0]) {
+        setSelectedPlace(stops[0]);
+        setWaypointPlace(stops[0]);
+        mapRef.current?.teleportExplorerToPlace?.(stops[0]);
+      }
 
-    // Record mission exploration milestone
-    const { profile: updatedProfile, newlyUnlocked } = recordMissionCompleted(mission.id);
-    setProfile(updatedProfile);
-    if (newlyUnlocked.length > 0) {
-      setActiveAchievementToast(newlyUnlocked[0]);
-    }
-  }, []);
+      setGameNotification({
+        id: `msn_start_${Date.now()}`,
+        type: 'mission_started',
+        title: isMr ? mission.titleMr : mission.titleEn,
+        subtitle: `${stops.length} ${isMr ? 'मार्ग ठिकाणे' : 'Stops in Sequence'} · ${isMr ? 'मार्ग सक्रिय' : 'Route Active'}`,
+        badge: mission.code,
+      });
+    },
+    [isMr]
+  );
 
   // Custom Multi-Stop Trail Handlers
   const handleAddToCustomTrail = useCallback((place: ExperiencePlace) => {
@@ -529,6 +615,8 @@ export default function ExperiencePage() {
         isOpen={isMissionsModalOpen}
         onClose={() => setIsMissionsModalOpen(false)}
         onSelectMission={handleSelectMission}
+        profile={profile}
+        activeMissionId={activeMission?.id}
         lang={lang}
       />
 
@@ -538,6 +626,14 @@ export default function ExperiencePage() {
         onClose={() => setIsAchievementsOpen(false)}
         profile={profile}
         totalLocations={allPlaces.length}
+        onFlyToPlace={handleSelectPlace}
+        lang={lang}
+      />
+
+      {/* Game HUD Notification Banner */}
+      <GameNotificationBanner
+        notification={gameNotification}
+        onDismiss={() => setGameNotification(null)}
         lang={lang}
       />
 
@@ -678,8 +774,13 @@ export default function ExperiencePage() {
           onClearRoute={handleClearRoute}
           onAddToTrail={handleAddToCustomTrail}
           onSetWaypoint={handleSetWaypoint}
+          onStartMissionTrail={(mission) => {
+            const stops = mission.stopSlugs.map((s) => getPlaceBySlug(s)).filter(Boolean) as ExperiencePlace[];
+            handleSelectMission(mission, stops);
+          }}
           isPlaceInTrail={!!selectedPlace && customTrailPlaces.some((p) => p.slug === selectedPlace.slug)}
           isRouteActive={isRouteActive}
+          userCoords={userLocationCoords}
           lang={lang}
         />
 

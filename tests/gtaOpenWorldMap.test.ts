@@ -6,9 +6,11 @@ import {
   MASTER_ACHIEVEMENTS,
   recordPlaceVisit,
   recordMissionCompleted,
+  recordMissionStopProgress,
   loadExplorationProfile,
   resetExplorationProfile,
   getInitialProfile,
+  getExplorerRank,
 } from '../lib/experience/achievements';
 
 describe('GTA-Inspired Open-World 3D Map & Navigation System', () => {
@@ -16,8 +18,22 @@ describe('GTA-Inspired Open-World 3D Map & Navigation System', () => {
     resetExplorationProfile();
   });
 
-  it('validates all 5 GTA Discovery Missions have verified stops in the 106 destination database', () => {
-    expect(DISCOVERY_MISSIONS.length).toBe(5);
+  it('validates all 7 GTA Discovery Missions have verified stops in the 106 destination database', () => {
+    expect(DISCOVERY_MISSIONS.length).toBe(7);
+
+    const requiredMissionIds = [
+      'fort-explorer',
+      'historical-pune',
+      'temple-trail',
+      'nature-explorer',
+      'heritage-explorer',
+      'pune-district-explorer',
+      'hidden-destinations',
+    ];
+
+    requiredMissionIds.forEach((id) => {
+      expect(DISCOVERY_MISSIONS.some((m) => m.id === id), `Mission ${id} must exist`).toBe(true);
+    });
 
     DISCOVERY_MISSIONS.forEach((mission) => {
       expect(mission.id).toBeTruthy();
@@ -133,29 +149,60 @@ describe('GTA-Inspired Open-World 3D Map & Navigation System', () => {
   });
 
   it('validates Exploration Achievements and unlocks correctly based on user visits', () => {
-    expect(MASTER_ACHIEVEMENTS.length).toBe(6);
+    expect(MASTER_ACHIEVEMENTS.length).toBe(11);
 
     const allPlaces = getAllPlaces();
-    const place1 = getPlaceBySlug('shaniwar-wada')!;
-    const place2 = getPlaceBySlug('sinhagad-fort')!;
-    const place3 = getPlaceBySlug('rajgad-fort')!;
-    const place4 = getPlaceBySlug('shivneri-fort')!;
+    const shaniwarWada = getPlaceBySlug('shaniwar-wada')!;
+    const sinhagad = getPlaceBySlug('sinhagad-fort')!;
+    const rajgad = getPlaceBySlug('rajgad-fort')!;
+    const shivneri = getPlaceBySlug('shivneri-fort')!;
+    const lalMahal = getPlaceBySlug('lal-mahal')!;
+    const vishrambaug = getPlaceBySlug('vishrambaug-wada')!;
 
-    // 1. First Visit -> unlocks first_discovery
-    const res1 = recordPlaceVisit(place1, allPlaces);
+    // 1. First Visit -> unlocks first_discovery & first_heritage
+    const res1 = recordPlaceVisit(shaniwarWada, allPlaces);
     expect(res1.profile.visitedSlugs).toContain('shaniwar-wada');
     expect(res1.profile.unlockedAchievementIds).toContain('first_discovery');
-    expect(res1.newlyUnlocked.some((a) => a.id === 'first_discovery')).toBe(true);
+    expect(res1.profile.unlockedAchievementIds).toContain('first_heritage');
 
-    // 2. Visit 3 forts -> unlocks fort_explorer
-    recordPlaceVisit(place2, allPlaces);
-    recordPlaceVisit(place3, allPlaces);
-    const res4 = recordPlaceVisit(place4, allPlaces);
-    expect(res4.profile.unlockedAchievementIds).toContain('fort_explorer');
+    // 2. Visit Fort -> unlocks first_fort
+    const res2 = recordPlaceVisit(sinhagad, allPlaces);
+    expect(res2.profile.unlockedAchievementIds).toContain('first_fort');
 
-    // 3. Complete Mission -> unlocks trail_master
-    const resMsn = recordMissionCompleted('mission-swarajya');
-    expect(resMsn.profile.unlockedAchievementIds).toContain('trail_master');
+    // 3. Visit 3 forts -> unlocks fort_explorer
+    recordPlaceVisit(rajgad, allPlaces);
+    const resForts = recordPlaceVisit(shivneri, allPlaces);
+    expect(resForts.profile.unlockedAchievementIds).toContain('fort_explorer');
+
+    // 4. Visit 5 places -> unlocks five_locations
+    const res5 = recordPlaceVisit(lalMahal, allPlaces);
+    expect(res5.profile.unlockedAchievementIds).toContain('five_locations');
+
+    // 5. Test authentic GPS proximity verification (distance <= 1.5km)
+    const onSiteGpsCoords = { latitude: 18.5196, longitude: 73.8553 }; // exactly Shaniwar Wada
+    const resOnSite = recordPlaceVisit(shaniwarWada, allPlaces, onSiteGpsCoords);
+    expect(resOnSite.isProximityDiscovery).toBe(true);
+    expect(resOnSite.profile.proximityDiscoveredSlugs).toContain('shaniwar-wada');
+
+    // Distant GPS coords (> 1.5km)
+    const distantGpsCoords = { latitude: 19.1234, longitude: 74.5678 };
+    const resDistant = recordPlaceVisit(vishrambaug, allPlaces, distantGpsCoords);
+    expect(resDistant.isProximityDiscovery).toBe(false);
+
+    // 6. Complete Mission Progressively -> unlocks trail_master
+    const stops = ['stop-1', 'stop-2', 'stop-3'];
+    recordMissionStopProgress('test-mission', 'stop-1', stops);
+    recordMissionStopProgress('test-mission', 'stop-2', stops);
+    const resDone = recordMissionStopProgress('test-mission', 'stop-3', stops);
+    expect(resDone.newlyCompleted).toBe(true);
+    expect(resDone.profile.completedMissions).toContain('test-mission');
+    expect(resDone.profile.unlockedAchievementIds).toContain('trail_master');
+
+    // 7. Rank calculation
+    const rank = getExplorerRank(resDone.profile.totalXp);
+    expect(rank.level).toBeGreaterThanOrEqual(1);
+    expect(rank.titleEn).toBeTruthy();
+    expect(rank.badge).toBeTruthy();
   });
 
   it('validates authentic Pune District geographical data and boundary constraints', async () => {

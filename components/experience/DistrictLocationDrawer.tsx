@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Route, Navigation, ExternalLink, Eye, Plus, Check, Target, Compass } from 'lucide-react';
+import { MapPin, Route, Navigation, ExternalLink, Eye, Plus, Check, Target, Compass, Flag } from 'lucide-react';
 import { ExperiencePlace } from '@/lib/experience/types';
 import { getAllPlaces } from '@/lib/experience/selectors';
+import { DISCOVERY_MISSIONS, DiscoveryMission } from './DiscoveryMissionsModal';
 import {
   formatCoordinatesDD,
   formatCoordinatesDMS,
@@ -24,6 +25,7 @@ interface DistrictLocationDrawerProps {
   onClearRoute?: () => void;
   onAddToTrail?: (place: ExperiencePlace) => void;
   onSetWaypoint?: (place: ExperiencePlace) => void;
+  onStartMissionTrail?: (mission: DiscoveryMission) => void;
   isPlaceInTrail?: boolean;
   isRouteActive?: boolean;
   userCoords?: { latitude: number; longitude: number } | null;
@@ -39,6 +41,7 @@ export default function DistrictLocationDrawer({
   onClearRoute,
   onAddToTrail,
   onSetWaypoint,
+  onStartMissionTrail,
   isPlaceInTrail = false,
   isRouteActive = false,
   userCoords,
@@ -244,6 +247,38 @@ export default function DistrictLocationDrawer({
             <p className="leading-snug">{address}</p>
           </div>
         )}
+
+        {/* Discovery Mission Affiliation Banner */}
+        {(() => {
+          const matchingMission = place ? DISCOVERY_MISSIONS.find((m) => m.stopSlugs.includes(place.slug)) : null;
+          if (!matchingMission) return null;
+          return (
+            <div className="p-3 rounded-2xl bg-amber-950/30 border border-amber-500/40 flex items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-sm flex-shrink-0">
+                  {matchingMission.icon}
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[9px] font-mono font-black text-amber-300 uppercase tracking-wider block">
+                    {isMr ? 'शोध मोहिमेचा भाग' : 'DISCOVERY MISSION TRAIL'}
+                  </span>
+                  <h4 className="text-xs font-bold text-white truncate">
+                    {isMr ? matchingMission.titleMr : matchingMission.titleEn}
+                  </h4>
+                </div>
+              </div>
+              {onStartMissionTrail && (
+                <button
+                  type="button"
+                  onClick={() => onStartMissionTrail(matchingMission)}
+                  className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-black text-[10px] uppercase tracking-wider transition-all shadow-md flex-shrink-0"
+                >
+                  {isMr ? 'मोहीम सुरू करा' : 'START TRAIL'}
+                </button>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Nearby Discoveries (Open-World Continuous Exploration) */}
         {nearbyPlaces.length > 0 && (

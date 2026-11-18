@@ -143,6 +143,33 @@ class AmbientSoundEngine {
   }
 
   /**
+   * Resonant discovery ping when discovering a new destination
+   */
+  public playDiscoveryPing(freq: number = 650): void {
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.4, now + 0.12);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(0.06, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.38);
+    } catch {}
+  }
+
+  /**
    * Harmonious ascending 3-note celebration chime for GTA achievements & mission milestones
    */
   public playAchievementChime(): void {
