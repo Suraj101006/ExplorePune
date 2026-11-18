@@ -52,12 +52,16 @@ describe('Explore Pune Official Logo Integration & Brand Consistency', () => {
     expect(html).toContain('object-fit:contain');
   });
 
-  it('5. renders BrandLogo with white contrast badge when withBadge is enabled', () => {
-    const html = renderToString(React.createElement(BrandLogo, { size: 44, withBadge: true }));
+  it('5. renders BrandLogo with white contrast badge when withBadge is enabled and white background when disabled', () => {
+    const htmlBadge = renderToString(React.createElement(BrandLogo, { size: 44, withBadge: true }));
+    expect(htmlBadge).toContain('brand-logo-badge');
+    expect(htmlBadge).toContain('background:#ffffff');
+    expect(htmlBadge).toContain('border-radius:50%');
 
-    expect(html).toContain('brand-logo-badge');
-    expect(html).toContain('background:#ffffff');
-    expect(html).toContain('border-radius:50%');
+    const htmlWrap = renderToString(React.createElement(BrandLogo, { size: 44, withBadge: false }));
+    expect(htmlWrap).toContain('brand-logo-wrap');
+    expect(htmlWrap).toContain('background:#ffffff');
+    expect(htmlWrap).toContain('border-radius:50%');
   });
 
   it('6. verifies centralized constants match the production canonical URL', () => {

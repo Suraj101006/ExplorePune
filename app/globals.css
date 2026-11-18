@@ -622,11 +622,19 @@ a:hover {
   justify-content: center;
   width: 34px;
   height: 34px;
-  background: linear-gradient(135deg, #065f46 0%, #059669 100%);
-  color: #fff;
+  background: #ffffff;
+  color: var(--ink);
   border-radius: 10px;
   font-size: 18px;
-  box-shadow: 0 2px 8px rgba(6, 95, 70, 0.3);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.brand-logo-badge,
+.brand-logo-wrap,
+.brand-logo-img {
+  background-color: #ffffff !important;
+  border-radius: 50% !important;
 }
 
 .brand span.sub {
@@ -1625,7 +1633,7 @@ html.dark .theme-toggle-kbd,
   flex-shrink: 0;
   border: 1.5px solid rgba(6, 95, 70, 0.2);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  background: #f1f5f9;
+  background: #ffffff;
 }
 
 .hero-actions {
@@ -3493,9 +3501,9 @@ html.intro-dismissed .intro-overlay {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #065f46 0%, #022c22 100%);
-  border: 1.5px solid rgba(52, 211, 153, 0.85);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), 0 0 14px rgba(16, 185, 129, 0.35);
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
