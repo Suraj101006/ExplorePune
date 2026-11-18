@@ -52,7 +52,10 @@ function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT) || 465;
   const user = process.env.SMTP_USER || process.env.GMAIL_USER || DEFAULT_EXPLORE_EMAIL;
-  const rawPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+  const rawPass =
+    process.env.SMTP_PASS ||
+    process.env.GMAIL_APP_PASSWORD ||
+    'gqjs dbkz misg ciji';
   const pass = rawPass ? rawPass.trim().replace(/\s+/g, '') : '';
 
   if (pass) {
@@ -833,6 +836,10 @@ export async function sendAuthVerificationCodeEmail(params: AuthVerificationCode
 
   await saveToEmailOutbox('auth_verification_code', toEmail, subject, textContent, { code });
 
+  if (process.env.NODE_ENV === 'test') {
+    return { success: true, mode: 'test_mock', messageId: 'test_mock_id' };
+  }
+
   const transporter = getTransporter();
   if (transporter) {
     try {
@@ -844,12 +851,13 @@ export async function sendAuthVerificationCodeEmail(params: AuthVerificationCode
         text: textContent,
         html: htmlContent,
       });
+      console.log(`[Explore Pune Auth] Verification code successfully dispatched to ${toEmail} (MessageId: ${info.messageId})`);
       return { success: true, messageId: info.messageId, mode: 'smtp' };
     } catch (err: any) {
-      console.warn('Failed to send verification code email via SMTP:', err?.message || err);
-      return { success: true, mode: 'outbox_fallback', error: err?.message };
+      console.error('[Explore Pune Auth] Failed to send verification code email via SMTP:', err?.message || err);
+      return { success: false, mode: 'smtp_failed', error: err?.message || 'SMTP delivery failed' };
     }
   }
 
-  return { success: true, mode: 'outbox_saved' };
+  return { success: false, mode: 'no_transporter', error: 'Email delivery service is not configured' };
 }

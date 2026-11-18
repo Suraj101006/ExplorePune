@@ -42,6 +42,19 @@ export async function POST(req: NextRequest) {
       purpose,
     });
 
+    if (!emailResult.success) {
+      console.error('[send-code] Email dispatch failed:', emailResult.error);
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            emailResult.error ||
+            'Unable to deliver verification email. Please check your email address or try again.',
+        },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Verification code sent successfully to your email.',
