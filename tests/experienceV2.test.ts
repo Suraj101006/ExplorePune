@@ -201,3 +201,51 @@ describe('Explore Pune Experience v2 - Editorial Intro Content Selectors', () =>
     expect(stats.totalItineraries).toBeGreaterThanOrEqual(8);
   });
 });
+
+describe('Explore Pune Experience - Pune District Coordinate & Real Satellite Engine', () => {
+  it('formats coordinates accurately into decimal degrees and DMS strings', async () => {
+    const { formatCoordinatesDD, formatCoordinatesDMS, calculateDistanceKm } = await import(
+      '../lib/experience/puneDistrictData'
+    );
+
+    const dd = formatCoordinatesDD(18.5204, 73.8567, 4);
+    expect(dd).toBe('18.5204° N, 73.8567° E');
+
+    const dms = formatCoordinatesDMS(18.5204, 73.8567);
+    expect(dms.latDMS).toContain("18° 31'");
+    expect(dms.lngDMS).toContain("73° 51'");
+
+    const dist = calculateDistanceKm(18.5204, 73.8567, 18.3664, 73.7558);
+    expect(dist).toBeGreaterThan(15);
+    expect(dist).toBeLessThan(25);
+  });
+
+  it('generates high-precision Pune District boundary covering all 14 talukas', async () => {
+    const { getPuneDistrictBoundaryGeoJson } = await import(
+      '../lib/experience/puneDistrictData'
+    );
+    const districtGeoJson = getPuneDistrictBoundaryGeoJson();
+    expect(districtGeoJson.type).toBe('FeatureCollection');
+    expect(districtGeoJson.features.length).toBe(1);
+    expect(districtGeoJson.features[0].geometry.type).toBe('Polygon');
+
+    const coords = (districtGeoJson.features[0].geometry as any).coordinates[0];
+    expect(coords.length).toBeGreaterThan(10);
+  });
+
+  it('configures 8 iconic autonomous tour waypoints across Pune District', async () => {
+    const { DISTRICT_TOUR_STOPS } = await import('../lib/experience/puneDistrictData');
+    expect(DISTRICT_TOUR_STOPS.length).toBe(8);
+
+    DISTRICT_TOUR_STOPS.forEach((stop) => {
+      expect(stop.nameEn).toBeTruthy();
+      expect(stop.nameMr).toBeTruthy();
+      expect(stop.latitude).toBeGreaterThan(18.0);
+      expect(stop.latitude).toBeLessThan(19.5);
+      expect(stop.longitude).toBeGreaterThan(73.0);
+      expect(stop.longitude).toBeLessThan(75.0);
+      expect(stop.elevationMeters).toBeGreaterThan(400);
+    });
+  });
+});
+

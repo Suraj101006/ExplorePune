@@ -1,99 +1,174 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import Head from 'next/head';
-import Lenis from 'lenis';
+import React, { useState, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { useLanguage } from '@/lib/LanguageContext';
-import { getExperienceV2I18n } from '@/lib/experience/i18n';
+import { getAllPlaces, getPlaceBySlug } from '@/lib/experience/selectors';
+import { ExperiencePlace } from '@/lib/experience/types';
+import {
+  MapStyleKey,
+  DISTRICT_TOUR_STOPS,
+  formatCoordinatesDD,
+} from '@/lib/experience/puneDistrictData';
 import './experience.css';
 
-// Part A Components (Dialed-Style Editorial Intro)
-import {
-  Preloader,
-  Hero,
-  MarqueeStrip,
-  CategorySlider,
-  FeatureGuidePinned,
-  NumbersStrip,
-  StoriesRow,
-  FaqAccordion,
-  Bridge,
-} from '@/components/experience/intro';
+// Dynamic import for WebGL Map to avoid SSR overhead
+const LivePuneDistrictMap = dynamic(
+  () => import('@/components/experience/LivePuneDistrictMap'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-zinc-950 text-white/50 font-mono">
+        <div className="w-10 h-10 border-2 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin mb-4" />
+        <p className="text-xs uppercase tracking-widest text-emerald-400">
+          CALIBRATING REAL PUNE DISTRICT SATELLITE ENGINE...
+        </p>
+      </div>
+    ),
+  }
+);
 
-// Part B Components (Interactive Full-Screen Map + SEO Directory)
-import { MapSection } from '@/components/experience/map';
-import { DirectorySection } from '@/components/experience/map-ui';
+import type { DistrictMapHandle } from '@/components/experience/LivePuneDistrictMap';
+import LiveDistrictTelemetry from '@/components/experience/LiveDistrictTelemetry';
+import DistrictControlPanel from '@/components/experience/DistrictControlPanel';
+import DistrictLocationDrawer from '@/components/experience/DistrictLocationDrawer';
+import DistrictTourController from '@/components/experience/DistrictTourController';
+import DistrictMapControls from '@/components/experience/DistrictMapControls';
+import DistrictDirectoryTable from '@/components/experience/DistrictDirectoryTable';
 
 export default function ExperiencePage() {
   const { lang, isMr } = useLanguage();
-  const dict = getExperienceV2I18n(lang);
+  const mapRef = useRef<DistrictMapHandle | null>(null);
 
-  const [preloaderComplete, setPreloaderComplete] = useState<boolean>(false);
-  const [selectedCategoryForMap, setSelectedCategoryForMap] = useState<string>('all');
-  const [selectedPlaceSlugForMap, setSelectedPlaceSlugForMap] = useState<string | undefined>(undefined);
+  const [currentStyle, setCurrentStyle] = useState<MapStyleKey>('satellite');
+  const [selectedPlace, setSelectedPlace] = useState<ExperiencePlace | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedTaluka, setSelectedTaluka] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [is3d, setIs3d] = useState<boolean>(true);
 
-  const lenisRef = useRef<Lenis | null>(null);
+  // Live Telemetry state
+  const [cursorLat, setCursorLat] = useState<number | null>(null);
+  const [cursorLng, setCursorLng] = useState<number | null>(null);
+  const [cameraPitch, setCameraPitch] = useState<number>(45);
+  const [cameraBearing, setCameraBearing] = useState<number>(-15);
 
-  // Initialize Lenis smooth scroll for Part A
-  useEffect(() => {
-    // Respect prefers-reduced-motion
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Autonomous Drone Tour state
+  const [isTouring, setIsTouring] = useState<boolean>(false);
+  const [isTourPaused, setIsTourPaused] = useState<boolean>(false);
+  const [tourStopIndex, setTourStopIndex] = useState<number>(0);
 
-    if (prefersReducedMotion) return;
+  const allPlaces = getAllPlaces();
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-    });
-
-    lenisRef.current = lenis;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    const rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      lenisRef.current = null;
-    };
+  // Handle Place Selection
+  const handleSelectPlace = useCallback((place: ExperiencePlace) => {
+    setSelectedPlace(place);
+    mapRef.current?.flyToPlace(place);
   }, []);
 
-  // Smooth scroll helper into #map
-  const scrollToMap = (categorySlug?: string) => {
-    if (categorySlug) {
-      setSelectedCategoryForMap(categorySlug);
+  // Cursor Move Tracker
+  const handleCursorMove = useCallback((lat: number, lng: number) => {
+    setCursorLat(lat);
+    setCursorLng(lng);
+  }, []);
+
+  // Camera Change Tracker
+  const handleCameraChange = useCallback((pitch: number, bearing: number) => {
+    setCameraPitch(pitch);
+    setCameraBearing(bearing);
+  }, []);
+
+  // Autonomous Tour Execution
+  const executeTourStop = useCallback((stopIdx: number) => {
+    if (stopIdx >= DISTRICT_TOUR_STOPS.length) {
+      setIsTouring(false);
+      setTourStopIndex(0);
+      return;
     }
 
-    const mapElement = document.getElementById('map');
-    if (mapElement) {
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(mapElement, { offset: 0, duration: 1.4 });
-      } else {
-        mapElement.scrollIntoView({ behavior: 'smooth' });
-      }
+    setTourStopIndex(stopIdx);
+    const stop = DISTRICT_TOUR_STOPS[stopIdx];
+
+    // Find place if exists
+    const place = getPlaceBySlug(stop.slug);
+    if (place) {
+      setSelectedPlace(place);
+    }
+
+    mapRef.current?.flyToCoordinates(
+      stop.latitude,
+      stop.longitude,
+      stop.zoom,
+      stop.pitch,
+      stop.bearing
+    );
+
+    // Auto advance after 4.5 seconds if tour is active
+    setTimeout(() => {
+      setTourStopIndex((currentIdx) => {
+        const nextIdx = currentIdx + 1;
+        if (nextIdx < DISTRICT_TOUR_STOPS.length) {
+          executeTourStop(nextIdx);
+        } else {
+          setIsTouring(false);
+        }
+        return nextIdx;
+      });
+    }, 4500);
+  }, []);
+
+  const handleStartTour = useCallback(() => {
+    setIsTouring(true);
+    setIsTourPaused(false);
+    executeTourStop(0);
+  }, [executeTourStop]);
+
+  const handleStopTour = useCallback(() => {
+    setIsTouring(false);
+    setIsTourPaused(false);
+    setTourStopIndex(0);
+    mapRef.current?.resetDistrictView();
+  }, []);
+
+  const handleSkipNext = useCallback(() => {
+    const nextIdx = tourStopIndex + 1;
+    if (nextIdx < DISTRICT_TOUR_STOPS.length) {
+      executeTourStop(nextIdx);
+    } else {
+      handleStopTour();
+    }
+  }, [tourStopIndex, executeTourStop, handleStopTour]);
+
+  // Controls Handlers
+  const handleZoomIn = () => mapRef.current?.zoomIn();
+  const handleZoomOut = () => mapRef.current?.zoomOut();
+  const handleResetView = () => {
+    setSelectedPlace(null);
+    mapRef.current?.resetDistrictView();
+  };
+  const handleToggleTilt = () => {
+    setIs3d(!is3d);
+    mapRef.current?.toggleTilt();
+  };
+  const handleLocateUser = () => mapRef.current?.locateUser();
+
+  // Scroll to Map and focus on a place from Directory Table
+  const handleFocusPlaceFromDirectory = (slug: string) => {
+    const place = getPlaceBySlug(slug);
+    if (place) {
+      setSelectedPlace(place);
+      mapRef.current?.flyToPlace(place);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  const handleSelectPlaceFromDirectory = (slug: string) => {
-    setSelectedPlaceSlugForMap(slug);
-    scrollToMap();
-  };
-
-  // Structured Data (JSON-LD) for SEO, Geo & Knowledge Graph
+  // Structured Data (JSON-LD) for SEO
   const jsonLdData = {
     '@context': 'https://schema.org',
     '@type': 'TouristDestination',
-    name: isMr ? 'पुणे पर्यटन अनुभव' : 'Explore Pune Interactive Experience',
-    description: dict.meta.description,
+    name: isMr ? 'पुणे जिल्हा थेट उपग्रह नकाशा व GPS निर्देशांक' : 'Pune District Live Satellite Map & GPS Coordinates',
+    description: 'Explore live coordinates and realistic satellite imagery of all 106 destinations across Pune District.',
     url: 'https://explorepune-guide.vercel.app/experience',
     geo: {
       '@type': 'GeoCoordinates',
@@ -106,33 +181,10 @@ export default function ExperiencePage() {
       addressRegion: 'Maharashtra',
       addressCountry: 'IN',
     },
-    hasPart: [
-      {
-        '@type': 'TouristAttraction',
-        name: 'Sinhagad Fort',
-        geo: { '@type': 'GeoCoordinates', latitude: 18.3663, longitude: 73.7558 },
-      },
-      {
-        '@type': 'TouristAttraction',
-        name: 'Shaniwar Wada',
-        geo: { '@type': 'GeoCoordinates', latitude: 18.5195, longitude: 73.8553 },
-      },
-      {
-        '@type': 'TouristAttraction',
-        name: 'Pataleshwar Cave Temple',
-        geo: { '@type': 'GeoCoordinates', latitude: 18.5274, longitude: 73.8504 },
-      },
-    ],
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0E1015] text-white selection:bg-[#F1293A] selection:text-white">
-      {/* Preloader (A0) */}
-      <Preloader
-        lang={lang}
-        onComplete={() => setPreloaderComplete(true)}
-      />
-
+    <main className="relative min-h-screen bg-black text-white selection:bg-emerald-500 selection:text-black">
       {/* Structured SEO Schema */}
       <script
         type="application/ld+json"
@@ -140,60 +192,97 @@ export default function ExperiencePage() {
       />
 
       {/* ========================================================================= */}
-      {/* PART A: DIALED-STYLE EDITORIAL INTRO                                      */}
+      {/* FULL-SCREEN LIVE PUNE DISTRICT MAP VIEWPORT                               */}
       {/* ========================================================================= */}
-      <div className="relative z-10 w-full overflow-hidden">
-        {/* A1: Hero Section */}
-        <Hero
+      <div className="relative w-full h-[88vh] min-h-[620px] max-h-[1080px] bg-zinc-950 overflow-hidden select-none">
+        {/* Real Satellite / Topo / Dark MapLibre Canvas */}
+        <div className="absolute inset-0 z-0">
+          <LivePuneDistrictMap
+            ref={mapRef}
+            currentStyle={currentStyle}
+            selectedPlace={selectedPlace}
+            selectedCategory={selectedCategory}
+            selectedTaluka={selectedTaluka}
+            searchQuery={searchQuery}
+            onPlaceSelect={handleSelectPlace}
+            onCursorMove={handleCursorMove}
+            onCameraChange={handleCameraChange}
+            lang={lang}
+          />
+        </div>
+
+        {/* Top Floating Live GPS Telemetry Bar */}
+        <div className="absolute top-3 left-4 right-4 z-20 pointer-events-none">
+          <div className="pointer-events-auto max-w-7xl mx-auto">
+            <LiveDistrictTelemetry
+              cursorLat={cursorLat}
+              cursorLng={cursorLng}
+              pitch={cameraPitch}
+              bearing={cameraBearing}
+              totalLocations={allPlaces.length}
+              activePlaceCount={allPlaces.length}
+              selectedCategoryName={selectedCategory}
+              lang={lang}
+            />
+          </div>
+        </div>
+
+        {/* Left Floating Search & Coordinates Directory Panel */}
+        <DistrictControlPanel
+          selectedPlace={selectedPlace}
+          selectedCategory={selectedCategory}
+          selectedTaluka={selectedTaluka}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onSelectCategory={setSelectedCategory}
+          onSelectTaluka={setSelectedTaluka}
+          onSelectPlace={handleSelectPlace}
+          isCollapsed={isCollapsed}
+          onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
           lang={lang}
-          onFlyToMap={() => scrollToMap()}
         />
 
-        {/* A2: Marquee Strip */}
-        <MarqueeStrip lang={lang} />
-
-        {/* A3: Explore By Interest Slider */}
-        <CategorySlider
+        {/* Right Location Coordinate Inspector Drawer */}
+        <DistrictLocationDrawer
+          place={selectedPlace}
+          onClose={() => setSelectedPlace(null)}
+          onFocusSatellite={(p) => mapRef.current?.flyToPlace(p)}
           lang={lang}
-          onSelectCategory={(catSlug) => scrollToMap(catSlug)}
         />
 
-        {/* A4: Pinned Feature Guide */}
-        <FeatureGuidePinned lang={lang} />
-
-        {/* A5: Numbers Strip */}
-        <NumbersStrip lang={lang} />
-
-        {/* A6: Stories Row */}
-        <StoriesRow lang={lang} />
-
-        {/* A7: FAQ Accordion */}
-        <FaqAccordion lang={lang} />
-
-        {/* A8: Bridge to Map */}
-        <Bridge
+        {/* Autonomous District Tour Controller */}
+        <DistrictTourController
+          isTouring={isTouring}
+          isPaused={isTourPaused}
+          currentStopIndex={tourStopIndex}
+          onStartTour={handleStartTour}
+          onPauseToggle={() => setIsTourPaused(!isTourPaused)}
+          onSkipNext={handleSkipNext}
+          onStopTour={handleStopTour}
           lang={lang}
-          onEnterMap={() => scrollToMap()}
+        />
+
+        {/* Bottom-Right Navigation & Style Switcher Controls */}
+        <DistrictMapControls
+          currentStyle={currentStyle}
+          onSelectStyle={setCurrentStyle}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onResetDistrictView={handleResetView}
+          onToggleTilt={handleToggleTilt}
+          onLocateUser={handleLocateUser}
+          is3d={is3d}
+          lang={lang}
         />
       </div>
 
       {/* ========================================================================= */}
-      {/* PART B: FULL-SCREEN MAP & CRAWLABLE DIRECTORY                             */}
+      {/* CRAWLABLE DISTRICT CATALOG WITH ALL 106 GPS COORDINATES (SEO / ACCESSIBLE)*/}
       {/* ========================================================================= */}
-      <div className="relative z-20 w-full bg-[#1F242D]">
-        {/* Part B Map Container */}
-        <MapSection
-          lang={lang}
-          initialCategory={selectedCategoryForMap}
-          initialPlaceSlug={selectedPlaceSlugForMap}
-        />
-
-        {/* Accessible, Server-Rendered Crawlable Directory */}
-        <DirectorySection
-          lang={lang}
-          onSelectPlace={handleSelectPlaceFromDirectory}
-        />
-      </div>
-    </div>
+      <DistrictDirectoryTable
+        lang={lang}
+        onFocusPlace={handleFocusPlaceFromDirectory}
+      />
+    </main>
   );
 }
