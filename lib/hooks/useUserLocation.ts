@@ -57,8 +57,10 @@ export function useUserLocation(options: UseUserLocationOptions = {}): UseUserLo
 
   const onUpdateRef = useRef(onLocationUpdate);
   const onErrorRef = useRef(onError);
-  onUpdateRef.current = onLocationUpdate;
-  onErrorRef.current = onError;
+  useEffect(() => {
+    onUpdateRef.current = onLocationUpdate;
+    onErrorRef.current = onError;
+  });
 
   // Refresh permission info
   const refreshPermission = useCallback(async () => {

@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "scripts/**",
     "public/**",
     "_archive/**",
+    "website-marketing-kit/**",
   ]),
   ...nextVitals,
   ...nextTs,

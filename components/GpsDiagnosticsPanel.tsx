@@ -254,7 +254,7 @@ export default function GpsDiagnosticsPanel() {
                       textAlign: 'center',
                     }}
                   >
-                    No position fix recorded yet. Tap "Detect Fresh GPS".
+                    No position fix recorded yet. Tap &quot;Detect Fresh GPS&quot;.
                   </div>
                 )}
 

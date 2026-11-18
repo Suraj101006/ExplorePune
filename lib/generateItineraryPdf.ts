@@ -1719,7 +1719,7 @@ export function generateItineraryPdf(
   doc.setFontSize(7.5);
   doc.text('TRAVEL JOURNAL & PERSONAL NOTES', margin + 5, y + 4.8);
 
-  let nY = y + 12;
+  const nY = y + 12;
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(7);
   doc.setTextColor(C_INK_MUTED[0], C_INK_MUTED[1], C_INK_MUTED[2]);

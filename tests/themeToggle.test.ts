@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React from 'react';
+import fs from 'node:fs';
+import path from 'node:path';
 import { renderToString } from 'react-dom/server';
 import {
   THEME_STORAGE_KEY,
@@ -181,8 +183,6 @@ describe('Dark and Light Theme Toggle & Shortcut Key Engine', () => {
   });
 
   describe('Dark Mode Text Visibility & Component Theming Invariants', () => {
-    const fs = require('node:fs');
-    const path = require('node:path');
     const globalsCss = fs.readFileSync(path.resolve(__dirname, '../app/globals.css'), 'utf8');
 
     it('enforces dark mode input styling with !important to prevent white-on-white text rendering', () => {

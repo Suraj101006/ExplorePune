@@ -957,8 +957,8 @@ export function generateTailoredItinerary(
   const foodDesc = isMr ? hub.foodDescriptionMr : hub.foodDescriptionEn;
 
   // 6. Assemble Comprehensive Bilingual Narrative
-  let title = `${hours}-Hour ${hub.nameEn} Curated Heritage & City Trail`;
-  let titleMr = `${hub.nameMr} वरून ${hours} तासांची नियोजित ऐतिहासिक व शहर सफर`;
+  const title = `${hours}-Hour ${hub.nameEn} Curated Heritage & City Trail`;
+  const titleMr = `${hub.nameMr} वरून ${hours} तासांची नियोजित ऐतिहासिक व शहर सफर`;
 
   let reply = '';
   if (isMr) {
