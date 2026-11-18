@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { isLimited } from '@/lib/rateLimit';
 import { buildItinerary, RouteCandidate, TravelMode, PlannerResult } from '@/lib/planner';
 import { getPublicTransitRoute } from '@/lib/publicTransit';
+import { getCachedPlacesData } from '@/lib/serverPlaces';
+import { ALL_STRUCTURED_PLACES } from '@/lib/chatKnowledgeEngine';
 
 const Schema = z.object({
   startMinuteOfDay: z.number().min(0).max(1439).default(540),
@@ -129,13 +129,14 @@ export async function POST(req: NextRequest) {
 
     let data: any[] = [];
     try {
-      const snap = await getDocs(query(collection(db, 'places'), where('status', '==', 'published')));
-      data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const { places: cached } = await getCachedPlacesData();
+      data = cached;
     } catch {
-      return NextResponse.json(
-        { error: { code: 'DB_ERROR', message: 'Could not load places. Please try again.' } },
-        { status: 500 }
-      );
+      data = Array.isArray(ALL_STRUCTURED_PLACES) ? (ALL_STRUCTURED_PLACES as any[]) : [];
+    }
+
+    if (!data || data.length === 0) {
+      data = Array.isArray(ALL_STRUCTURED_PLACES) ? (ALL_STRUCTURED_PLACES as any[]) : [];
     }
 
     const coords = new Map<string, { lat: number; lng: number }>([['START', inp.start]]);

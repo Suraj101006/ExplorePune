@@ -19,9 +19,19 @@ export async function GET(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url);
+  const rawLat = searchParams.get('lat');
+  const rawLng = searchParams.get('lng');
+
+  if (rawLat === null || rawLng === null || rawLat.trim() === '' || rawLng.trim() === '') {
+    return NextResponse.json(
+      { success: false, error: { code: 'INVALID_COORDINATES', message: 'Valid latitude and longitude parameters are required.' } },
+      { status: 400 }
+    );
+  }
+
   const parsed = QuerySchema.safeParse({
-    lat: searchParams.get('lat'),
-    lng: searchParams.get('lng'),
+    lat: rawLat,
+    lng: rawLng,
     lang: searchParams.get('lang') || 'en',
   });
 

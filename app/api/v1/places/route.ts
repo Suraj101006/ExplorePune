@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { isLimited } from '@/lib/rateLimit';
+import { getCachedPlacesData } from '@/lib/serverPlaces';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,17 +18,18 @@ export async function GET(req: NextRequest) {
     const cat = searchParams.get('category');
     const q = (searchParams.get('q') || '').toLowerCase().trim();
 
-    const qRef = query(collection(db, 'places'), where('status', '==', 'published'));
-    const snap = await getDocs(qRef);
+    const { places: rawPlaces } = await getCachedPlacesData();
 
-    let places = snap.docs.map((d) => {
-      const data = d.data() as any;
-      const catSlug = data.category_slug || (Array.isArray(data.place_categories) ? data.place_categories[0]?.slug : data.category) || 'heritage';
+    let places = (rawPlaces || []).map((data: any) => {
+      const catSlug =
+        data.category_slug ||
+        (Array.isArray(data.place_categories) ? data.place_categories[0]?.slug : data.category) ||
+        'heritage';
       const price = data.place_prices?.[0];
       const entryFee = price ? (price.is_free ? 0 : Number(price.amount)) : (data.entry_fee ?? 0);
 
       return {
-        id: d.id,
+        id: data.id,
         name: data.name || '',
         name_mr: data.name_mr || data.name || '',
         slug: data.slug || '',
