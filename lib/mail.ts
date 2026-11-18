@@ -732,29 +732,39 @@ export interface AuthVerificationCodeParams {
   code: string;
   userName?: string;
   isMarathi?: boolean;
+  purpose?: string;
 }
 
 /**
  * SENDS A SECURE 6-DIGIT VERIFICATION CODE (OTP) FOR EXPLORE PUNE SIGN-IN / REGISTRATION
  */
 export async function sendAuthVerificationCodeEmail(params: AuthVerificationCodeParams) {
-  const { toEmail, code, userName, isMarathi } = params;
+  const { toEmail, code, userName, isMarathi, purpose = 'signin' } = params;
   if (!toEmail || !toEmail.includes('@')) {
     return { success: false, reason: 'Invalid email address' };
   }
 
+  const isRegister = purpose === 'register';
   const fromHeader = getExplorePuneFromHeader();
   const subject = isMarathi
-    ? `🔐 एक्सप्लोर पुणे पडताळणी कोड: ${code}`
-    : `🔐 Explore Pune Sign-In Verification Code: ${code}`;
+    ? (isRegister ? `🔐 एक्सप्लोर पुणे खाते पडताळणी कोड: ${code}` : `🔐 एक्सप्लोर पुणे पडताळणी कोड: ${code}`)
+    : (isRegister ? `🔐 Explore Pune Account Verification Code: ${code}` : `🔐 Explore Pune Sign-In Verification Code: ${code}`);
 
   const greeting = isMarathi
     ? `नमस्कार${userName ? ` ${userName}` : ''}! 🙏`
     : `Hello${userName ? ` ${userName}` : ''}! 👋`;
 
+  const actionTextMr = isRegister
+    ? 'आपले एक्सप्लोर पुणे खाते सक्रिय करण्यासाठी आणि ईमेल पडताळणी पूर्ण करण्यासाठी खालील ६-अंकी पडताळणी कोड (OTP) वापरा:'
+    : 'एक्सप्लोर पुणे मध्ये सुरक्षित साइन इन करण्यासाठी आपला ६-अंकी पडताळणी कोड (OTP) खालीलप्रमाणे आहे:';
+
+  const actionTextEn = isRegister
+    ? 'Use the following 6-digit verification code to verify your email and activate your Explore Pune account:'
+    : 'Use the following 6-digit verification code to securely sign in to your Explore Pune account:';
+
   const textContent = isMarathi
-    ? `${greeting}\n\nएक्सप्लोर पुणे मध्ये सुरक्षित साइन इन करण्यासाठी आपला ६-अंकी पडताळणी कोड (OTP) खालीलप्रमाणे आहे:\n\n👉 ${code}\n\nहा कोड १० मिनिटांसाठी वैध आहे.\nहा कोड कोणाशीही शेअर करू नका.\n\nआपले नम्र,\nसुरज ढोक, साहिल जाधव आणि ईशान काकडे\nएक्सप्लोर पुणे टीम (ExplorePune Team)\nhttps://explorepune-guide.vercel.app`
-    : `${greeting}\n\nYour 6-digit verification code to sign in to Explore Pune is:\n\n👉 ${code}\n\nThis verification code will expire in 10 minutes.\nFor your security, never share this code with anyone.\n\nWarm regards,\nSuraj Dhok, Sahil Jadhav & Ishan Kakade\nExplore Pune Team\nhttps://explorepune-guide.vercel.app`;
+    ? `${greeting}\n\n${actionTextMr}\n\n👉 ${code}\n\nहा कोड १० मिनिटांसाठी वैध आहे.\nहा कोड कोणाशीही शेअर करू नका.\n\nआपले नम्र,\nसुरज ढोक, साहिल जाधव आणि ईशान काकडे\nएक्सप्लोर पुणे टीम (ExplorePune Team)\nhttps://explorepune-guide.vercel.app`
+    : `${greeting}\n\n${actionTextEn}\n\n👉 ${code}\n\nThis verification code will expire in 10 minutes.\nFor your security, never share this code with anyone.\n\nWarm regards,\nSuraj Dhok, Sahil Jadhav & Ishan Kakade\nExplore Pune Team\nhttps://explorepune-guide.vercel.app`;
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -784,11 +794,7 @@ export async function sendAuthVerificationCodeEmail(params: AuthVerificationCode
                       ${greeting}
                     </h2>
                     <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: #475569;">
-                      ${
-                        isMarathi
-                          ? 'आपल्या एक्सप्लोर पुणे खात्यामध्ये सुरक्षितपणे साइन इन करण्यासाठी खालील ६-अंकी पडताळणी कोड वापरा:'
-                          : 'Use the following 6-digit verification code to securely sign in to your Explore Pune account:'
-                      }
+                      ${isMarathi ? actionTextMr : actionTextEn}
                     </p>
                     <div style="text-align: center; margin: 28px 0; padding: 20px; background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%); border: 2px dashed #f97316; border-radius: 12px;">
                       <div style="font-size: 11px; font-weight: 800; color: #c2410c; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">

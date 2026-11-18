@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
       code,
       userName: name,
       isMarathi: lang === 'mr',
+      purpose,
     });
 
     return NextResponse.json({
