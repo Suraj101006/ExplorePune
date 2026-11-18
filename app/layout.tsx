@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Plus_Jakarta_Sans, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
@@ -10,27 +9,6 @@ import { TravelPhotoTransitionProvider } from '@/components/TravelPhotoTransitio
 import PageTransition from '@/components/PageTransition';
 import ClientInteractiveOverlays from '@/components/ClientInteractiveOverlays';
 import SiteJsonLd from '@/components/SiteJsonLd';
-
-const fontSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-const fontYatra = Yatra_One({
-  subsets: ['latin', 'devanagari'],
-  weight: ['400'],
-  variable: '--font-deva',
-  display: 'swap',
-});
-
-const fontRozha = Rozha_One({
-  subsets: ['latin', 'devanagari'],
-  weight: ['400'],
-  variable: '--font-serif',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://explorepune-guide.vercel.app'),
@@ -142,7 +120,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fontSans.variable} ${fontYatra.variable} ${fontRozha.variable}`}
     >
       <head>
         {/* Google Search Official Favicon & Logo Links (Google Search Central Guidelines) */}
@@ -153,11 +130,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" type="image/png" sizes="512x512" href="/assets/explore-pune-logo.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
+        {/* Preconnect & Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&family=Yatra+One&display=swap"
+        />
+
         {/* Preconnect & DNS prefetch for critical origins */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
         <link rel="dns-prefetch" href="https://commons.wikimedia.org" />
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />

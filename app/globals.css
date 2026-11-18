@@ -34,6 +34,10 @@
   --blue-ink: #0369a1;
   --blue-border: #7dd3fc;
   
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-deva: 'Yatra One', 'Noto Serif Devanagari', 'Rozha One', serif;
+  --font-serif: 'Rozha One', 'Plus Jakarta Sans', system-ui, sans-serif;
+
   --sans: var(--font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --deva: var(--font-deva), 'Yatra One', 'Noto Serif Devanagari', 'Rozha One', serif;
   --serif: var(--font-serif), 'Plus Jakarta Sans', system-ui, sans-serif;
