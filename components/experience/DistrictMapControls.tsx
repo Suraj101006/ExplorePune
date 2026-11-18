@@ -1,6 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import {
+  Map,
+  Landmark,
+  Droplets,
+  Route,
+  MapPin,
+  Layers,
+  Satellite,
+  Mountain,
+  Moon,
+} from 'lucide-react';
 import { MapStyleKey, MAP_STYLE_OPTIONS } from '@/lib/experience/puneDistrictData';
 
 export interface MapLayerState {
@@ -70,7 +81,7 @@ export default function DistrictMapControls({
             {/* 1. District Boundary */}
             <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <span>🗺️</span>
+                <Map size={14} className="text-emerald-400" />
                 <span>{isMr ? 'जिल्हा सीमा' : 'District Boundary'}</span>
               </span>
               <input
@@ -84,7 +95,7 @@ export default function DistrictMapControls({
             {/* 2. Taluka Boundaries */}
             <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <span>🏛️</span>
+                <Landmark size={14} className="text-amber-400" />
                 <span>{isMr ? '१५ तालुके सीमा' : '15 Taluka Boundaries'}</span>
               </span>
               <input
@@ -98,7 +109,7 @@ export default function DistrictMapControls({
             {/* 3. Rivers & Reservoirs */}
             <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <span>💧</span>
+                <Droplets size={14} className="text-cyan-400" />
                 <span>{isMr ? 'नद्या व जलाशय' : 'Rivers & Reservoirs'}</span>
               </span>
               <input
@@ -112,7 +123,7 @@ export default function DistrictMapControls({
             {/* 4. Major Highways */}
             <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <span>🛣️</span>
+                <Route size={14} className="text-indigo-400" />
                 <span>{isMr ? 'प्रमुख महामार्ग' : 'Major Highways'}</span>
               </span>
               <input
@@ -126,7 +137,7 @@ export default function DistrictMapControls({
             {/* 5. Destination Markers */}
             <label className="flex items-center justify-between px-2 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] cursor-pointer transition-colors">
               <span className="flex items-center gap-2 text-xs font-mono">
-                <span>📍</span>
+                <MapPin size={14} className="text-rose-400" />
                 <span>{isMr ? '१०६ जीपीएस स्थाने' : '106 GPS Landmarks'}</span>
               </span>
               <input
@@ -144,7 +155,7 @@ export default function DistrictMapControls({
       {showStyleMenu && (
         <div className="p-2.5 rounded-2xl bg-black/95 backdrop-blur-xl border border-emerald-500/30 shadow-2xl text-xs space-y-1 mb-1 w-56 animate-in fade-in slide-in-from-bottom-2 text-white">
           <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400 px-2 py-1 border-b border-white/10 flex items-center justify-between">
-            <span>{isMr ? 'नकाशा प्रकार निवडा' : 'SELECT REAL MAP STYLE'}</span>
+            <span>{isMr ? 'नकाशा प्रकार निवडा' : 'SELECT MAP STYLE'}</span>
             <button
               type="button"
               onClick={() => setShowStyleMenu(false)}
@@ -168,7 +179,11 @@ export default function DistrictMapControls({
                   : 'hover:bg-white/10 text-white/70 hover:text-white'
               }`}
             >
-              <span className="text-base">{opt.icon}</span>
+              <span className="flex-shrink-0 text-emerald-400">
+                {opt.key === 'satellite' && <Satellite size={16} />}
+                {opt.key === 'topo' && <Mountain size={16} />}
+                {opt.key === 'dark' && <Moon size={16} />}
+              </span>
               <div className="flex-1 min-w-0">
                 <div className="font-bold truncate">{isMr ? opt.labelMr : opt.labelEn}</div>
                 <div className="text-[9px] text-white/40 truncate">{opt.descriptionEn}</div>
@@ -188,10 +203,10 @@ export default function DistrictMapControls({
             setShowLayerMenu(false);
           }}
           aria-expanded={showStyleMenu}
-          title="Switch Map Layers (Real Satellite / Topo / Dark)"
+          title="Switch Map Layers (Satellite / Topo / Dark)"
           className="w-9 h-9 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 flex items-center justify-center border border-emerald-500/40 transition-colors"
         >
-          <span className="text-sm">🛰️</span>
+          <Layers size={16} />
         </button>
 
         {/* Geographic Layers Toggle Menu Button */}

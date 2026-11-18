@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { KeyRound, Smartphone, UserPlus } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
 import {
   createUserWithEmailAndPassword,
@@ -590,7 +591,7 @@ export default function LoginPage() {
               gap: 5,
             }}
           >
-            <span>🔑</span>
+            <KeyRound size={14} />
             <span>Sign In</span>
           </button>
           <button
@@ -621,7 +622,7 @@ export default function LoginPage() {
               gap: 5,
             }}
           >
-            <span>📱</span>
+            <Smartphone size={14} />
             <span>Mobile</span>
           </button>
           <button
@@ -652,7 +653,7 @@ export default function LoginPage() {
               gap: 5,
             }}
           >
-            <span>✨</span>
+            <UserPlus size={14} />
             <span>Register</span>
           </button>
         </div>

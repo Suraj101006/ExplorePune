@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Lock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 import { useAuth } from '@/lib/useAuth';
@@ -49,7 +50,22 @@ export default function BlogReader({ content }: { content: string }) {
           position: 'relative',
         }}
       >
-        <span style={{ fontSize: 42, display: 'block', marginBottom: 12 }}>🔒</span>
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: '50%',
+            background: 'rgba(6, 95, 70, 0.1)',
+            color: 'var(--primary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px',
+            border: '1px solid rgba(6, 95, 70, 0.2)',
+          }}
+        >
+          <Lock size={26} />
+        </div>
         <h3 style={{ fontSize: 22, margin: '0 0 10px', color: 'var(--ink)' }}>
           {isMr ? 'संपूर्ण कथा वाचण्यासाठी कृपया लॉगिन करा' : 'Sign In to Read the Full Story'}
         </h3>

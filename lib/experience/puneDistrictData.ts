@@ -1224,23 +1224,23 @@ export interface MapStyleOption {
 export const MAP_STYLE_OPTIONS: MapStyleOption[] = [
   {
     key: 'satellite',
-    labelEn: 'Real Satellite',
-    labelMr: 'वास्तविक सॅटेलाइट',
+    labelEn: 'Satellite Imagery',
+    labelMr: 'सॅटेलाइट नकाशा',
     icon: '🛰️',
-    descriptionEn: 'High-res photorealistic aerial photography & terrain hybrid',
+    descriptionEn: 'High-resolution aerial photography & terrain hybrid',
   },
   {
     key: 'topo',
-    labelEn: 'Real Topo / Terrain',
+    labelEn: 'Topographic Terrain',
     labelMr: 'भूरूप व टेकड्या',
     icon: '🗺️',
     descriptionEn: 'Physical contours, elevation hillshades, ghats & reservoirs',
   },
   {
     key: 'dark',
-    labelEn: 'Tactical Dark',
+    labelEn: 'Cartographic Dark',
     labelMr: 'नाईट व्ह्यू',
     icon: '🌌',
-    descriptionEn: 'Vector night style with high-contrast glowing coordinates',
+    descriptionEn: 'High-contrast nocturnal cartography designed for heritage discovery',
   },
 ];

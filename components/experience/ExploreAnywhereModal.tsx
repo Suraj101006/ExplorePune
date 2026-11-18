@@ -2,6 +2,17 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
+import {
+  Search,
+  Navigation,
+  ExternalLink,
+  Landmark,
+  TreePine,
+  Droplets,
+  BookOpen,
+  Compass,
+  X,
+} from 'lucide-react';
 import { getAllPlaces } from '@/lib/experience/selectors';
 import { ExperiencePlace } from '@/lib/experience/types';
 import {
@@ -148,7 +159,7 @@ export default function ExploreAnywhereModal({
 
           {/* Search Box */}
           <div className="relative flex items-center">
-            <span className="absolute left-3.5 text-base text-emerald-400">🔍</span>
+            <Search size={16} className="absolute left-3.5 text-emerald-400" />
             <input
               ref={inputRef}
               type="text"
@@ -172,12 +183,12 @@ export default function ExploreAnywhereModal({
           <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 custom-scrollbar scrollbar-none text-xs font-mono">
             {[
               { id: 'all', labelEn: 'All (106)', labelMr: 'सर्व (१०६)' },
-              { id: 'forts', labelEn: '🏰 Forts', labelMr: '🏰 किल्ले' },
-              { id: 'temples', labelEn: '🛕 Temples', labelMr: '🛕 मंदिरे' },
-              { id: 'heritage', labelEn: '🏛️ Heritage', labelMr: '🏛️ वारसा' },
-              { id: 'nature', labelEn: '🌲 Nature', labelMr: '🌲 निसर्ग' },
-              { id: 'parks', labelEn: '💧 Lakes & Dams', labelMr: '💧 जलाशय' },
-              { id: 'museums', labelEn: '🏺 Museums', labelMr: '🏺 संग्रहालये' },
+              { id: 'forts', labelEn: 'Forts', labelMr: 'किल्ले' },
+              { id: 'temples', labelEn: 'Temples', labelMr: 'मंदिरे' },
+              { id: 'heritage', labelEn: 'Heritage', labelMr: 'वारसा' },
+              { id: 'nature', labelEn: 'Nature', labelMr: 'निसर्ग' },
+              { id: 'parks', labelEn: 'Lakes & Dams', labelMr: 'जलाशय' },
+              { id: 'museums', labelEn: 'Museums', labelMr: 'संग्रहालये' },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -321,10 +332,10 @@ export default function ExploreAnywhereModal({
                     onSelectAndFly(currentPreview);
                     onClose();
                   }}
-                  className="flex-1 py-3 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-black font-mono text-xs uppercase tracking-wider shadow-xl transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs uppercase tracking-wider shadow-xl transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <span>🚀</span>
-                  <span>{isMr ? 'थेट ३D उड्डाण करा' : 'FLY TO COORDINATES (3D)'}</span>
+                  <Navigation size={14} />
+                  <span>{isMr ? '३D उड्डाण करा' : 'Fly to Location (3D)'}</span>
                 </button>
 
                 <a
@@ -333,8 +344,8 @@ export default function ExploreAnywhereModal({
                   rel="noopener noreferrer"
                   className="py-3 px-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 border border-white/15"
                 >
-                  <span>🧭</span>
-                  <span>{isMr ? 'गुगल मॅप्स' : 'MAPS GPS'}</span>
+                  <ExternalLink size={14} />
+                  <span>{isMr ? 'गुगल मॅप्स' : 'Google Maps'}</span>
                 </a>
               </div>
             </div>

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { MapPin, Camera, FileText } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { PlacePhotoItem } from '@/app/api/v1/places/photos/route';
 
@@ -403,7 +404,7 @@ export default function CinematicPlaceSlideshow({
               marginBottom: 4,
             }}
           >
-            <span>📍</span>
+            <MapPin size={12} style={{ display: 'inline-block' }} />
             <span>{categoryLabel}</span>
             <span>•</span>
             <span>{shortAddress}</span>
@@ -462,7 +463,7 @@ export default function CinematicPlaceSlideshow({
               gap: 4,
             }}
           >
-            <span>📷</span>
+            <Camera size={12} style={{ display: 'inline-block' }} />
             <span>
               {Math.min(Math.max(1, currentIndex + 1), Math.max(1, photos.length))} / {Math.max(1, photos.length)}
             </span>
@@ -631,7 +632,10 @@ export default function CinematicPlaceSlideshow({
               opacity: 0.9,
             }}
           >
-            <span>📜 {currentPhoto?.source || 'Wikimedia Commons'}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <FileText size={11} />
+              <span>{currentPhoto?.source || 'Wikimedia Commons'}</span>
+            </span>
             <span>•</span>
             <span>{currentPhoto?.license || 'CC BY-SA 4.0'}</span>
             {currentPhoto?.attribution && (

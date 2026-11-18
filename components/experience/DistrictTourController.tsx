@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Compass, Eye, FileText, Play, Pause, SkipForward, SkipBack, X } from 'lucide-react';
 import {
   DISTRICT_TOUR_STOPS,
   STORY_TRAILS,
@@ -144,7 +145,7 @@ export default function DistrictTourController({
             aria-expanded={showStoryMenu}
             className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-black/85 hover:bg-black text-white shadow-2xl backdrop-blur-md border border-amber-500/40 transition-all hover:scale-105 active:scale-95"
           >
-            <span className="text-sm">🧭</span>
+            <Compass size={14} className="text-amber-400" />
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300">
               {isMr ? 'कथा मार्ग' : 'STORY TRAILS'}
             </span>
@@ -252,7 +253,7 @@ export default function DistrictTourController({
               onClick={onOrbitStop}
               className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[10px] font-mono text-emerald-300 flex items-center gap-1 transition-colors"
             >
-              <span>👁️</span>
+              <Eye size={12} className="text-emerald-300" />
               <span>{isMr ? '३D प्रदक्षिणा' : '3D Orbit View'}</span>
             </button>
           )}
@@ -263,7 +264,7 @@ export default function DistrictTourController({
               onClick={onInspectStop}
               className="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-[10px] font-mono text-white/80 hover:text-white flex items-center gap-1 transition-colors"
             >
-              <span>📋</span>
+              <FileText size={12} />
               <span>{isMr ? 'संपूर्ण माहिती' : 'Place Profile'}</span>
             </button>
           )}

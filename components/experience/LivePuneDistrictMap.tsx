@@ -812,9 +812,11 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         const travelerEl = document.createElement('div');
         travelerEl.className = 'relative flex items-center justify-center pointer-events-none z-30';
         travelerEl.innerHTML = `
-          <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-cyan-400 opacity-75"></span>
-          <span class="relative inline-flex items-center justify-center rounded-full h-5 w-5 bg-cyan-500 border-2 border-white shadow-xl text-[10px] text-white">
-            🚗
+          <span class="absolute inline-flex h-7 w-7 rounded-full bg-cyan-400/40 animate-ping"></span>
+          <span class="relative inline-flex items-center justify-center rounded-full h-6 w-6 bg-cyan-600 border-2 border-white shadow-xl text-white">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12 2 19 21 12 17 5 21 12 2"></polygon>
+            </svg>
           </span>
         `;
 

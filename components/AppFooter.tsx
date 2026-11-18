@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { Cookie, Share2 } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
 import { useLanguage } from '@/lib/LanguageContext';
 import { openCookiePreferencesModal } from '@/lib/cookies';
@@ -82,7 +83,8 @@ export default function AppFooter() {
               fontSize: 14,
             }}
           >
-            🍪 {isMr ? 'कुकी पसंती' : 'Cookie Settings'}
+            <Cookie size={14} style={{ display: 'inline-block' }} />
+            <span>{isMr ? 'कुकी पसंती' : 'Cookie Settings'}</span>
           </button>
         </div>
 
@@ -181,7 +183,7 @@ export default function AppFooter() {
                 textDecoration: 'none',
               }}
             >
-              <span aria-hidden="true">💬</span> WhatsApp
+              <Share2 size={12} /> WhatsApp
             </a>
             <a
               href="https://twitter.com/intent/tweet?text=Explore%20Pune%20-%20The%20Curated%20Field%20Guide%20to%20Historic%20Forts%2C%20Wadas%20%26%20Trip%20Planner&url=https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
@@ -201,7 +203,7 @@ export default function AppFooter() {
                 textDecoration: 'none',
               }}
             >
-              <span aria-hidden="true">𝕏</span> Twitter / X
+              <span aria-hidden="true" style={{ fontWeight: 800 }}>𝕏</span> Twitter / X
             </a>
             <a
               href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fexplorepune-guide.vercel.app%2F"
@@ -221,7 +223,7 @@ export default function AppFooter() {
                 textDecoration: 'none',
               }}
             >
-              <span aria-hidden="true">💼</span> LinkedIn
+              <Share2 size={12} /> LinkedIn
             </a>
           </div>
         </div>

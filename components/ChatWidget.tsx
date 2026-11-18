@@ -4,6 +4,17 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import {
+  Navigation,
+  Bus,
+  Train,
+  Ticket,
+  Compass,
+  RotateCcw,
+  Copy,
+  Check,
+  MapPin,
+} from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import LocationPickerModal from '@/components/LocationPickerModal';
 import { getStoredUserLocation, UserSavedLocation } from '@/lib/userLocation';
@@ -993,8 +1004,10 @@ export default function ChatWidget() {
                               }
                               className="btn outline chat-place-btn directions"
                               title={isMr ? `${p.name_mr || p.name} चा थेट मार्ग मिळवा` : `Get directions to ${p.name}`}
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
                             >
-                              📍 {isMr ? 'मार्ग मिळवा' : 'Directions'}
+                              <Navigation size={12} />
+                              <span>{isMr ? 'मार्ग मिळवा' : 'Directions'}</span>
                             </button>
 
                             <button
@@ -1007,8 +1020,10 @@ export default function ChatWidget() {
                                 )
                               }
                               className="btn clay chat-place-btn transit"
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
                             >
-                              🚌 {isMr ? 'वाहतूक' : 'Transit'}
+                              <Bus size={12} />
+                              <span>{isMr ? 'वाहतूक' : 'Transit'}</span>
                             </button>
                           </div>
                         </div>
@@ -1022,7 +1037,8 @@ export default function ChatWidget() {
                   <div className="chat-transit-card">
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                       <strong style={{ color: '#065f46', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span>🚇</span> {isMr ? 'सार्वजनिक वाहतूक मार्ग' : 'Public Transit Route'}
+                        <Train size={14} />
+                        <span>{isMr ? 'सार्वजनिक वाहतूक मार्ग' : 'Public Transit Route'}</span>
                       </strong>
                       <span
                         style={{
@@ -1088,16 +1104,17 @@ export default function ChatWidget() {
                           fontWeight: 700,
                         }}
                       >
-                        <span>🎟️</span>
+                        <Ticket size={13} />
                         <span>{t('chat.metroWhatsApp')}</span>
                       </a>
 
                       <Link
                         href="/planner"
                         className="btn outline"
-                        style={{ fontSize: 11, padding: '5px 10px', borderRadius: 6 }}
+                        style={{ fontSize: 11, padding: '5px 10px', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}
                       >
-                        🗺️ {isMr ? 'सहल नियोजन' : 'Trip Planner'}
+                        <Compass size={12} />
+                        <span>{isMr ? 'सहल नियोजन' : 'Trip Planner'}</span>
                       </Link>
                     </div>
                   </div>
@@ -1112,9 +1129,10 @@ export default function ChatWidget() {
                         type="button"
                         onClick={() => send(lastFailedQuery)}
                         className="btn outline"
-                        style={{ padding: '4px 12px', fontSize: 11.5, background: '#ffffff' }}
+                        style={{ padding: '4px 12px', fontSize: 11.5, background: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                       >
-                        🔄 {isMr ? 'पुन्हा प्रयत्न करा' : 'Try Again'}
+                        <RotateCcw size={12} />
+                        <span>{isMr ? 'पुन्हा प्रयत्न करा' : 'Try Again'}</span>
                       </button>
                     </div>
                   </div>
@@ -1143,7 +1161,7 @@ export default function ChatWidget() {
                       onClick={() => handleCopy(m.id, m.text)}
                       title={t('chat.copyAnswer')}
                     >
-                      <span>{copiedId === m.id ? '✓' : '📋'}</span>
+                      {copiedId === m.id ? <Check size={12} /> : <Copy size={12} />}
                       <span>{copiedId === m.id ? t('chat.copied') : t('chat.copyAnswer')}</span>
                     </button>
 

@@ -24,6 +24,11 @@ import {
   HeartHandshake,
   ShieldCheck,
   ShieldAlert,
+  Mountain,
+  Landmark,
+  TreePine,
+  BookOpen,
+  Trees,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useAuth } from '@/lib/useAuth';
@@ -62,13 +67,13 @@ const POPULAR_PLACE_CHIPS = [
 
 // Category metadata for discovery cards
 const CATEGORY_DISCOVERY = [
-  { slug: 'all', nameEn: 'All Categories', nameMr: 'सर्व श्रेणी', icon: '🌟' },
-  { slug: 'forts', nameEn: 'Forts & Hills', nameMr: 'किल्ले व सह्याद्री', icon: '🏰' },
-  { slug: 'heritage', nameEn: 'Heritage & Wadas', nameMr: 'ऐतिहासिक वाडे', icon: '🏛️' },
-  { slug: 'temples', nameEn: 'Religious & Temples', nameMr: 'मंदिरे व तीर्थ', icon: '🛕' },
-  { slug: 'nature', nameEn: 'Nature & Trails', nameMr: 'निसर्ग व टेकड्या', icon: '🌿' },
-  { slug: 'museums', nameEn: 'Museums & Culture', nameMr: 'संग्रहालये', icon: '🏺' },
-  { slug: 'gardens', nameEn: 'Gardens & Parks', nameMr: 'उद्याने', icon: '🌳' },
+  { slug: 'all', nameEn: 'All Categories', nameMr: 'सर्व श्रेणी', Icon: Sparkles },
+  { slug: 'forts', nameEn: 'Forts & Hills', nameMr: 'किल्ले व सह्याद्री', Icon: Mountain },
+  { slug: 'heritage', nameEn: 'Heritage & Wadas', nameMr: 'ऐतिहासिक वाडे', Icon: Landmark },
+  { slug: 'temples', nameEn: 'Religious & Temples', nameMr: 'मंदिरे व तीर्थ', Icon: Compass },
+  { slug: 'nature', nameEn: 'Nature & Trails', nameMr: 'निसर्ग व टेकड्या', Icon: TreePine },
+  { slug: 'museums', nameEn: 'Museums & Culture', nameMr: 'संग्रहालये', Icon: BookOpen },
+  { slug: 'gardens', nameEn: 'Gardens & Parks', nameMr: 'उद्याने', Icon: Trees },
 ];
 
 function CommunityContent() {
@@ -821,7 +826,7 @@ function CommunityContent() {
                     gap: 5,
                   }}
                 >
-                  <span>{cat.icon}</span>
+                  <cat.Icon size={13} style={{ flexShrink: 0 }} />
                   <span>{isMr ? cat.nameMr : cat.nameEn}</span>
                   {catCount > 0 && <span style={{ opacity: 0.7 }}>({catCount})</span>}
                 </button>

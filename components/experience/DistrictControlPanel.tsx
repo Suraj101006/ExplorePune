@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 import Image from 'next/image';
+import { MapPin } from 'lucide-react';
 import { ExperiencePlace } from '@/lib/experience/types';
 import { getAllPlaces, getCategories } from '@/lib/experience/selectors';
 import {
@@ -276,7 +277,10 @@ export default function DistrictControlPanel({
                     </div>
 
                     <div className="flex items-center gap-1.5 text-[10px] font-mono text-white/50 mb-1">
-                      <span className="text-emerald-400">📍 {isMr ? taluka.nameMr : taluka.nameEn}</span>
+                      <span className="text-emerald-400 inline-flex items-center gap-0.5">
+                        <MapPin size={10} />
+                        <span>{isMr ? taluka.nameMr : taluka.nameEn}</span>
+                      </span>
                       <span>•</span>
                       <span className="truncate">{place.category_slug}</span>
                     </div>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MapPin, Route, Navigation, ExternalLink, ArrowRight } from 'lucide-react';
 import { ExperiencePlace } from '@/lib/experience/types';
 import {
   formatCoordinatesDD,
@@ -113,8 +114,9 @@ export default function DistrictLocationDrawer({
 
         {/* Taluka / Region Badge */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-          <span className="text-[11px] font-mono text-emerald-400 bg-black/80 px-2.5 py-1 rounded-lg border border-emerald-500/30">
-            📍 {isMr ? taluka.nameMr : taluka.nameEn}
+          <span className="text-[11px] font-mono text-emerald-400 bg-black/80 px-2.5 py-1 rounded-lg border border-emerald-500/30 inline-flex items-center gap-1">
+            <MapPin size={11} />
+            <span>{isMr ? taluka.nameMr : taluka.nameEn}</span>
           </span>
           <span className="text-[10px] font-mono text-white/80 bg-black/80 px-2 py-1 rounded-lg border border-white/10">
             ALT: ~{elevation}m MSL
@@ -242,7 +244,7 @@ export default function DistrictLocationDrawer({
                   : 'bg-white/10 hover:bg-white/20 border-white/10 text-white'
               }`}
             >
-              <span>🛣️</span>
+              <Route size={14} />
               <span>{isRouteActive ? (isMr ? 'मार्ग काढा' : 'CLEAR ROUTE') : (isMr ? 'रस्ता मार्ग' : 'VIEW ROUTE')}</span>
             </button>
           )}

@@ -30,6 +30,10 @@ import {
   Info,
   ExternalLink,
   X,
+  TreePine,
+  Building2,
+  Trees,
+  Navigation,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/LanguageContext';
 import HeroWatermarkAnimation from '@/components/HeroWatermarkAnimation';
@@ -94,12 +98,12 @@ const POPULAR_SEARCHES = [
 ];
 
 export const PUNE_GEOGRAPHIC_ZONES = [
-  { id: 'all', nameEn: 'All Pune Districts', nameMr: 'संपूर्ण पुणे विभाग', emoji: '🚩' },
-  { id: 'peths', nameEn: 'Historic Peths & Wadas', nameMr: 'ऐतिहासिक पेठा व वाडे', emoji: '🏰' },
-  { id: 'deccan', nameEn: 'Deccan & Kothrud', nameMr: 'डेक्कन व कोथरूड', emoji: '🌿' },
-  { id: 'camp', nameEn: 'Pune Camp & Cantonment', nameMr: 'पुणे कॅम्प व लष्कर', emoji: '🎖️' },
-  { id: 'koregaon', nameEn: 'Koregaon Park & Nagar Rd', nameMr: 'कोरेगाव पार्क व परिसर', emoji: '🌳' },
-  { id: 'forts', nameEn: 'Sahyadri Forts & Reservoirs', nameMr: 'सह्याद्री गड-किल्ले', emoji: '⛰️' },
+  { id: 'all', nameEn: 'All Pune Districts', nameMr: 'संपूर्ण पुणे विभाग', icon: Compass },
+  { id: 'peths', nameEn: 'Historic Peths & Wadas', nameMr: 'ऐतिहासिक पेठा व वाडे', icon: Landmark },
+  { id: 'deccan', nameEn: 'Deccan & Kothrud', nameMr: 'डेक्कन व कोथरूड', icon: TreePine },
+  { id: 'camp', nameEn: 'Pune Camp & Cantonment', nameMr: 'पुणे कॅम्प व लष्कर', icon: Building2 },
+  { id: 'koregaon', nameEn: 'Koregaon Park & Nagar Rd', nameMr: 'कोरेगाव पार्क व परिसर', icon: Trees },
+  { id: 'forts', nameEn: 'Sahyadri Forts & Reservoirs', nameMr: 'सह्याद्री गड-किल्ले', icon: Mountain },
 ];
 
 function getPlaceLocality(place: any, isMr: boolean): string {
@@ -399,7 +403,7 @@ export default function HomeExplorer({
                   marginBottom: 8,
                 }}
               >
-                <span>📍</span>
+                <MapPin size={12} style={{ display: 'inline-block' }} />
                 <span>{isMr ? 'पुणे वारसा व पर्यटन सूची' : 'Pune Tourism & Heritage Catalog'}</span>
                 <span>·</span>
                 <span>{totalCount || 106}+ {isMr ? 'ठिकाणे' : 'Verified Places'}</span>
@@ -1474,9 +1478,13 @@ export default function HomeExplorer({
                   padding: '3px 10px',
                   fontSize: '12px',
                   fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
                 }}
               >
-                🛡️ {isMr ? `${masterTotal} पडताळलेली` : `${masterTotal} Field-Verified`}
+                <ShieldCheck size={13} />
+                <span>{isMr ? `${masterTotal} पडताळलेली` : `${masterTotal} Field-Verified`}</span>
               </span>
               <span
                 style={{
@@ -1586,7 +1594,7 @@ export default function HomeExplorer({
               fontWeight: currentCat === 'free' ? 700 : 500,
             }}
           >
-            <span style={{ fontSize: '14px', lineHeight: 1 }}>🎟️</span>
+            <Ticket size={14} style={{ display: 'inline-block' }} />
             <span>{isMr ? 'मोफत प्रवेश (₹०)' : 'Free Entry (₹0)'}</span>
           </Link>
 
@@ -1696,7 +1704,7 @@ export default function HomeExplorer({
             <div style={{ marginBottom: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, flexWrap: 'wrap', gap: 6 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span>🗺️</span>
+                  <Compass size={14} style={{ display: 'inline-block' }} />
                   <span>{isMr ? 'पुणे ऐतिहासिक व भौगोलिक विभाग:' : 'Explore by Pune Heritage Zone:'}</span>
                 </div>
                 {selectedZone !== 'all' && (
@@ -1720,6 +1728,7 @@ export default function HomeExplorer({
               >
                 {PUNE_GEOGRAPHIC_ZONES.map((zone) => {
                   const isSelected = selectedZone === zone.id;
+                  const ZoneIcon = zone.icon;
                   return (
                     <button
                       key={zone.id}
@@ -1743,7 +1752,7 @@ export default function HomeExplorer({
                         gap: 6,
                       }}
                     >
-                      <span>{zone.emoji}</span>
+                      <ZoneIcon size={13} style={{ flexShrink: 0 }} />
                       <span>{isMr ? zone.nameMr : zone.nameEn}</span>
                     </button>
                   );
@@ -2116,7 +2125,7 @@ export default function HomeExplorer({
                           }}
                           title={isMr ? `${p.name_mr || p.name} चा मार्ग शोधा` : `Get directions to ${p.name}`}
                         >
-                          <span>📍</span>
+                          <Navigation size={12} style={{ display: 'inline-block' }} />
                           <span>{isMr ? 'मार्ग' : 'Route'}</span>
                         </button>
                         <Link
@@ -2435,7 +2444,7 @@ export default function HomeExplorer({
       {/* Tiny Bookmark Confirmation Toast (Requirement 14) */}
       {toastMessage && (
         <div className="pune-toast-pill" role="status" aria-live="polite">
-          <span>🔖</span>
+          <Bookmark size={14} style={{ display: 'inline-block' }} />
           <span>{toastMessage}</span>
         </div>
       )}

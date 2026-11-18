@@ -21,10 +21,10 @@ const LivePuneDistrictMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-zinc-950 text-white/50 font-mono">
+      <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-zinc-950 text-white/70">
         <div className="w-10 h-10 border-2 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin mb-4" />
-        <p className="text-xs uppercase tracking-widest text-emerald-400">
-          CALIBRATING REAL PUNE DISTRICT GEOSPATIAL ENGINE...
+        <p className="text-xs uppercase tracking-widest text-emerald-400 font-sans font-semibold">
+          Loading Pune District Interactive Map...
         </p>
       </div>
     ),
@@ -46,8 +46,8 @@ export default function ExperiencePage() {
   const { lang, isMr } = useLanguage();
   const mapRef = useRef<DistrictMapHandle | null>(null);
 
-  // Opening Intro state
-  const [showIntro, setShowIntro] = useState<boolean>(true);
+  // Opening Intro state (defaults to false so users immediately access the live map)
+  const [showIntro, setShowIntro] = useState<boolean>(false);
 
   // Basemap & Layer states
   const [currentStyle, setCurrentStyle] = useState<MapStyleKey>('satellite');
