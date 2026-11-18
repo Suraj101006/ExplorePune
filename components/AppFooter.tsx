@@ -13,13 +13,20 @@ export default function AppFooter() {
     <footer className="site-footer footer-deferred">
       <div className="wrap">
         <div style={{ maxWidth: 540 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
             <BrandLogo
-              size={42}
+              size={48}
               alt="Explore Pune Logo"
               withBadge
             />
-            <strong style={{ fontSize: 16, color: 'var(--ink)' }}>Explore Pune</strong>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <strong style={{ fontSize: 17, color: 'var(--ink)', fontWeight: 850, letterSpacing: '-0.02em' }}>
+                Explore<span style={{ color: 'var(--primary)' }}> Pune</span>
+              </strong>
+              <span style={{ fontSize: 11, color: 'var(--clay)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                {isMr ? 'पुण्यनगरी • सह्याद्री' : 'Heritage & Trails'}
+              </span>
+            </div>
           </div>
           <p style={{ margin: 0, fontSize: 14, color: 'var(--muted)', lineHeight: 1.5 }}>
             {isMr

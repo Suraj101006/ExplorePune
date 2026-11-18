@@ -24,7 +24,7 @@ export interface BrandLogoProps {
  * crispness, and typography, with enhanced zoom and high-contrast badge visibility.
  */
 export default function BrandLogo({
-  size = 44,
+  size = 48,
   className = '',
   priority = false,
   alt = 'Explore Pune Official Logo',
@@ -32,7 +32,7 @@ export default function BrandLogo({
   style,
   badgeBackground = '#ffffff',
   badgeBorderRadius = '50%',
-  zoom = 1.22,
+  zoom = 1,
 }: BrandLogoProps) {
   const imageElement = (
     <Image

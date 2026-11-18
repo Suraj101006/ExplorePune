@@ -1141,21 +1141,22 @@ html.dark .theme-toggle-kbd,
     gap: 6px !important;
   }
   .brand {
-    gap: 6px !important;
-  }
-  .brand-subtitle {
-    display: none !important;
+    gap: 8px !important;
   }
   .brand-logo-img {
-    width: 36px !important;
-    height: 36px !important;
+    width: 44px !important;
+    height: 44px !important;
   }
   .brand-logo-img img {
     width: 100% !important;
     height: 100% !important;
   }
   .brand-title {
-    font-size: 17px !important;
+    font-size: 19px !important;
+  }
+  .brand-subtitle {
+    display: block !important;
+    font-size: 10px !important;
   }
   .header-utilities {
     gap: 5px !important;
@@ -1237,17 +1238,18 @@ html.dark .theme-toggle-kbd,
     min-height: 56px !important;
   }
   .brand {
-    gap: 5px !important;
+    gap: 7px !important;
   }
   .brand-logo-img {
-    width: 32px !important;
-    height: 32px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
   .brand-title {
-    font-size: 14.5px !important;
+    font-size: 17px !important;
   }
   .brand-subtitle {
-    display: none !important;
+    display: block !important;
+    font-size: 9.5px !important;
   }
   .header-utilities {
     gap: 4px !important;
@@ -1293,17 +1295,18 @@ html.dark .theme-toggle-kbd,
     min-height: 52px !important;
   }
   .brand {
-    gap: 4px !important;
+    gap: 6px !important;
   }
   .brand-logo-img {
-    width: 28px !important;
-    height: 28px !important;
+    width: 38px !important;
+    height: 38px !important;
   }
   .brand-title {
-    font-size: 13.5px !important;
+    font-size: 15.5px !important;
   }
   .brand-subtitle {
-    display: none !important;
+    display: block !important;
+    font-size: 9px !important;
   }
   .header-utilities {
     gap: 3px !important;
@@ -1354,17 +1357,18 @@ html.dark .theme-toggle-kbd,
     min-height: 48px !important;
   }
   .brand {
-    gap: 3px !important;
+    gap: 5px !important;
   }
   .brand-logo-img {
-    width: 26px !important;
-    height: 26px !important;
+    width: 35px !important;
+    height: 35px !important;
   }
   .brand-title {
-    font-size: 12.5px !important;
+    font-size: 14.5px !important;
   }
   .brand-subtitle {
-    display: none !important;
+    display: block !important;
+    font-size: 8.5px !important;
   }
   .header-utilities {
     gap: 2px !important;
