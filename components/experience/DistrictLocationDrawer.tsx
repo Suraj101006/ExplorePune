@@ -417,6 +417,17 @@ export default function DistrictLocationDrawer({
           </button>
         )}
 
+        {/* Special 2D Historical Game for Sinhagad Fort */}
+        {(place.slug === 'sinhagad-fort' || place.id === 'sinhagad-fort') && (
+          <Link
+            href="/experience/sinhagad"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black shadow-lg shadow-amber-500/20 border border-amber-300 transition-all transform hover:scale-[1.01]"
+          >
+            <Compass size={14} className="animate-spin text-slate-950" style={{ animationDuration: '6s' }} />
+            <span>{isMr ? '🎮 ऐतिहासिक २D किल्ला खेळा (पुणे दरवाजा व दारू कोठार)' : '🎮 PLAY 2D HISTORIC FORT GAME'}</span>
+          </Link>
+        )}
+
         {/* Explore Destination Detail Page */}
         <Link
           href={`/places/${place.slug}`}

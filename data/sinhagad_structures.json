@@ -1,0 +1,298 @@
+[
+  {
+    "id": "STR-DARU-01",
+    "name": "Daru Kothar (Gunpowder Magazine)",
+    "name_mr": "दारू कोठार (दारूगोळा भांडार)",
+    "category": "military_architecture",
+    "latitude": 18.3668,
+    "longitude": 73.7562,
+    "dimensions": {
+      "length_m": 8.50,
+      "width_m": 3.77,
+      "height_m": 4.55,
+      "wall_thickness_m": 0.80,
+      "floor_area_sqm": 32.04
+    },
+    "features": [
+      "Pointed barrel vaulted ceiling",
+      "Four structural ribs",
+      "Original western entrance doorway",
+      "Later eastern doorway modification",
+      "Later fireplace niche and smoke vent (non-original alteration)"
+    ],
+    "material": "Deccan basalt ashlar masonry with lime mortar",
+    "construction_type": "Bomb-proof vaulted storage",
+    "historical_period": "Peshwa Period (~1750-1780 CE)",
+    "source_document": "Conservation and Repairs to Sinhagad Fort, Kimaya Architects (2017)",
+    "drawing_number": "W-4, W-10",
+    "page_number": "Section 4.2",
+    "measurement_status": "VERIFIED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Exact dimensions verified by measured survey drawing W-4. The fireplace niche was added in late 19th/early 20th century colonial use and must not be confused with original 18th-century gunpowder storage."
+  },
+  {
+    "id": "STR-GATE-01",
+    "name": "Pune Darwaza (Northern Citadel Gate)",
+    "name_mr": "पुणे दरवाजा (उत्तर मुख्य महाद्वार)",
+    "category": "fortification_gateway",
+    "latitude": 18.3695,
+    "longitude": 73.7570,
+    "dimensions": {
+      "length_m": 38.00,
+      "width_m": 14.50,
+      "height_m": 8.20,
+      "wall_thickness_m": 1.80,
+      "floor_area_sqm": 551.00
+    },
+    "features": [
+      "Three successive defensive gateways",
+      "Tactical 90-degree right angle bend to negate war elephant battering rams",
+      "Flanking semicircular watch bastions",
+      "Internal guard rooms (devdis)",
+      "Pointed basalt arches with elephant-spike wooden gate doors"
+    ],
+    "material": "Dressed hard basalt blocks with lime grouting",
+    "construction_type": "Fortified defensive gateway complex",
+    "historical_period": "Bahmani / Early Maratha era with 18th-century Peshwa reinforcements",
+    "source_document": "Conservation and Repairs to Sinhagad Fort, Kimaya Architects (2017) & GIPE-194427",
+    "drawing_number": "W-1, S-1",
+    "page_number": "Master Plan Sheet W-1",
+    "measurement_status": "VERIFIED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Three distinct gateway thresholds verified in survey. Alignment strictly faces true North (~350° azimuth) overlooking the Pune approach."
+  },
+  {
+    "id": "STR-GATE-02",
+    "name": "Kalyan Darwaza (Southwest Gate)",
+    "name_mr": "कल्याण दरवाजा (नैऋत्य महाद्वार)",
+    "category": "fortification_gateway",
+    "latitude": 18.3622,
+    "longitude": 73.7518,
+    "dimensions": {
+      "length_m": 22.00,
+      "width_m": 9.20,
+      "height_m": 6.80,
+      "wall_thickness_m": 1.60,
+      "floor_area_sqm": 202.40
+    },
+    "features": [
+      "Double arched gate complex",
+      "Direct pedestrian path descending towards Kalyan village and Torna",
+      "Cliffside bastion flank defense"
+    ],
+    "material": "Rough-coursed basalt masonry",
+    "construction_type": "Cliffside portal",
+    "historical_period": "Maratha Period (17th Century)",
+    "source_document": "Gazetteer of the Bombay Presidency (1885) & MTDC Survey",
+    "drawing_number": "W-1",
+    "page_number": "Page 328",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "MEDIUM_HIGH",
+    "notes_and_uncertainties": "Ground plan documented in archival maps. Vertical elevation of outer portal partially ruined."
+  },
+  {
+    "id": "STR-BURUJ-01",
+    "name": "Kalavantinicha Buruj (Courtesan's Bastion)",
+    "name_mr": "कलावंतीणीचा बुरुज",
+    "category": "bastion",
+    "latitude": 18.3610,
+    "longitude": 73.7535,
+    "dimensions": {
+      "length_m": 13.60,
+      "width_m": 11.40,
+      "height_m": 11.20,
+      "wall_thickness_m": 1.80,
+      "floor_area_sqm": 121.70
+    },
+    "features": [
+      "Protruding semicircular bastion over southern precipice",
+      "Gun slits and musket embrasures",
+      "Stone parapet walls"
+    ],
+    "material": "Heavy dressed basalt masonry with dry-packed rubble core",
+    "construction_type": "Artillery and surveillance bastion",
+    "historical_period": "Maratha / Peshwa Period",
+    "source_document": "Conservation and Repairs to Sinhagad Fort, Kimaya Architects (2017)",
+    "drawing_number": "S-5, S-6, S-7, W-11",
+    "page_number": "Drawings S-5 to S-7",
+    "measurement_status": "VERIFIED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Drawings S-5 to S-7 provide accurate surveyed profiles. Modern visitor safety parapet must be distinguished from original stone wall height."
+  },
+  {
+    "id": "STR-TANK-01",
+    "name": "Khankonda Tank Area",
+    "name_mr": "खणकोंडा तलाव परिसर",
+    "category": "water_system",
+    "latitude": 18.3650,
+    "longitude": 73.7548,
+    "dimensions": {
+      "length_m": 18.50,
+      "width_m": 12.00,
+      "height_m": 4.50,
+      "wall_thickness_m": 1.20,
+      "floor_area_sqm": 222.00
+    },
+    "features": [
+      "Open masonry reservoir",
+      "Four flanking wall bastions along perimeter curtain",
+      "Gun slits on outer defensive wall",
+      "Stone descent steps"
+    ],
+    "material": "Excavated bedrock with dressed basalt retaining walls",
+    "construction_type": "Water reservoir & integrated curtain defense",
+    "historical_period": "17th Century Maratha / Peshwa expansion",
+    "source_document": "Conservation and Repairs to Sinhagad Fort, Kimaya Architects (2017)",
+    "drawing_number": "S-8, W-14",
+    "page_number": "Section S-8",
+    "measurement_status": "VERIFIED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Four distinct wall bastions and gun slits verified in Drawing S-8."
+  },
+  {
+    "id": "STR-DEV-01",
+    "name": "Devtaka (Sacred Sweet Water Cistern)",
+    "name_mr": "देवटाके (गोड्या पाण्याचे नैसर्गिक टाके)",
+    "category": "water_system",
+    "latitude": 18.3648,
+    "longitude": 73.7552,
+    "dimensions": {
+      "length_m": 14.00,
+      "width_m": 8.00,
+      "height_m": 5.20,
+      "wall_thickness_m": 0.00,
+      "floor_area_sqm": 112.00
+    },
+    "features": [
+      "Perennial cold sweet drinking water",
+      "Subterranean natural rock fissure filtration",
+      "Pillar-supported monolithic rock chambers"
+    ],
+    "material": "Monolithic excavated basalt rock",
+    "construction_type": "Rock-cut cavern cistern",
+    "historical_period": "Yadava / Early Koli Period (~11th - 13th Century CE)",
+    "source_document": "Archaeological Survey of Maharashtra & Gazetteer",
+    "drawing_number": "W-14",
+    "page_number": "Water Heritage Registry",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Natural underground springs maintain constant water level year-round even in peak summer."
+  },
+  {
+    "id": "STR-TMPL-01",
+    "name": "Kaundinyeshwar Temple",
+    "name_mr": "कौंडिण्येश्वर मंदिर",
+    "category": "temple",
+    "latitude": 18.3662,
+    "longitude": 73.7565,
+    "dimensions": {
+      "length_m": 11.20,
+      "width_m": 7.40,
+      "height_m": 5.80,
+      "wall_thickness_m": 0.90,
+      "floor_area_sqm": 82.88
+    },
+    "features": [
+      "Ancient Shiva shrine",
+      "Hemadpanthi style interlocking dry basalt stonework",
+      "Garbhagriha (sanctum sanctorum) and pillared Sabha Mandapa"
+    ],
+    "material": "Interlocking dressed basalt blocks",
+    "construction_type": "Hemadpanthi temple",
+    "historical_period": "Yadava Dynasty (~11th-12th Century CE)",
+    "source_document": "Bombay Gazetteer (1885) & Archaeological Records",
+    "drawing_number": "W-1",
+    "page_number": "Plateau Temples Survey",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Oldest verified continuous religious structure on the fort."
+  },
+  {
+    "id": "STR-MEM-01",
+    "name": "Subedar Tanaji Malusare Memorial",
+    "name_mr": "नरवीर तानाजी मालुसरे स्मारक",
+    "category": "memorial",
+    "latitude": 18.3658,
+    "longitude": 73.7556,
+    "dimensions": {
+      "length_m": 9.00,
+      "width_m": 9.00,
+      "height_m": 4.50,
+      "wall_thickness_m": 0.00,
+      "floor_area_sqm": 81.00
+    },
+    "features": [
+      "Elevated memorial plinth",
+      "Bronze bust and sword memorial of Subedar Tanaji Malusare",
+      "Stone inscription commemorating the 1670 Battle of Sinhagad"
+    ],
+    "material": "Dressed stone plinth and bronze cast sculpture",
+    "construction_type": "Memorial pavilion",
+    "historical_period": "Modern commemoration on historic 1670 battle ground",
+    "source_document": "MTDC Heritage Register",
+    "drawing_number": "W-1",
+    "page_number": "Landmark 14",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Marks the approximate spot where Tanaji Malusare fell in victory during the night scaling of 1670."
+  },
+  {
+    "id": "STR-SAM-01",
+    "name": "Chhatrapati Rajaram Maharaj Samadhi",
+    "name_mr": "छत्रपती राजाराम महाराज समाधी",
+    "category": "memorial",
+    "latitude": 18.3645,
+    "longitude": 73.7575,
+    "dimensions": {
+      "length_m": 6.50,
+      "width_m": 6.50,
+      "height_m": 5.20,
+      "wall_thickness_m": 0.60,
+      "floor_area_sqm": 42.25
+    },
+    "features": [
+      "Octagonal stone chhatri canopy",
+      "Carved stone pillars with floral Maratha motifs",
+      "Sacred cenotaph platform"
+    ],
+    "material": "Carved basalt stone",
+    "construction_type": "Royal memorial chhatri",
+    "historical_period": "Maratha Empire (~1700-1710 CE)",
+    "source_document": "Department of Archaeology and Museums, Government of Maharashtra",
+    "drawing_number": "W-1",
+    "page_number": "Royal Memorials Survey",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Chhatrapati Rajaram Maharaj passed away at Sinhagad on 3 March 1700 after years of valiant campaigns against Aurangzeb."
+  },
+  {
+    "id": "STR-MOD-01",
+    "name": "Lokmanya Tilak Bungalow",
+    "name_mr": "लोकमान्य टिळक बंगला",
+    "category": "heritage_residence",
+    "latitude": 18.3666,
+    "longitude": 73.7550,
+    "dimensions": {
+      "length_m": 16.00,
+      "width_m": 12.00,
+      "height_m": 6.50,
+      "wall_thickness_m": 0.45,
+      "floor_area_sqm": 192.00
+    },
+    "features": [
+      "Colonial hill retreat cottage",
+      "Pitched wooden roof truss with Mangalore tiles",
+      "Verandah overlooking the Haveli valley",
+      "Historic room where Lokmanya Tilak met Mahatma Gandhi in 1915"
+    ],
+    "material": "Stone, brick, seasoned timber, and red clay tiles",
+    "construction_type": "Vernacular hill station residence",
+    "historical_period": "Colonial / National Movement Era (~1900-1915 CE)",
+    "source_document": "Pune Collectorate & Kesari Mahratta Trust Archives",
+    "drawing_number": "W-1",
+    "page_number": "Modern Historical Landmarks",
+    "measurement_status": "DOCUMENTED",
+    "confidence_level": "HIGH",
+    "notes_and_uncertainties": "Maintained by the Kesari Mahratta Trust."
+  }
+]

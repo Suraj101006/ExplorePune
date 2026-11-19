@@ -33,6 +33,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       images: [`${baseUrl}/images/hero-shaniwar-wada.webp`],
     },
     {
+      url: `${baseUrl}/experience/sinhagad`,
+      lastModified: auditReleaseDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+      images: [`${baseUrl}/images/places/sinhagad-fort.jpg`],
+    },
+    {
       url: `${baseUrl}/destinations`,
       lastModified: auditReleaseDate,
       changeFrequency: 'daily',
