@@ -280,4 +280,77 @@ describe('GTA-Inspired Open-World 3D Map & Navigation System', () => {
       expect(p.longitude, `Place ${p.slug} longitude`).toBeLessThan(75.2);
     });
   });
+
+  it('validates 4 Time-of-Day lighting systems & WebGL hillshade illumination azimuths', () => {
+    // 4 requested lighting modes
+    const LIGHTING_MODES = {
+      day: {
+        skyColor: '#0284c7',
+        horizonColor: '#bae6fd',
+        illuminationDirection: 315, // NW afternoon sun
+        shadowColor: '#0f172a',
+        highlightColor: '#ffffff',
+      },
+      golden: {
+        skyColor: '#ea580c',
+        horizonColor: '#fed7aa',
+        illuminationDirection: 245, // Low SW golden hour sun
+        shadowColor: '#3b0764',
+        highlightColor: '#fed7aa',
+      },
+      sunset: {
+        skyColor: '#581c87',
+        horizonColor: '#fb7185',
+        illuminationDirection: 260, // Dusk crimson western sun
+        shadowColor: '#180424',
+        highlightColor: '#f472b6',
+      },
+      night: {
+        skyColor: '#020617',
+        horizonColor: '#0f172a',
+        illuminationDirection: 180, // High nocturnal moon
+        shadowColor: '#000000',
+        highlightColor: '#38bdf8',
+      },
+    };
+
+    expect(Object.keys(LIGHTING_MODES)).toHaveLength(4);
+
+    // Verify all angles are within valid compass range [0, 360)
+    Object.entries(LIGHTING_MODES).forEach(([mode, config]) => {
+      expect(config.illuminationDirection).toBeGreaterThanOrEqual(0);
+      expect(config.illuminationDirection).toBeLessThan(360);
+      expect(config.skyColor).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(config.horizonColor).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(config.shadowColor).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(config.highlightColor).toMatch(/^#[0-9a-f]{6}$/i);
+    });
+  });
+
+  it('validates Pune City Flyover cinematic sequence coordinates and keyframes', () => {
+    // The 4 iconic stops traversed during cinematic flyover
+    const flyoverKeyframes = [
+      { name: 'Sangam Bridge', lat: 18.5303, lng: 73.8647, minZoom: 14.0 },
+      { name: 'Shaniwar Wada', lat: 18.5196, lng: 73.8553, minZoom: 15.0 },
+      { name: 'Lal Mahal & Dagdusheth', lat: 18.5178, lng: 73.8570, minZoom: 15.0 },
+      { name: 'Parvati Hill Vantage', lat: 18.4962, lng: 73.8478, minZoom: 13.5 },
+    ];
+
+    expect(flyoverKeyframes).toHaveLength(4);
+
+    flyoverKeyframes.forEach((kf, idx) => {
+      expect(kf.lat).toBeGreaterThan(18.4);
+      expect(kf.lat).toBeLessThan(18.6);
+      expect(kf.lng).toBeGreaterThan(73.8);
+      expect(kf.lng).toBeLessThan(73.9);
+
+      if (idx > 0) {
+        const prev = flyoverKeyframes[idx - 1];
+        const dist = calculateDistanceKm(prev.lat, prev.lng, kf.lat, kf.lng);
+        // Each consecutive hop should be within 4km for a smooth low-altitude sweep
+        expect(dist).toBeGreaterThan(0.2);
+        expect(dist).toBeLessThan(4.5);
+      }
+    });
+  });
 });

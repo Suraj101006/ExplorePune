@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { MapStyleKey, MAP_STYLE_OPTIONS } from '@/lib/experience/puneDistrictData';
 
-export type TimeOfDayKey = 'morning' | 'afternoon' | 'golden' | 'night' | 'auto';
+export type TimeOfDayKey = 'day' | 'golden' | 'sunset' | 'night' | 'morning' | 'afternoon' | 'auto';
 
 export interface MapLayerState {
   districtBoundary: boolean;
@@ -261,27 +261,15 @@ export default function DistrictMapControls({
               <div className="grid grid-cols-2 gap-1 font-mono text-[10px]">
                 <button
                   type="button"
-                  onClick={() => onSelectTimeOfDay('morning')}
+                  onClick={() => onSelectTimeOfDay('day')}
                   className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
-                    timeOfDay === 'morning'
-                      ? 'bg-amber-500/20 border-amber-400 text-amber-300 font-bold'
-                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
-                  }`}
-                >
-                  <Sunrise size={12} className="text-amber-400" />
-                  <span>Morning</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onSelectTimeOfDay('afternoon')}
-                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
-                    timeOfDay === 'afternoon'
+                    timeOfDay === 'day' || timeOfDay === 'afternoon'
                       ? 'bg-sky-500/20 border-sky-400 text-sky-300 font-bold'
                       : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
                   }`}
                 >
-                  <Sun size={12} className="text-sky-400" />
-                  <span>Daylight</span>
+                  <Sun size={12} className="text-amber-400" />
+                  <span>Day Mode</span>
                 </button>
                 <button
                   type="button"
@@ -293,7 +281,19 @@ export default function DistrictMapControls({
                   }`}
                 >
                   <Sunset size={12} className="text-orange-400" />
-                  <span>Sunset</span>
+                  <span>Golden Hour</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSelectTimeOfDay('sunset')}
+                  className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border transition-colors ${
+                    timeOfDay === 'sunset' || timeOfDay === 'morning'
+                      ? 'bg-pink-500/20 border-pink-400 text-pink-300 font-bold'
+                      : 'bg-white/[0.03] border-white/5 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  <Sunrise size={12} className="text-pink-400" />
+                  <span>Sunset Dusk</span>
                 </button>
                 <button
                   type="button"
@@ -305,7 +305,7 @@ export default function DistrictMapControls({
                   }`}
                 >
                   <Moon size={12} className="text-cyan-400" />
-                  <span>Night</span>
+                  <span>Night Mode</span>
                 </button>
               </div>
             </div>

@@ -51,6 +51,11 @@ interface GameHUDProps {
   totalLocations: number;
   unlockedTrophiesCount?: number;
   totalTrophiesCount?: number;
+  onPlayCityFlyover?: () => void;
+  onPlayDistrictIntro?: () => void;
+  isRealGpsActive?: boolean;
+  gpsAccuracyMeters?: number | null;
+  onToggleGps?: () => void;
   lang?: string;
   className?: string;
 }
@@ -77,6 +82,11 @@ export default function GameHUD({
   totalLocations,
   unlockedTrophiesCount = 0,
   totalTrophiesCount = 6,
+  onPlayCityFlyover,
+  onPlayDistrictIntro,
+  isRealGpsActive = false,
+  gpsAccuracyMeters,
+  onToggleGps,
   lang = 'en',
   className = '',
 }: GameHUDProps) {
@@ -101,8 +111,9 @@ export default function GameHUD({
 
   // Next time of day toggle
   const nextTimeOfDay = () => {
-    const list: TimeOfDayKey[] = ['morning', 'afternoon', 'golden', 'night'];
-    const idx = list.indexOf(timeOfDay);
+    const list: TimeOfDayKey[] = ['day', 'golden', 'sunset', 'night'];
+    const current = (timeOfDay === 'morning' || timeOfDay === 'afternoon') ? 'day' : timeOfDay;
+    const idx = list.indexOf(current as TimeOfDayKey);
     const next = list[(idx + 1) % list.length];
     onSelectTimeOfDay(next);
     ambientAudio.playUiBlip(760, 0.04);
@@ -158,6 +169,31 @@ export default function GameHUD({
             <BookOpen size={13} />
             <span className="hidden md:inline">{isMr ? 'सूची' : 'ATLAS'}</span>
           </button>
+
+          {/* GPS Live Location Toggle */}
+          {onToggleGps && (
+            <button
+              type="button"
+              onClick={() => {
+                onToggleGps();
+                ambientAudio.playUiBlip(880, 0.04);
+              }}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl border font-mono text-xs font-bold transition-all shadow-xl ${
+                isRealGpsActive
+                  ? 'bg-sky-500/20 text-sky-300 border-sky-400/60 shadow-sky-950/50'
+                  : 'bg-black/80 hover:bg-black text-white/70 hover:text-white border-white/15'
+              }`}
+              title={isRealGpsActive ? `Live GPS Locked (±${gpsAccuracyMeters || 15}m)` : 'Detect My Live Location'}
+            >
+              <Navigation
+                size={12}
+                className={isRealGpsActive ? 'text-sky-400 animate-pulse' : 'text-white/60'}
+              />
+              <span className="hidden sm:inline">
+                {isRealGpsActive ? `GPS ±${gpsAccuracyMeters || 15}m` : (isMr ? 'स्थान' : 'GPS')}
+              </span>
+            </button>
+          )}
 
           {/* 15 Talukas Quick Toggle */}
           <button
@@ -273,7 +309,7 @@ export default function GameHUD({
           </div>
         </div>
 
-        {/* Right: Trophies, Missions, Time-of-Day, Search */}
+        {/* Right: Trophies, Missions, Flyover, Time-of-Day, Search */}
         <div className="flex items-center gap-1.5">
           {/* Achievements / Trophies Button */}
           <button
@@ -304,6 +340,22 @@ export default function GameHUD({
             <span className="hidden sm:inline">{isMr ? 'मोहिमा' : 'MISSIONS'}</span>
           </button>
 
+          {/* Cinematic City Flyover Button */}
+          {onPlayCityFlyover && (
+            <button
+              type="button"
+              onClick={() => {
+                onPlayCityFlyover();
+                ambientAudio.playUiBlip(880, 0.05);
+              }}
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-mono text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-xl shadow-cyan-950/40"
+              title="Play Cinematic Pune City Flyover (Sangam Bridge -> Shaniwar Wada -> Lal Mahal -> Parvati)"
+            >
+              <Compass size={13} className="text-cyan-400 animate-spin-slow" />
+              <span>{isMr ? 'फ्लायओव्हर' : 'FLYOVER'}</span>
+            </button>
+          )}
+
           {/* Time of Day Cycle Switcher */}
           <button
             type="button"
@@ -312,10 +364,12 @@ export default function GameHUD({
             title={`Time of Day: ${timeOfDay.toUpperCase()} (Click to toggle)`}
             aria-label="Toggle Time of Day Lighting"
           >
+            {(timeOfDay === 'day' || timeOfDay === 'afternoon') && <Sun size={14} className="text-amber-400" />}
             {timeOfDay === 'morning' && <Sunrise size={14} className="text-pink-300" />}
-            {timeOfDay === 'afternoon' && <Sun size={14} className="text-amber-400" />}
             {timeOfDay === 'golden' && <Sunset size={14} className="text-orange-400" />}
+            {timeOfDay === 'sunset' && <Sunset size={14} className="text-pink-400" />}
             {timeOfDay === 'night' && <Moon size={14} className="text-cyan-300" />}
+            {timeOfDay === 'auto' && <Sun size={14} className="text-emerald-400" />}
           </button>
 
           {/* Quick Search Spotlight Button */}

@@ -15,6 +15,19 @@ import {
 } from '@/lib/experience/puneDistrictData';
 import { MapLayerState, TimeOfDayKey } from '@/components/experience/DistrictMapControls';
 import { ambientAudio } from '@/lib/experience/ambientAudio';
+import {
+  fetchRealRoadRoute,
+  fetchMultiStopRoute,
+  checkArrivalThreshold,
+  NavigationTravelMode,
+  NavigationRouteResult,
+  DeviceGpsState,
+  INITIAL_GPS_STATE,
+} from '@/lib/experience/navigationEngine';
+import { LocationAccuracyService } from '@/lib/services/LocationAccuracyService';
+import { LocationPermissionService } from '@/lib/services/LocationPermissionService';
+import { PuneLocality } from '@/lib/userLocation';
+import GpsPermissionModal from '@/components/experience/GpsPermissionModal';
 import './experience.css';
 
 // Dynamic import for WebGL Map to avoid SSR overhead
@@ -89,8 +102,17 @@ export default function ExperiencePage() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true); // Default collapsed for 95% unoccluded 3D map!
   const [isRegionsOpen, setIsRegionsOpen] = useState<boolean>(false); // Clean sky by default; toggleable from HUD
 
-  // GTA GPS Waypoint & Route state
+  // GTA GPS Waypoint & Real Road Route state
   const [waypointPlace, setWaypointPlace] = useState<ExperiencePlace | null>(null);
+  const [travelMode, setTravelMode] = useState<NavigationTravelMode>('driving');
+  const [routeResult, setRouteResult] = useState<NavigationRouteResult | null>(null);
+  const [isRoutingLoading, setIsRoutingLoading] = useState<boolean>(false);
+  const [isArrived, setIsArrived] = useState<boolean>(false);
+
+  // Professional Device GPS State
+  const [deviceGps, setDeviceGps] = useState<DeviceGpsState>(INITIAL_GPS_STATE);
+  const [isGpsModalOpen, setIsGpsModalOpen] = useState<boolean>(false);
+  const gpsWatchIdRef = useRef<number | null>(null);
 
   // Discovery Missions state
   const [isMissionsModalOpen, setIsMissionsModalOpen] = useState<boolean>(false);
@@ -103,6 +125,9 @@ export default function ExperiencePage() {
 
   // Game-Style Notifications state
   const [gameNotification, setGameNotification] = useState<GameNotification | null>(null);
+
+  // AAA Cinematic Camera State
+  const [isCinematicActive, setIsCinematicActive] = useState<boolean>(false);
 
   // User Device GPS Location (for authentic on-site proximity discovery)
   const [userLocationCoords, setUserLocationCoords] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -162,6 +187,12 @@ export default function ExperiencePage() {
           target.isContentEditable);
 
       if (isInput) return;
+
+      if (e.key === 'Escape' && isCinematicActive) {
+        e.preventDefault();
+        mapRef.current?.stopCinematicSequence?.();
+        return;
+      }
 
       if (e.key === '/' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
@@ -237,6 +268,11 @@ export default function ExperiencePage() {
 
         if (newlyCompleted) {
           missionCompletedNow = true;
+          const missionStops = activeMission.stopSlugs
+            .map((s) => getPlaceBySlug(s))
+            .filter(Boolean) as ExperiencePlace[];
+          mapRef.current?.playMissionCompletion?.(missionStops);
+
           setGameNotification({
             id: `msn_comp_${Date.now()}`,
             type: 'mission_completed',
@@ -289,6 +325,210 @@ export default function ExperiencePage() {
     mapRef.current?.flyToTaluka(talukaId);
   }, []);
 
+  // Live Browser Geolocation Request & Real-Time Tracking
+  const handleRequestGps = useCallback(() => {
+    if (!LocationPermissionService.isSupported()) {
+      setDeviceGps((prev) => ({
+        ...prev,
+        permissionState: 'unsupported',
+        errorMessage: isMr ? 'तुमचा ब्राउझर GPS चे समर्थन करत नाही.' : 'Geolocation is not supported by your browser.',
+      }));
+      setIsGpsModalOpen(true);
+      return;
+    }
+
+    if (!LocationPermissionService.isSecureContext()) {
+      setDeviceGps((prev) => ({
+        ...prev,
+        permissionState: 'insecure_context',
+        errorMessage: isMr ? 'स्थान निश्चितीसाठी सुरक्षित (HTTPS) कनेक्शन आवश्यक आहे.' : 'Location requires a secure connection (HTTPS).',
+      }));
+      setIsGpsModalOpen(true);
+      return;
+    }
+
+    if (gpsWatchIdRef.current !== null && typeof navigator !== 'undefined') {
+      navigator.geolocation.clearWatch(gpsWatchIdRef.current);
+      gpsWatchIdRef.current = null;
+    }
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const { latitude, longitude, accuracy, heading, speed } = pos.coords;
+        const accuracyTier = LocationAccuracyService.evaluate(accuracy);
+        const speedKmh = speed ? Math.round(speed * 3.6) : null;
+        const normHeading = typeof heading === 'number' && !isNaN(heading) ? heading : null;
+
+        setDeviceGps({
+          isActive: true,
+          coords: { latitude, longitude },
+          accuracyMeters: Math.round(accuracy),
+          accuracyTier,
+          heading: normHeading,
+          speedKmh,
+          timestamp: pos.timestamp,
+          isRealGPS: true,
+          permissionState: 'granted',
+          errorMessage: null,
+        });
+
+        setUserLocationCoords({ latitude, longitude });
+
+        // Update real GPS puck & accuracy circle on map
+        mapRef.current?.setUserGpsLocation?.({
+          latitude,
+          longitude,
+          accuracyMeters: accuracy,
+          heading: normHeading || undefined,
+        });
+
+        // If first lock, fly map smoothly to user location
+        mapRef.current?.flyToCoordinates(latitude, longitude, 14.5, 55);
+
+        ambientAudio.playDiscoveryPing(800);
+      },
+      (err) => {
+        console.warn('[GPS] Error:', err.message);
+        if (err.code === 1) {
+          // Permission denied
+          setDeviceGps((prev) => ({
+            ...prev,
+            isActive: false,
+            isRealGPS: false,
+            permissionState: 'denied',
+            errorMessage: isMr ? 'स्थान परवानगी नाकारली गेली.' : 'Location permission denied by user.',
+          }));
+          setIsGpsModalOpen(true);
+        } else if (err.code === 2) {
+          // Position unavailable
+          setDeviceGps((prev) => ({
+            ...prev,
+            isActive: false,
+            isRealGPS: false,
+            permissionState: 'prompt',
+            errorMessage: isMr ? 'स्थान सिग्नल अनुपलब्ध आहे.' : 'GPS location signal is currently unavailable.',
+          }));
+          setGameNotification({
+            id: `gps_err_${Date.now()}`,
+            type: 'mission_started',
+            title: isMr ? 'GPS अनुपलब्ध' : 'GPS Signal Unavailable',
+            subtitle: isMr ? 'स्थान सिग्नल सापडला नाही, व्हर्च्युअल एक्सप्लोरर वापरत आहे.' : 'Unable to acquire satellite fix. Using virtual explorer.',
+            badge: 'GPS OFFLINE',
+          });
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 3000,
+      }
+    );
+
+    gpsWatchIdRef.current = watchId;
+  }, [isMr]);
+
+  // Clean watch on unmount
+  useEffect(() => {
+    return () => {
+      if (gpsWatchIdRef.current !== null && typeof navigator !== 'undefined') {
+        navigator.geolocation.clearWatch(gpsWatchIdRef.current);
+      }
+    };
+  }, []);
+
+  const handleToggleGps = useCallback(() => {
+    if (deviceGps.isActive) {
+      if (gpsWatchIdRef.current !== null && typeof navigator !== 'undefined') {
+        navigator.geolocation.clearWatch(gpsWatchIdRef.current);
+        gpsWatchIdRef.current = null;
+      }
+      setDeviceGps(INITIAL_GPS_STATE);
+      mapRef.current?.setUserGpsLocation?.(null);
+    } else {
+      handleRequestGps();
+    }
+  }, [deviceGps.isActive, handleRequestGps]);
+
+  const handleSelectLocalityFallback = useCallback((loc: PuneLocality) => {
+    mapRef.current?.setExplorerPosition?.(loc.longitude, loc.latitude);
+    mapRef.current?.flyToCoordinates(loc.latitude, loc.longitude, 14.2, 52);
+    setGameNotification({
+      id: `loc_${Date.now()}`,
+      type: 'destination_discovered',
+      title: isMr ? loc.nameMr : loc.nameEn,
+      subtitle: isMr ? 'आरंभ स्थान निवडले' : 'Starting Origin Set',
+      badge: 'ORIGIN SET',
+    });
+  }, [isMr]);
+
+  // Real Road Route Calculation
+  const calculateRoute = useCallback(
+    async (
+      targetPlace: ExperiencePlace | null,
+      mode: NavigationTravelMode = travelMode
+    ) => {
+      if (!targetPlace) {
+        setRouteResult(null);
+        setIsArrived(false);
+        mapRef.current?.clearGtaWaypointRoute?.();
+        mapRef.current?.setWaypointBeacon?.(null);
+        return;
+      }
+
+      setIsRoutingLoading(true);
+
+      const originLat =
+        deviceGps.isRealGPS && deviceGps.coords
+          ? deviceGps.coords.latitude
+          : cameraState.centerLat;
+      const originLng =
+        deviceGps.isRealGPS && deviceGps.coords
+          ? deviceGps.coords.longitude
+          : cameraState.centerLng;
+
+      const result = await fetchRealRoadRoute({
+        originLat,
+        originLng,
+        originName: deviceGps.isRealGPS ? 'Your Real GPS Position' : 'Virtual Explorer Position',
+        destLat: targetPlace.latitude,
+        destLng: targetPlace.longitude,
+        destName: targetPlace.name,
+        travelMode: mode,
+        lang,
+      });
+
+      setRouteResult(result);
+      setIsRoutingLoading(false);
+
+      if (result.success && result.geometryCoordinates.length > 0) {
+        mapRef.current?.setGtaWaypointRoute?.(result.geometryCoordinates, result.isRealRoad);
+        mapRef.current?.setWaypointBeacon?.(targetPlace);
+
+        const arrival = checkArrivalThreshold(
+          { latitude: originLat, longitude: originLng },
+          { latitude: targetPlace.latitude, longitude: targetPlace.longitude },
+          150
+        );
+
+        if (arrival.hasArrived) {
+          setIsArrived(true);
+          ambientAudio.playDiscoveryPing(950);
+          setGameNotification({
+            id: `arr_${Date.now()}`,
+            type: 'destination_discovered',
+            title: isMr ? `${targetPlace.name_mr || targetPlace.name} येथे आगमन!` : `Arrived at ${targetPlace.name}!`,
+            subtitle: isMr ? 'तुम्ही यशस्वीरीत्या गंतव्यस्थानी पोहोचलात.' : 'You have arrived at your navigation destination.',
+            xp: 150,
+            badge: 'ARRIVED',
+          });
+        } else {
+          setIsArrived(false);
+        }
+      }
+    },
+    [deviceGps, cameraState, travelMode, lang, isMr]
+  );
+
   // GTA GPS Waypoint Handlers
   const handleSetWaypoint = useCallback(
     (place: ExperiencePlace) => {
@@ -296,30 +536,37 @@ export default function ExperiencePage() {
       setSelectedPlace(place);
       ambientAudio.playUiBlip(1040, 0.08);
 
-      // Generate glowing GPS route line from virtual explorer (or camera center) to waypoint
-      const origin: [number, number] =
-        mapRef.current?.getExplorerPosition?.() || [cameraState.centerLng, cameraState.centerLat];
-      const destination: [number, number] = [place.longitude, place.latitude];
-      mapRef.current?.setGtaWaypointRoute?.(origin, destination);
-
-      const distKm = calculateDistanceKm(origin[1], origin[0], place.latitude, place.longitude);
-      const estDriveMin = Math.max(5, Math.round((distKm / 32) * 60));
+      calculateRoute(place, travelMode);
 
       setGameNotification({
         id: `wp_${Date.now()}`,
         type: 'waypoint_added',
         title: isMr ? place.name_mr || place.name : place.name,
-        subtitle: `${distKm} km · ${isMr ? 'अंदाजे वेळ' : 'Est. Drive'}: ${estDriveMin} min`,
+        subtitle: isMr ? 'GPS वेपॉईंट निश्चित केला · रस्ता मार्ग शोधत आहे' : 'GPS Waypoint Locked · Calculating Road Route',
         badge: 'GPS WAYPOINT',
       });
     },
-    [cameraState, isMr]
+    [calculateRoute, travelMode, isMr]
   );
 
   const handleClearWaypoint = useCallback(() => {
     setWaypointPlace(null);
+    setRouteResult(null);
+    setIsArrived(false);
     mapRef.current?.clearGtaWaypointRoute?.();
+    mapRef.current?.setWaypointBeacon?.(null);
+    ambientAudio.playUiBlip(640, 0.04);
   }, []);
+
+  const handleSelectTravelMode = useCallback(
+    (mode: NavigationTravelMode) => {
+      setTravelMode(mode);
+      if (waypointPlace) {
+        calculateRoute(waypointPlace, mode);
+      }
+    },
+    [waypointPlace, calculateRoute]
+  );
 
   // Discovery Missions Selection Handler
   const handleSelectMission = useCallback(
@@ -336,6 +583,7 @@ export default function ExperiencePage() {
         setSelectedPlace(stops[0]);
         setWaypointPlace(stops[0]);
         mapRef.current?.teleportExplorerToPlace?.(stops[0]);
+        mapRef.current?.playMissionIntro?.(stops);
       }
 
       setGameNotification({
@@ -398,13 +646,13 @@ export default function ExperiencePage() {
   // Handle Driving Route Visualization
   const handleShowRoute = useCallback((place: ExperiencePlace) => {
     setIsRouteActive(true);
-    mapRef.current?.setDrivingRoute([73.8744, 18.5284], [place.longitude, place.latitude]);
-  }, []);
+    handleSetWaypoint(place);
+  }, [handleSetWaypoint]);
 
   const handleClearRoute = useCallback(() => {
     setIsRouteActive(false);
-    mapRef.current?.clearDrivingRoute();
-  }, []);
+    handleClearWaypoint();
+  }, [handleClearWaypoint]);
 
   // Cursor Move Tracker
   const handleCursorMove = useCallback((lat: number, lng: number) => {
@@ -630,6 +878,16 @@ export default function ExperiencePage() {
         lang={lang}
       />
 
+      {/* Real Device GPS Permission Guidance & Fallback Modal */}
+      <GpsPermissionModal
+        isOpen={isGpsModalOpen}
+        onClose={() => setIsGpsModalOpen(false)}
+        onRequestGps={handleRequestGps}
+        onSelectFallbackLocality={handleSelectLocalityFallback}
+        permissionState={deviceGps.permissionState}
+        lang={lang}
+      />
+
       {/* Game HUD Notification Banner */}
       <GameNotificationBanner
         notification={gameNotification}
@@ -666,6 +924,7 @@ export default function ExperiencePage() {
             onCursorMove={handleCursorMove}
             onCameraChange={handleCameraChange}
             onCameraUpdate={handleCameraUpdate}
+            onCinematicStateChange={setIsCinematicActive}
             is3d={is3d}
             lang={lang}
           />
@@ -695,9 +954,35 @@ export default function ExperiencePage() {
             totalLocations={allPlaces.length}
             unlockedTrophiesCount={profile.unlockedAchievementIds.length}
             totalTrophiesCount={MASTER_ACHIEVEMENTS.length}
+            onPlayCityFlyover={() => mapRef.current?.playCityFlyover?.()}
+            onPlayDistrictIntro={() => mapRef.current?.playDistrictIntro?.()}
+            isRealGpsActive={deviceGps.isRealGPS}
+            gpsAccuracyMeters={deviceGps.accuracyMeters}
+            onToggleGps={handleToggleGps}
             lang={lang}
           />
         </div>
+
+        {/* Skippable Cinematic Sequence Active Banner & Floating Skip Button */}
+        {isCinematicActive && (
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 pointer-events-auto flex items-center gap-3 px-4 py-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-cyan-400/60 shadow-[0_0_30px_rgba(6,182,212,0.4)] text-white font-mono text-xs animate-in fade-in slide-in-from-top-3">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span className="text-cyan-300 font-bold uppercase tracking-wider">
+              {isMr ? 'सिनेमॅटिक कॅमेरा सक्रिय' : 'CINEMATIC SEQUENCE ACTIVE'}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                mapRef.current?.stopCinematicSequence?.();
+                ambientAudio.playUiBlip(700, 0.04);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black uppercase text-[10px] tracking-wider transition-all shadow-lg active:scale-95"
+            >
+              <span>{isMr ? 'रद्द करा' : 'SKIP SEQUENCE'}</span>
+              <kbd className="px-1 py-0.5 rounded bg-black/20 text-[9px] font-mono">ESC</kbd>
+            </button>
+          </div>
+        )}
 
         {/* Top Regional Taluka Navigator Bar (Toggleable from HUD) */}
         {isRegionsOpen && (
@@ -746,6 +1031,8 @@ export default function ExperiencePage() {
             waypointPlace={waypointPlace}
             onSelectPlace={handleSelectPlace}
             onResetBearing={() => mapRef.current?.resetNorth?.()}
+            isRealGpsActive={deviceGps.isRealGPS}
+            routeCoords={routeResult?.geometryCoordinates || []}
             lang={lang}
           />
         </div>
@@ -755,10 +1042,24 @@ export default function ExperiencePage() {
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 max-w-xl w-[calc(100%-2rem)] pointer-events-none">
             <GameWaypointBar
               waypointPlace={waypointPlace}
-              playerCoords={{ latitude: cameraState.centerLat, longitude: cameraState.centerLng }}
+              multiStopPlaces={customTrailPlaces}
+              playerCoords={
+                deviceGps.isRealGPS && deviceGps.coords
+                  ? deviceGps.coords
+                  : { latitude: cameraState.centerLat, longitude: cameraState.centerLng }
+              }
+              isRealGpsActive={deviceGps.isRealGPS}
+              gpsAccuracyMeters={deviceGps.accuracyMeters}
+              travelMode={travelMode}
+              onSelectTravelMode={handleSelectTravelMode}
+              routeResult={routeResult}
+              isRoutingLoading={isRoutingLoading}
+              onRetryRoute={() => calculateRoute(waypointPlace, travelMode)}
+              onFitRouteBounds={() => mapRef.current?.fitRouteBounds?.(routeResult?.geometryCoordinates || [])}
               onClearWaypoint={handleClearWaypoint}
               onFlyToWaypoint={(p) => mapRef.current?.flyToPlace(p)}
               onInspectWaypoint={(p) => setSelectedPlace(p)}
+              isArrived={isArrived}
               lang={lang}
             />
           </div>

@@ -34,6 +34,7 @@ import {
 import { MapLayerState, TimeOfDayKey } from './DistrictMapControls';
 import { CameraModeKey } from './GameHUD';
 import { ambientAudio } from '@/lib/experience/ambientAudio';
+import { createAccuracyCircleGeoJson } from '@/lib/experience/navigationEngine';
 
 export interface DistrictMapHandle {
   flyToPlace: (place: ExperiencePlace) => void;
@@ -60,12 +61,24 @@ export interface DistrictMapHandle {
   pitchUp?: () => void;
   pitchDown?: () => void;
   resetNorth?: () => void;
-  setGtaWaypointRoute?: (start: [number, number], end: [number, number]) => void;
+  setGtaWaypointRoute?: (startOrCoords: [number, number] | [number, number][], endOrIsReal?: [number, number] | boolean, isRealParam?: boolean) => void;
   clearGtaWaypointRoute?: () => void;
+  fitRouteBounds?: (coords: [number, number][]) => void;
+  setUserGpsLocation?: (pos: { latitude: number; longitude: number; accuracyMeters?: number; heading?: number } | null) => void;
+  getUserGpsLocation?: () => { latitude: number; longitude: number; accuracyMeters?: number } | null;
+  setWaypointBeacon?: (place: ExperiencePlace | null) => void;
   setCameraMode?: (mode: CameraModeKey, targetPlace?: ExperiencePlace | null) => void;
   getExplorerPosition?: () => [number, number];
   setExplorerPosition?: (lng: number, lat: number) => void;
   teleportExplorerToPlace?: (place: ExperiencePlace) => void;
+  // AAA Cinematic Camera Methods
+  playDistrictIntro?: (onComplete?: () => void) => void;
+  playCityFlyover?: (onComplete?: () => void) => void;
+  playDestinationArrival?: (place: ExperiencePlace, onComplete?: () => void) => void;
+  playMissionIntro?: (stops: ExperiencePlace[], onComplete?: () => void) => void;
+  playMissionCompletion?: (stops: ExperiencePlace[], onComplete?: () => void) => void;
+  stopCinematicSequence?: () => void;
+  isCinematicActive?: () => boolean;
 }
 
 interface LivePuneDistrictMapProps {
@@ -86,6 +99,7 @@ interface LivePuneDistrictMapProps {
     pitch: number;
     zoom: number;
   }) => void;
+  onCinematicStateChange?: (active: boolean) => void;
   is3d?: boolean;
   lang?: string;
 }
@@ -217,6 +231,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       onCursorMove,
       onCameraChange,
       onCameraUpdate,
+      onCinematicStateChange,
       is3d = true,
       lang = 'en',
     },
@@ -232,13 +247,23 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     const explorerMarkerRef = useRef<maplibregl.Marker | null>(null);
     const explorerPosRef = useRef<[number, number]>([73.8553, 18.5196]); // Shaniwar Wada default
 
-    // Animation frame refs
+    // Real Device GPS & Destination Beacon Refs
+    const deviceGpsMarkerRef = useRef<maplibregl.Marker | null>(null);
+    const deviceGpsPosRef = useRef<{ latitude: number; longitude: number; accuracyMeters?: number; heading?: number } | null>(null);
+    const waypointBeaconMarkerRef = useRef<maplibregl.Marker | null>(null);
+
+    // Animation frame & timer refs
     const routeAnimRef = useRef<number | null>(null);
     const trailAnimRef = useRef<number | null>(null);
     const customRouteAnimRef = useRef<number | null>(null);
     const orbitAnimRef = useRef<number | null>(null);
     const driftAnimRef = useRef<number | null>(null);
     const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Skippable Cinematic Director Refs
+    const cinematicActiveRef = useRef<boolean>(false);
+    const cinematicTimerRef = useRef<NodeJS.Timeout[]>([]);
+    const cinematicCancelRef = useRef<(() => void) | null>(null);
 
     const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
     const [isTilted, setIsTilted] = useState<boolean>(is3d);
@@ -482,6 +507,13 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
 
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+        if (cinematicCancelRef.current) {
+          cinematicCancelRef.current();
+          cinematicCancelRef.current = null;
+        }
+
         markersRef.current.forEach((m) => m.remove());
         markersRef.current = [];
         customWaypointsRef.current.forEach((m) => m.remove());
@@ -492,6 +524,14 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         if (explorerMarkerRef.current) {
           explorerMarkerRef.current.remove();
           explorerMarkerRef.current = null;
+        }
+        if (deviceGpsMarkerRef.current) {
+          deviceGpsMarkerRef.current.remove();
+          deviceGpsMarkerRef.current = null;
+        }
+        if (waypointBeaconMarkerRef.current) {
+          waypointBeaconMarkerRef.current.remove();
+          waypointBeaconMarkerRef.current = null;
         }
 
         map.remove();
@@ -540,17 +580,23 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     }, [currentStyle]);
 
-    // Atmospheric Horizon & Sky Lighting based on time of day
+    // Atmospheric Horizon & Sky Lighting with Dynamic WebGL Hillshade Shading
     const updateAtmosphericSky = (map: maplibregl.Map, tod: TimeOfDayKey) => {
       try {
-        if (tod === 'morning') {
+        if (tod === 'sunset' || tod === 'morning') {
           map.setSky({
-            'sky-color': '#7c3aed',
-            'horizon-color': '#f472b6',
-            'fog-color': '#a855f7',
+            'sky-color': '#581c87',
+            'horizon-color': '#fb7185',
+            'fog-color': '#701a75',
             'fog-ground-blend': 0.45,
-            'atmosphere-blend': 0.8,
+            'atmosphere-blend': 0.85,
           });
+          if (map.getLayer('pune-terrain-hillshade')) {
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-illumination-direction', 260);
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-shadow-color', '#180424');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-highlight-color', '#f472b6');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-exaggeration', 0.88);
+          }
         } else if (tod === 'golden') {
           map.setSky({
             'sky-color': '#ea580c',
@@ -559,6 +605,12 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'fog-ground-blend': 0.45,
             'atmosphere-blend': 0.85,
           });
+          if (map.getLayer('pune-terrain-hillshade')) {
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-illumination-direction', 245);
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-shadow-color', '#3b0764');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-highlight-color', '#fed7aa');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-exaggeration', 0.95);
+          }
         } else if (tod === 'night') {
           map.setSky({
             'sky-color': '#020617',
@@ -567,8 +619,14 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'fog-ground-blend': 0.55,
             'atmosphere-blend': 0.9,
           });
+          if (map.getLayer('pune-terrain-hillshade')) {
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-illumination-direction', 180);
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-shadow-color', '#000000');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-highlight-color', '#38bdf8');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-exaggeration', 0.45);
+          }
         } else {
-          // afternoon / daylight
+          // day / afternoon / daylight / auto
           map.setSky({
             'sky-color': '#0284c7',
             'horizon-color': '#bae6fd',
@@ -576,9 +634,15 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'fog-ground-blend': 0.35,
             'atmosphere-blend': 0.75,
           });
+          if (map.getLayer('pune-terrain-hillshade')) {
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-illumination-direction', 315);
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-shadow-color', '#0f172a');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-highlight-color', '#ffffff');
+            map.setPaintProperty('pune-terrain-hillshade', 'hillshade-exaggeration', 0.8);
+          }
         }
       } catch (e) {
-        console.warn('[MapLibre] setSky notice:', e);
+        console.warn('[MapLibre] setSky / hillshade notice:', e);
       }
     };
 
@@ -591,7 +655,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
     // 3. Setup All Geographic Vector & Boundaries
     const setupAllGeographicLayers = (map: maplibregl.Map) => {
-      // 0. Real 3D DEM Terrain Elevation (AWS Open Data Terrarium Tiles)
+      // 0. Real 3D DEM Terrain Elevation & WebGL Hillshading (AWS Open Data Terrarium Tiles)
       if (!map.getSource('terrarium-dem')) {
         map.addSource('terrarium-dem', {
           type: 'raster-dem',
@@ -599,6 +663,21 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           encoding: 'terrarium',
           tileSize: 256,
           maxzoom: 15,
+        });
+      }
+
+      if (!map.getLayer('pune-terrain-hillshade')) {
+        map.addLayer({
+          id: 'pune-terrain-hillshade',
+          type: 'hillshade',
+          source: 'terrarium-dem',
+          paint: {
+            'hillshade-exaggeration': 0.85,
+            'hillshade-shadow-color': '#0f172a',
+            'hillshade-highlight-color': '#ffffff',
+            'hillshade-accent-color': '#334155',
+            'hillshade-illumination-direction': 315,
+          },
         });
       }
 
@@ -887,6 +966,39 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             'line-color': '#ffffff',
             'line-width': 3.5,
             'line-opacity': 0.95,
+          },
+        });
+      }
+
+      // Real Device GPS Accuracy Radius Circle
+      if (!map.getSource('user-gps-accuracy-source')) {
+        map.addSource('user-gps-accuracy-source', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [],
+          },
+        });
+
+        map.addLayer({
+          id: 'user-gps-accuracy-fill',
+          type: 'fill',
+          source: 'user-gps-accuracy-source',
+          paint: {
+            'fill-color': '#0284c7',
+            'fill-opacity': 0.15,
+          },
+        });
+
+        map.addLayer({
+          id: 'user-gps-accuracy-stroke',
+          type: 'line',
+          source: 'user-gps-accuracy-source',
+          paint: {
+            'line-color': '#38bdf8',
+            'line-width': 1.8,
+            'line-opacity': 0.75,
+            'line-dasharray': [3, 2],
           },
         });
       }
@@ -1687,11 +1799,22 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         m.easeTo({ bearing: 0, duration: 350 });
       },
 
-      // Set Dual-Layered Glowing GPS Waypoint Navigation Line
-      setGtaWaypointRoute: (start: [number, number], end: [number, number]) => {
+      // Set Dual-Layered Glowing GPS Waypoint Navigation Line (Supports Real Road Coordinates)
+      setGtaWaypointRoute: (startOrCoords: [number, number] | [number, number][], endOrIsReal?: [number, number] | boolean, isRealParam?: boolean) => {
         const m = mapRef.current;
         if (!m) return;
-        const curved = generateCurvedPath(start, end, 40);
+
+        let coords: [number, number][] = [];
+        let isReal = true;
+
+        if (Array.isArray(startOrCoords) && Array.isArray(startOrCoords[0])) {
+          coords = startOrCoords as [number, number][];
+          isReal = endOrIsReal !== false;
+        } else if (Array.isArray(startOrCoords) && Array.isArray(endOrIsReal)) {
+          coords = generateCurvedPath(startOrCoords as [number, number], endOrIsReal as [number, number], 40);
+          isReal = isRealParam !== false;
+        }
+
         const src = m.getSource('gta-waypoint-source') as maplibregl.GeoJSONSource;
         if (src) {
           src.setData({
@@ -1701,9 +1824,9 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
                 type: 'Feature',
                 geometry: {
                   type: 'LineString',
-                  coordinates: curved,
+                  coordinates: coords,
                 },
-                properties: {},
+                properties: { isRealRoad: isReal },
               },
             ],
           });
@@ -1719,6 +1842,114 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
             type: 'FeatureCollection',
             features: [],
           });
+        }
+      },
+
+      fitRouteBounds: (coords: [number, number][]) => {
+        const m = mapRef.current;
+        if (!m || !coords || coords.length === 0) return;
+        const bounds = new maplibregl.LngLatBounds();
+        coords.forEach((c) => bounds.extend(c));
+        m.fitBounds(bounds, {
+          padding: { top: 90, bottom: 120, left: 60, right: 60 },
+          duration: 1400,
+          pitch: 50,
+          maxZoom: 15.5,
+        });
+      },
+
+      // Real Device GPS Location & Accuracy Circle Presentation
+      setUserGpsLocation: (pos: { latitude: number; longitude: number; accuracyMeters?: number; heading?: number } | null) => {
+        const m = mapRef.current;
+        if (!m) return;
+        deviceGpsPosRef.current = pos;
+
+        const src = m.getSource('user-gps-accuracy-source') as maplibregl.GeoJSONSource;
+        if (!pos) {
+          if (src) src.setData({ type: 'FeatureCollection', features: [] });
+          if (deviceGpsMarkerRef.current) {
+            deviceGpsMarkerRef.current.remove();
+            deviceGpsMarkerRef.current = null;
+          }
+          return;
+        }
+
+        // 1. Update Real Accuracy Circle
+        if (src) {
+          const acc = pos.accuracyMeters && pos.accuracyMeters > 0 ? Math.min(300, pos.accuracyMeters) : 25;
+          const circleFeature = createAccuracyCircleGeoJson(pos.longitude, pos.latitude, acc);
+          src.setData({
+            type: 'FeatureCollection',
+            features: [circleFeature],
+          });
+        }
+
+        // 2. Update Device GPS Marker
+        if (!deviceGpsMarkerRef.current) {
+          const el = document.createElement('div');
+          el.className = 'relative flex items-center justify-center cursor-pointer select-none z-40';
+          el.innerHTML = `
+            <span class="absolute inline-flex h-12 w-12 rounded-full bg-sky-400/30 animate-ping"></span>
+            <span class="absolute inline-flex h-8 w-8 rounded-full bg-sky-500/40 border border-sky-300"></span>
+            <div class="relative w-5 h-5 rounded-full bg-sky-500 border-2 border-white shadow-[0_0_15px_rgba(14,165,233,0.95)] flex items-center justify-center">
+              <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+            </div>
+            <div class="absolute -bottom-5 px-2 py-0.5 rounded bg-black/90 border border-sky-400/60 text-[8px] font-mono font-black text-sky-300 tracking-wider whitespace-nowrap shadow-xl">
+              YOUR REAL GPS
+            </div>
+          `;
+          const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+            .setLngLat([pos.longitude, pos.latitude])
+            .addTo(m);
+          deviceGpsMarkerRef.current = marker;
+        } else {
+          deviceGpsMarkerRef.current.setLngLat([pos.longitude, pos.latitude]);
+        }
+      },
+
+      getUserGpsLocation: () => {
+        return deviceGpsPosRef.current;
+      },
+
+      // 3D Destination Beacon Marker
+      setWaypointBeacon: (place: ExperiencePlace | null) => {
+        const m = mapRef.current;
+        if (!m) return;
+        if (!place) {
+          if (waypointBeaconMarkerRef.current) {
+            waypointBeaconMarkerRef.current.remove();
+            waypointBeaconMarkerRef.current = null;
+          }
+          return;
+        }
+
+        if (!waypointBeaconMarkerRef.current) {
+          const el = document.createElement('div');
+          el.className = 'relative flex flex-col items-center pointer-events-none z-30 select-none';
+          el.innerHTML = `
+            <!-- Vertical 3D Laser Drop Beam -->
+            <div class="w-0.5 h-20 bg-gradient-to-t from-cyan-400 to-transparent opacity-90 drop-shadow-[0_0_8px_rgba(6,182,212,1)]"></div>
+            <!-- Destination Target Rings -->
+            <div class="relative -mt-2 flex items-center justify-center">
+              <span class="absolute w-12 h-12 rounded-full border-2 border-cyan-400 opacity-75 animate-ping"></span>
+              <span class="w-7 h-7 rounded-full bg-cyan-950/90 border-2 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.9)] flex items-center justify-center text-cyan-300">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <circle cx="12" cy="12" r="10"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </span>
+            </div>
+            <!-- Destination Callout -->
+            <div class="mt-1 px-2.5 py-0.5 rounded-full bg-black/90 border border-cyan-400/70 text-[9px] font-mono font-black text-cyan-300 tracking-wider shadow-2xl backdrop-blur-md truncate max-w-[140px]">
+              ${place.name}
+            </div>
+          `;
+          const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
+            .setLngLat([place.longitude, place.latitude])
+            .addTo(m);
+          waypointBeaconMarkerRef.current = marker;
+        } else {
+          waypointBeaconMarkerRef.current.setLngLat([place.longitude, place.latitude]);
         }
       },
 
@@ -1878,17 +2109,317 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           });
         }, 300);
       },
+
+      // AAA Cinematic Camera Suite
+      stopCinematicSequence: () => {
+        if (cinematicCancelRef.current) {
+          cinematicCancelRef.current();
+          cinematicCancelRef.current = null;
+        }
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+        if (orbitAnimRef.current) {
+          cancelAnimationFrame(orbitAnimRef.current);
+          orbitAnimRef.current = null;
+        }
+        cinematicActiveRef.current = false;
+        onCinematicStateChange?.(false);
+      },
+
+      isCinematicActive: () => {
+        return cinematicActiveRef.current;
+      },
+
+      playDistrictIntro: (onComplete?: () => void) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (cinematicCancelRef.current) cinematicCancelRef.current();
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+
+        cinematicActiveRef.current = true;
+        onCinematicStateChange?.(true);
+
+        map.jumpTo({
+          center: [73.35, 18.25],
+          zoom: 8.2,
+          pitch: 45,
+          bearing: 40,
+        });
+
+        const t1 = setTimeout(() => {
+          map.flyTo({
+            center: [73.75, 18.44],
+            zoom: 10.5,
+            pitch: 60,
+            bearing: 15,
+            duration: 3000,
+            essential: true,
+          });
+        }, 250);
+        cinematicTimerRef.current.push(t1);
+
+        const t2 = setTimeout(() => {
+          map.flyTo({
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
+            pitch: DEFAULT_PITCH,
+            bearing: DEFAULT_BEARING,
+            duration: 2500,
+            essential: true,
+          });
+        }, 3400);
+        cinematicTimerRef.current.push(t2);
+
+        const t3 = setTimeout(() => {
+          cinematicActiveRef.current = false;
+          onCinematicStateChange?.(false);
+          onComplete?.();
+        }, 6100);
+        cinematicTimerRef.current.push(t3);
+
+        cinematicCancelRef.current = () => {
+          map.stop();
+        };
+      },
+
+      playCityFlyover: (onComplete?: () => void) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (cinematicCancelRef.current) cinematicCancelRef.current();
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+
+        cinematicActiveRef.current = true;
+        onCinematicStateChange?.(true);
+
+        // Stop 1: Sangam Bridge (Mula-Mutha confluence)
+        map.flyTo({
+          center: [73.8647, 18.5303],
+          zoom: 14.6,
+          pitch: 62,
+          bearing: 135,
+          duration: 2400,
+          essential: true,
+        });
+
+        // Stop 2: Shaniwar Wada
+        const t1 = setTimeout(() => {
+          map.flyTo({
+            center: [73.8553, 18.5196],
+            zoom: 15.8,
+            pitch: 68,
+            bearing: 195,
+            duration: 2600,
+            essential: true,
+          });
+        }, 2600);
+        cinematicTimerRef.current.push(t1);
+
+        // Stop 3: Lal Mahal & Dagdusheth
+        const t2 = setTimeout(() => {
+          map.flyTo({
+            center: [73.8570, 18.5178],
+            zoom: 16.2,
+            pitch: 65,
+            bearing: 245,
+            duration: 2400,
+            essential: true,
+          });
+        }, 5400);
+        cinematicTimerRef.current.push(t2);
+
+        // Stop 4: Parvati Hill Vantage
+        const t3 = setTimeout(() => {
+          map.flyTo({
+            center: [73.8478, 18.4962],
+            zoom: 14.2,
+            pitch: 58,
+            bearing: -25,
+            duration: 2800,
+            essential: true,
+          });
+        }, 8000);
+        cinematicTimerRef.current.push(t3);
+
+        const t4 = setTimeout(() => {
+          cinematicActiveRef.current = false;
+          onCinematicStateChange?.(false);
+          onComplete?.();
+        }, 11000);
+        cinematicTimerRef.current.push(t4);
+
+        cinematicCancelRef.current = () => {
+          map.stop();
+        };
+      },
+
+      playDestinationArrival: (place: ExperiencePlace, onComplete?: () => void) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (cinematicCancelRef.current) cinematicCancelRef.current();
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+
+        cinematicActiveRef.current = true;
+        onCinematicStateChange?.(true);
+
+        const curBearing = map.getBearing();
+        map.flyTo({
+          center: [place.longitude, place.latitude],
+          zoom: 15.6,
+          pitch: 66,
+          bearing: (curBearing + 35) % 360,
+          duration: 2400,
+          essential: true,
+        });
+
+        const t1 = setTimeout(() => {
+          let startBearing = map.getBearing();
+          let steps = 0;
+          const maxSteps = 120;
+          const orbitSweep = () => {
+            if (!mapRef.current || !cinematicActiveRef.current) return;
+            steps++;
+            startBearing = (startBearing + 0.25) % 360;
+            mapRef.current.setBearing(startBearing);
+            if (steps < maxSteps) {
+              orbitAnimRef.current = requestAnimationFrame(orbitSweep);
+            } else {
+              cinematicActiveRef.current = false;
+              onCinematicStateChange?.(false);
+              onComplete?.();
+            }
+          };
+          orbitAnimRef.current = requestAnimationFrame(orbitSweep);
+        }, 2500);
+        cinematicTimerRef.current.push(t1);
+
+        cinematicCancelRef.current = () => {
+          map.stop();
+        };
+      },
+
+      playMissionIntro: (stops: ExperiencePlace[], onComplete?: () => void) => {
+        const map = mapRef.current;
+        if (!map || stops.length === 0) return;
+        if (cinematicCancelRef.current) cinematicCancelRef.current();
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+
+        cinematicActiveRef.current = true;
+        onCinematicStateChange?.(true);
+
+        const first = stops[0];
+        map.flyTo({
+          center: [first.longitude, first.latitude],
+          zoom: 14.5,
+          pitch: 64,
+          bearing: -20,
+          duration: 2000,
+          essential: true,
+        });
+
+        if (stops.length > 1) {
+          const second = stops[1];
+          const t1 = setTimeout(() => {
+            map.flyTo({
+              center: [second.longitude, second.latitude],
+              zoom: 13.8,
+              pitch: 60,
+              bearing: 45,
+              duration: 2500,
+              essential: true,
+            });
+          }, 2200);
+          cinematicTimerRef.current.push(t1);
+
+          const t2 = setTimeout(() => {
+            map.flyTo({
+              center: [first.longitude, first.latitude],
+              zoom: 14.5,
+              pitch: 64,
+              bearing: -20,
+              duration: 2000,
+              essential: true,
+            });
+          }, 4900);
+          cinematicTimerRef.current.push(t2);
+
+          const t3 = setTimeout(() => {
+            cinematicActiveRef.current = false;
+            onCinematicStateChange?.(false);
+            onComplete?.();
+          }, 7100);
+          cinematicTimerRef.current.push(t3);
+        } else {
+          const t = setTimeout(() => {
+            cinematicActiveRef.current = false;
+            onCinematicStateChange?.(false);
+            onComplete?.();
+          }, 2200);
+          cinematicTimerRef.current.push(t);
+        }
+
+        cinematicCancelRef.current = () => {
+          map.stop();
+        };
+      },
+
+      playMissionCompletion: (stops: ExperiencePlace[], onComplete?: () => void) => {
+        const map = mapRef.current;
+        if (!map) return;
+        if (cinematicCancelRef.current) cinematicCancelRef.current();
+        cinematicTimerRef.current.forEach((t) => clearTimeout(t));
+        cinematicTimerRef.current = [];
+
+        cinematicActiveRef.current = true;
+        onCinematicStateChange?.(true);
+
+        map.flyTo({
+          center: DEFAULT_CENTER,
+          zoom: 10.2,
+          pitch: 55,
+          bearing: -10,
+          duration: 2500,
+          essential: true,
+        });
+
+        const t1 = setTimeout(() => {
+          let curB = map.getBearing();
+          let ticks = 0;
+          const victorySpin = () => {
+            if (!mapRef.current || !cinematicActiveRef.current) return;
+            ticks++;
+            curB = (curB + 0.35) % 360;
+            mapRef.current.setBearing(curB);
+            if (ticks < 150) {
+              orbitAnimRef.current = requestAnimationFrame(victorySpin);
+            } else {
+              cinematicActiveRef.current = false;
+              onCinematicStateChange?.(false);
+              onComplete?.();
+            }
+          };
+          orbitAnimRef.current = requestAnimationFrame(victorySpin);
+        }, 2600);
+        cinematicTimerRef.current.push(t1);
+
+        cinematicCancelRef.current = () => {
+          map.stop();
+        };
+      },
     }));
 
     // Time-of-Day atmospheric overlay class
     const todOverlayClass =
-      timeOfDay === 'morning'
-        ? 'tod-overlay-morning'
+      timeOfDay === 'sunset' || timeOfDay === 'morning'
+        ? 'tod-overlay-sunset'
         : timeOfDay === 'golden'
         ? 'tod-overlay-golden'
         : timeOfDay === 'night'
         ? 'tod-overlay-night'
-        : 'tod-overlay-afternoon';
+        : 'tod-overlay-day';
 
     return (
       <div ref={wrapperRef} className="relative w-full h-full min-h-[580px] bg-zinc-950 overflow-hidden select-none">

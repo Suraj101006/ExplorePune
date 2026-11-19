@@ -17,6 +17,8 @@ interface GameMinimapProps {
   waypointPlace: ExperiencePlace | null;
   onSelectPlace: (place: ExperiencePlace) => void;
   onResetBearing: () => void;
+  isRealGpsActive?: boolean;
+  routeCoords?: [number, number][];
   lang?: string;
   className?: string;
 }
@@ -32,6 +34,8 @@ export default function GameMinimap({
   waypointPlace,
   onSelectPlace,
   onResetBearing,
+  isRealGpsActive = false,
+  routeCoords = [],
   lang = 'en',
   className = '',
 }: GameMinimapProps) {
@@ -114,6 +118,28 @@ export default function GameMinimap({
     };
   }, [waypointPlace, centerLat, centerLng, bearing, radarRadiusKm]);
 
+  // Projected SVG coordinates for active road route on radar
+  const minimapRouteSvgPoints = useMemo(() => {
+    if (!routeCoords || routeCoords.length < 2) return '';
+    const step = Math.max(1, Math.floor(routeCoords.length / 30));
+    const pts: string[] = [];
+    for (let i = 0; i < routeCoords.length; i += step) {
+      const [lng, lat] = routeCoords[i];
+      const dist = calculateDistanceKm(centerLat, centerLng, lat, lng);
+      if (dist <= radarRadiusKm * 1.15) {
+        const dLat = lat - centerLat;
+        const dLng = (lng - centerLng) * Math.cos((centerLat * Math.PI) / 180);
+        const angleRad = Math.atan2(dLng, dLat);
+        const relAngleRad = angleRad - (bearing * Math.PI) / 180;
+        const radiusPercent = (dist / radarRadiusKm) * 44;
+        const x = 50 + radiusPercent * Math.sin(relAngleRad);
+        const y = 50 - radiusPercent * Math.cos(relAngleRad);
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      }
+    }
+    return pts.join(' ');
+  }, [routeCoords, centerLat, centerLng, radarRadiusKm, bearing]);
+
   return (
     <div
       className={`relative select-none transition-all duration-300 pointer-events-auto ${className}`}
@@ -176,6 +202,21 @@ export default function GameMinimap({
           </span>
         </div>
 
+        {/* Real Road Route Polyline on Radar Screen */}
+        {minimapRouteSvgPoints && (
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-15" viewBox="0 0 100 100">
+            <polyline
+              points={minimapRouteSvgPoints}
+              fill="none"
+              stroke="#06b6d4"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        )}
+
         {/* Destination Radar Blips */}
         {nearbyBlips.map((blip) => (
           <button
@@ -230,8 +271,18 @@ export default function GameMinimap({
               clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
             }}
           />
-          <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[14px] border-b-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.9)] -translate-y-1" />
-          <div className="w-1.5 h-1.5 rounded-full bg-white absolute shadow-sm" />
+          <div
+            className={`w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[14px] -translate-y-1 ${
+              isRealGpsActive
+                ? 'border-b-sky-400 drop-shadow-[0_0_8px_rgba(14,165,233,0.95)]'
+                : 'border-b-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.9)]'
+            }`}
+          />
+          <div
+            className={`w-1.5 h-1.5 rounded-full absolute shadow-sm ${
+              isRealGpsActive ? 'bg-sky-200' : 'bg-white'
+            }`}
+          />
         </div>
 
         {/* Expand / Minimize Minimap Button */}
