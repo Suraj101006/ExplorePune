@@ -1,7 +1,7 @@
 {
   "compressionlevel": -1,
-  "width": 64,
-  "height": 64,
+  "width": 128,
+  "height": 128,
   "tilewidth": 32,
   "tileheight": 32,
   "infinite": false,
@@ -11,18 +11,19 @@
   "version": "1.10",
   "type": "map",
   "properties": [
-    { "name": "site", "type": "string", "value": "Sinhagad Fort - Northern Plateau Sector" },
+    { "name": "site", "type": "string", "value": "Sinhagad Fort - Master Triangular Plateau" },
     { "name": "scale_pixels_per_meter", "type": "float", "value": 32.0 },
     { "name": "true_north_azimuth", "type": "float", "value": 350.0 },
-    { "name": "elevation_msl_meters", "type": "float", "value": 1312.0 }
+    { "name": "elevation_msl_meters", "type": "float", "value": 1312.0 },
+    { "name": "crs", "type": "string", "value": "EPSG:32643" }
   ],
   "layers": [
     {
       "id": 1,
       "name": "Terrain_Bedrock",
       "type": "tilelayer",
-      "width": 64,
-      "height": 64,
+      "width": 128,
+      "height": 128,
       "opacity": 1,
       "visible": true,
       "x": 0,
@@ -41,13 +42,13 @@
           "id": 101,
           "name": "Pune Darwaza - Gate 1 (Outer Entrance)",
           "type": "gateway_portal",
-          "x": 512,
-          "y": 160,
+          "x": 1920,
+          "y": 320,
           "width": 128,
           "height": 64,
           "properties": [
             { "name": "structure_id", "type": "string", "value": "STR-GATE-01" },
-            { "name": "portal_section", "type": "string", "value": "Gate 1 (Outer Bastion Wall)" },
+            { "name": "portal_section", "type": "string", "value": "Gate 1 (Outer Gorge Entrance)" },
             { "name": "status", "type": "string", "value": "VERIFIED" }
           ]
         },
@@ -55,8 +56,8 @@
           "id": 102,
           "name": "Pune Darwaza - 90 Degree Tactical Bend Corridor",
           "type": "defensive_corridor",
-          "x": 512,
-          "y": 224,
+          "x": 1920,
+          "y": 384,
           "width": 144,
           "height": 192,
           "properties": [
@@ -68,12 +69,13 @@
           "id": 103,
           "name": "Pune Darwaza - Gate 2 (Middle Gate with Guard Devdis)",
           "type": "gateway_portal",
-          "x": 656,
-          "y": 320,
+          "x": 2064,
+          "y": 480,
           "width": 96,
           "height": 64,
           "properties": [
             { "name": "features", "type": "string", "value": "Stone seats for sentries (devdis)" },
+            { "name": "arch_height_m", "type": "float", "value": 5.10 },
             { "name": "status", "type": "string", "value": "VERIFIED" }
           ]
         },
@@ -81,8 +83,8 @@
           "id": 104,
           "name": "Pune Darwaza - Gate 3 (Inner Citadel Archway)",
           "type": "gateway_portal",
-          "x": 656,
-          "y": 448,
+          "x": 2064,
+          "y": 608,
           "width": 128,
           "height": 64,
           "properties": [
@@ -94,8 +96,8 @@
           "id": 201,
           "name": "Daru Kothar (Gunpowder Magazine)",
           "type": "vaulted_magazine",
-          "x": 1024,
-          "y": 800,
+          "x": 2176,
+          "y": 1440,
           "width": 272,
           "height": 121,
           "properties": [
@@ -110,6 +112,143 @@
             { "name": "status", "type": "string", "value": "VERIFIED" },
             { "name": "source", "type": "string", "value": "Kimaya Architects 2017 Drawing W-4 & W-10" }
           ]
+        },
+        {
+          "id": 202,
+          "name": "Kalyan Darwaza (Southwest Gate)",
+          "type": "gateway_portal",
+          "x": 640,
+          "y": 2880,
+          "width": 294,
+          "height": 140,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-GATE-02" },
+            { "name": "arch_height_m", "type": "float", "value": 4.80 },
+            { "name": "arch_width_m", "type": "float", "value": 2.80 },
+            { "name": "wall_thickness_m", "type": "float", "value": 2.80 },
+            { "name": "incline_degrees", "type": "float", "value": 32.0 },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
+        },
+        {
+          "id": 203,
+          "name": "Zunjar Buruj (Eastern Bulwark)",
+          "type": "prow_bastion",
+          "x": 3584,
+          "y": 2240,
+          "width": 480,
+          "height": 160,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-BURUJ-02" },
+            { "name": "length_m", "type": "float", "value": 45.0 },
+            { "name": "width_m", "type": "float", "value": 12.0 },
+            { "name": "height_m", "type": "float", "value": 14.2 },
+            { "name": "cannon_embrasures", "type": "int", "value": 3 },
+            { "name": "flag", "type": "string", "value": "Bhagwa Jhenda" },
+            { "name": "status", "type": "string", "value": "VERIFIED" }
+          ]
+        },
+        {
+          "id": 204,
+          "name": "Kalavantinicha Buruj",
+          "type": "bastion",
+          "x": 1280,
+          "y": 3328,
+          "width": 218,
+          "height": 182,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-BURUJ-01" },
+            { "name": "length_m", "type": "float", "value": 13.60 },
+            { "name": "width_m", "type": "float", "value": 11.40 },
+            { "name": "height_m", "type": "float", "value": 11.20 },
+            { "name": "status", "type": "string", "value": "VERIFIED" }
+          ]
+        },
+        {
+          "id": 205,
+          "name": "Donagiricha Kada (Tanaji Kada)",
+          "type": "cliff_bastion",
+          "x": 480,
+          "y": 2304,
+          "width": 160,
+          "height": 128,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-CLIFF-01" },
+            { "name": "cliff_drop_m", "type": "float", "value": 300.0 },
+            { "name": "event", "type": "string", "value": "1670 Battle of Sinhagad Night Escalade" },
+            { "name": "status", "type": "string", "value": "VERIFIED" }
+          ]
+        },
+        {
+          "id": 206,
+          "name": "Dev Taki (Sacred Spring Cistern)",
+          "type": "water_cistern",
+          "x": 1792,
+          "y": 2112,
+          "width": 224,
+          "height": 152,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-DEV-01" },
+            { "name": "capacity_liters", "type": "int", "value": 450000 },
+            { "name": "type", "type": "string", "value": "Monolithic Rock-cut Cavern" },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
+        },
+        {
+          "id": 207,
+          "name": "Hathi Taki",
+          "type": "open_reservoir",
+          "x": 2368,
+          "y": 1856,
+          "width": 448,
+          "height": 288,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-TANK-02" },
+            { "name": "capacity_liters", "type": "int", "value": 1800000 },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
+        },
+        {
+          "id": 208,
+          "name": "Veer Tanaji Malusare Memorial",
+          "type": "memorial",
+          "x": 1920,
+          "y": 1792,
+          "width": 102,
+          "height": 102,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-MEM-01" },
+            { "name": "plinth_size_m", "type": "float", "value": 6.40 },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
+        },
+        {
+          "id": 209,
+          "name": "Chhatrapati Rajaram Maharaj Samadhi",
+          "type": "chhatri_cenotaph",
+          "x": 2560,
+          "y": 2240,
+          "width": 115,
+          "height": 115,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-SAM-01" },
+            { "name": "base_dia_m", "type": "float", "value": 7.20 },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
+        },
+        {
+          "id": 210,
+          "name": "Kaundinyeshwar Temple",
+          "type": "hemadpanthi_temple",
+          "x": 2240,
+          "y": 1664,
+          "width": 179,
+          "height": 118,
+          "properties": [
+            { "name": "structure_id", "type": "string", "value": "STR-TMPL-01" },
+            { "name": "style", "type": "string", "value": "Hemadpanthi Interlocking Basalt" },
+            { "name": "status", "type": "string", "value": "DOCUMENTED" }
+          ]
         }
       ]
     },
@@ -122,13 +261,13 @@
       "x": 0,
       "y": 0,
       "objects": [
-        { "id": 301, "name": "North_Cliff_Drop_Left", "x": 0, "y": 0, "width": 480, "height": 96 },
-        { "id": 302, "name": "North_Cliff_Drop_Right", "x": 672, "y": 0, "width": 1376, "height": 96 },
-        { "id": 303, "name": "Daru_Kothar_North_Wall", "x": 1024, "y": 800, "width": 272, "height": 26 },
-        { "id": 304, "name": "Daru_Kothar_South_Wall", "x": 1024, "y": 895, "width": 272, "height": 26 },
-        { "id": 305, "name": "Daru_Kothar_East_Wall", "x": 1270, "y": 800, "width": 26, "height": 121 },
-        { "id": 306, "name": "Daru_Kothar_West_Wall_Top", "x": 1024, "y": 800, "width": 26, "height": 40 },
-        { "id": 307, "name": "Daru_Kothar_West_Wall_Bottom", "x": 1024, "y": 880, "width": 26, "height": 41 }
+        { "id": 301, "name": "North_Cliff_Drop_Left", "x": 0, "y": 0, "width": 1856, "height": 128 },
+        { "id": 302, "name": "North_Cliff_Drop_Right", "x": 2240, "y": 0, "width": 1856, "height": 128 },
+        { "id": 303, "name": "Daru_Kothar_North_Wall", "x": 2176, "y": 1440, "width": 272, "height": 26 },
+        { "id": 304, "name": "Daru_Kothar_South_Wall", "x": 2176, "y": 1535, "width": 272, "height": 26 },
+        { "id": 305, "name": "Daru_Kothar_East_Wall", "x": 2422, "y": 1440, "width": 26, "height": 121 },
+        { "id": 306, "name": "Daru_Kothar_West_Wall_Top", "x": 2176, "y": 1440, "width": 26, "height": 40 },
+        { "id": 307, "name": "Daru_Kothar_West_Wall_Bottom", "x": 2176, "y": 1520, "width": 26, "height": 41 }
       ]
     }
   ]
