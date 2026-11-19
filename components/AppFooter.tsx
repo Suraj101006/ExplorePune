@@ -58,6 +58,7 @@ export default function AppFooter() {
           <Link href="/">{t('nav.explore')}</Link>
           <Link href="/journey">{t('nav.journey') || (isMr ? 'माझी सफर' : 'My Journey')}</Link>
           <Link href="/planner">{t('nav.planner')}</Link>
+          <Link href="/games">{isMr ? 'खेळ' : 'Games'}</Link>
           <Link href="/community">{isMr ? 'समुदाय' : 'Community'}</Link>
           <Link href="/milestones">{t('nav.milestones')}</Link>
           <Link href="/blogs">{t('nav.blogs')}</Link>
