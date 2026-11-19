@@ -86,10 +86,9 @@ export class GeocodingService {
     const distFromPune = calculateHaversineDistanceKm(lat, lng, 18.5204, 73.8567);
     const isOutsidePune = distFromPune > 50;
 
-    // TIER 1: Google Maps Geocoding API
+    // TIER 1: Google Maps Geocoding API (Server-side key only; never client-exposed)
     const googleApiKey =
       process.env.GOOGLE_MAPS_API_KEY ||
-      process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
       process.env.GOOGLE_API_KEY;
 
     if (googleApiKey) {

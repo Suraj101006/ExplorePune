@@ -268,6 +268,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
     const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
     const [isTilted, setIsTilted] = useState<boolean>(is3d);
     const [isDriftActive, setIsDriftActive] = useState<boolean>(false);
+    const [isWebGlUnsupported, setIsWebGlUnsupported] = useState<boolean>(false);
     const isDriftEnabledRef = useRef<boolean>(true);
 
     // Virtual Explorer Marker Creator & Dynamic Heading Cone
@@ -339,6 +340,46 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         }
       }
 
+      // 0. WebGL Hardware Support Verification
+      const isWebGlSupported = (() => {
+        if (typeof window === 'undefined') return true;
+        if (typeof (maplibregl as any).supported === 'function') {
+          return (maplibregl as any).supported({ failIfMajorPerformanceCaveat: false });
+        }
+        try {
+          const testCanvas = document.createElement('canvas');
+          return Boolean(
+            window.WebGLRenderingContext &&
+              (testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl'))
+          );
+        } catch {
+          return false;
+        }
+      })();
+
+      if (!isWebGlSupported) {
+        setIsWebGlUnsupported(true);
+        return;
+      }
+
+      // Adaptive Performance & Mobile Optimization
+      const isLowPower =
+        typeof navigator !== 'undefined' &&
+        ((navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+          ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 4) ||
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+      const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+      const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        isDriftEnabledRef.current = false;
+      }
+
+      const adaptivePixelRatio = isLowPower || isMobileScreen
+        ? Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.5)
+        : Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2.0);
+
       const initialStyle =
         currentStyle === 'satellite'
           ? SATELLITE_HYBRID_STYLE
@@ -350,32 +391,61 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         container: containerRef.current,
         style: initialStyle,
         center: DEFAULT_CENTER,
-        zoom: DEFAULT_ZOOM,
-        pitch: DEFAULT_PITCH,
+        zoom: isMobileScreen ? 9.5 : DEFAULT_ZOOM,
+        pitch: isLowPower ? 45 : DEFAULT_PITCH,
         bearing: DEFAULT_BEARING,
         attributionControl: false,
+        pixelRatio: adaptivePixelRatio,
+        maxTileCacheSize: isLowPower ? 60 : 150,
       });
 
-      // Camera state emitter for GTA HUD & Minimap
-      const reportCamera = () => {
-        const pitch = map.getPitch();
-        const bearing = map.getBearing();
-        const center = map.getCenter();
-        const zoom = map.getZoom();
-        onCameraChange(pitch, bearing);
-        onCameraUpdate?.({
-          centerLat: center.lat,
-          centerLng: center.lng,
-          bearing,
-          pitch,
-          zoom,
-        });
+      // Canvas WebGL Context Loss Recovery
+      const canvas = map.getCanvas();
+      const handleContextLost = (e: Event) => {
+        e.preventDefault();
+        console.warn('[ExplorePune WebGL] WebGL context lost. Pausing animation loops.');
+        if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+        if (routeAnimRef.current) cancelAnimationFrame(routeAnimRef.current);
+        if (orbitAnimRef.current) cancelAnimationFrame(orbitAnimRef.current);
+        if (trailAnimRef.current) cancelAnimationFrame(trailAnimRef.current);
+        if (customRouteAnimRef.current) cancelAnimationFrame(customRouteAnimRef.current);
+      };
 
-        // Rotate explorer vision cone to match player orientation
-        const cone = document.getElementById('explorer-fov-cone');
-        if (cone) {
-          cone.style.transform = `rotate(${bearing}deg)`;
-        }
+      const handleContextRestored = () => {
+        console.info('[ExplorePune WebGL] WebGL context restored. Re-rendering scene.');
+        map.resize();
+        setupAllGeographicLayers(map);
+      };
+
+      canvas.addEventListener('webglcontextlost', handleContextLost, false);
+      canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
+
+      // Throttled camera state emitter (max 60fps via requestAnimationFrame)
+      let cameraRaf: number | null = null;
+      const reportCamera = () => {
+        if (cameraRaf !== null) return;
+        cameraRaf = requestAnimationFrame(() => {
+          cameraRaf = null;
+          if (!mapRef.current) return;
+          const pitch = map.getPitch();
+          const bearing = map.getBearing();
+          const center = map.getCenter();
+          const zoom = map.getZoom();
+          onCameraChange(pitch, bearing);
+          onCameraUpdate?.({
+            centerLat: center.lat,
+            centerLng: center.lng,
+            bearing,
+            pitch,
+            zoom,
+          });
+
+          // Rotate explorer vision cone to match player orientation
+          const cone = document.getElementById('explorer-fov-cone');
+          if (cone) {
+            cone.style.transform = `rotate(${bearing}deg)`;
+          }
+        });
       };
 
       map.on('load', () => {
@@ -385,11 +455,17 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         reportCamera();
       });
 
-      // Cursor movement telemetry
-      map.on('mousemove', (e) => {
-        onCursorMove(e.lngLat.lat, e.lngLat.lng);
+      // Throttled cursor movement telemetry
+      let mouseMoveRaf: number | null = null;
+      const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
         handleUserInteraction();
-      });
+        if (mouseMoveRaf !== null) return;
+        mouseMoveRaf = requestAnimationFrame(() => {
+          mouseMoveRaf = null;
+          onCursorMove(e.lngLat.lat, e.lngLat.lng);
+        });
+      };
+      map.on('mousemove', handleMouseMove);
 
       map.on('pitch', reportCamera);
       map.on('rotate', reportCamera);
@@ -499,7 +575,11 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
       return () => {
         window.removeEventListener('keydown', handleKeyDown);
+        canvas.removeEventListener('webglcontextlost', handleContextLost);
+        canvas.removeEventListener('webglcontextrestored', handleContextRestored);
 
+        if (cameraRaf !== null) cancelAnimationFrame(cameraRaf);
+        if (mouseMoveRaf !== null) cancelAnimationFrame(mouseMoveRaf);
         if (routeAnimRef.current) cancelAnimationFrame(routeAnimRef.current);
         if (trailAnimRef.current) cancelAnimationFrame(trailAnimRef.current);
         if (customRouteAnimRef.current) cancelAnimationFrame(customRouteAnimRef.current);
@@ -1220,6 +1300,8 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
       const allPlaces = getAllPlaces();
       const q = searchQuery.trim().toLowerCase();
+      const currentZoom = map.getZoom();
+      const isFiltered = selectedCategory !== 'all' || selectedTaluka !== 'all' || Boolean(q);
 
       const filtered = allPlaces.filter((p) => {
         if (selectedCategory !== 'all' && p.category_slug !== selectedCategory) return false;
@@ -1238,6 +1320,14 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
 
       filtered.forEach((place) => {
+        const isFlagship = FLAGSHIP_SLUGS.includes(place.slug);
+
+        // Level of Detail (LOD): At wide district overview (zoom < 9.8) without active filter/search,
+        // render only the 10 flagship destinations to eliminate clutter and save GPU/DOM memory
+        if (!isFiltered && currentZoom < 9.8 && !isFlagship) {
+          return;
+        }
+
         const el = document.createElement('div');
         el.className = 'group relative flex flex-col items-center cursor-pointer select-none';
 
@@ -1254,7 +1344,6 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
 
         const coordsStr = `${place.latitude.toFixed(4)}, ${place.longitude.toFixed(4)}`;
         const placeName = lang === 'mr' ? place.name_mr || place.name : place.name;
-        const isFlagship = FLAGSHIP_SLUGS.includes(place.slug);
         const taluka = getTalukaOrRegion(place.latitude, place.longitude, place.address);
         const dist = calculateDistanceKm(18.5204, 73.8567, place.latitude, place.longitude);
         const elevation = getElevationEstimate(place.latitude, place.longitude, place.category_slug);
@@ -1263,7 +1352,7 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
           <!-- Interactive Floating Hover Card -->
           <div class="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-60 p-2.5 rounded-2xl bg-black/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-200 z-50 text-white">
             <div class="relative h-24 w-full rounded-xl overflow-hidden bg-zinc-900 mb-2">
-              <img src="${place.image_url || '/images/hero-shaniwar-wada.webp'}" alt="${placeName}" class="w-full h-full object-cover" />
+              <img src="${place.image_url || '/images/hero-shaniwar-wada.webp'}" alt="${placeName}" class="w-full h-full object-cover" loading="lazy" decoding="async" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
               <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-mono font-black uppercase tracking-wider bg-black/85 text-emerald-300 border border-emerald-500/40">
                 ${place.category_slug}
@@ -1321,11 +1410,26 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
       });
     };
 
-    // Update markers when filters or search change
+    // Update markers when filters, search, or LOD zoom levels change
     useEffect(() => {
-      if (isMapLoaded) {
-        renderPlaceMarkers();
-      }
+      const map = mapRef.current;
+      if (!isMapLoaded || !map) return;
+
+      renderPlaceMarkers();
+
+      let lastZoomCategory = map.getZoom() >= 9.8;
+      const handleZoomEnd = () => {
+        const newZoomCategory = map.getZoom() >= 9.8;
+        if (newZoomCategory !== lastZoomCategory) {
+          lastZoomCategory = newZoomCategory;
+          renderPlaceMarkers();
+        }
+      };
+
+      map.on('zoomend', handleZoomEnd);
+      return () => {
+        map.off('zoomend', handleZoomEnd);
+      };
     }, [selectedCategory, selectedTaluka, searchQuery, isMapLoaded, lang]);
 
     // 8. Active Selected Place Indicator
@@ -2420,6 +2524,29 @@ const LivePuneDistrictMap = forwardRef<DistrictMapHandle, LivePuneDistrictMapPro
         : timeOfDay === 'night'
         ? 'tod-overlay-night'
         : 'tod-overlay-day';
+
+    if (isWebGlUnsupported) {
+      return (
+        <div ref={wrapperRef} className="relative w-full h-full min-h-[580px] bg-zinc-950 flex flex-col items-center justify-center p-8 text-center text-white select-none">
+          <div className="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 shadow-2xl">
+            <svg viewBox="0 0 24 24" className="w-8 h-8 fill-none stroke-current stroke-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-black text-white tracking-wide uppercase font-mono mb-2">
+            {lang === 'mr' ? 'WebGL 3D ॲक्सिलेरेशन अनुपलब्ध' : 'WebGL 3D Acceleration Unavailable'}
+          </h3>
+          <p className="text-xs text-white/60 max-w-md mb-6 leading-relaxed">
+            {lang === 'mr'
+              ? 'आपल्या ब्राउझर किंवा डिव्हाइसवर हार्डवेअर WebGL सुरू नाही. तरीही आपण सर्व १०६ पुणे गंतव्यस्थाने डायरेक्टरी टेबलद्वारे एक्सप्लोर करू शकता.'
+              : 'Your browser or device does not currently have hardware-accelerated WebGL enabled. You can still explore all 106 Pune landmarks via the directory list.'}
+          </p>
+          <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-emerald-400">
+            {lang === 'mr' ? 'टीप: 3D नकाशेसाठी ब्राउझर सेटिंग्जमध्ये हार्डवेअर ॲक्सिलेरेशन सुरू करा.' : 'Tip: Enable hardware acceleration in browser settings to experience the 3D open world.'}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div ref={wrapperRef} className="relative w-full h-full min-h-[580px] bg-zinc-950 overflow-hidden select-none">

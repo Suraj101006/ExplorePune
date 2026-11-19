@@ -23,7 +23,7 @@ interface GameMinimapProps {
   className?: string;
 }
 
-export default function GameMinimap({
+function GameMinimap({
   centerLat,
   centerLng,
   bearing,
@@ -315,3 +315,5 @@ export default function GameMinimap({
     </div>
   );
 }
+
+export default React.memo(GameMinimap);

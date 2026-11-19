@@ -33,7 +33,7 @@ interface DistrictControlPanelProps {
   lang?: string;
 }
 
-export default function DistrictControlPanel({
+function DistrictControlPanel({
   selectedPlace,
   selectedCategory,
   selectedTaluka,
@@ -515,3 +515,5 @@ export default function DistrictControlPanel({
     </>
   );
 }
+
+export default React.memo(DistrictControlPanel);

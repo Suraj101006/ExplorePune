@@ -60,7 +60,7 @@ interface GameHUDProps {
   className?: string;
 }
 
-export default function GameHUD({
+function GameHUD({
   bearing,
   pitch,
   zoom,
@@ -393,3 +393,5 @@ export default function GameHUD({
     </header>
   );
 }
+
+export default React.memo(GameHUD);

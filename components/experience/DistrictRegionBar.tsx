@@ -13,7 +13,7 @@ interface DistrictRegionBarProps {
   className?: string;
 }
 
-export default function DistrictRegionBar({
+function DistrictRegionBar({
   selectedTaluka,
   onSelectTaluka,
   allPlaces,
@@ -141,3 +141,5 @@ export default function DistrictRegionBar({
     </div>
   );
 }
+
+export default React.memo(DistrictRegionBar);

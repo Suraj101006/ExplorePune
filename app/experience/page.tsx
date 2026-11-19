@@ -27,7 +27,6 @@ import {
 import { LocationAccuracyService } from '@/lib/services/LocationAccuracyService';
 import { LocationPermissionService } from '@/lib/services/LocationPermissionService';
 import { PuneLocality } from '@/lib/userLocation';
-import GpsPermissionModal from '@/components/experience/GpsPermissionModal';
 import './experience.css';
 
 // Dynamic import for WebGL Map to avoid SSR overhead
@@ -46,22 +45,44 @@ const LivePuneDistrictMap = dynamic(
   }
 );
 
+// Lazy-load non-critical modals and heavy secondary components on demand
+const GpsPermissionModal = dynamic(
+  () => import('@/components/experience/GpsPermissionModal'),
+  { ssr: false }
+);
+const DiscoveryMissionsModal = dynamic(
+  () => import('@/components/experience/DiscoveryMissionsModal'),
+  { ssr: false }
+);
+const AchievementsModal = dynamic(
+  () => import('@/components/experience/AchievementsModal'),
+  { ssr: false }
+);
+const DistrictDirectoryTable = dynamic(
+  () => import('@/components/experience/DistrictDirectoryTable'),
+  { ssr: false }
+);
+const ExploreAnywhereModal = dynamic(
+  () => import('@/components/experience/ExploreAnywhereModal'),
+  { ssr: false }
+);
+const MapIntro = dynamic(
+  () => import('@/components/experience/MapIntro'),
+  { ssr: false }
+);
+
 import type { DistrictMapHandle } from '@/components/experience/LivePuneDistrictMap';
+import type { DiscoveryMission } from '@/components/experience/DiscoveryMissionsModal';
 import GameHUD, { GameMapMode, CameraModeKey } from '@/components/experience/GameHUD';
 import GameMinimap from '@/components/experience/GameMinimap';
 import GameControlsHUD from '@/components/experience/GameControlsHUD';
 import GameWaypointBar from '@/components/experience/GameWaypointBar';
-import DiscoveryMissionsModal, { DiscoveryMission } from '@/components/experience/DiscoveryMissionsModal';
-import AchievementsModal from '@/components/experience/AchievementsModal';
 import AchievementToast from '@/components/experience/AchievementToast';
 import GameNotificationBanner, { GameNotification } from '@/components/experience/GameNotificationBanner';
 import DistrictRegionBar from '@/components/experience/DistrictRegionBar';
 import DistrictControlPanel from '@/components/experience/DistrictControlPanel';
 import DistrictLocationDrawer from '@/components/experience/DistrictLocationDrawer';
 import DistrictTourController from '@/components/experience/DistrictTourController';
-import DistrictDirectoryTable from '@/components/experience/DistrictDirectoryTable';
-import ExploreAnywhereModal from '@/components/experience/ExploreAnywhereModal';
-import MapIntro from '@/components/experience/MapIntro';
 import {
   loadExplorationProfile,
   recordPlaceVisit,
@@ -99,6 +120,16 @@ export default function ExperiencePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTaluka, setSelectedTaluka] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
+
+  // Debounce search query to prevent DOM marker thrashing during typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 220);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true); // Default collapsed for 95% unoccluded 3D map!
   const [isRegionsOpen, setIsRegionsOpen] = useState<boolean>(false); // Clean sky by default; toggleable from HUD
 
@@ -146,8 +177,6 @@ export default function ExperiencePage() {
   const [isRouteActive, setIsRouteActive] = useState<boolean>(false);
 
   // Live Camera & Telemetry state
-  const [cursorLat, setCursorLat] = useState<number | null>(null);
-  const [cursorLng, setCursorLng] = useState<number | null>(null);
   const [cameraState, setCameraState] = useState({
     centerLat: 18.5204,
     centerLng: 73.8567,
@@ -654,16 +683,11 @@ export default function ExperiencePage() {
     handleClearWaypoint();
   }, [handleClearWaypoint]);
 
-  // Cursor Move Tracker
-  const handleCursorMove = useCallback((lat: number, lng: number) => {
-    setCursorLat(lat);
-    setCursorLng(lng);
-  }, []);
+  // Cursor Move Tracker (No-op to eliminate redundant root re-renders)
+  const handleCursorMove = useCallback((_lat: number, _lng: number) => {}, []);
 
-  // Camera Change Tracker
-  const handleCameraChange = useCallback((pitch: number, bearing: number) => {
-    setCameraState((prev) => ({ ...prev, pitch, bearing }));
-  }, []);
+  // Camera Change Tracker (Delegated to throttled handleCameraUpdate to prevent duplicate dispatches)
+  const handleCameraChange = useCallback((_pitch: number, _bearing: number) => {}, []);
 
   const handleCameraUpdate = useCallback((state: { centerLat: number; centerLng: number; bearing: number; pitch: number; zoom: number }) => {
     setCameraState(state);
@@ -919,7 +943,7 @@ export default function ExperiencePage() {
             selectedPlace={selectedPlace}
             selectedCategory={selectedCategory}
             selectedTaluka={selectedTaluka}
-            searchQuery={searchQuery}
+            searchQuery={debouncedSearchQuery}
             onPlaceSelect={handleSelectPlace}
             onCursorMove={handleCursorMove}
             onCameraChange={handleCameraChange}

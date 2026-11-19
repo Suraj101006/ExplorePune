@@ -49,7 +49,7 @@ interface GameWaypointBarProps {
   className?: string;
 }
 
-export default function GameWaypointBar({
+function GameWaypointBar({
   waypointPlace,
   multiStopPlaces = [],
   playerCoords,
@@ -362,3 +362,5 @@ export default function GameWaypointBar({
     </div>
   );
 }
+
+export default React.memo(GameWaypointBar);
