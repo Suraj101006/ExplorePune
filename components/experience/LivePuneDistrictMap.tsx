@@ -121,7 +121,7 @@ const FLAGSHIP_SLUGS = [
   'sinhagad-fort',
   'rajgad-fort',
   'shivneri-fort',
-  'lonavala',
+  'tiger-point-lonavala',
   'shreemant-dagdusheth-halwai-ganpati',
   'aga-khan-palace',
   'bhimashankar-temple',

@@ -123,7 +123,7 @@ export default function DistrictLocationDrawer({
           src={place.image_url || '/images/hero-shaniwar-wada.webp'}
           alt={placeName}
           fill
-          priority
+          loading="lazy"
           sizes="(max-width: 768px) 100vw, 420px"
           className="object-cover"
           style={{ objectFit: 'cover' }}

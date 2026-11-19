@@ -22,7 +22,7 @@ export default function DistrictDirectoryTable({ lang = 'en', onFocusPlace }: Di
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 font-mono text-xs uppercase mb-3">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>106 Locations • 14 Talukas • Real Satellite Ground Truth</span>
+          <span>106 Locations • 15 Talukas • Real Satellite Ground Truth</span>
         </div>
         <h2 className="text-2xl md:text-4xl font-black tracking-tight text-white mb-2">
           {isMr ? 'पुणे जिल्हा सर्व पर्यटन स्थळे व GPS निर्देशांक' : 'Pune District Complete Landmark & GPS Coordinates Catalog'}
