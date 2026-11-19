@@ -79,7 +79,8 @@ describe('SEO Robots.txt & Crawl Optimization', () => {
     expect(sitemaps).toContain('https://explorepune-guide.vercel.app/sitemap.xml');
     expect(sitemaps).toContain('https://explorepune-guide.vercel.app/sitemap_index.xml');
     expect(sitemaps).toContain('https://explorepune-guide.vercel.app/video-sitemap.xml');
-    expect(config.host).toBe('https://explorepune-guide.vercel.app');
+    // Ensure 'host' is omitted to avoid Googlebot RFC 9309 non-standard directive warning
+    expect(config.host).toBeUndefined();
   });
 });
 
