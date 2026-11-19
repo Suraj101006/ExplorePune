@@ -606,16 +606,59 @@ export const Sinhagad2DGame: React.FC = () => {
       ctx.closePath();
       ctx.fill();
 
-      // 2. Draw Natural Cobbled Pathway System
+      // Natural Sahyadri Basalt Outcrops & Scrub Patches (Evidence: Frame 240s & 248s)
+      const basaltRocks = [
+        { x: 1900, y: 800, w: 45, h: 30 },
+        { x: 2200, y: 1100, w: 60, h: 40 },
+        { x: 1750, y: 1500, w: 55, h: 35 },
+        { x: 2400, y: 1400, w: 70, h: 45 },
+        { x: 2100, y: 2000, w: 50, h: 35 },
+        { x: 2800, y: 2100, w: 65, h: 40 },
+        { x: 3300, y: 2250, w: 80, h: 45 },
+        { x: 1100, y: 2800, w: 60, h: 38 },
+        { x: 1600, y: 3100, w: 55, h: 35 },
+      ];
+      ctx.fillStyle = '#1e293b';
+      for (const rock of basaltRocks) {
+        ctx.beginPath();
+        ctx.ellipse(rock.x, rock.y, rock.w / 2, rock.h / 2, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Wild Sahyadri Grass / Shrub Clusters (Ran-keli & Deccan Scrub)
+      ctx.fillStyle = '#166534';
+      const scrubPatches = [
+        { x: 1840, y: 650, r: 18 },
+        { x: 2150, y: 920, r: 24 },
+        { x: 1780, y: 1350, r: 20 },
+        { x: 2450, y: 1550, r: 22 },
+        { x: 2050, y: 2350, r: 26 },
+        { x: 2750, y: 2250, r: 20 },
+        { x: 1250, y: 2700, r: 22 },
+        { x: 1500, y: 3300, r: 25 },
+      ];
+      for (const scrub of scrubPatches) {
+        ctx.beginPath();
+        ctx.arc(scrub.x, scrub.y, scrub.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Draw Natural Cobbled Pathway System (Evidence: Frame 104s & 168s)
       ctx.strokeStyle = '#475569';
       ctx.lineWidth = 42;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
-      // Spine 1: Pune Darwaza to Central Junction (Tanaji/Temple)
+      // Spine 1: Pune Darwaza to Central Junction (Tanaji/Temple) with gorge switchbacks
       ctx.beginPath();
       ctx.moveTo(2000, 320);
-      ctx.lineTo(2000, 600);
+      ctx.lineTo(2000, 480);
+      ctx.lineTo(1930, 560); // 90° dogleg approach
+      ctx.lineTo(2060, 560);
+      ctx.lineTo(2060, 720); // through Gate 3
       ctx.lineTo(2100, 1000);
       ctx.lineTo(2180, 1440); // branches to Daru Kothar
       ctx.lineTo(2250, 1720); // Kondhaneshwar
@@ -623,7 +666,7 @@ export const Sinhagad2DGame: React.FC = () => {
       ctx.lineTo(1950, 2190); // Dev Taki
       ctx.stroke();
 
-      // Spine 2: Central Junction to Zunjar Buruj (East)
+      // Spine 2: Central Junction to Zunjar Buruj (East razor ridge)
       ctx.beginPath();
       ctx.moveTo(2250, 1720);
       ctx.lineTo(2600, 1950);
@@ -698,7 +741,17 @@ export const Sinhagad2DGame: React.FC = () => {
       ctx.font = 'bold 11px sans-serif';
       ctx.fillText('VEER TANAJI MALUSARE SMARAK', 1880, 1790);
 
-      // Rajaram Maharaj Samadhi Chhatri
+      // Rajaram Maharaj Samadhi Chhatri on Lower Protected Terrace (Evidence: Frame 160s)
+      // Lower terrace contour
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.ellipse(2620, 2300, 65, 50, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Octagonal Chhatri
       ctx.fillStyle = '#f8fafc';
       ctx.beginPath();
       ctx.arc(2620, 2300, 36, 0, Math.PI * 2);
@@ -708,21 +761,40 @@ export const Sinhagad2DGame: React.FC = () => {
       ctx.stroke();
       ctx.fillStyle = '#fbbf24';
       ctx.font = 'bold 11px sans-serif';
-      ctx.fillText('RAJARAM MAHARAJ SAMADHI', 2530, 2255);
+      ctx.fillText('RAJARAM MAHARAJ SAMADHI', 2530, 2245);
+      ctx.font = '9px monospace';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('(LOWER ROCK TERRACE 1300m)', 2535, 2355);
 
       // 5. Draw Military Gates & Bastions
-      // Pune Darwaza Complex
+      // Pune Darwaza Walled Circulation Layout (Evidence: Frame 288s Overhead Orthogonal View)
+      // Flanking West Rock Face & East Bastion
       ctx.fillStyle = '#334155';
       ctx.beginPath();
-      ctx.arc(1930, 360, 38, 0, Math.PI * 2);
-      ctx.arc(2080, 360, 38, 0, Math.PI * 2);
+      ctx.arc(1920, 360, 38, 0, Math.PI * 2); // West Watch Bastion
+      ctx.arc(2080, 360, 38, 0, Math.PI * 2); // East Watch Bastion
+      ctx.arc(2110, 560, 32, 0, Math.PI * 2); // Curved Retaining Bastion at Dogleg
       ctx.fill();
       ctx.strokeStyle = '#64748b';
       ctx.lineWidth = 3;
       ctx.stroke();
+
+      // Stone Stair Treads in Pune Darwaza Gorge (Evidence: Frame 096s & 288s)
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 2;
+      for (let s = 0; s < 6; s++) {
+        ctx.beginPath();
+        ctx.moveTo(1975, 330 + s * 16);
+        ctx.lineTo(2025, 330 + s * 16);
+        ctx.stroke();
+      }
+
       ctx.fillStyle = '#f59e0b';
       ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('PUNE DARWAZA (NORTH)', 1930, 300);
+      ctx.fillText('PUNE DARWAZA (NORTH GORGE)', 1910, 290);
+      ctx.font = '9px monospace';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText('GOMUKHI 90° DOGLEG CIRCULATION', 1910, 620);
 
       // Kalyan Darwaza Complex
       ctx.fillStyle = '#334155';
