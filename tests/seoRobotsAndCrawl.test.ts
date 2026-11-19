@@ -21,6 +21,8 @@ describe('SEO Robots.txt & Crawl Optimization', () => {
 
     const allowed = Array.isArray(wildcardRule?.allow) ? wildcardRule.allow : [wildcardRule?.allow];
     expect(allowed).toContain('/');
+    expect(allowed).toContain('/experience');
+    expect(allowed).toContain('/help');
     expect(allowed).toContain('/_next/static/');
     expect(allowed).toContain('/_next/image');
     expect(allowed).toContain('/images/');
@@ -47,9 +49,16 @@ describe('SEO Robots.txt & Crawl Optimization', () => {
     // Search engines
     const searchRule = rules.find((r) => Array.isArray(r.userAgent) && r.userAgent.includes('Googlebot'));
     expect(searchRule).toBeDefined();
+    expect(searchRule?.userAgent).toContain('GoogleOther');
     expect(searchRule?.userAgent).toContain('Bingbot');
     expect(searchRule?.userAgent).toContain('Applebot');
     expect(searchRule?.userAgent).toContain('DuckDuckBot');
+
+    // Social preview bots
+    const socialRule = rules.find((r) => Array.isArray(r.userAgent) && r.userAgent.includes('facebookexternalhit'));
+    expect(socialRule).toBeDefined();
+    expect(socialRule?.userAgent).toContain('Twitterbot');
+    expect(socialRule?.userAgent).toContain('LinkedInBot');
 
     // AI & GEO bots
     const aiRule = rules.find((r) => Array.isArray(r.userAgent) && r.userAgent.includes('OAI-SearchBot'));
@@ -101,6 +110,8 @@ describe('IndexNow Instant Crawl & Indexing Pipeline', () => {
     expect(sentBody.urlList.length).toBe(data.submittedCount);
     expect(sentBody.urlList).toContain('https://explorepune-guide.vercel.app/places/sinhagad-fort');
     expect(sentBody.urlList).toContain('https://explorepune-guide.vercel.app/places/shaniwar-wada');
+    expect(sentBody.urlList).toContain('https://explorepune-guide.vercel.app/experience');
+    expect(sentBody.urlList).toContain('https://explorepune-guide.vercel.app/help');
 
     vi.unstubAllGlobals();
   });

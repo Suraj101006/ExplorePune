@@ -11,6 +11,7 @@ const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 
 const CORE_STATIC_ROUTES = [
   `https://${HOST}/`,
+  `https://${HOST}/experience`,
   `https://${HOST}/destinations`,
   `https://${HOST}/destinations/forts`,
   `https://${HOST}/destinations/heritage`,
@@ -21,6 +22,8 @@ const CORE_STATIC_ROUTES = [
   `https://${HOST}/destinations/food`,
   `https://${HOST}/destinations/free`,
   `https://${HOST}/planner`,
+  `https://${HOST}/help`,
+  `https://${HOST}/help/website-guide`,
   `https://${HOST}/play-metro-transit.html`,
   `https://${HOST}/community`,
   `https://${HOST}/blogs`,
@@ -28,6 +31,7 @@ const CORE_STATIC_ROUTES = [
   `https://${HOST}/data`,
   `https://${HOST}/milestones`,
   `https://${HOST}/privacy`,
+  `https://${HOST}/cookies`,
   `https://${HOST}/terms`,
 ];
 

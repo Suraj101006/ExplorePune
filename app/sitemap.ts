@@ -15,7 +15,7 @@ function withTimeout<T>(promise: Promise<T>, ms = 1500): Promise<T> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://explorepune-guide.vercel.app';
   // Stable audit and release timestamp to eliminate Search Console dynamic lastmod churn
-  const auditReleaseDate = new Date('2026-11-15T00:00:00.000Z');
+  const auditReleaseDate = new Date('2026-11-19T00:00:00.000Z');
 
   // Core public indexable routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -26,6 +26,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/experience`,
+      lastModified: auditReleaseDate,
+      changeFrequency: 'daily',
+      priority: 0.95,
+      images: [`${baseUrl}/images/hero-shaniwar-wada.webp`],
+    },
+    {
       url: `${baseUrl}/destinations`,
       lastModified: auditReleaseDate,
       changeFrequency: 'daily',
@@ -33,12 +40,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/planner`,
-      lastModified: auditReleaseDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/experience`,
       lastModified: auditReleaseDate,
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -68,6 +69,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: auditReleaseDate,
       changeFrequency: 'daily',
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/help`,
+      lastModified: auditReleaseDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/help/website-guide`,

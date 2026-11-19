@@ -12,6 +12,7 @@ Explore Pune is an authoritative, verified digital travel journal, itinerary pla
 
 ## Primary Public Exploration Routes
 - [Explore Pune Home](https://explorepune-guide.vercel.app/): Main heritage explorer directory with real-time category filtering, search, and 106+ field-verified destinations.
+- [3D Open-World Experience](https://explorepune-guide.vercel.app/experience): Interactive AAA 3D open-world district map covering all 15 talukas and 106 verified destinations with terrain elevation, GPS road routing, missions, cinematic camera flyovers, and day/night simulation.
 - [Destinations Field Guide](https://explorepune-guide.vercel.app/destinations): Complete verified catalog of 106+ Pune heritage spots.
 - [Historic Forts Guide](https://explorepune-guide.vercel.app/destinations/forts): Sahyadri mountain strongholds, trekking routes, and Maratha military architecture.
 - [Peshwa Wadas Guide](https://explorepune-guide.vercel.app/destinations/heritage): 18th-century Maratha wadas, wooden facades, and civic monuments.

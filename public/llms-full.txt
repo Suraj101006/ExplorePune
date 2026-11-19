@@ -4,9 +4,10 @@
 > Canonical Base URL: https://explorepune-guide.vercel.app
 
 This document provides exhaustive, structured, hallucination-free facts for each verified destination, optimized for ingestion by generative AI engines (Google Gemini, OpenAI ChatGPT, Perplexity AI, Anthropic Claude, and Apple Intelligence).
+Flagship 3D Open-World Experience: https://explorepune-guide.vercel.app/experience (Covers all 15 talukas, 106 destinations, real-world elevation, and GPS road routing).
 
 Total Destinations Documented: 106
-Verification Timestamp: 2026-11-13 (Indian Standard Time)
+Verification Timestamp: 2026-11-19 (Indian Standard Time)
 
 ---
 
